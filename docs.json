@@ -1,11 +1,11 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Regatta",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#ff6600",
+    "light": "#FF6600",
+    "dark": "#FF751A"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -14,11 +14,29 @@
         "tab": "Guides",
         "groups": [
           {
-            "group": "Get Started",
+            "group": "Get Started Guides",
             "pages": [
               "introduction",
               "quickstart",
-              "development"
+              {
+                "group": "Regatta Platform",
+                "pages": ["regatta-platform/regatta-platform", "regatta-platform/access-the-platform", "regatta-platform/create-a-cluster"]
+              },
+              {
+                "group": "Linear Scaling",
+                "pages": [                  
+                "linear-scaling/linear-scaling", 
+                {
+                  "group": "Creating the Demo Environment",
+                  "pages": [
+                    "linear-scaling/creating-demo-environment/create-demo-environment",
+                    "linear-scaling/creating-demo-environment/table-schema",
+                    "linear-scaling/creating-demo-environment/creating-demo-clusters"
+                  ]
+                }
+              ]
+              }
+              
             ]
           },
           {
@@ -58,16 +76,6 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
           "anchor": "Blog",
           "href": "https://mintlify.com/blog",
           "icon": "newspaper"
@@ -76,27 +84,26 @@
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/logo/Regatta_Logo_Colors_Black_RGB_1.svg",
+    "dark": "/logo/Regatta_Logo_Colors_Black_RGB_1.svg"
   },
   "navbar": {
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:info@regatta.dev"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Start Coding",
+      "href": "https://regatta.dev/"
     }
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://twitter.com/regatta_data",
+      "linkedin": "https://www.linkedin.com/company/regatta-data"
     }
   }
 }
