@@ -27,10 +27,51 @@
           {
             "group": "Regatta Basics",
             "pages": [
-              "regatta-basics/create-a-table"
+              {
+                "group": "Creating a Table",
+                "pages": ["regatta-basics/creating-a-table/create-a-table", "regatta-basics/creating-a-table/default-device-mapping", "regatta-platform/create-a-cluster"]
+              },
+              "regatta-basics/Insert-Values",
+              "regatta-basics/Select-Values-from-Table",
+              "regatta-basics/Update-Entry",
+              "regatta-basics/Delete-Entry-from-Table",
+              "regatta-basics/Drop-Table"              
              
             ]
+          },
+          {
+            "group": "Cloud Deployment",
+            "pages": [
+              {
+                "group": "Database Backup and Restore",
+                "pages": ["cloud-deployment/database-backup-restore", "cloud-deployment/backup", "cloud-deployment/restore"]
+              },
+              "/cloud-deployment/Delete-Cluster"
+            ]
+          },
+          {
+            "group": "Linear Scaling",
+            "pages": [                  
+                "linear-scaling/linear-scaling", 
+                {
+                  "group": "Creating the Demo Environment",
+                  "pages": [
+                    "linear-scaling/creating-demo-environment/create-demo-environment",
+                    "linear-scaling/creating-demo-environment/table-schema",
+                    "linear-scaling/creating-demo-environment/creating-demo-clusters"
+                  ]
+                },
+                {
+                  "group": "Comparing Performance",
+                  "pages": [
+                    "linear-scaling/comparing-performance/comparing-performance",
+                    "linear-scaling/comparing-performance/xsmall-cluster",
+                    "linear-scaling/comparing-performance/medium-cluster"
+                  ]
+                }
+              ]
           }
+
         ]
       },
       {
