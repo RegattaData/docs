@@ -21,33 +21,14 @@
               {
                 "group": "Regatta Platform",
                 "pages": ["regatta-platform/regatta-platform", "regatta-platform/access-the-platform", "regatta-platform/create-a-cluster"]
-              },
-              {
-                "group": "Linear Scaling",
-                "pages": [                  
-                "linear-scaling/linear-scaling", 
-                {
-                  "group": "Creating the Demo Environment",
-                  "pages": [
-                    "linear-scaling/creating-demo-environment/create-demo-environment",
-                    "linear-scaling/creating-demo-environment/table-schema",
-                    "linear-scaling/creating-demo-environment/creating-demo-clusters"
-                  ]
-                }
-              ]
               }
-              
             ]
           },
           {
-            "group": "Essentials",
+            "group": "Regatta Basics",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
+              "regatta-basics/create-a-table"
+             
             ]
           }
         ]
