@@ -35,8 +35,9 @@
               "regatta-basics/Select-Values-from-Table",
               "regatta-basics/Update-Entry",
               "regatta-basics/Delete-Entry-from-Table",
-              "regatta-basics/Drop-Table"              
-             
+              "regatta-basics/Drop-Table",              
+              "regatta-basics/credentials"             
+              
             ]
           },
           {
@@ -46,7 +47,8 @@
                 "group": "Database Backup and Restore",
                 "pages": ["cloud-deployment/database-backup-restore", "cloud-deployment/backup", "cloud-deployment/restore"]
               },
-              "/cloud-deployment/Delete-Cluster"
+              "/cloud-deployment/Delete-Cluster",
+              "/cloud-deployment/cluster-ip"
             ]
           },
           {
@@ -70,15 +72,54 @@
                   ]
                 }
               ]
+          },
+          {
+            "group": "Drivers and Clients",
+            "pages": [
+              "drivers-and-clients/drivers-support/driver-support",
+            {
+              "group": "Python",
+              "pages": [
+                "/drivers-and-clients/drivers-support/python/python-drivers",
+                "drivers-and-clients/drivers-support/python/install-the-driver",
+                "drivers-and-clients/drivers-support/python/run-python-application"
+              ]
+            },
+            {
+              "group": "Java",
+              "pages": [
+                "/drivers-and-clients/drivers-support/java/jbdc-driver",
+                "drivers-and-clients/drivers-support/java/install-the-driver",
+                "drivers-and-clients/drivers-support/java/set-up-dependency",
+                "drivers-and-clients/drivers-support/java/run-java-application",
+                "drivers-and-clients/drivers-support/java/hibernate",
+                "drivers-and-clients/drivers-support/java/set-hibernate-dependency",
+                "drivers-and-clients/drivers-support/java/set-up-configuration",
+                "drivers-and-clients/drivers-support/java/run-a-hibernate"
+              ]
+            },
+            {
+              "group": "JavaScript",
+              "pages": [
+                "/drivers-and-clients/drivers-support/javascript/nodejs",
+                "drivers-and-clients/drivers-support/javascript/install-the-driver",
+                "drivers-and-clients/drivers-support/javascript/run-nodejs-application",
+                "drivers-and-clients/drivers-support/javascript/object-relation-map-tool",
+                "drivers-and-clients/drivers-support/javascript/type-orm",
+                "drivers-and-clients/drivers-support/javascript/install-orm-tools",
+                "drivers-and-clients/drivers-support/javascript/run-typeorm-application"
+              ]
+            }
+          ]
           }
 
         ]
       },
       {
-        "tab": "API Reference",
+        "tab": "On Prem Deployment Guide",
         "groups": [
           {
-            "group": "API Documentation",
+            "group": "Deployment Guide",
             "pages": [
               "api-reference/introduction"
             ]
