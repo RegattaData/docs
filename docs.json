@@ -121,18 +121,73 @@
           {
             "group": "Deployment Guide",
             "pages": [
-              "api-reference/introduction"
+              "deployment-guide/prerequisites"
             ]
           },
           {
-            "group": "Endpoint Examples",
+            "group": "Manual Deployment",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "deployment-guide/manual-deployment/manual-deployment",
+              "deployment-guide/manual-deployment/user-setup",
+              {
+                "group": "Regatta Configuration",
+                "pages": [
+                  "deployment-guide/manual-deployment/regatta-configuration/regatta-configuration",
+                  "deployment-guide/manual-deployment/regatta-configuration/rdb",
+                  "deployment-guide/manual-deployment/regatta-configuration/sequencer",
+                  "deployment-guide/manual-deployment/regatta-configuration/dcm",
+                  "deployment-guide/manual-deployment/regatta-configuration/gdd"
+                ]
+              },
+              {
+                  "group": "Configuration File",
+                  "pages": [
+                    "deployment-guide/manual-deployment/configuration-file/configuration-file",
+                    "deployment-guide/manual-deployment/configuration-file/configuration-file-example",
+                    "deployment-guide/manual-deployment/configuration-file/main-configuration-top-part",
+                    "deployment-guide/manual-deployment/configuration-file/unique-module-configuration"
+                  ]
+              },
+              "deployment-guide/manual-deployment/filewall",  
+              "deployment-guide/manual-deployment/starting-the-system",
+              "deployment-guide/manual-deployment/cli-and-drivers",
+              "deployment-guide/manual-deployment/configuration-template-file"            
             ]
-          }
+          },
+          {
+            "group": "Scripted Solution",
+            "pages": [
+              "deployment-guide/scripted-solution/scripted-solution",
+              "deployment-guide/scripted-solution/setup",
+              "deployment-guide/scripted-solution/configjson",
+              "deployment-guide/scripted-solution/setup-cluster"
+            ]
+          },
+          {
+            "group": "Hybrid Deployment",
+            "pages": [
+              "deployment-guide/hybrid-deployment/hybrid-deployment",
+              "deployment-guide/hybrid-deployment/process",
+              "deployment-guide/hybrid-deployment/inventory",
+              "deployment-guide/hybrid-deployment/configuration",
+              "deployment-guide/hybrid-deployment/start"
+            ]
+          },
+          {
+            "group": "Support",
+            "pages": [
+              "deployment-guide/support/support",
+              {
+                "group": "collect_data script",
+                "pages": [
+                  "deployment-guide/support/collect-data-script/collect-data-script",
+                  "deployment-guide/support/collect-data-script/prerequisites",
+                  "deployment-guide/support/collect-data-script/setup",
+                  "deployment-guide/support/collect-data-script/execution"
+                ]
+              }
+            ]
+          }       
         ]
       }
     ],
