@@ -189,13 +189,288 @@
             ]
           }       
         ]
+      },
+      {
+        "tab": "Regatta SQL Specification",
+        "groups": [
+          {
+            "group": "SQL Specification",
+            "pages": ["/sql/specification"]
+          },
+          {
+              "group": "Data Types",
+              "pages": [
+                {
+                  "group": "Numeric types",
+                  "pages": [
+                    "sql/data-types/numeric-types/exact-numeric-data-type",
+                    "sql/data-types/numeric-types/approximate-numeric-data-type"
+                  ]
+                },
+                "sql/data-types/character-types",
+                "sql/data-types/date-time-types",
+                "sql/data-types/boolean-types",
+                {
+                  "group": "Type Conversion",
+                  "pages": [
+                    "sql/data-types/type-conversion/type-conversion",
+                    "sql/data-types/type-conversion/type-conversion-table"
+                  ]
+                },
+                "sql/data-types/row-ids"
+              ]
+            },
+            {
+              "group": "SQL Syntax Conventions",
+              "pages": ["sql/sql-syntax-convention/sql-syntax-convention"]
+            },
+            {
+              "group": "Data Definition Language (DDL) Commands",
+              "pages": [
+                {
+                  "group": "CREATE TABLE",
+                  "pages": [
+                    "sql/ddl-commands/create-table/create-table",
+                    "sql/ddl-commands/create-table/synopsis",
+                    "sql/ddl-commands/create-table/description",
+                    "sql/ddl-commands/create-table/parameters",
+                    "sql/ddl-commands/create-table/examples",
+                    "sql/ddl-commands/create-table/compatibility"
+                  ]
+                },
+                {
+                  "group": "ALTER TABLE",
+                  "pages": [
+                    "sql/ddl-commands/alter-table/alter-table",
+                    "sql/ddl-commands/alter-table/synopsis",
+                    "sql/ddl-commands/alter-table/description",
+                    "sql/ddl-commands/alter-table/parameters",
+                    "sql/ddl-commands/alter-table/examples",
+                    "sql/ddl-commands/alter-table/compatibility"
+                  ]
+                },
+                {
+                  "group": "DROP TABLE",
+                  "pages": [
+                    "sql/ddl-commands/drop-table/drop-table",
+                    "sql/ddl-commands/drop-table/synopsis",
+                    "sql/ddl-commands/drop-table/description",
+                    "sql/ddl-commands/drop-table/parameters",
+                    "sql/ddl-commands/drop-table/examples",
+                    "sql/ddl-commands/drop-table/compatibility"
+                  ]
+                }
+              ]
+            },
+            {
+              "group": "Data Manipulation Language Commands",
+              "pages": [
+                {
+                  "group": "INSERT TABLE",
+                  "pages": [
+                    "sql/dml-commands/insert/insert",
+                    "sql/dml-commands/insert/synopsis",
+                    "sql/dml-commands/insert/description",
+                    "sql/dml-commands/insert/parameters",
+                    "sql/dml-commands/insert/outputs",
+                    "sql/dml-commands/insert/examples",
+                    "sql/dml-commands/insert/compatibility"
+                  ]
+                },
+                {
+                  "group": "UPDATE TABLE",
+                  "pages": [
+                    "sql/dml-commands/update/update",
+                    "sql/dml-commands/update/synopsis",
+                    "sql/dml-commands/update/description",
+                    "sql/dml-commands/update/parameters",
+                    "sql/dml-commands/update/outputs",
+                    "sql/dml-commands/update/examples",
+                    "sql/dml-commands/update/compatibility"
+                  ]
+                },
+                {
+                  "group": "DELETE TABLE",
+                  "pages": [
+                    "sql/dml-commands/delete/delete",
+                    "sql/dml-commands/delete/synopsis",
+                    "sql/dml-commands/delete/description",
+                    "sql/dml-commands/delete/parameters",
+                    "sql/dml-commands/delete/outputs",
+                    "sql/dml-commands/delete/examples",
+                    "sql/dml-commands/delete/compatibility"
+                  ]
+                }
+              ]
+            },
+            {
+              "group": "Transaction Control Language Commands",
+              "pages": [
+                "sql/tcl-commands/tcl-commands",
+                {
+                  "group": "SET TRANSACTION",
+                  "pages": [
+                    "sql/tcl-commands/set-transaction/set-transaction",
+                    "sql/tcl-commands/set-transaction/synopsis",
+                    "sql/tcl-commands/set-transaction/description",
+                    "sql/tcl-commands/set-transaction/parameters",
+                    "sql/tcl-commands/set-transaction/examples",
+                    "sql/tcl-commands/set-transaction/compatibility"
+                  ]
+                }
+              ]
+            },
+            {
+            "group": "Data Query Language",
+            "pages": [
+              {
+                "group": "SELECT",
+                "pages": [
+                  "sql/dql/select/select",
+                  "sql/dql/select/synopsis",
+                  "sql/dql/select/description",
+                  "sql/dql/select/parameters",
+                  "sql/dql/select/tuple-support",
+                  "sql/dql/select/examples"
+                ]
+              },
+              {
+                "group": "EXPLAIN",
+                "pages": [
+                  "sql/dql/explain/explain",
+                  "sql/dql/explain/synopsis",
+                  "sql/dql/explain/description",
+                  "sql/dql/explain/parameters",
+                  "sql/dql/explain/outputs",
+                  "sql/dql/explain/examples",
+                  "sql/dql/explain/compatibility"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Hints",
+            "pages": [
+              "sql/hints/overview",
+              "sql/hints/general-notes",
+              {
+                "group": "Join hints",
+                "pages": [
+                  "sql/hints/join-hints/join-hints",
+                  "sql/hints/join-hints/join-direction",
+                  "sql/hints/join-hints/join-method",
+                  "sql/hints/join-hints/join-distribution"
+
+                ]
+              },
+              {
+                "group": "Hints for parallelism of distributed operations",
+                "pages": [
+                  "sql/hints/parallelism/hints-for-parallelism",
+                  "sql/hints/parallelism/sorting",
+                  "sql/hints/parallelism/join-distribution"
+                ]
+              },
+              {
+                "group": "Other hints",
+                "pages": [
+                  "sql/hints/other-hints/other-hints",
+                  "sql/hints/other-hints/hint-index",
+                  "sql/hints/other-hints/hint-cardinality"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "SQL Functions and Operators",
+            "pages": [
+              "sql/sql-functions-and-operators/sql-functions-and-operators",
+              "sql/sql-functions-and-operators/comparison-function",
+              {
+                "group": "Mathematical Functions and Operators",
+                "pages": [
+                  "sql/sql-functions-and-operators/maths-functions-operators/maths-functions-operators",
+                  "sql/sql-functions-and-operators/maths-functions-operators/maths-operators",
+                  "sql/sql-functions-and-operators/maths-functions-operators/maths-functions"
+                ]
+              },
+              "sql/sql-functions-and-operators/string-functions-operators",
+              {
+                "group": "Date/Time Functions and Operators",
+                "pages": [
+                  "sql/sql-functions-and-operators/date-time-functions-operators/date-time-functions-operators",
+                  "sql/sql-functions-and-operators/date-time-functions-operators/date-time-operators",
+                  "sql/sql-functions-and-operators/date-time-functions-operators/date-time-functions"
+                ]
+              },
+              {
+                "group": "Conditional Expressions",
+                "pages": [
+                  {
+                    "group": "CASE",
+                    "pages": [
+                      "sql/sql-functions-and-operators/conditional-expressions/case/case",
+                      "sql/sql-functions-and-operators/conditional-expressions/case/synopsis",
+                      "sql/sql-functions-and-operators/conditional-expressions/case/examples"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Convert Functions",
+                "pages": [
+                  {
+                    "group": "CAST",
+                    "pages": [
+                      "sql/sql-functions-and-operators/convert-function/cast/cast",
+                      "sql/sql-functions-and-operators/convert-function/cast/synopsis",
+                      "sql/sql-functions-and-operators/convert-function/cast/description",
+                      "sql/sql-functions-and-operators/convert-function/cast/parameters",
+                      "sql/sql-functions-and-operators/convert-function/cast/examples"
+                    ]
+                  },
+                  {
+                    "group": "Date and Time Formatting Functions",
+                    "pages": [
+                      "sql/sql-functions-and-operators/convert-function/date-time-format-functions/date-time-format-functions",
+                      "sql/sql-functions-and-operators/convert-function/date-time-format-functions/examples"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Aggregate Functions",
+                "pages": [
+                  "sql/sql-functions-and-operators/aggregate-functions/aggregate-functions",
+                  "sql/sql-functions-and-operators/aggregate-functions/examples"
+                ]
+              },
+              {
+                "group": "Subquery Expressions",
+                "pages": [
+                  "sql/sql-functions-and-operators/subquery-expressions/subquery-expressions",
+                  {
+                    "group": "[NOT] IN",
+                    "pages": [
+                      "sql/sql-functions-and-operators/subquery-expressions/not-in/not-in",
+                      "sql/sql-functions-and-operators/subquery-expressions/not-in/synopsis",
+                      "sql/sql-functions-and-operators/subquery-expressions/not-in/description",
+                      "sql/sql-functions-and-operators/subquery-expressions/not-in/parameters",
+                      "sql/sql-functions-and-operators/subquery-expressions/not-in/examples"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       }
     ],
     "global": {
       "anchors": [
         {
           "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
+          "href": "https://regatta.dev/blog/",
           "icon": "newspaper"
         }
       ]
