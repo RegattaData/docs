@@ -462,6 +462,126 @@
                 ]
               }
             ]
+          },
+          {
+            "group": "Managing Users",
+            "pages": [
+              {
+                "group": "CREATE USER",
+                "pages": [
+                  "sql/managing-users/create-user/create-user",
+                  "sql/managing-users/create-user/synopsis",
+                  "sql/managing-users/create-user/description",
+                  "sql/managing-users/create-user/parameters",
+                  "sql/managing-users/create-user/examples",
+                  "sql/managing-users/create-user/compatibility"
+                ]
+              },
+              {
+                "group": "ALTER USER",
+                "pages": [
+                  "sql/managing-users/alter-user/alter-user",
+                  "sql/managing-users/alter-user/synopsis",
+                  "sql/managing-users/alter-user/description",
+                  "sql/managing-users/alter-user/parameters",
+                  "sql/managing-users/alter-user/examples",
+                  "sql/managing-users/alter-user/compatibility"
+                ]
+              },
+              {
+                "group": "DROP USER",
+                "pages": [
+                  "sql/managing-users/drop-user/drop-user",
+                  "sql/managing-users/drop-user/synopsis",
+                  "sql/managing-users/drop-user/description",
+                  "sql/managing-users/drop-user/parameters",
+                  "sql/managing-users/drop-user/examples",
+                  "sql/managing-users/drop-user/compatibility"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "System Monitoring",
+            "pages": [
+              {
+                "group": "Using System Monitoring Views",
+                "pages": [
+                  "sql/system-monitoring/system-monitoring-views/system-monitoring-views",
+                  "sql/system-monitoring/system-monitoring-views/synopsis",
+                  "sql/system-monitoring/system-monitoring-views/parameters",
+                  "sql/system-monitoring/system-monitoring-views/examples"
+                ]
+              },
+              "sql/system-monitoring/show-system-views",
+              {
+                "group": "Database Catalog Data",
+                "pages": [
+                  "sql/system-monitoring/database-catalog/database-catalog",
+                  "sql/system-monitoring/database-catalog/show-tables",
+                  "sql/system-monitoring/database-catalog/show-table-devices",
+                  "sql/system-monitoring/database-catalog/show-index",
+                  "sql/system-monitoring/database-catalog/show-index-devices",
+                  "sql/system-monitoring/database-catalog/show-columns",
+                  "sql/system-monitoring/database-catalog/show-constraints",
+                  "sql/system-monitoring/database-catalog/show-users"
+                ] 
+              },
+              {
+                "group": "System Catalog Data",
+                "pages": [
+                  "sql/system-monitoring/system-catalog/show-nodes",
+                  "sql/system-monitoring/system-catalog/show-modules",
+                  "sql/system-monitoring/system-catalog/show-devices"
+                ]
+              },
+              {
+                "group": "Dynamic System Data",
+                "pages": [
+                  "sql/system-monitoring/dynamic-system/dynamic-system",
+                  "sql/system-monitoring/dynamic-system/show-metric-description",
+                  "sql/system-monitoring/dynamic-system/show-database-metrics",
+                  "sql/system-monitoring/dynamic-system/show-module-metrics",
+                  "sql/system-monitoring/dynamic-system/show-device-metrics"
+                ]
+              },
+              {
+                "group": "System Management",
+                "pages": [
+                  {
+                    "group": "The SYSTEM command",
+                    "pages": [
+                      "sql/system-monitoring/system-management/system-command/synopsis",
+                      "sql/system-monitoring/system-management/system-command/description"
+                    ]
+                  },
+                  {
+                    "group": "SYSTEM SHUTDOWN",
+                    "pages": [
+                      "sql/system-monitoring/system-management/system-shutdown/synopsis",
+                      "sql/system-monitoring/system-management/system-shutdown/description",
+                      "sql/system-monitoring/system-management/system-shutdown/parameters"
+                    ]
+                  },
+                  {
+                    "group": "SHOW SYSTEM STATE",
+                    "pages": [
+                      "sql/system-monitoring/system-management/system-state/synopsis",
+                      "sql/system-monitoring/system-management/system-state/description",
+                      "sql/system-monitoring/system-management/system-state/parameters"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Appendices",
+            "pages": [
+              "sql/appendices/indentifiers-limitations",
+              "sql/appendices/database-limitations",
+              "sql/appendices/reserved-words"
+            ]
           }
         ]
       }
