@@ -11,10 +11,10 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Getting Started Guide",
         "groups": [
           {
-            "group": "Get Started Guides",
+            "group": "Get Started",
             "pages": [
               "introduction",
               "quickstart",
@@ -581,6 +581,32 @@
               "sql/appendices/indentifiers-limitations",
               "sql/appendices/database-limitations",
               "sql/appendices/reserved-words"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Creating Tables and Indexes - best practices",
+        "groups": [
+          {
+            "group": "Optimizing Performance",
+            "pages": [
+              {
+                "group": "Introduction",
+                "pages": [
+                  "table-index-best-practices/introduction/introduction",
+                  "table-index-best-practices/introduction/structure-regatta-cluster",
+                  "table-index-best-practices/introduction/data-distribution-table",
+                  "table-index-best-practices/introduction/data-distribution-index",
+                  "table-index-best-practices/introduction/sql-statement"
+                ]
+              },
+              "table-index-best-practices/distributing-tables",
+              "table-index-best-practices/distributing-indexes",
+              "table-index-best-practices/other-index",
+              "table-index-best-practices/other-limitations",
+              "table-index-best-practices/closing-remarks",
+              "table-index-best-practices/references"
             ]
           }
         ]
