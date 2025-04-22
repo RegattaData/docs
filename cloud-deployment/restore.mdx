@@ -1,3 +1,88 @@
 ---
 title: Restore
 ---
+
+If you already backed up your database, you may restore it to that point-in-time as follows.
+
+Go back to the clusters page by clicking the **Clusters** button on the Left-Hand-Side. Select **the 
+cluster you created.** 
+
+Now, run: 
+
+```SQL
+SELECT * FROM employees
+```
+
+You will see the content of the table:
+
+<Frame caption="Figure 25 employees table state">
+  <img src="/images/25.png" />
+</Frame>
+
+Let’s delete an entry. We will delete the employee with the lowest salary:
+
+```SQL
+DELETE FROM employees 
+WHERE employee_salary = (SELECT min(employee_salary) FROM employees)
+```
+
+Run the previous SELECT command again:
+
+```SQL
+SELECT * FROM employees
+```
+
+Now we will see that John Doe has left the company, or in other words, he does not appear in 
+the employee table anymore.
+
+<Frame caption="Figure 26 Delete an entry">
+  <img src="/images/26.png" />
+</Frame>
+
+Now let’s restore that table from the backup. Go back to the **Backup/Restore** page.
+
+<Frame caption="Figure 27 Selecting backup to restore from">
+  <img src="/images/27.png" />
+</Frame>
+
+Click on the cog next to the desired backup, select **Restore** and click on it.
+
+You will be redirected to the Restore screen.
+
+<Frame caption="Figure 28 Select restore parameters">
+  <img src="/images/28.png" />
+</Frame>
+
+In our example we will restore from **my-1st-cluster-backup** to the same cluster:
+**my-1st-regatta-cluster.** Since we have only one cluster and one backup, they are already 
+selected. If that is not the case, please select the cluster from which the backup was taken, the 
+name of the backup and the target cluster.
+
+Once we have done that, we will click **SAVE.** A pop window will ask us to confirm the restore 
+operation (Figure 29 Approve restore) – let’s do that by clicking **CONFIRM.**
+
+<Frame caption="Figure 29 Approve restore">
+  <img src="/images/29.png" />
+</Frame>
+
+A pop up message will appear briefly at the top of the page, notifying us that the restore 
+operation was initiated. The Platform will stop the cluster and restore the database to the selected point-in-time. As can be seen below (Figure 30 Database in restore), the cluster is in the 
+process of Restoring.
+
+<Frame caption="Figure 30 Database in restore">
+  <img src="/images/30.png" />
+</Frame>
+
+Let’s wait for the backup process to complete and the cluster is back in the **Running** state. 
+
+Perform 
+```SQL
+SELECT * FROM employees
+```
+
+We will see that John Doe is back in the company and in the table.
+
+
+<Frame caption="Figure 31 Deleted entry restored">
+  <img src="/images/31.png" />
+</Frame>

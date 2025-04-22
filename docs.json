@@ -9,9 +9,13 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "tabs": [
+    "versions": [
+      {
+        "version": "1.0",
+        "tabs": [
       {
         "tab": "Getting Started Guide",
+        
         "groups": [
           {
             "group": "Get Started",
@@ -25,11 +29,11 @@
             ]
           },
           {
-            "group": "Regatta Basics (V1.0)",
+            "group": "Regatta Basics",
             "pages": [
               {
                 "group": "Creating a Table",
-                "pages": ["regatta-basics/creating-a-table/create-a-table", "regatta-basics/creating-a-table/default-device-mapping", "regatta-platform/create-a-cluster"]
+                "pages": ["regatta-basics/creating-a-table/create-a-table", "regatta-basics/creating-a-table/default-device-mapping", "regatta-basics/creating-a-table/selected-device-mapping"]
               },
               "regatta-basics/Insert-Values",
               "regatta-basics/Select-Values-from-Table",
@@ -51,7 +55,7 @@
             ]
           },
           {
-            "group": "Linear Scaling (V1.0)",
+            "group": "Linear Scaling",
             "pages": [
               "linear-scaling/linear-scaling",
               {
@@ -117,7 +121,7 @@
         "tab": "On Prem Deployment Guide",
         "groups": [
           {
-            "group": "Self Hosted Deployments",
+            "group": "Scripted Solution",
             "pages": [
               "deployment-guide/prerequisites"
             ]
@@ -586,7 +590,7 @@
         "tab": "Creating Tables and Indexes - best practices",
         "groups": [
           {
-            "group": "Optimizing Performance (V1.0)",
+            "group": "Optimizing Performance",
             "pages": [
               {
                 "group": "Introduction",
@@ -612,7 +616,7 @@
         "tab": "On Prem Getting Started Guide",
         "groups": [
           {
-            "group": "Connecting to Regatta",
+            "group": "Drivers and Client",
             "pages": [
               "on-prem-getting-started-guide/connecting-to-regatta/connecting-to-regatta",
                   "on-prem-getting-started-guide/connecting-to-regatta/regatta-client",
@@ -634,6 +638,8 @@
           }
         ]
       }
+    ]
+      }
     ],
     "global": {
       "anchors": [
@@ -647,7 +653,7 @@
   },
   "logo": {
     "light": "/logo/Regatta_Logo_Colors_Black_RGB_1.svg",
-    "dark": "/logo/Regatta_Logo_Colors_Black_RGB_1.svg"
+    "dark": "/logo/Regatta_Logo_Colors_White_RGB_1.svg"
   },
   "navbar": {
     "links": [

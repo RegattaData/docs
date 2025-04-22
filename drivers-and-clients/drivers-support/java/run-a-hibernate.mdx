@@ -1,3 +1,85 @@
 ---
 title: Running a Hibernate based Application
 ---
+
+Below is a simple code example accessing a Regatta Database using Hibernate.
+
+```java
+package dev.regatta.hibernate_example;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+import org.hibernate.cfg.Configuration;
+import javax.persistence.*;
+import java.util.List;
+@Entity
+@Table(name = "employees")
+public class Employee {
+ @Id @Column(name = "employee_key") private int id;
+ @Column(name = "employee_name", nullable = false, length = 40)
+ private String name;
+ @Column(name = "employee_salary") private int salary;
+ @Column(name = "employee_department", nullable = false, length = 50)
+ private String department;
+ public int getId() { return id; }
+ public void setId(int id) { this.id = id; }
+ public String getName() { return name; }
+ public void setName(String name) { this.name = name; }
+ public int getSalary() { return salary; }
+ public void setSalary(int salary) { this.salary = salary; }
+ public String getDepartment() { return department; }
+ public void setDepartment(String department) {
+ this.department = department;
+ }
+}
+public class HibernateExample {
+ public static void main(String[] args) {
+ // Configure Hibernate
+ Session session = new Configuration()
+ .configure("hibernate.cfg.xml")
+ .addAnnotatedClass(Employee.class)
+ .buildSessionFactory()
+ .openSession();
+ Transaction transaction = null;
+ try {
+ // Start a transaction
+ transaction = session.beginTransaction();
+ // Create a list of employees
+ List<Employee> employees_inserted =
+ Arrays.asList(new Employee(1, "John Doe", 10932, "DevOps"),
+ new Employee(2, "Richard Roe", 18324, "Legal"),
+ new Employee(3, "Jane Roe", 20411, "SoftwareDev"),
+ new Employee(4, "Rachel Roe", 19555, "Support"));
+ // Persist each employee from the list
+ for (Employee employee : employees_inserted) {
+ session.persist(employee);
+ }
+ // Commit the transaction
+ transaction.commit();
+ // Fetch and display employees
+ List<Employee> employees_selected =
+ session.createQuery("from Employee", Employee.class).list();
+ for (Employee emp : employees_selected) {
+ System.out.println("Employee Key: " + emp.getId());
+ System.out.println("Employee Name: " + emp.getName());
+ System.out.println("Employee Salary: " + emp.getSalary());
+ System.out.println("Employee Department: " + emp.getDepartment());
+ System.out.println();
+ }
+ // Delete employees
+ transaction = session.beginTransaction();
+ for (Employee emp : employees_inserted) {
+ m_session.remove(emp);
+ }
+ transaction.commit();
+ } catch (Exception e) {
+ if (transaction != null) {
+ transaction.rollback();
+ }
+ e.printStackTrace();
+ } finally {
+ session.close();
+ }
+ }
+}
+```

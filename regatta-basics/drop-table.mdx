@@ -1,3 +1,39 @@
 ---
 title: Drop Table
 ---
+
+Now we will remove the table and get back to an empty database. First, let’s run:
+
+```SQL
+SHOW TABLES
+```
+
+This will present all the tables in the database:
+
+<Frame caption="Figure 32 Show tables before DROP">
+  <img src="/images/31.png" />
+</Frame>
+
+Now, perform the following SQL DROP command:
+
+```SQL
+DROP TABLE employees
+```
+
+And don’t forget to also drop the workers table”
+
+```SQL
+DROP TABLE workers
+```
+
+And then:
+
+```SQL
+SHOW TABLES
+```
+
+And indeed, there are no tables in the database.
+
+<Frame caption="Figure 33 DROP TABLE command">
+  <img src="/images/32.png" />
+</Frame>
