@@ -1,3 +1,104 @@
 ---
 title: Running a Java Application
 ---
+
+Once you installed the driver, you will need an IP of the cluster and a user’s credentials. You will 
+use them in the same manner as done with other databases.
+
+In the example below, there’s a code that performs some of the operations done in the Regatta 
+Platform section. Note that this example is also available as part of the downloaded driver.
+
+In the next step you will need to add the cluster IP and the user’s credentials. These can be 
+attained by following the described in the External Access to the Regatta Database chapter.
+
+```java
+host = "aaa.bbb.ccc.ddd:ppp"
+user = "MyUserName"
+password = "SomeSophisticatedPassword"
+```
+
+Then all the code that performs the different SQL commands should be changed accordingly.
+
+Below is an example of some of the code. Note that this example is also available as part of the 
+downloaded driver.
+
+```Java
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+public class DatabaseExample {
+ public static void main(String[] args) {
+ // Connection details
+ String url = "jdbc:regatta:aaa.bbb.ccc.ddd:ppp";
+ String user = "MyUserName";
+ String password = "SomeSophisticatedPassword";
+ try {
+ // Establish the connection to the database
+ try (Connection conn = DriverManager.getConnection(url, user, password)) {
+ 
+ // Create a statement to execute SQL queries
+ try (Statement stmt = conn.createStatement()) {
+ 
+ // Create table
+ String createTableSQL = "CREATE TABLE employees (
+ employee_key INT PRIMARY KEY INDEX WITH (devices = (m10d1)),
+ employee_name VARCHAR(40) NOT NULL,
+ employee_salary INT,
+ employee_department VARCHAR(50) NOT NULL
+ ) WITH (devices = (m10d1))";
+ stmt.executeUpdate(createTableSQL);
+ // Insert values
+ String insertValuesSQL = "INSERT INTO employees (
+ employee_key, 
+ employee_name, 
+ employee_salary, 
+ employee_department) 
+ VALUES (1,'John Doe', 10932, 'DevOps'), 
+ (2,'Richard Roe', 18324, 'Legal'),
+ (3,'Jane Roe', 20411, 'SoftwareDev'),
+ (4,'Rachel Roe', 19555, 'Support')";
+ stmt.executeUpdate(insertValuesSQL);
+ 
+ // Fetch data
+ String fetchSQL = "SELECT * FROM employees";
+ ResultSet rs = stmt.executeQuery(fetchSQL);
+ 
+ 
+ // Print the results
+ while (rs.next()) {
+ // Retrieve data from each row
+ int id = rs.getInt("employee_key");
+ String name = rs.getString("employee_name");
+ int salary = rs.getInt("employee_salary");
+ String department = rs.getString("employee_department");
+ // Print the data
+ System.out.println("Employee Key: " + id);
+ System.out.println("Employee Name: " + name);
+ System.out.println("Employee Salary: " + salary);
+ System.out.println(
+ "Employee Department: " + department);
+ System.out.println();
+ }
+ }
+ }
+ } catch (SQLException e) {
+ System.out.println("Database access error.");
+ e.printStackTrace();
+ }
+ }
+}
+```
+*Figure 48 JDBC example of application using driver*
+
+Unlike the Platform, in the commands used by the driver we need to specify the device mapping 
+when creating a table. In the example below we will use a single device.
+
+And so on. All commands performed in the Regatta Platform section can be performed in the 
+same manner using a Java application.
+
+<Frame caption="Figure 49 JDBC example output">
+  <img src="/images/46.png" />
+</Frame>
+

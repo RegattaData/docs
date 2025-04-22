@@ -1,3 +1,27 @@
----
-title: Comparing performance
----
+
+
+To compare the performance and observe the linear scaling, we will perform a query that will 
+require heavy processing. The following query calculates the number of items a customer 
+bought of his or her favorite item. We order it in an ASCENDING fashion based on the Customer 
+ID and display the first 5.
+
+Though at first glance it might look like a simple query, it involves reading and processing a large 
+amount of data.
+
+The query for the total number of items bought by a customer:
+
+```SQL
+SELECT 
+ c.Name,
+ c.Item,
+ COUNT(*) AS NumberOfItems
+FROM 
+ Customers c
+JOIN 
+ Purchases p ON c.CustomerID = p.CustomerID AND c.Item = p.Item
+GROUP BY 
+ c.Name, c.Item
+ORDER BY 
+ CustomerID ASC
+LIMIT 5;
+```

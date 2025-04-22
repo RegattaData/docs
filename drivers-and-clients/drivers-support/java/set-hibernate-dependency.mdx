@@ -1,3 +1,22 @@
 ---
 title: Setting Up Dependency
 ---
+
+Now you need to add the Regatta Hibernate Dialect to your `pom.xml`:
+
+```java
+<dependency>
+    <groupId>dev.regatta</groupId>
+    <artifactId>regatta-jdbc</artifactId>
+    <version>1.0.0</version>
+    <scope>system</scope>
+    <systemPath>path/to/regatta_jdbc.jar</systemPath>
+</dependency>
+<dependency>
+    <groupId>dev.regatta</groupId>
+    <artifactId>regatta-hibernate</artifactId>
+    <version>1.0.0</version>
+    <scope>system</scope>
+    <systemPath>path/to/regatta_hibernate_dialect.jar</systemPath>
+</dependency>
+```

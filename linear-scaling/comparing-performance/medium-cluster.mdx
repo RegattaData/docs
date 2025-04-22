@@ -1,3 +1,19 @@
 ---
 title: MEDIUM Cluster
 ---
+
+Let’s connect to our **demo-medium** cluster. Now perform the same query on the larger cluster. 
+This cluster has 10 nodes and should be around 10 times faster. Let’s run the query again 
+through the CLI.
+
+<Frame caption="Figure 43 Query duration for demo-medium.">
+  <img src="/images/42.png" />
+</Frame>
+
+As can be seen above, in the larger cluster it took 2253 msec (around 2.25 seconds). When 
+comparing with the previous duration of demo-xsmall of roughly 22.6 seconds we can see that 
+indeed the 10 times larger cluster executed that same query roughly 10 times faster.
+
+Please note that this is a complex JOIN requires processing a large amount of data. The 
+database must hold a very large amount of intermediate data comprised from all tables to 
+accomplish this task.
