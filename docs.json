@@ -35,9 +35,9 @@
                 "group": "Creating a Table",
                 "pages": ["regatta-basics/creating-a-table/create-a-table", "regatta-basics/creating-a-table/default-device-mapping", "regatta-basics/creating-a-table/selected-device-mapping"]
               },
-              "regatta-basics/insert-Values",
+              "regatta-basics/insert-values",
               "regatta-basics/select-values-from-table",
-              "regatta-basics/update-Entry",
+              "regatta-basics/update-entry",
               "regatta-basics/delete-entry-from-table",
               "regatta-basics/drop-table",
               "regatta-basics/credentials"
