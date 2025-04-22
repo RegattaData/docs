@@ -35,11 +35,11 @@
                 "group": "Creating a Table",
                 "pages": ["regatta-basics/creating-a-table/create-a-table", "regatta-basics/creating-a-table/default-device-mapping", "regatta-basics/creating-a-table/selected-device-mapping"]
               },
-              "regatta-basics/Insert-Values",
-              "regatta-basics/Select-Values-from-Table",
-              "regatta-basics/Update-Entry",
-              "regatta-basics/Delete-Entry-from-Table",
-              "regatta-basics/Drop-Table",
+              "regatta-basics/insert-Values",
+              "regatta-basics/select-values-from-table",
+              "regatta-basics/update-Entry",
+              "regatta-basics/delete-entry-from-table",
+              "regatta-basics/drop-table",
               "regatta-basics/credentials"
             ]
           },
