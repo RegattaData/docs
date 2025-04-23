@@ -50,7 +50,7 @@
                 "group": "Database Backup and Restore",
                 "pages": ["cloud-deployment/database-backup-restore", "cloud-deployment/backup", "cloud-deployment/restore"]
               },
-              "/cloud-deployment/Delete-Cluster",
+              "/cloud-deployment/delete-cluster",
               "/cloud-deployment/cluster-ip"
             ]
           },
@@ -193,10 +193,10 @@
         ]
       },
       {
-        "tab": "Regatta SQL Specification",
+        "tab": "SQL",
         "groups": [
           {
-            "group": "SQL Specification (V1.0)",
+            "group": "SQL Specification",
             "pages": ["/sql/specification"]
           },
           {

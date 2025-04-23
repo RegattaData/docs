@@ -1,3 +1,15 @@
 ---
 title: User Setup
 ---
+
+Regatta Cluster will require a dedicated user on each of the servers participating in the cluster. 
+The Regatta user must be defined as follows:
+
+1. Username: regatta 
+2. Permissions: device access permissions on the server 
+
+The RPMs supplied will create the Regatta user upon deployment. You will be required to 
+perform the chown command to grant the regatta user access permission to the nodes hard 
+drives.
+
+For example:
