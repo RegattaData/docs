@@ -1,3 +1,48 @@
 ---
 title: Starting the System
 ---
+
+Now you will need to start all the services. 
+
+Start with all the non-RDB modules, namely Sequencer, GDD, DCM, followed by the RDBs.
+
+For the RDBs, when deploying a Regatta database on more than a single node, the user is 
+required to create a **module configuration file** named **rdb.config** on each of the nodes that the 
+RDB module will be installed on. This file should reside in the same location of the 
+**cluster.config**, namely:
+
+```sql
+/opt/regatta/1.0/<module>/conf/rdb.config
+```
+
+The file should contain the id that was given to the module in the configuration file:
+
+```sql
+rdb=<module id
+```
+
+For example, if in the configuration file, the module id was defined as follows:
+
+```sql
+module_4_id=3
+```
+
+Then the rdb.config file should contain the following line:
+
+```sql
+rdb=3
+```
+
+To start the services, execute the following command: 
+
+```sql
+sudo systemctl start regatta-1.0-<module_name>.service
+```
+
+where module is one of the Regatta software modules.
+
+For example:
+
+```sql
+sudo systemctl start regatta-1.0-rdb.service
+```

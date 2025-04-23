@@ -1,3 +1,127 @@
 ---
 title: Configuration File Example
 ---
+
+Below is an example of a configuration file for a 3-node Regatta cluster. The proceeding 
+documentation will be based on this configuration as an actual example.
+
+```java
+# system parameters 
+# =================
+system_cluster_id = 521
+system_num_cpus = 8
+system_num_messages_in_queue = 8
+system_root_dir = /opt/regatta/1.0
+system_trace_prefix = logs
+system_genesis_mode = Genesis
+system_cluster_join_timeout_sec = 0
+# Node 1 parameters
+# =================
+node_1_id = 1
+node_1_name = node-1
+node_1_ip = 172.19.226.3
+node_1_port = 22
+module_1_id = 1
+module_1_parent_node_id = 1
+module_1_name = sequencer_1
+module_1_role = sequencer
+module_1_ip = 172.19.226.3
+module_1_port = 8841
+module_2_id = 2
+module_2_parent_node_id = 1
+module_2_name = gdd_2
+module_2_role = gdd
+module_2_ip = 172.19.226.3
+module_2_port = 8842
+module_3_id = 3
+module_3_parent_node_id = 1
+module_3_name = dcm_3
+module_3_role = dcm
+module_3_ip = 172.19.226.3
+module_3_port = 8843
+module_10_id = 10
+module_10_parent_node_id = 1
+module_10_name = rdb_10
+module_10_role = rdb
+module_10_ip = 172.19.226.3
+module_10_port = 8850
+dev_1_module_id = 10
+dev_1_name = m10d1
+dev_1_type = SCRATCH
+dev_1_local_number = 1
+dev_1_atomic_page_size = 4096
+dev_1_block_size = 4096
+dev_1_capacity = 3145727984
+dev_1_path = /dev/nvme0n1
+# Node 2 parameters
+# =================
+node_2_id = 2
+node_2_name = node-2
+node_2_ip = 172.19.226.2
+node_2_port = 22
+module_11_id = 11
+module_11_parent_node_id = 2
+module_11_name = rdb_11
+module_11_role = rdb
+module_11_ip = 172.19.226.2
+module_11_port = 8850
+dev_2_module_id = 11
+dev_2_name = m11d1
+dev_2_type = SCRATCH
+dev_2_local_number = 1
+dev_2_atomic_page_size = 4096
+dev_2_block_size = 4096
+dev_2_capacity = 3145727984
+dev_2_path = /dev/nvme0n1
+# Node 3 parameters
+# =================
+node_3_id = 3
+node_3_name = node-3
+node_3_ip = 172.19.226.4
+node_3_port = 22
+module_12_id = 12
+module_12_parent_node_id = 3
+module_12_name = rdb_12
+module_12_role = rdb
+module_12_ip = 172.19.226.4
+module_12_port = 8850
+dev_3_module_id = 12
+dev_3_name = m12d1
+dev_3_type = SCRATCH
+dev_3_local_number = 1
+dev_3_atomic_page_size = 4096
+dev_3_block_size = 4096
+dev_3_capacity = 3145727984
+dev_3_path = /dev/nvme0n1
+ 
+# Module specific parameters
+# ==========================
+core_total_ram_budget_for_module_mb = 29908
+ranger_dev_num=1
+core_pdbg_port=5004
+```
+
+You will need to update this configurations template file to reflect the desired configuration of 
+the Regatta Cluster. The cluster.template shows how the cluster configuration file should 
+look once updated. Once you are done editing and updating it, save it in the same directory 
+under the name cluster.config.
+
+This file is the same for all modules on all servers but for:
+
+- System Number of CPUs (system_num_cpus)
+and 
+- 3 bottom lines
+
+These are module specific parameters.
+
+The `cluster.template` file can be seen below in the Configuration Template File section. 
+
+The recommended way to handle this is to create the basic configuration file WITHOUT 
+updating the 4 module-specific lines. Copy it to all modules on all servers and then go one-by-one and update them accordingly.
+
+Once completed, don’t forget to save it in the same directory under the name `cluster.config`
+for all Regatta modules:
+
+```java
+/opt/regatta/1.0/<module>/conf/cluster.config
+```
