@@ -1,3 +1,27 @@
 ---
 title: Setup
 ---
+
+To run the script, we would also need a user on all servers. For this document, we will refer to 
+that user as the **deployment_user**. 
+
+The **deployment_user** will be used for 2 purposes:
+1. To run the deployment script from one of the servers
+2. To run local deployment on each of the servers
+
+The **deployment_user** should have sudo permissions. We would also require all servers to use 
+the same SSH keys to access them with the **deployment_user**.
+
+In addition, as part of the setup, the script requires the following packages on the deployment 
+server (where the script is executed):
+
+- **python3** - prerequisite for Ansible 
+- **sshpass** - allows for scripted ssh connection with password
+- **jq** – for parsing json files
+- **ansible** - provisioning automation tool used for the cluster setup itself
+
+These dependencies are installed automatically by the script. Please note that this requires an 
+internet connection or having the packages readily available on the server.
+
+Login to one of the servers that will participate in the cluster using the **deployment_user**, copy 
+the downloaded tar file to it, and open it.

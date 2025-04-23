@@ -1,3 +1,167 @@
 ---
 title: Setup
 ---
+
+Once you download the support tool, you will notice it has 2 files:
+
+1. `collect_data.py `– the main script that does the data collection
+
+2. `collect_data_configuration.json` which holds all the configuration 
+parameters 
+3. `my-company-sa.json` – A service account file to be used to upload the collected 
+data.
+
+### `collect_data_configuration.json`
+
+The configuration file looks as follows:
+
+```json 
+{
+ "regatta_deploy_dir": "/opt/regatta/1.0",
+ "regatta_logs_dir": "/var/log/regatta",
+ "file_ignore_list": ["cluster.template"],
+ "upload_bucket_name": "regatta-customers-uploads",
+ "upload_bucket_folder": "my-company",
+ "archive_output_dir": "/tmp",
+ "service_account_file": "my_company-sa.json",
+ "upload": false,
+ "delete_tar": false,
+ "tar_path": null,
+ "`folder_path`": null
+}
+```
+
+As can be seen, most parameters have default values. We will detail them later.
+
+The parameters in the json file will determine the way the data will be collected by the collect 
+data script. 
+
+As you can see, the first four parameters are separated from the rest. Their default values
+SHOULD NOT be changed if not approved by Regatta Support and should be regarded as 
+constants. Changing them may break the data collection.
+
+The rest may be configured by you when needed as we describe later. It’s recommended that
+you consult with Regatta Support prior to changing the default values on the impact that it might 
+have on the data collection to ensure that no data is lost.
+
+
+#### `regatta_deploy_dir`
+This is the location where the Regatta software was deployed in. In this example the default is:
+
+```json
+/opt/regatta/1.0. 
+```
+
+As you can see, it is based on the current version **(1.0)**. This is the location where data related to 
+the configuration of the regatta cluster will be collected from.
+
+#### `regatta_logs_dir`
+
+This is the location where the Regatta cluster stores its logs. The default is:
+
+```json
+/var/log/regatta
+```
+
+All available log files will be collected from there.
+
+
+#### `file_ignore_list`
+
+This list parameter allows you to filter out files that you wish would not be collected by the 
+script. It’s basically a list of patterns that are applied to remove any file that matches it. The 
+default value is:
+
+```json
+cluster.template
+```
+
+<Note> NOTE: Filtering out files without consulting with Regatta Support prior to doing so may hinder 
+the ability of support to analyze the data and understand the state of the system. </Note>
+
+#### `upload_bucket_name`
+
+This is the Regatta bucket where we hold the uploaded data. The default is:
+
+```json
+regatta-customers-uploads
+```
+
+This should not be changed unless coordinated with Regatta Support.
+
+
+#### `upload_bucket_folder`
+
+This is your dedicated personal folder in the Regatta bucket. The default value is:
+
+```json
+my-company
+```
+
+You should replace it with the folder name you received from Regatta Support.
+
+#### `archive_output_dir`
+
+This is the location where the script will create an archive of all the data collected on the server. 
+The default here is:
+
+```JSON
+/tmp
+```
+
+You can change that default to any preferred directory. Whether changed or left as-is, please 
+make sure that there is sufficient storage available there to hold the local logs. Note that the 
+files collected, in some cases, may be up to several GBs.
+
+#### `service_account_file`
+The service account file is the authentication file to the folder. The default is:
+
+```json
+my-company-sa.json
+```
+
+You will need to replace this with the name of the service account file you received from Regatta 
+Support.
+
+It is assumed that the file is located in the same place as the `collect_data.py` script. If you 
+decide to locate it elsewhere, please add the path to it as well.
+
+
+#### `upload`
+
+This flag indicates whether to upload the data or not. The default value is FALSE. In case you 
+have an internet connection accessible, and you would like the script to upload the collected 
+data for you, please change it to TRUE.
+
+<Note> Note that you can use the script later to upload the data that was collected and not uploaded 
+yet.</Note>
+
+#### `delete_tar`
+This flag indicates whether to delete the data after a successful upload. The default value is 
+FALSE.
+
+#### `tar_path`
+This parameter allows you to upload a tar that was generated but not uploaded as a result of the 
+flag upload being set to FALSE. The default of this flag is NULL. If it is set to a path, for example:
+
+```
+/tmp/my-tar
+```
+
+Then 2 things will happen:
+
+1. The script WILL NOT collect data as it is assumed that the data was collected and it’s in 
+the tar_path.
+Note that this path should contain a tar.zst file to be uploaded.
+2. The collect_data script will try to upload the data to the Regatta cloud storage 
+bucket.
+
+
+#### `folder_path`
+
+This parameter allows you to request uploading the data located in the `folder_path`. The 
+default value for it is NULL. If it is set to some path, it will collect the files from there instead of 
+the 2 predefined locations, i.e., `regatta_deploy_dir` and `regatta_logs_dir`. It will 
+apply the `file_ignore_list` filter on the data collected from the path defined in 
+`folder_path`.
+

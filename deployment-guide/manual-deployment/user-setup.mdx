@@ -13,3 +13,19 @@ perform the chown command to grant the regatta user access permission to the nod
 drives.
 
 For example:
+
+```javascript
+sudo chown regatta:regatta /dev/<device> # for example: /dev/nvme0n1
+```
+
+Should you like to create these users on all servers prior to the installation manually, you may do 
+so. In this case, the Regatta RPM would use the Regatta user created by you.
+
+To create a Regatta user with device access, please do as described below:
+
+For example:
+
+```javascript
+sudo useradd -m -d /home/regatta -s /bin/bash regatta
+sudo chown regatta:regatta /dev/<device> # for example: /dev/nvme0n1
+```
