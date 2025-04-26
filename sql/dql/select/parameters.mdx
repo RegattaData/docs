@@ -134,7 +134,7 @@ The `WHERE` clause can contain `ROWID`with = or `IN` operator as the exclusive f
 
 ### `GROUP BY`
 
-Group all the rows that share the same values for the grouped expressions into a single row. When `GROUP BY` is used, all other columns in the query `SELECT` list, that aren’t part of the `GROUP BY` section, should be aggregated with an aggregation function (see [Aggregate functions](#_page75_x36.00_y654.23)), producing a separate value for each group.
+Group all the rows that share the same values for the grouped expressions into a single row. When `GROUP BY` is used, all other columns in the query `SELECT` list, that aren’t part of the `GROUP BY` section, should be aggregated with an aggregation function (see [Aggregate functions](/sql/sql-functions-and-operators/aggregate-functions)), producing a separate value for each group.
 
 Note: There is no support for ungrouped columns which are functionally dependent on the grouped columns (such that the value of the grouped column uniquely determines the value of the ungrouped column). Every element in the select list must be either a grouped column (or more accurately – any expression which doesn’t contain ungrouped columns) or an aggregate function.
 
