@@ -1,3 +1,10 @@
 ---
 title: Description
 ---
+
+The `SELECT` command can be used as either a statement on its own, or as a clause within other statements (e.g: `INSERT AS SELECT`). The `SELECT` is often referred to as the query, while its output is often referred to as the result set.
+
+Note, when querying multiple data sources with ambiguous column names, the `table_name` or the alias must be used before each `column_name`.
+
+Note: Both implicit joins (`SELECT FROM A,B WHERE a.id=b.id`) and explicit joins (`SELECT FROM a JOIN b ON a.id=b.id`) are supported. More details below.
+

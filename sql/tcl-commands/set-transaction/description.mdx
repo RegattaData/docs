@@ -1,3 +1,7 @@
 ---
 title: Description
 ---
+
+The `SET TRANSACTION` command defines the characteristics of the current transaction. It has no effect on any subsequent transactions.
+
+Note that this command should be the first statement in the transaction (after `BEGIN/START TRANSACTION`). If this is not the case, an error is returned.

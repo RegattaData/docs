@@ -1,3 +1,21 @@
 ---
 title: Hint - Join distribution
 ---
+
+### Synopsis:
+
+`DISTRIBUTE JOIN ([ join_alias, ] number)`
+
+Define distribution level for the specific `JOIN` by using the keyword **DISTRIBUTE JOIN** followed by the objects to join and the requested distribution number of nodes to execute the join.
+
+Like all the other hints related to joins, this hint requires an explicit join with an alias. If no join is specified, the hint will affect all the joins in the statement.
+
+Specifying multiple hints with the same **join_alias** and different numbers is contradictory and is not allowed. Specifying multiple hints without **join_alias** and with different numbers is contradictory and is not allowed.
+
+### Example:
+
+```sql 
+SELECT /*++ DISTRIBUTE JOIN (dept_join, 2) */ s.name, o.id
+FROM (staff s JOIN org o ON s.deptno = o.deptno) as dept_join
+WHERE o.division = 'EASTERN';
+```

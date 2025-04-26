@@ -1,3 +1,10 @@
 ---
 title: Date/Time Operators
 ---
+
+| Operator | Description and Comments | Example |
+|:---------|:--------------------------|:--------|
+| DATE `+` INT `=>` DATE | Add a number of days to the given date | `date '2022-12-31' + integer '365'`<br/>\=> 2023-12-31 as DATE |
+| DATE `+` TIME `=>` TIMESTAMP | Add the time of the day to a given date | `date '2022-12-31' + time '01:00:00'`<br/>\=> 2022-12-31 01:00:00 as TIMESTAMP |
+| DATE `-` DATE `=>` INT | Return the number of days between two dates | `date '2022-12-12' - date '2022-01-31'`<br/>\=> 315 as INT |
+| DATE `-` INT `=>` DATE | Subtract days from a given date | `date '2022-12-12' - integer '4'`<br/>\=> 2022-12-08 as DATE |

@@ -1,3 +1,69 @@
 ---
 title: String Functions and Operators
 ---
+
+This following table describes the functions and operators for examining and manipulating string values (`CHAR` and `VARCHAR` data types). See [Character types](/sql/data-types/character-types).
+
+Except where noted, these functions and operators are declared to accept and return type `VARCHAR`. 
+
+Notes:
+
+1. Text comparison is case-sensitive (e.g: ‘Regatta’ `<>` ’REGATTA’ `<>` ‘regatta’ and 'A' < 'B' < 'a' < 'b').
+2. Values of type CHAR are converted to `VARCHAR` before the function or operator is applied, resulting in stripping any trailing spaces in the character value.
+
+| Function | Description and Comments | Example |
+|:---------|:--------------------------|:--------|
+| STRING `\|\|` STRING | Concatenate of two strings<br/>See also CONCAT()<br/>See notes. | `'This in an ' \|\| 'example'`<br/>\=> This in an example |
+| CONCAT(STRING [, STRING [, ...]]) | Concatenation of all the string arguments<br/>See notes. | `CONCAT('Hello', ' it', ' is me')`<br/>\=> Hello it is me |
+| LOWER(STRING) | Converts the string to all lowercase | `LOWER('Hello')`<br/>\=> hello |
+| UPPER(STRING) | Converts the string to all uppercase | `UPPER('Hello')`<br/>\=> HELLO |
+| POSITION(sub_string IN STRING) | Return the first starting index of the specified substring within the string, or zero if it's not present<br/>Returns an INT | `POSITION('o' IN 'Hello')`<br/>\=> 5 |
+| SUBSTRING(STRING start_int [, count_int] [FROM start_int] [FOR count_int]) | Extracts the substring of string starting at the start_int position if that is specified, and stopping after count_int characters if that is specified<br/>If start_int is not specified - default to 1. If count_int is not specified - default is until the end of the string<br/>If start_int is less than 1, the difference (1 - start_int) is subtracted from count_int and the result starts from position 1 | `SUBSTRING('123456789' FROM 4 FOR 4)`<br/>\=> 4567<br/><br/>`SUBSTRING('123456789' FOR 2)`<br/>\=> 12<br/><br/>`SUBSTRING('123456789' FROM 4)`<br/>\=> 456789<br/><br/>`SUBSTRING('123456789' FROM -1 FOR 4)`<br/>\=> 12 |
+| SUBSTRING(STRING start_int FOR count_int) `=>` exam | Alias of SUBSTRING | `SUBSTRING('My example', 3, 5)`<br/>\=> exam |
+| TRIM( [LEADING \| TRAILING \| BOTH] [trim_chars] FROM STRING) | Removes the trim_chars characters (a space by default) from the start or the end, or both sides of the string (BOTH is the default) | `TRIM(LEADING 'xx' FROM 'xxhello')`<br/>\=> hello<br/><br/>`TRIM(FROM ' hello ')`<br/>\=> hello (no spaces)<br/><br/>`TRIM(BOTH 'xyz' FROM 'xthis_is_mezy')`<br/>\=> this_is_me |
+| BTRIM(STRING [, trim_chars]) | Alias of TRIM with BOTH | `BTRIM('this_is_mez', 'xz')`<br/>\=> this_is_me |
+| LTRIM(STRING [, trim_chars]) | Alias of TRIM with LEADING | `LTRIM('xthis_is_mex', 'x')`<br/>\=> this_is_mex |
+| RTRIM(STRING [, trim_chars]) | Alias of TRIM with TRAILING | `RTRIM('xthis_is_mex', 'x')`<br/>\=> xthis_is_me |
+| LEFT(STRING, n_int) | Returns the first n_int characters in the string, or when n_int is negative, returns all but last n_int characters | `LEFT('This is me', 8)`<br/>\=> This is <br/><br/>`LEFT('This is me', -8)`<br/>\=> Th |
+| RIGHT(STRING, n_int) | Returns the last n_int characters in the string, or when n_int is negative, returns all but last n_int characters | `RIGHT('This is me', 8)`<br/>\=> is me<br/><br/>`RIGHT('This is me', -8)`<br/>\=> me |
+| LENGTH(STRING) | Returns the number of characters in the string<br/>Returns an INT<br/>See notes. | `LENGTH('This is me')`<br/>\=> 10 |
+| LPAD(STRING, length_int [, fill_string]) | Extends the string to length_int length by prepending the fill_string (a space by default)<br/>Returns an INT<br/>See notes. | `LPAD('Hello', 10, '-')`<br/>\=> \-----Hello<br/><br/>`LPAD('Hello', 10)`<br/>\=> \     Hello (5 spaces) |
+| RPAD(STRING, length_int [, fill_string]) | Extends the string to length_int length by appending the fill_string (a space by default)<br/>See notes. | `RPAD('Hello', 10, '-')`<br/>\=> Hello\----- |
+| REPEAT(STRING, n_int) | Repeats string the specified n_int times | `REPEAT('Hello', 3)`<br/>\=> Hello_Hello_Hello |
+| REPLACE(STRING, from_text, to_text) | Replaces all occurrences in string of substring from_text with substring to_text | `REPLACE('Hello this is me', 'me', 'you')`<br/>\=> Hello this is you |
+| REVERSE(STRING) | Reverses the order of the characters in the string | `REVERSE('Hello')`<br/>\=> olleH |
+| string [NOT] LIKE pattern [ESCAPE escape-char] | Matches (or not) string expressions by patterns. The match is case sensitive<br/>Returns BOOLEAN<br/>See notes. | `'This is me' LIKE 'This%'`<br/>\=> true<br/><br/>`'This is me' LIKE '%is%'`<br/>\=> true<br/><br/>`'20% discount' LIKE '20!%' ESCAPE '!'`<br/>\=> true |
+
+Notes:
+
+1. The string concatenation operator (||) accepts non-string input, so long as at least one input is of string type.
+
+   Using the operator with `NULL` as one of the operator inputs, returns NULL. For example:
+
+   `SELECT 'Hello' || NULL || ' this is me';`
+
+   Return: `NULL`
+
+2. `CONCAT():`
+   a. All values are implicitly converted to strings
+   b. `NULL` arguments are ignored.
+
+    For example:
+
+    `SELECT CONCAT('Hello', NULL, ' this is me');`
+
+    Return: Hello this is me
+
+3. `LPAD()` (`RPAD()`): If the string is already longer than the requested `length_int` then it is truncated on the right (left).
+
+4. `LIKE` and `NOT LIKE`:
+
+   a . String match is case sensitive
+
+   b . escape character should be a single character.
+
+   c. Possible patterns:
+
+                -  An underscore (_): stands for a single character
+                -  A percent sign (%) stands for sequence of zero or more characters
+                -  If the pattern does not contain percent signs (%) or underscores (_), then the [`NOT`] `LIKE` operator matches the full string.

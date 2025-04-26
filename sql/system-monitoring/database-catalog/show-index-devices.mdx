@@ -1,3 +1,28 @@
 ---
 title: SHOW INDEX DEVICES
 ---
+
+This view returns the list of devices per index in the database.
+
+Note that in this view, specifying the `IN`
+
+`INDEX` index_name is mandatory.
+
+The output is ordered by the `device_id` column.
+
+The following table lists the output’s columns:
+
+
+
+|Column name|Data type|Description|
+| :- | :- | :- |
+|DEVICE_ID|`VARCHAR(32)`|The unique device identifier. This is the filter column|
+|MODULE_ID|`INT`|The identifier of the module|
+|DEVICE_TOTAL_CAPACITY|`BIGINT`|Total size in bytes|
+
+For example:
+
+```sql
+SHOW INDEX DEVICES IN INDEX 'my_table_idx';
+```
+

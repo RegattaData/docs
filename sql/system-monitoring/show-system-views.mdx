@@ -1,3 +1,39 @@
 ---
 title: SHOW SYSTEM VIEWS
 ---
+
+This view has a single row for every system view and a short description of its content.
+
+The output is ordered by the `view_name` column.
+
+The following table lists the output’s columns:
+
+| Column name      | Data type    | Description                                                                 |
+| :--------------- | :----------- | :-------------------------------------------------------------------------- |
+| `VIEW_NAME`      | `VARCHAR(127)` | The system view name. A filter column.                                    |
+| `FILTER_COLUMN`  | `VARCHAR(127)` | The column by which clients can filter the view                             |
+| `IN_PARAM`       | `VARCHAR(20)`  | The object type by which the view can be filtered (`TABLE` \| `INDEX` \| `DEVICE` \| `NULL`) |
+| `ORDER_BY_COLUMNS` | `VARCHAR(127)` | The columns by which the view is ordered                                    |
+| `DESCRIPTION`    | `VARCHAR(1000)` | A short description on the view content                                     |
+
+The following table lists the available system views and their description:
+
+| view name            | filter column | IN_param | ordered by columns   | description                                           |
+| :------------------- | :------------ | :------- | :------------------- | :---------------------------------------------------- |
+| `show columns`       | `column_name` | `TABLE`  | `table_name,column_name` | show the columns of all the tables in the database   |
+| `show constraints`   | `table_name`  | `TABLE`  | `table_name`         | show all the constraints in the database              |
+| `show database metrics` | `metric_name` | `DEVICE` | `metric_name`        | shows all the database metrics and their values       |
+| `show device metrics`  | `metric_name` | `DEVICE` | `metric_name,device_id` | show all the devices metrics and their values         |
+| `show devices`       | `device_id`   | `null`   | `device_id`          | show all the devices of the database                  |
+| `show index devices` | `device_id`   | `INDEX`  | `device_id`          | show all the devices of a specific index              |
+| `show indexes`       | `index_name`  | `TABLE`  | `table_name,index_name` | show all the indexes in the database                  |
+| `show metric description` | `metric_name` | `null`   | `metric_name`        | show all the database metrics and their description |
+| `show module metrics`  | `metric_name` | `null`   | `metric_name,module_id` | show all the modules metrics and their values         |
+| `show modules`       | `Module_role` | `Null`   | `Module_role,node_name` | show all the modules in the cluster                   |
+| `show nodes`         | `node_name`   | `null`   | `node_name`          | show all the nodes in the cluster                     |
+| `show system views`  | `view_name`   | `null`   | `view_name`          | show this view                                        |
+| `show table devices` | `device_id`   | `TABLE`  | `device_id`          | show the devices of a specific table                  |
+| `show tables`        | `table_name`  | `null`   | `table_name`         | show all the tables in the database                    |
+| `show transactions`  | `null`        | `null`   | `start_time`         | show all the active transactions in the database       |
+| `show users`         | `user_name`   | `null`   | `user_name`          | show all the users in the database                      |
+

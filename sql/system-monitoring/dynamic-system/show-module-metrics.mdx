@@ -1,3 +1,20 @@
 ---
 title: SHOW MODULE METRICS
 ---
+
+This view returns all the metrics related to the module level meaning that it presents multiple rows per metric_id, according to the number of the RDB modules in the cluster.
+
+The output is ordered by the (`metric_name,module_id`) columns. Data can be filtered with the IN MODULE module_id parameter. 
+
+The following table lists the output’s columns:
+
+
+
+|Column name|Data type|Description|
+| :- | :- | :- |
+|METRIC_NAME|`VARCHAR(255)`|Unique short name for the metric. This is the filter column.|
+|METRIC_ID|`INT`|The unique metric identifier. Correlates to [SHOW METRIC DESCRIPTION](/sql/system-monitoring/dynamic-system/show-metric-description).|
+|MODULE_ID|`INT`|The identifier of the module|
+|VALUE|`INT`|Current value for the metric (rounded up)|
+|QUERY_TIMESTAMP|`TIMESTAMP`|Represent the query time. The output of `current_timestamp` function.|
+

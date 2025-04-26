@@ -1,3 +1,47 @@
 ---
 title: Examples
 ---
+
+#### Query on a table, filtering by a column that is not indexed:
+
+```SQL
+EXPLAIN SELECT name FROM employees WHERE num_rewards = 0;
++----+--------+------------------+-----------------------------------------+
+| id | parent | operation | information |
++----+--------+------------------+-----------------------------------------+
+| 1 | 0 | MULTI OP | |
+| 2 | 1 | FULL SCAN | on: employees |
+| 3 | 1 | FILTER | num_rewards = 0 |
++----+--------+------------------+-----------------------------------------+
+```
+
+The same query, when the column is indexed and the query planner chooses to use the index to determine
+which rows should be deleted:
+
+```sql
+EXPLAIN SELECT name FROM employees WHERE num_rewards = 0;
++----+--------+------------------+-----------------------------------------+
+| id | parent | operation | information |
++----+--------+------------------+-----------------------------------------+
+| 1 | 0 | PARTIAL SCAN | on: employees |
+| 2 | 1 | INDEX SCAN | using key: num_rewards |
+| 3 | 2 | VALUES SCAN | |
++----+--------+------------------+-----------------------------------------+
+```
+
+In processing the above query, the DB treats the expression in the WHERE clause as a list of values (one
+value in this case) that are looked up in the index.
+
+In the following query, it is treated as a boolean expression that generate a range scan, thus there is no values
+scan in the plan:
+
+```sql
+EXPLAIN SELECT name FROM employees WHERE num_rewards > 3;
++----+--------+------------------+-----------------------------------------+
+| id | parent | operation | information |
++----+--------+------------------+-----------------------------------------+
+| 1 | 0 | PARTIAL SCAN | on: employees |
+| 2 | 1 | INDEX SCAN | using key: num_rewards |
++----+--------+------------------+-----------------------------------------+
+```
+

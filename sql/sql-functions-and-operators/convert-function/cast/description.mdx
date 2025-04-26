@@ -1,3 +1,15 @@
 ---
 title: Description
 ---
+
+
+
+The `CAST` function or operator are used to explicitly convert a value into a specific data type. 
+
+#### Casting Notes:
+
+1. Casting `BOOLEAN`:
+2. Casting strings: Only valid strings (‘true’,’false’,’t’,’f’) can be casted (case insensitive).
+3. Casting numbers: Only `integral_types` can be converted. Note that all integers but 0 are converted to ‘true’. Zero is converted to ‘false’.
+4. When casting different string length without specifying the needed length, the result value is `VARCHAR(max)`.
+

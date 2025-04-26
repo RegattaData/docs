@@ -1,3 +1,19 @@
 ---
 title: SHOW DATABASE METRICS
 ---
+
+This view returns all the metrics related to the database, meaning that it presents the aggregated metrics for
+the whole cluster
+
+The output is ordered by the `metric_name` column.
+
+The following table lists the output’s columns:
+
+
+
+|Column name|Data type|Description|
+| :- | :- | :- |
+|METRIC_NAME|`VARCHAR(255)`|Unique short name for the metric. This is the filter column.|
+|METRIC_ID|`INT`|The unique metric identifier. Correlates to [SHOW METRIC DESCRIPTION](#_page94_x36.00_y123.64).|
+|VALUE|`INT`|Current value for the metric (rounded up)|
+|QUERY_TIMESTAMP|`TIMESTAMP`|Represent the query time. The output of `current_timestamp` function.|

@@ -1,3 +1,33 @@
 ---
 title: Examples
 ---
+
+#### Convert literal representing a DATE into `TIMESTAMP`:
+
+```sql
+SELECT CAST('2022-12-12' AS TIMESTAMP);
+```
+
+Returns: 2022-12-12 00:00:00. Note that the time was added.
+
+#### Convert literal representing an `INT` into `STRING`:
+
+```sql
+SELECT 234567::STRING;
+```
+
+Returns: ‘234567
+
+#### Convert literal representing `numeric_type` into `DECIMAL`:
+
+```sql
+SELECT CAST(10.4572 AS DECIMAL);
+```
+
+Returns: 10.4572
+
+#### Convert the column value `o_date` into `TIMESTAMP`:
+
+```sql
+SELECT CAST(o_date AS TIMESTAMP) FROM orders;
+```

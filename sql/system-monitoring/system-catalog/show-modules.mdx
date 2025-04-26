@@ -1,3 +1,20 @@
 ---
 title: SHOW MODULES
 ---
+
+Contains information about existing modules in the cluster.
+
+Note that several modules with the same role can exist in the cluster, in the same or different nodes.
+
+The output is ordered by the (`module_role, node_name`) columns.
+
+The following table lists the output’s columns:
+
+
+
+|Column name|Data type|Description|
+| :- | :- | :- |
+|MODULE_ROLE|`VARCHAR(50)`|The module role. This is the filter column. E.g: Sequencer, RDB.|
+|MODULE_ID|`INT`|The unique module identifier.|
+|NODE_NAME|`VARCHAR(8)`|The name of the node the module is running on|
+|MODULE_VERSION|`VARCHAR(20)`|The module version|

@@ -1,3 +1,40 @@
 ---
 title: Hint - Cardinality
 ---
+
+### Synopsis:
+
+`CARDINALITY (object_name, number)`
+
+A hint to specify the expected record set size in a specific operation.
+
+`OBJECT_NAME` can be:
+
+1. A specific table. Contains the expected number of rows in the table. For example:
+
+```sql
+SELECT /*++ CARDINALITY (o, 100) */ s.name, o.id
+FROM staff s JOIN org o
+ON s.deptno = o.deptno
+WHERE o.division = 'EASTERN';
+```
+
+Here the hint indicates that there are 100 rows in the org table (for the purpose of query optimization). It
+doesn’t say anything about how many of them have `division = ’EASTERN’.`
+
+2. An alias given to a sub-query result. Contains the expected results from it as if it was done **without push
+down/up**. The sub-query must be aliased, and the alias name passed as the argument of the hint.
+
+For example:
+
+```sql
+SELECT /*++ CARDINALITY (east_deptnumb, 10000) */
+s.name, east_deptnumb.id
+FROM staff s JOIN (SELECT o.deptno ,id
+FROM org o
+WHERE o.division = 'EASTERN'
+) AS east_deptnumb
+ON s.deptno = east_deptnumb.deptno;
+```
+
+Specifying multiple hints with the same **object_name** and different numbers is contradictory and is not allowed.

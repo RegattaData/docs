@@ -1,3 +1,12 @@
 ---
 title: Description
 ---
+
+The `DROP USER` command removes an existing user from the database.
+
+If there is currently a connection to the database by the given user it will be terminated and all running transactions aborted.
+
+Notes:
+
+- A user can remove itself.
+- The last user cannot be removed.

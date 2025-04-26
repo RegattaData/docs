@@ -1,3 +1,49 @@
 ---
 title: Mathematical Operators
 ---
+
+
+The following table shows the mathematical operators that are available for the standard numeric types. Unless noted otherwise, all the operators return the same data type as their argument(s).
+
+The right arrow (⇒ ) is used to indicate the result.
+
+| Operator | Description and Comments | Example |
+|:---------|:--------------------------|:--------|
+| numeric_type `+` numeric_type | Addition | `10 + 5`<br/>\=> 15 |
+| `+` numeric_type | Unary plus (no operation) | `+10.5`<br/>\=> 10.5 |
+| numeric_type `-` numeric_type | Subtraction | `10 - 5`<br/>\=> 5 |
+| `-` numeric_type | Negation | `-10`<br/>\=> (-10) |
+| numeric_type `*` numeric_type | Multiplication | `10 * 5`<br/>\=> 50 |
+| numeric_type `/` numeric_type | Division<br/>See also DIV(). See notes. | `5 / 2` \=> 2<br/>`6 / 2` \=> 3 |
+| numeric_type `%` numeric_type | Modulo<br/>See also MOD(). See notes. | `5 % 3`<br/>\=> 2 |
+| numeric_type `^` numeric_type | Exponentiation<br/>See also EXP(). See notes. | `2 ^ 3`<br/>\=> 8<br/>`2.0 ^ (3.0 * 3.0)`<br/>\=> 134217728.0 |
+| `\/` numeric_type | Square root | `\/ 9.0`<br/>\=> 3.0 |
+| `@` numeric_type | Absolute<br/>See also ABS() | `@ -66.7`<br/>\=> 66.7 |
+
+Notes:
+
+1. Division operator (/): Dividing `integral_types` returns the quotient of the integer division. To perform real numbers division, at least one of the operands should be non-integer.
+
+   For example: `SELECT 5/2;` 
+   
+   Result: 2
+
+   `SELECT 5/2::DECIMAL;`
+   
+   `SELECT 5.0/2;`
+
+   Result: 2.5000000000000000
+
+2. Exponentiation operator (^): By default, multiple uses of ^ are associated left to right. 
+   
+   For example:
+
+   `SELECT 2 ^ (3 ^ 3);`
+
+   Result: 134,217,728 
+   
+   `SELECT 2 ^ 3 ^ 3; `
+   
+   Result: 512
+
+3. Modulo operator(`%`): Arguments can be either `integral_type` (`INT`, `BIGINT`, `SMALLINT`) or `DECIMAL`. It cannot be floating-point numbers (`FLOAT` or `REAL`).

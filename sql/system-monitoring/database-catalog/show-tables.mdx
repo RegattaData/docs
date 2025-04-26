@@ -1,3 +1,22 @@
 ---
 title: SHOW TABLES
 ---
+
+This view has a single row for each table in the database.
+
+The output is ordered by the `table_name` column.
+
+The following table lists the output’s columns:
+
+## Output Columns
+
+| Column name | Data type | Description |
+| :--- | :--- | :--- |
+| TABLE_NAME | VARCHAR(127) | The table name. This is the view filter column. |
+| IS_READY | BOOLEAN | True if `READY`, False if `NOT READY` |
+| PRIMARY_KEY_COLUMN | VARCHAR(127) | The primary key column name. (NULL if the table has no primary key.) |
+| DEVICES | VARCHAR(1000) | List of devices on which the table is stored, separated by comma.<br/>Note: The output is trimmed after 1000 chars. To see the full number of devices see [SHOW TABLE DEVICES](/sql/system-monitoring/database-catalog/show-table-devices).<br/>Customers can identify that the value was trimmed by finding '...' as the last 3 chars of the value. |
+| TABLE_METADATA | VARCHAR | The `CREATE TABLE` command to use to recreate the table if needed with all its columns/constraint/indexes.<br/>This output should include the table indexes as well. The column output max size is limited by the [Max SQL statement length](/sql/appendices/database-limitations). |
+
+
+

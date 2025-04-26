@@ -1,3 +1,198 @@
 ---
 title: Parameters
 ---
+
+
+### `WITH clause`
+
+The `WITH` clause allows you to specify one or more subqueries that can be referenced by name in the primary query. A `WITH` query that is referenced more than once in `FROM` is computed only once. Each subquery should be a `SELECT` statement.
+
+### `ALL`
+
+Includes duplicate rows (if exist) in the result set. 
+
+This is the default.
+
+### `DISTINCT`
+
+Eliminates duplicate rows from the result set. 
+
+### `DISTINCT ON` **expression**
+
+Eliminates duplicate rows from the result set, where equality is determined by the specified expressions.
+
+E.g: `SELECT DISTINCT ON(c_gender) c_gender, c_name FROM customers`; to retrieve the first `c_name` and its `c_gender` per `c_gender` column.
+
+Note that the first row of each set is unpredictable unless `ORDER BY` is used to ensure that the desired row appears first.
+
+Notes:
+
+1. The `DISTINCT ON` can use multiple expressions (e.g. `DISTINCT ON (a,b,d)`).
+2. The `DISTINCT ON` can use columns that aren't projected (e.g. `SELECT DISTINCT ON(a) b,c`).
+
+
+### `expression`
+
+A scalar expression to retrieve in the query. Scalar expressions produce values suitable to store in a single table cell (one column of one row).
+
+The expression can either be a compound of:
+
+- Column name from the data source the query is reading. Column names can be specified as `table_name.column_name`, or just `column_name` if they are not ambiguous in multiple data sources in the queries.
+- Constant expressions such as literals (e.g: `SELECT` '`Hello`', `6*1.4`) representing a simple value that doesn't change.
+- Functions that can receive both columns and literals (e.g: `SELECT NOW()`, `UPPER(o_name)`, `0.20*o_totalprice`).
+- Aggregate functions that operate on a group of rows based on their value. See [Aggregate functions](/sql/sql-functions-and-operators/aggregate-functions).
+
+Or one of the following:
+
+- '`*`' to retrieve all columns in the query data sources (e.g: `SELECT * FROM orders`;)
+- '`ROWID`', to return the unique `ROWID` of each row within a specific table. Note that `ROWID` can be retrieved only when the FROM object is a single table, e.g., it cannot be retrieved as a result of a join. In addition, it cannot be retrieved as part of a subquery, and cannot be used in a compound expression (e.g. the expression `ROWID+5 or COUNT(ROWID)` is not allowed).
+
+Notes:
+
+
+1. expression must not be empty. Empty `SELECT` list (e.g: `SELECT FROM table_name`) is not allowed.
+2. Only one aggregated DISTINCT operation is allowed in the query selected fields, unless using the same aggregated input expression. This means that the following example: `SELECT AVG(DISTINCT a), AVG(DISTINCT b) FROM my\_table`; is not valid. While `SELECT AVG(DISTINCT sale_price)`, `STDDEV(DISTINCT sale_price) FROM transactions`; is valid.
+
+### `output_name`
+
+A substitute alias name for the expression/column name. The alias name should match the [Identifiers Limitations](/sql/appendices/indentifiers-limitations).
+
+<Note> Note: The column alias in the `SELECT` section can only be used in the `GROUP BY` / `ORDER BY` / nesting query if this is a subquery. In the `WHERE` and `HAVING` clauses the column should be specified with its origin name. </Note>
+
+### `FROM`
+
+Specifies one or more source tables for the `SELECT` to read from.The `FROM` can contain either table name, or subqueries.
+
+The default join type between the `FROM` sources depends on the join syntax:
+
+Explicit join: When `join_type` is specified, the specified `join_item`’s are joined by the specified `join_type` and by the specified `join_condition`. If the `join_type` is simply the keyword `JOIN`, `INNER JOIN` is used as the default join type (see below).
+
+Implicit join: If more than one source is specified in the FROM list without `join_type`, those sources will be joined by the matching join condition at the `WHERE` clause. If no such condition is specified, the join will be a `CROSS JOIN`.
+
+### `table_name`
+
+The name of the table to read. 
+
+### `alias`
+
+A substitute name for the `FROM` item containing the alias. When an alias is provided, it completely hides the previous name of the table;
+
+E.g: Given `FROM customer AS cust`, the remainder of the statement must refer to this `FROM` item as `cust`, and not as `customers`.
+
+If an alias is used, a column alias list can also be used to provide substitute names for one or more columns of the table. If the column alias list is given for less than the number of table columns, the aliasing is by the columns order: e.g. assuming the table `tab1` has the columns `a,b,c,` with aliasing the `FROM` section, we must now address the columns with the alias it was given. `SELECT x,b,c FROM tab1 AS t(x)`, we can now refer to columns `t.x,t.b,t.c` but `t.a` does not exist.
+
+All alias names should match the [Identifiers Limitations](/sql/appendices/indentifiers-limitations).
+
+
+### `select`
+
+A sub-SELECT can appear in the FROM clause. The sub-SELECT must be surrounded by parentheses, and it should be named with an alias.
+
+Note: Correlated subqueries are not supported. In other words, the sub-select must not use values from the outer query.
+
+### `join_type`
+
+One of the following:
+
+- `[ INNER ] JOIN`
+
+  Returns only the records that have matching values in both record-sets.
+
+- `LEFT [ OUTER ] JOIN`
+
+  Returns all the records from the left record-set and matching records between both record-sets.
+
+  Each left record-set record without a matching right record-set record is extended to the full width of the joined record-set by inserting NULL values for the right-hand columns.
+
+- `RIGHT [ OUTER ] JOIN`
+
+  Returns all the records from the right record-set and matching records between both record-sets.
+
+  Each right record-set record without a matching left record-set record is extended to the full width of the joined record-set by inserting NULL values for the left-hand columns.
+
+- `FULL [ OUTER ] JOIN`
+
+  Combines the result of the left outer join and right outer join.
+
+- `CROSS JOIN`
+
+  Generate a cartesian join by joining each record of one record-set with every record of the other record-set.
+
+### `ON` **join_condition**
+
+Relevant for explicit joins. An expression resulting in a boolean that specifies which rows in a join are considered to match. For all joins other than `CROSS JOIN`, the `ON` condition is mandatory.
+
+### `WHERE`
+
+Filter the result set by specific conditions. Only the rows that satisfy the conditions (evaluate to `TRUE`) are included in the result set.
+
+Rows for which the condition evaluates to 'unknown' (such as when comparing a number to `NULL`) are excluded from the result set.
+
+E.g: `SELECT FROM orders WHERE o_totalprice > 50`; and one of the rows has `NULL` as its `o_totalprice column`, the filter returns `UNKNOWN` on that row and it will not be returned by the query.
+
+The `WHERE` clause can contain `ROWID`with = or `IN` operator as the exclusive filter in the query. Note that the `IN` clause must contain a list of `ROWIDs` and not a subquery.
+
+### `GROUP BY`
+
+Group all the rows that share the same values for the grouped expressions into a single row. When `GROUP BY` is used, all other columns in the query `SELECT` list, that aren’t part of the `GROUP BY` section, should be aggregated with an aggregation function (see [Aggregate functions](#_page75_x36.00_y654.23)), producing a separate value for each group.
+
+Note: There is no support for ungrouped columns which are functionally dependent on the grouped columns (such that the value of the grouped column uniquely determines the value of the ungrouped column). Every element in the select list must be either a grouped column (or more accurately – any expression which doesn’t contain ungrouped columns) or an aggregate function.
+
+```sql
+For example, suppose a ‘city’ table has a ‘name’ column as primary key and a ‘province’ column; a
+‘resident’ table has a ‘lives_in’ column which references ‘city.name’. Now, we want to list the
+population of each city, along with its province. The following query would do that:
+SELECT city.province, city.name, COUNT(resident.lives_in) as population
+FROM city JOIN resident ON city.name = resident.lives_in GROUP BY
+city.name ORDER BY city.province, city.name;
+Although ‘city.province’ is functionally dependent on ‘city.name’, Regatta doesn’t support this query,
+and city.province must be added to the grouped-by columns set, as follows:
+SELECT city.province, city.name, COUNT(resident.lives_in) as population
+FROM city JOIN resident ON city.name = resident.lives_in GROUP BY
+city.name, city.province ORDER BY city.province, city.name;
+```
+
+```
+This doesn’t change the result of the query
+```
+
+If an aggregation exists without the `GROUP BY` expression, then the query is treated as having a single group comprising all the selected rows (e.g: `SELECT SUM(a) FROM..`).
+
+The `GROUP BY` clause can either contain the columns/expressions as they were written in the `SELECT` list, or their position in the `SELECT` list (1,2, etc).
+
+e.g: `SELECT o_name, COUNT(*) FROM orders GROUP BY 1`;
+
+### `HAVING`
+
+The `HAVING` clause is used as a filter on top of the `GROUP BY `results. It eliminates grouped rows that do not satisfy its condition.
+
+
+### `UNION` `[ ALL | DISTINCT ]`
+
+`UNION` combines the result from two SELECT statements into a single result set, after omitting duplicate rows. When used with the keyword ALL, duplicate rows aren’t removed (hence, `UNION ALL` is a faster operation).
+
+`UNION DISTINCT` is the default mode, and it will eliminate duplicate records.
+
+Note that combining two result sets with `UNION` or `UNION ALL` doesn’t guarantee maintaining each result set order. If the `UNION [ALL]` output needs to be ordered, use subqueries (see in the examples below).
+
+The different query blocks must produce the same number of columns, and their results should have matching data types (identical types or compatible types that can be implicitly converted).
+
+### `ORDER BY`
+
+Returns the result set sorted by a specified order of the expressions in the `ORDER BY` clause. Each expression order can be `ASC` (default) or `DESC`.
+
+Optionally you can decide where to locate the NULL values. If `NULLS LAST` is specified, NULL values sort after all non-NULL values; if `NULLS FIRST` is specified, NULL values sort before all non-NULL values.
+
+By default, `NULLS LAST` is used for ASC order and `NULLS FIRST` is used for DESC order. Note that order of character strings is case sensitive.
+
+### `LIMIT { count | ALL }`
+
+The `LIMIT` clause restricts the number of rows that are included in the result set by the specified count.
+
+**count** must be a constant expression containing only literal values. When ALL is specified, all the rows of the result set are returned.
+
+### `OFFSET start`
+
+The `OFFSET` clause specifies the number of rows to skip before starting to return rows. **start** must be a constant expression containing only literal values. When used with `LIMIT`, the `OFFSET` **start** rows are skipped before starting to count the `LIMIT` count rows to be returned.
+
+

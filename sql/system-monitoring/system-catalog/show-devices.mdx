@@ -1,3 +1,19 @@
 ---
 title: SHOW DEVICES
 ---
+
+This view returns a row for every device in the cluster.
+
+The output is ordered by the `device_id` column.
+
+The following table lists the output’s columns:
+
+
+
+|Column name|Data type|Description|
+| :- | :- | :- |
+|DEVICE_ID|`VARCHAR(32)`|The device unique identifier for the device. This is the filter column.|
+|MODULE_ID|`INT`|The module the device is attached to|
+|CAPACITY|`BIGINT`|Total device capacity in bytes|
+|TYPE|`VARCHAR(100)`|The device type|
+

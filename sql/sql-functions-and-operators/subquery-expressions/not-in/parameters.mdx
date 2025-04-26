@@ -1,3 +1,14 @@
 ---
 title: Parameters
 ---
+
+
+### `expression`
+
+A column_name or an expression to be compared with the subquery. The subquery (in the right-hand side in the parenthesized) must return exactly one column.
+
+### `row_constructor`
+
+A composite value that builds a row value. The subquery (in the right-hand side in the parenthesized) must return the exact same number of columns.
+
+The constructed row columns order should match the subquery columns data types.

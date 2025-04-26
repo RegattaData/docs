@@ -1,3 +1,10 @@
 ---
 title: Approximate numeric data type
 ---
+
+|Data type|Alias|Size|Range|
+| :- | :- | :- | :- |
+|`REAL`|`FLOAT4`|4 bytes|6 decimal digits precision|
+|`DOUBLE PRECISION`|`DOUBLE`, <br></br> `FLOAT8`, <br></br> `FLOAT [(p)]`|8 bytes|15 decimal digits precision|
+
+You can choose to use the data type `FLOAT(p)`. When it is being used, the optional `p` specifies the minimum acceptable precision in binary digits and it can range between 1 to 53. `FLOAT(1)` to `FLOAT(24)` as selecting the `REAL` type, while `FLOAT(25)` to `FLOAT(53)` select `DOUBLE PRECISION`. A value of `p` outside the allowed range results in an error. The default value is 53 (maximum precision).

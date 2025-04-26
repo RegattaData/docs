@@ -1,3 +1,137 @@
 ---
 title: Examples
 ---
+
+#### Retrieve specific columns:
+
+```sql
+SELECT o_order_id, o_date FROM orders;
+```
+
+#### Retrieve the ROWID of all the rows that match the filter:
+
+```sql
+SELECT ROWID FROM orders WHERE o_name='product0015612';
+```
+
+#### Retrieve all columns by multiple filters:
+
+```sql
+SELECT * FROM orders
+WHERE (o_date > '2022-12-12' AND o_name like 'product001%')
+OR o_totalprice > 9000 ;
+```
+
+Return all the rows and columns of table `orders` if they answer one of the following conditions:
+
+Either there `o_date` is higher than ‘2022-12-12’ and their `o_name` starts with ‘product001’
+
+Or if their `o_totalprice` is greater than 9,000.
+
+#### Use `DISTINCT ON`:
+
+```sql
+SELECT DISTINCT ON(o_date) o_name,o_date FROM orders;
+```
+
+Return a single row for each distinct `o_date`.
+
+#### Retrieve rows based on a `GROUP BY`:
+
+```sql
+SELECT o_date, sum(o_totalprice), count(o_order_id)
+FROM orders
+GROUP BY o_date
+ORDER BY o_date;
+```
+
+Returns the count of `o_order_id` and their total `o_totalprice` grouped by a specific `o_date`, ordered by
+the `o_date` value (ascending order).
+
+#### Retrieve rows based on a `GROUP BY` and `HAVING`:
+
+```sql
+SELECT o_date, sum(o_totalprice ), count(o_order_id)
+FROM orders
+GROUP BY o_date
+HAVING sum(o_totalprice) > 45000
+ORDER BY o_date;
+```
+
+Same example as the previous, with an extra filter: return only the rows that their total
+`sum(o_totalprice)`is greater than 45,000.
+
+#### Retrieve sorted rows based on a `UNION` output:
+
+```sql
+SELECT o_date, c_name
+FROM
+(SELECT o_date, c_name
+FROM old_orders JOIN customers ON o_custkey=c_custkey
+WHERE o_date>'2020-1-1'
+UNION
+SELECT o_date, c_name
+FROM orders JOIN customers ON o_custkey=c_custkey
+) AS MY_UNION
+ORDER BY o_date;
+```
+
+Combine the results and remove duplicates (`UNION`) from the two queries within a subquery, and return the
+results ordered by the o_date column.
+
+#### Retrieve with `LIMIT` and `OFFSET`:
+
+```sql
+SELECT * FROM customers
+ORDER BY c_custkey DESC
+OFFSET 2 LIMIT 2;
+```
+
+Given 10 rows in the table with the c_custkey of 1-10 (1,2,3,..10), the following query results with the rows of
+c_custkey 8 and c_custkey 7.
+
+#### Retrieve rows using both `UNION` and `JOIN`:
+
+```sql 
+SELECT all_orders.o_date, c_name
+FROM
+(SELECT o_date,o_custkey FROM orders
+UNION
+SELECT o_date, o_custkey FROM old_orders
+) as all_orders JOIN customers ON all_orders.o_custkey = c_custkey;
+```
+
+Join the output of the unioned `orders` and `old_orders` with `customers`.
+
+
+#### Retrieve rows using `LEFT OUTER JOIN`:
+
+```sql
+SELECT COUNT(o_order_id), c_name as customer
+FROM customers LEFT OUTER JOIN orders on c_custkey = o_custkey
+AND o_name not like '%%special%%requests%%'
+GROUP BY 2
+ORDER BY 1 DESC , 2 DESC;
+```
+
+Left outer join the table `customers` with `orders` so that for every `c_name `it returns the count of
+`o_order_id` (or NULL if no rows match on the `orders` table).
+
+Rows on the table `orders` are being filtered as `not like` '`%%special%%requests%%`'.
+
+Return the results ordered by the count aggregation in a DESC order, and then by the `c_name` column with
+the alias `customer`.
+
+#### Retrieving rows using aliases:
+
+```sql
+SELECT SUM(o_totalprice), o_name order_name, o_date current_order_date
+FROM orders ,
+(SELECT o_date as old_orders_date FROM old_orders) as old_orders
+WHERE o_date > old_orders_date
+GROUP BY order_name , current_order_date;
+```
+
+Note that the `o_date` column in the `WHERE` clause had to be used in its original column name (unlike the
+`current_order_date` alias) because the `WHERE` clause has to receive the columns in their original names
+(filters can be parsed before the alias is assigned)

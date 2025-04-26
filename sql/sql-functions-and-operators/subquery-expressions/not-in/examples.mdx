@@ -1,3 +1,29 @@
 ---
 title: Examples
 ---
+
+#### Return the rows that their column value is included in the subquery:
+
+```sql
+SELECT * FROM customers
+WHERE c_custkey IN (SELECT o_custkey FROM orders
+WHERE o_date>'2022-12-12');
+```
+
+#### Return the rows that their expression is not included in the subquery values:
+
+```sql
+SELECT * FROM orders
+WHERE o_date NOT IN ('2022-12-12','2022-11-12');
+```
+
+#### Return the rows based on a row constructor:
+
+```sql
+SELECT *
+FROM orders
+WHERE (o_totalprice,o_name) IN
+                            (SELECT MAX(o_totalprice),o_name
+                            FROM orders GROUP BY o_name
+);
+```
