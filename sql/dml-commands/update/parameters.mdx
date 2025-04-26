@@ -21,7 +21,7 @@ The new value to replace the existing value per column.
 ### `DEFAULT`
 Set the new column value to the column default value as set for the column in the table definition.
 
-### sub-SELECT
+### `sub-SELECT`
 
 Subquery that returns exactly one row. The subquery returned columns should match the `SET` clause
 columns and their data types.
@@ -33,9 +33,10 @@ to NULL.</Note>
 A filter to decide which rows in the table to update. If no condition is set, all the rows in the table are
 updated.
 
-The `WHERE` clause can contain the rows `ROWID` with ‘=’ or `‘IN` (<`list of literals`>)’
+The `WHERE` clause can contain the rows `ROWID` with ‘=’ or `‘IN` (`<`list of literals`>`)’
 condition.
 
-### RETURNING output_expression
+### `RETURNING output_expression`
 Returns the given expression for every row modified by the command. Refer to the `expression`
 parameter of [SELECT](/sql/dql/select/parameters) for specification of the **output_expression** parameter.
+
