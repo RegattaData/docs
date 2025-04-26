@@ -1,3 +1,19 @@
 ---
 title: How a SQL statement executes
 ---
+
+This section will take the briefest of looks at a range query to give a quick understanding of what is going on under the hood.  The purpose is to give an understanding of the effect of distribution.
+
+Say there is a `person` table with a string column name and an integer column age, with a non-unique index on age.  Suppose that the table has row segments on devices 1 through 5, and that the index has range separators (20, 40, 55, 70), with index segments on devices 6 through 10.  This means that the index segment on device 6 indexes all the ages from 0 (technically, from the negative infinity value of the integral type) up to 19, the index segment on device 7 indexes all the ages from 20 to 39 and so on.  The last segment starts at 70 and continues up to the positive infinity value.
+
+Consider the execution of the following query: 
+
+```sql
+SELECT name FROM person WHERE age BETWEEN 30 AND 49;
+```
+
+The range [30, 49] overlaps with only 2 sub-ranges, those of the index segments on devices 7 and 8.  A range scan would be performed on only those 2 index segments.  Index scans execute in parallel on all the involved index segments.  The range scan would retrieve the row identifiers of rows in its range and each row identifier would be sent to the relevant data segment.  In each data segment, further operators would retrieve the rows and project the result onto the requested field, which would then be sent back to the client.
+
+Only 2 index segments handled the query.  If the range separators had been, say, (…, 30, 35, 40, 45, 50, …), then the query would have been handled in parallel by 4 index segments.  The index scan part of the query could run up to twice as fast.
+
+In addition, the more data segments, the more parallelism is applied in the data retrieval phase.

@@ -1,3 +1,11 @@
 ---
 title: The data distribution of a table
 ---
+
+The rows of a table are stored on devices in structures called data segments.  A data segment resides on a specific device and contains a subset of the table’s rows.  It is the basic unit of table storage and has dynamic, variable size.
+
+When Regatta runs an operation on the rows of a table, it sends an operator to the relevant data segments of that table.  This makes the number of data segments pivotal in the overall parallelism that the operations will achieve across the cluster.
+
+On insert, new rows are distributed approximately evenly between all the data segments of a table, keeping them all roughly the same size.  When a row is updated, the update takes place in the data segment that contains the row.
+
+In addition to running big queries and inserts in a distributed and parallel manner across the data segments of a table, Regatta also applies parallel processing of transactions on each data segment.  As the number of rows in a data segment increases, Regatta increases the parallelism of operators that operate on that data segment.  The per-segment throughput reaches its maximum when a data segment reaches 10s of millions of rows. 
