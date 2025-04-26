@@ -2,3 +2,22 @@
 title: SHOW INDEX
 ---
 
+This view has a single row for each index in the database. The output is ordered by the
+(`table_name,index_name`) columns.
+
+Data can be filtered with `IN TABLE` table_name syntax.
+
+Note, this view contains both indexes created explicitly by the user and indexes created implicitly for `PRIMARY
+KEY` and `UNIQUE` and `REFERENCES` constraints.
+
+The following table lists the output’s columns:
+
+| Column name | Data type | Description |
+| --- | --- | --- |
+| TABLE_NAME | VARCHAR(127) | The table name |
+| INDEX_NAME | VARCHAR(127) | The index name. This is the filter column. |
+| IS_UNIQUE | BOOLEAN | True if the index is unique. False if not. |
+| COLUMN_NAME | VARCHAR(127) | The index column name |
+| DEVICES | VARCHAR(1000) | List of devices on which the index is stored, separated by comma.<br/>Note: The output is trimmed after 1000 chars. To see the full list of devices use [SHOW INDEX DEVICES](/sql/system-monitoring/database-catalog/show-index-devices). |
+| RANGE_SEPARATORS | VARCHAR | Separators of the key ranges of the segments, if any.<br/>The column output max size is limited by the [Max SQL statement length](/sql/appendices/database-limitations). |
+

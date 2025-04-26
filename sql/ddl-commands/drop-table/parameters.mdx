@@ -1,3 +1,11 @@
 ---
 title: Parameters
 ---
+
+### `table_name`
+The name of the table to be dropped.
+
+### `RESTRICT`
+Return an error if any column in the table to be dropped is referenced by another table’s column
+(foreign key).
+This is the default behavior, kept for compatibility with PostgreSQL.

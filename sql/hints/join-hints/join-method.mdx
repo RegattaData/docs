@@ -1,3 +1,23 @@
 ---
 title: Hint - Join method
 ---
+
+
+### Synopsis:
+
+`JOIN METHOD ( [ joint_alias, ] { HASH | NL } )`
+
+This hint instructs the system which method to use for performing the join operation - either hash-join or nested loop. This hint is honored as long as it’s possible – some joins cannot be done using certain methods, and in those cases the hint won’t be applied.
+
+The **join_alias** parameter is optional. If it’s absent, the hint applies to all the joins in the statement (including explicit and implicit joins). Also, if there is a `JOIN METHOD` hint without alias, any other `JOIN METHOD` hint is contradictory and results in ignoring all the hints.
+
+Specifying multiple hints with different methods for the same alias is contradictory and is not allowed. 
+
+
+### Example:
+
+```sql
+SELECT /*++ JOIN METHOD (dept_join, HASH) */ s.name, o.id
+FROM (staff s JOIN org o ON s.deptno = o.deptno) as dept_join
+WHERE o.division = 'EASTERN';
+```

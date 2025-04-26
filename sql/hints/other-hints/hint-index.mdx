@@ -1,3 +1,29 @@
 ---
 title: Hint - INDEX
 ---
+
+### Synopsis:
+
+`INDEX (table_name, { COLUMN column_name | ALL | NONE } )`
+
+This hint affects the use of indexes to evaluate a query. A hint comment can contain one or more INDEX hints per table with column name, or a single INDEX hint for a table with either ALL or NONE.
+
+If `INDEX` hint(s) with **column_name** exist, those columns’ indexes are used where applicable, and no other indexes of the pertinent table are used.
+
+If an `INDEX` hint with ALL exists for a table, all the indexes of the table are used where applicable.
+
+If an `INDEX` hint with `NONE` exists for a table, none of the table’s indexes is used to evaluate the query.
+
+A combination of **column_name** and `ALL` for the same table is redundant but valid, a combination of `NONE` and any other `INDEX` hint for the same table is contradictory and results in ignoring the hints.
+
+<Note>*Note: ‘ALL’ is in fact redundant because the current implementation always uses all the indexes it can (given there is no hint telling otherwise). But it’s added here for completeness, and in case the behavior may change at some point to be more dynamically-optimized.*</Note>
+
+### Example:
+
+```sql
+SELECT /*++ INDEX(o, COLUMN deptno), INDEX(s, ALL) */
+s.name, o.id
+FROM staff s JOIN org o
+ON s.deptno = o.deptno
+WHERE o.division = 'EASTERN';
+```

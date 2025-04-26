@@ -1,3 +1,22 @@
 ---
 title: SHOW DEVICE METRICS
 ---
+
+This view returns the current metrics of the cluster devices.
+
+Ordered by the (`metric_name,device_id`) columns.
+
+Data can be filtered with the `IN DEVICE `device_id parameter.
+
+The following table lists the output’s columns:
+
+
+|Column name|Data type|Description|
+| :- | :- | :- |
+|METRIC_NAME|`VARCHAR(255)`|Unique short name for the metric. This is the filter column.|
+|METRIC_ID|`INT`|The unique metric identifier. Correlates to [SHOW METRIC DESCRIPTION](/sql/system-monitoring/dynamic-system/show-metric-description).|
+|MODULE_ID|`INT`|The identifier of the module|
+|DEVICE_ID|`VARCHAR(32)`|The unique device identifier.|
+|VALUE|`INT`|Current value for the metric (rounded up)|
+|QUERY_TIMESTAMP|`TIMESTAMP`|Represent the query time. The output of `current_timestamp` function.|
+

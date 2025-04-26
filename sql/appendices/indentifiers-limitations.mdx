@@ -1,3 +1,16 @@
 ---
 title: Identifiers Limitations 
 ---
+
+Identifiers should adhere to the following restrictions:
+
+1. All identifiers except for user name and index name should be between 1 and up to 127 characters long.
+2. User names should be between 1 and up to 64 characters long.
+3. Index names should be between 1 and up to 264 characters long.
+4. Begin with a letter (a-z or A-Z) or an underscore (_).
+5. Subsequent characters can be letters, underscores, digits (0-9), or dollar signs ($).
+6. Unsupported characters or reserved words are permitted only if they are surrounded by double quotes. An exception to that rule is that a reserved word can be used as a user_name (because user names are not used as part of SQL statements).
+7. Names are case-sensitive. However, unquoted names are always converted to lowercase, and quoted names preserve the case and also allow spaces within the names.
+
+   For example: CAMEL, Camel, camel and "camel" all refer to the same name (camel). On the other hand, "CAMEL", "Camel" and "camel" refer to three different names.
+

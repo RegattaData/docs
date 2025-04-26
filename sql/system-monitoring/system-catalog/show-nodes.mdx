@@ -1,3 +1,23 @@
 ---
 title: SHOW NODES
 ---
+
+Contains information about the nodes which participate in the cluster.
+
+The output is ordered by the `node_name` column.
+
+The following table lists the output’s columns:
+
+
+
+
+|Column name|Data type|Description|
+| :- | :- | :- |
+|NODE_NAME|`VARCHAR(8)`|The identifier of the node. This is the filter column.|
+|RAM_SIZE|`BIGINT`|The memory size in bytes|
+|NUMBER_OF_CPUS|`INT`|The number of logical CPU in the node|
+|CPU_TYPE|`VARCHAR(20)`|The CPU type|
+|CPU_MODEL|`VARCHAR(20)`|The CPU model|
+|IP_ADDRESS|`VARCHAR(200)`|Node’s IP (list of IPs separated by comma if there are more than 1).|
+
+

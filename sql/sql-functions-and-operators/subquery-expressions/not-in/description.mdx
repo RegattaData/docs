@@ -1,3 +1,8 @@
 ---
 title: Description
 ---
+
+
+The left-hand expression or `row_constructor` are evaluated and compared to each row of the subquery result.
+
+The result of `IN` is “true” if any equal subquery row is found. The result is “false” if no equal row is found. Vice versa, the result of `NOT IN` is “false” if any equal subquery row is found. The result is “true” if no equal row is found. Those two cases include the case where the subquery returns no rows.

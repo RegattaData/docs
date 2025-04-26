@@ -1,3 +1,36 @@
 ---
 title: Synopsis
 ---
+
+The following 2 syntaxes are supported:
+
+```sql
+CASE WHEN condition THEN result
+[WHEN ...]
+[ELSE result]
+END
+```
+
+Or
+
+```sql
+CASE expression
+WHEN value THEN result
+[WHEN ...]
+[ELSE result]
+END
+```
+
+
+In the upper syntax:
+
+Each condition is an expression that returns a boolean result. If the condition result is true, then the value of the `CASE` expression is the result that follows the condition, and the remainder of the `CASE` expression is not processed. If the condition result is false, then any subsequent `WHEN` clauses are examined in the same manner. If no `WHEN` condition result is true, the value of the `CASE` expression is the result of the `ELSE` clause. If the `ELSE` clause is omitted and no condition is true, the result is NULL.
+
+In the lower syntax:
+
+The first expression is computed, then compared to each of the value expressions in the `WHEN` clauses until one is found that is equal to it. If no value matches the expression, the result of the `ELSE` clause is returned. If the `ELSE` clause is omitted and no condition is true, the result is NULL.
+
+The data types of input expression and each value must be the same or compatible data type that can be implicitly converted. See [Type Conversion](/sql/data-types/type-conversion).
+
+The `CASE()` can be used in all the statements and their clauses that allow a valid expression. This includes the clauses: s`elect_list`, `IN`, `WHERE`, `ORDER BY`, and `HAVING`.
+

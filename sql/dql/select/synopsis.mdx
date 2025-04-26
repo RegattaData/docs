@@ -1,3 +1,25 @@
 ---
 title: Synopsis
 ---
+
+```sql
+[ WITH with_query [, ...] ]
+SELECT [ ALL | DISTINCT [ ON ( expression [, ...] ) ] ]
+[ ROWID | * | expression [ [ AS ] output_name ] [, ...] ]
+[ FROM from_item [, ...] ]
+[ WHERE condition ]
+[ GROUP BY grouping_element [, ...] ]
+[ HAVING condition ]
+[ UNION [ ALL | DISTINCT ] select ]
+[ ORDER BY expression [ ASC | DESC ] [ NULLS { FIRST | LAST } ] [, ...]
+]
+[ LIMIT { count | ALL } ]
+[ OFFSET start ]
+where from_item can be one of:
+table_name[ [ AS ] alias [ ( column_alias [, ...] ) ] ]
+from_item join_type from_item ON join_condition
+( select ) [ AS ] alias
+and with_query is:
+with_query_name AS ( select )
+where select is a SELECT subquery.
+```

@@ -1,3 +1,23 @@
 ---
 title: SHOW TABLE DEVICES
 ---
+
+This view returns the list of devices per table in the database.
+
+Note that in this view, specifying the `IN TABLE` table_name is mandatory.
+
+The output is ordered by the `device_id` column.
+
+The following table lists the output’s columns:
+
+| Column name | Data type | Description |
+| :--- | :--- | :--- |
+| DEVICE_ID | `VARCHAR(32)` | The unique device identifier. Filter column |
+| MODULE_ID | `INT` | The identifier of the module |
+| CAPACITY | `BIGINT` | Total capacity of the device in bytes |
+
+For example:
+
+```sql
+SHOW TABLE DEVICES IN TABLE 'my_table';
+```

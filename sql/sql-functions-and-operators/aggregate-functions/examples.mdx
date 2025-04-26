@@ -1,3 +1,49 @@
 ---
 title: Examples
 ---
+
+#### Basic aggregations based on groups of values:
+
+```sql
+SELECT SUM(o_totalprice) AS sum_of_totalprice,
+COUNT(o_totalprice) AS total_number_of_purches,
+AVG(o_totalprice) AS avg_price,
+STDDEV(o_totalprice) AS stddev_from_avg,
+MIN(o_date) AS the_minimum_date,
+MAX(o_date) AS the_maximum_date,
+o_name
+FROM orders
+GROUP BY o_name
+ORDER BY sum_of_totalprice;
+```
+
+Calculate the mathematical aggregations for any given different `o_name` value.
+
+
+#### Using the aggregation as a subquery:
+
+```sql
+SELECT *
+FROM orders
+WHERE o_totalprice = (SELECT MAX(o_totalprice)
+FROM orders
+);
+Returns the row with the highest `o_totalprice`.
+```
+
+#### Using the aggregation with no `GROUP BY` column:
+
+```sql
+SELECT
+SUM((sale_price-purchse_price)*number_of_sold_items) AS total_profit
+FROM transactions;
+```
+
+Calculate the total profit of all the different transactions.
+
+#### Count by distinct column or expression:
+
+```sql
+SELECT COUNT( DISTINCT c_name) as customers FROM customers;
+SELECT COUNT(DISTINCT purchse_price+sale_price) FROM transactions;
+```

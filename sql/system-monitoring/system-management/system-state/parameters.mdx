@@ -1,3 +1,16 @@
 ---
 title: Parameters
 ---
+
+### `DETAILED`
+
+With this optional parameter, the result contains additional columns.
+The following table lists the columns of the result, including the ones appearing in the basic view and the ones
+that are included only in the detailed view.
+
+| Column name | Data type | Included in basic view | Description |
+| :--- | :--- | :--- | :--- |
+| STATE | `VARCHAR(16)` | Yes | The operational state of the system. |
+| PHASE | `VARCHAR(32)` | No | In ACTIVE state: NULL.<br/>In `SHUTTING_DOWN` state: the current shutdown phase out of the total number of phases in the form "i / n" (e.g., "2 / 4"). |
+| NUMBER OF MODULES | `INT` | No | In ACTIVE state: The number of active modules.<br/>In SHUTTING DOWN state: The number of modules that haven't finished the current shutdown phase. |
+

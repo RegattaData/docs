@@ -1,3 +1,23 @@
 ---
 title: Synopsis
 ---
+
+
+```SQL
+CREATE TABLE [ IF NOT EXISTS ] [ SET { READY | NOT READY } ]
+table_name ([
+{ column_name data_type [ column_constraint [ ... ] ] [ INDEX [ index_parameters
+] ]}
+[, ... ]
+])
+[ WITH ( storage_parameter [= value] [, ... ] ] )
+where column_constraint is:
+{ NULL |
+NOT NULL |
+DEFAULT default_expr |
+UNIQUE |
+PRIMARY KEY |
+REFERENCES reftable [ (refcolumn) ] }
+and index_parameters is:
+WITH ( storage_parameter [= value] [, ... ] )
+```

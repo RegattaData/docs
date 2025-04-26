@@ -1,3 +1,44 @@
 ---
 title: Aggregate Functions
 ---
+
+
+Aggregate functions perform the function operation on multiple rows and returns a single value, even when the input contains zero rows.
+
+Aggregate functions can be used in the `SELECT` list, or in a subquery (see examples below).
+
+When used with non-aggregate expression(s), a `GROUP BY` operation is needed on the non-aggregated expression(s). When using `GROUP BY`, each aggregate result is computed over the rows matching that `GROUP BY `column value (see examples below).
+
+The following table shows the available aggregate functions:
+
+Note that all the functions other than `COUNT` return NULL when no rows are selected (`COUNT` returns zero).
+
+| Aggregate function                    | Return Value                      | Description                                                                                                                               |
+| :------------------------------------ | :---------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| `AVG(numeric_type)`                   | `DECIMAL` or `DOUBLE`<br></br>See notes. | Computes the arithmetic average of all the non-NULL input values.                                                                       |
+| `COUNT(*)`                            | `BIGINT`                            | Computes the number of input rows.                                                                                                        |
+| `COUNT(input_column)`                 | `BIGINT`                            | Computes the number of input rows in which the input value is not NULL.<br></br>See notes.                                                    |
+| `COUNT(DISTINCT [ any ] column or expression )` | `BIGINT`                            | Computes the number of unique values in the column or expression with no NULL values.<br></br>See notes.                                |
+| `MAX(input_column)`                   | Same data type as the `input_column` | Computes the maximum of the non-NULL input values.<br></br>Available for any numeric, string and date/time.                                |
+| `MIN(input_column)`                   | Same data type as the `input_column` | Computes the minimum of the non-NULL input values.<br></br>Available for any numeric, string and date/time.                                |
+| `SUM(numeric_type)`                   | `DECIMAL` \| `DOUBLE`<br></br>See notes. | Computes the sum of the non-NULL input values.                                                                                            |
+| `STDDEV(numeric_type)`                | `DECIMAL` \| `DOUBLE`<br></br>See notes. | Returns the sample standard deviation (square root of sample variance) of non-NULL input values.<br></br>If all records inside a group are NULL, return NULL.<br></br>Alias to: `STDDEV_SAMP` |
+
+Notes:
+
+1. `AVG()`: When the column data type is integral or `DECIMAL`, the return value is `DECIMAL`. Otherwise, the return value is `DOUBLE`.
+2. When the column data type is an approximate numeric data type (`DOUBLE`, `FLOAT`, `REAL`), the return value is `DOUBLE`.
+3. `COUNT(input_column)`: When using the `COUNT()` function over a specific column/expression, only the non-NULL values are counted. E.g, if the table has 4 rows and the column values are (`1,2,NULL,4`), the `COUNT()` of this column returns 3.
+4. Note that in the case of `COUNT(*)`, all rows are counted, including rows with only NULLs in their column values.
+5. `COUNT (DISTINCT)`: The `DISTINCT` can come only once in a given select statement.
+6. `SUM()`: The returned value depends on the input data type:
+
+   6.1. When `integral_type` or `DECIMAL`, the returned value is `DECIMAL`
+
+   6.2. When `DOUBLE`, the returned value is `DOUBLE`
+
+7. `STDDEV()`: The return value depends on the column data type:
+
+   7.1. When `integral_type` or `DECIMAL` the return value is `DECIMAL`
+
+   7.2. When `DOUBLE`, the return value is `DOUBLE`.

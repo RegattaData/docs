@@ -1,3 +1,71 @@
 ---
 title: Type conversion table
 ---
+
+
+
+|**Source type**|**Target type**|**Function**|**Implicit?**|
+| :- | :- | :- | :- |
+|INT8|INT4|INT4|In assignment|
+|INT8|INT2|INT2|In assignment|
+|INT8|DECIMAL|DECIMAL|yes|
+|INT8|FLOAT8|FLOAT8|yes|
+|INT8|FLOAT4|FLOAT4|yes|
+|INT8|BOOLEAN|BOOL|no|
+|INT8|VARCHAR|TEXT|In assignment|
+|INT4|INT8|INT8|yes|
+|INT4|INT2|INT2|In assignment|
+|INT4|DECIMAL|DECIMAL|yes|
+|INT4|FLOAT8|FLOAT8|yes|
+|INT4|FLOAT4|FLOAT4|yes|
+|INT4|BOOLEAN|BOOL|no|
+|INT4|VARCHAR|TEXT|In assignment|
+|INT2|INT8|INT8|yes|
+|INT2|INT4|INT4|yes|
+|INT2|DECIMAL|DECIMAL|yes|
+|INT2|FLOAT8|FLOAT8|yes|
+|INT2|FLOAT4|FLOAT4|yes|
+|INT2|BOOLEAN|BOOL|no|
+|INT2|VARCHAR|TEXT|In assignment|
+|DECIMAL|INT8|INT8|In assignment|
+|DECIMAL|INT4|INT4|In assignment|
+|DECIMAL|INT2|INT2|In assignment|
+|DECIMAL|DECIMAL|DECIMAL|yes|
+|DECIMAL|FLOAT8|FLOAT8|yes|
+|DECIMAL|FLOAT4|FLOAT4|yes|
+|DECIMAL|VARCHAR|TEXT|In assignment|
+|FLOAT8|INT8|INT8|In assignment|
+|FLOAT8|INT4|INT4|In assignment|
+|FLOAT8|INT2|INT2|In assignment|
+|FLOAT8|DECIMAL|DECIMAL|In assignment|
+|FLOAT8|FLOAT4|FLOAT4|In assignment|
+|FLOAT8|VARCHAR|TEXT|In assignment|
+|FLOAT4|INT8|INT8|In assignment|
+|FLOAT4|INT4|INT4|In assignment|
+|FLOAT4|INT2|INT2|In assignment|
+|FLOAT4|DECIMAL|DECIMAL|In assignment|
+|FLOAT4|FLOAT8|FLOAT8|yes|
+|FLOAT4|VARCHAR|TEXT|In assignment|
+|VARCHAR|CHARACTER|none\*\*|yes|
+|VARCHAR|VARCHAR|TEXT|yes|
+|CHARACTER\*\*\*|CHARACTER|BPCHAR|yes|
+|CHARACTER|VARCHAR|TEXT|yes|
+|BOOLEAN|INT8|INT8|no|
+|BOOLEAN|INT4|INT4|no|
+|BOOLEAN|INT2|INT2|no|
+|BOOLEAN|VARCHAR|TEXT|In assignment|
+|BOOLEAN|CHARACTER|none|In assignment|
+|TIMESTAMP|VARCHAR|TEXT|In assignment|
+|TIMESTAMP|DATE|DATE|In assignment|
+|TIMESTAMP|TIME|TIME|In assignment|
+|DATE|VARCHAR|TEXT|In assignment|
+|DATE|TIMESTAMP|TIMESTAMP|yes|
+|TIME|VARCHAR|TEXT|In assignment|
+
+
+
+- Function: The name of an explicit conversion function (e.g `SELECT` `FLOAT8(5.2)` )
+
+- ‘none’ means there is no explicit conversion function for this case.
+
+-  Conversion from `CHAR(n)` to the `CHAR(m)` where `M != n`.

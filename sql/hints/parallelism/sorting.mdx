@@ -1,3 +1,17 @@
 ---
 title: Hint - Distributed Sorting
 ---
+
+### Synopsis:
+
+`DISTRIBUTE ORDER BY (number)`
+
+### Example:
+
+```sql
+SELECT /*++ DISTRIBUTE ORDER BY (2) */ s.name, o.id
+FROM staff s JOIN org o
+ON s.deptno = o.deptno
+WHERE o.division = 'EASTERN'
+ORDER BY s.name;
+```

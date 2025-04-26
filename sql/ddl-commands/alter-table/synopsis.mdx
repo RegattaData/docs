@@ -1,3 +1,21 @@
 ---
 title: Synopsis
 ---
+
+```sql
+ALTER TABLE table_name
+action [, ... ]
+where action is one of:
+SET READY
+ADD [ COLUMN ] column_name data_type [ column_constraint [ ... ] ] [ INDEX
+[ index_parameters ] ]
+where column_constraint is:
+{ NULL |
+NOT NULL |
+DEFAULT default_expr |
+UNIQUE |
+PRIMARY KEY |
+REFERENCES reftable [ (refcolumn) ] }
+and index_parameters is:
+WITH ( storage_parameter [= value] [, ... ] )
+```
