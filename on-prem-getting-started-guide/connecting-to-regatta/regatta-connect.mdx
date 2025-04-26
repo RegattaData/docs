@@ -1,3 +1,18 @@
 ---
 title: Regatta Connect
 ---
+
+All the different clients, namely drivers and CLI, are included in the Regatta Connect package. Save the package on the same server where the client was installed, and install it. The command to install them is:
+
+```
+yum install ./regatta-connect-<version>.el7.x86_64.rpm
+```
+
+Under the path `./opt/regatta/<version>/connect/`, you will see the deployment files of the CLI and the various drivers. Select the clients you would like to deploy and proceed to the section that describes how to deploy them:
+
+- Regatta CLI
+- Python Driver
+- JDBC Driver
+- Node.js Driver
+- TypeORM
+- Hibernate
