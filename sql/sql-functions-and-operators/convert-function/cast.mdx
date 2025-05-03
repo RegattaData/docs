@@ -1,0 +1,75 @@
+---
+title: CAST 
+---
+
+
+## Synopsis
+
+
+```sql
+CAST ( expression AS target_type );
+```
+
+Or the operator:
+
+```sql
+expression :: target_type ;
+```
+
+
+## Description
+
+The `CAST` function or operator are used to explicitly convert a value into a specific data type. 
+
+#### Casting Notes:
+
+1. Casting `BOOLEAN`:
+2. Casting strings: Only valid strings (‘true’,’false’,’t’,’f’) can be casted (case insensitive).
+3. Casting numbers: Only `integral_types` can be converted. Note that all integers but 0 are converted to ‘true’. Zero is converted to ‘false’.
+4. When casting different string length without specifying the needed length, the result value is `VARCHAR(max)`.
+
+## Parameters
+
+
+##### `expression`
+
+The expression can be a constant or a column or any expression that resolves to a single value.
+
+##### `target_type`
+
+The target_type is the data type to which you want to convert the above expression to, as long as it is
+qualified as a valid convert.
+
+## Examples
+
+
+##### Convert literal representing a DATE into `TIMESTAMP`:
+
+```sql
+SELECT CAST('2022-12-12' AS TIMESTAMP);
+```
+
+Returns: 2022-12-12 00:00:00. Note that the time was added.
+
+##### Convert literal representing an `INT` into `STRING`:
+
+```sql
+SELECT 234567::STRING;
+```
+
+Returns: ‘234567
+
+##### Convert literal representing `numeric_type` into `DECIMAL`:
+
+```sql
+SELECT CAST(10.4572 AS DECIMAL);
+```
+
+Returns: 10.4572
+
+##### Convert the column value `o_date` into `TIMESTAMP`:
+
+```sql
+SELECT CAST(o_date AS TIMESTAMP) FROM orders;
+```
+

@@ -3,3 +3,383 @@ title: SELECT
 ---
 
 The command to read and process data.
+
+## Synopsis
+
+```sql
+[ WITH with_query [, ...] ]
+SELECT [ ALL | DISTINCT [ ON ( expression [, ...] ) ] ]
+[ ROWID | * | expression [ [ AS ] output_name ] [, ...] ]
+[ FROM from_item [, ...] ]
+[ WHERE condition ]
+[ GROUP BY grouping_element [, ...] ]
+[ HAVING condition ]
+[ UNION [ ALL | DISTINCT ] select ]
+[ ORDER BY expression [ ASC | DESC ] [ NULLS { FIRST | LAST } ] [, ...]
+]
+[ LIMIT { count | ALL } ]
+[ OFFSET start ]
+where from_item can be one of:
+table_name[ [ AS ] alias [ ( column_alias [, ...] ) ] ]
+from_item join_type from_item ON join_condition
+( select ) [ AS ] alias
+and with_query is:
+with_query_name AS ( select )
+where select is a SELECT subquery.
+```
+
+## Description
+
+The `SELECT` command can be used as either a statement on its own, or as a clause within other statements (e.g: `INSERT AS SELECT`). The `SELECT` is often referred to as the query, while its output is often referred to as the result set.
+
+Note, when querying multiple data sources with ambiguous column names, the `table_name` or the alias must be used before each `column_name`.
+
+Note: Both implicit joins (`SELECT FROM A,B WHERE a.id=b.id`) and explicit joins (`SELECT FROM a JOIN b ON a.id=b.id`) are supported. More details below.
+
+## Parameters
+
+##### `WITH clause`
+
+The `WITH` clause allows you to specify one or more subqueries that can be referenced by name in the primary query. A `WITH` query that is referenced more than once in `FROM` is computed only once. Each subquery should be a `SELECT` statement.
+
+##### `ALL`
+
+Includes duplicate rows (if exist) in the result set. 
+
+This is the default.
+
+##### `DISTINCT`
+
+Eliminates duplicate rows from the result set. 
+
+##### `DISTINCT ON` **expression**
+
+Eliminates duplicate rows from the result set, where equality is determined by the specified expressions.
+
+E.g: `SELECT DISTINCT ON(c_gender) c_gender, c_name FROM customers`; to retrieve the first `c_name` and its `c_gender` per `c_gender` column.
+
+Note that the first row of each set is unpredictable unless `ORDER BY` is used to ensure that the desired row appears first.
+
+Notes:
+
+1. The `DISTINCT ON` can use multiple expressions (e.g. `DISTINCT ON (a,b,d)`).
+2. The `DISTINCT ON` can use columns that aren't projected (e.g. `SELECT DISTINCT ON(a) b,c`).
+
+
+##### `expression`
+
+A scalar expression to retrieve in the query. Scalar expressions produce values suitable to store in a single table cell (one column of one row).
+
+The expression can either be a compound of:
+
+- Column name from the data source the query is reading. Column names can be specified as `table_name.column_name`, or just `column_name` if they are not ambiguous in multiple data sources in the queries.
+- Constant expressions such as literals (e.g: `SELECT` '`Hello`', `6*1.4`) representing a simple value that doesn't change.
+- Functions that can receive both columns and literals (e.g: `SELECT NOW()`, `UPPER(o_name)`, `0.20*o_totalprice`).
+- Aggregate functions that operate on a group of rows based on their value. See [Aggregate functions](/sql/sql-functions-and-operators/aggregate-functions).
+
+Or one of the following:
+
+- '`*`' to retrieve all columns in the query data sources (e.g: `SELECT * FROM orders`;)
+- '`ROWID`', to return the unique `ROWID` of each row within a specific table. Note that `ROWID` can be retrieved only when the FROM object is a single table, e.g., it cannot be retrieved as a result of a join. In addition, it cannot be retrieved as part of a subquery, and cannot be used in a compound expression (e.g. the expression `ROWID+5 or COUNT(ROWID)` is not allowed).
+
+Notes:
+
+
+1. expression must not be empty. Empty `SELECT` list (e.g: `SELECT FROM table_name`) is not allowed.
+2. Only one aggregated DISTINCT operation is allowed in the query selected fields, unless using the same aggregated input expression. This means that the following example: `SELECT AVG(DISTINCT a), AVG(DISTINCT b) FROM my\_table`; is not valid. While `SELECT AVG(DISTINCT sale_price)`, `STDDEV(DISTINCT sale_price) FROM transactions`; is valid.
+
+##### `output_name`
+
+A substitute alias name for the expression/column name. The alias name should match the [Identifiers Limitations](/sql/appendices/indentifiers-limitations).
+
+<Note> Note: The column alias in the `SELECT` section can only be used in the `GROUP BY` / `ORDER BY` / nesting query if this is a subquery. In the `WHERE` and `HAVING` clauses the column should be specified with its origin name. </Note>
+
+##### `FROM`
+
+Specifies one or more source tables for the `SELECT` to read from.The `FROM` can contain either table name, or subqueries.
+
+The default join type between the `FROM` sources depends on the join syntax:
+
+Explicit join: When `join_type` is specified, the specified `join_item`’s are joined by the specified `join_type` and by the specified `join_condition`. If the `join_type` is simply the keyword `JOIN`, `INNER JOIN` is used as the default join type (see below).
+
+Implicit join: If more than one source is specified in the FROM list without `join_type`, those sources will be joined by the matching join condition at the `WHERE` clause. If no such condition is specified, the join will be a `CROSS JOIN`.
+
+##### `table_name`
+
+The name of the table to read. 
+
+##### `alias`
+
+A substitute name for the `FROM` item containing the alias. When an alias is provided, it completely hides the previous name of the table;
+
+E.g: Given `FROM customer AS cust`, the remainder of the statement must refer to this `FROM` item as `cust`, and not as `customers`.
+
+If an alias is used, a column alias list can also be used to provide substitute names for one or more columns of the table. If the column alias list is given for less than the number of table columns, the aliasing is by the columns order: e.g. assuming the table `tab1` has the columns `a,b,c,` with aliasing the `FROM` section, we must now address the columns with the alias it was given. `SELECT x,b,c FROM tab1 AS t(x)`, we can now refer to columns `t.x,t.b,t.c` but `t.a` does not exist.
+
+All alias names should match the [Identifiers Limitations](/sql/appendices/indentifiers-limitations).
+
+
+##### `select`
+
+A sub-SELECT can appear in the FROM clause. The sub-SELECT must be surrounded by parentheses, and it should be named with an alias.
+
+Note: Correlated subqueries are not supported. In other words, the sub-select must not use values from the outer query.
+
+##### `join_type`
+
+One of the following:
+
+- `[ INNER ] JOIN`
+
+  Returns only the records that have matching values in both record-sets.
+
+- `LEFT [ OUTER ] JOIN`
+
+  Returns all the records from the left record-set and matching records between both record-sets.
+
+  Each left record-set record without a matching right record-set record is extended to the full width of the joined record-set by inserting NULL values for the right-hand columns.
+
+- `RIGHT [ OUTER ] JOIN`
+
+  Returns all the records from the right record-set and matching records between both record-sets.
+
+  Each right record-set record without a matching left record-set record is extended to the full width of the joined record-set by inserting NULL values for the left-hand columns.
+
+- `FULL [ OUTER ] JOIN`
+
+  Combines the result of the left outer join and right outer join.
+
+- `CROSS JOIN`
+
+  Generate a cartesian join by joining each record of one record-set with every record of the other record-set.
+
+##### `ON` **join_condition**
+
+Relevant for explicit joins. An expression resulting in a boolean that specifies which rows in a join are considered to match. For all joins other than `CROSS JOIN`, the `ON` condition is mandatory.
+
+##### `WHERE`
+
+Filter the result set by specific conditions. Only the rows that satisfy the conditions (evaluate to `TRUE`) are included in the result set.
+
+Rows for which the condition evaluates to 'unknown' (such as when comparing a number to `NULL`) are excluded from the result set.
+
+E.g: `SELECT FROM orders WHERE o_totalprice > 50`; and one of the rows has `NULL` as its `o_totalprice column`, the filter returns `UNKNOWN` on that row and it will not be returned by the query.
+
+The `WHERE` clause can contain `ROWID`with = or `IN` operator as the exclusive filter in the query. Note that the `IN` clause must contain a list of `ROWIDs` and not a subquery.
+
+##### `GROUP BY`
+
+Group all the rows that share the same values for the grouped expressions into a single row. When `GROUP BY` is used, all other columns in the query `SELECT` list, that aren’t part of the `GROUP BY` section, should be aggregated with an aggregation function (see [Aggregate functions](/sql/sql-functions-and-operators/aggregate-functions)), producing a separate value for each group.
+
+Note: There is no support for ungrouped columns which are functionally dependent on the grouped columns (such that the value of the grouped column uniquely determines the value of the ungrouped column). Every element in the select list must be either a grouped column (or more accurately – any expression which doesn’t contain ungrouped columns) or an aggregate function.
+
+```sql
+For example, suppose a ‘city’ table has a ‘name’ column as primary key and a ‘province’ column; a
+‘resident’ table has a ‘lives_in’ column which references ‘city.name’. Now, we want to list the
+population of each city, along with its province. The following query would do that:
+SELECT city.province, city.name, COUNT(resident.lives_in) as population
+FROM city JOIN resident ON city.name = resident.lives_in GROUP BY
+city.name ORDER BY city.province, city.name;
+Although ‘city.province’ is functionally dependent on ‘city.name’, Regatta doesn’t support this query,
+and city.province must be added to the grouped-by columns set, as follows:
+SELECT city.province, city.name, COUNT(resident.lives_in) as population
+FROM city JOIN resident ON city.name = resident.lives_in GROUP BY
+city.name, city.province ORDER BY city.province, city.name;
+```
+
+```
+This doesn’t change the result of the query
+```
+
+If an aggregation exists without the `GROUP BY` expression, then the query is treated as having a single group comprising all the selected rows (e.g: `SELECT SUM(a) FROM..`).
+
+The `GROUP BY` clause can either contain the columns/expressions as they were written in the `SELECT` list, or their position in the `SELECT` list (1,2, etc).
+
+e.g: `SELECT o_name, COUNT(*) FROM orders GROUP BY 1`;
+
+##### `HAVING`
+
+The `HAVING` clause is used as a filter on top of the `GROUP BY `results. It eliminates grouped rows that do not satisfy its condition.
+
+
+##### `UNION` `[ ALL | DISTINCT ]`
+
+`UNION` combines the result from two SELECT statements into a single result set, after omitting duplicate rows. When used with the keyword ALL, duplicate rows aren’t removed (hence, `UNION ALL` is a faster operation).
+
+`UNION DISTINCT` is the default mode, and it will eliminate duplicate records.
+
+Note that combining two result sets with `UNION` or `UNION ALL` doesn’t guarantee maintaining each result set order. If the `UNION [ALL]` output needs to be ordered, use subqueries (see in the examples below).
+
+The different query blocks must produce the same number of columns, and their results should have matching data types (identical types or compatible types that can be implicitly converted).
+
+##### `ORDER BY`
+
+Returns the result set sorted by a specified order of the expressions in the `ORDER BY` clause. Each expression order can be `ASC` (default) or `DESC`.
+
+Optionally you can decide where to locate the NULL values. If `NULLS LAST` is specified, NULL values sort after all non-NULL values; if `NULLS FIRST` is specified, NULL values sort before all non-NULL values.
+
+By default, `NULLS LAST` is used for ASC order and `NULLS FIRST` is used for DESC order. Note that order of character strings is case sensitive.
+
+##### `LIMIT { count | ALL }`
+
+The `LIMIT` clause restricts the number of rows that are included in the result set by the specified count.
+
+**count** must be a constant expression containing only literal values. When ALL is specified, all the rows of the result set are returned.
+
+##### `OFFSET start`
+
+The `OFFSET` clause specifies the number of rows to skip before starting to return rows. **start** must be a constant expression containing only literal values. When used with `LIMIT`, the `OFFSET` **start** rows are skipped before starting to count the `LIMIT` count rows to be returned.
+
+
+## Tuple support
+---
+
+Tuples in the select expressions are not supported, but tuples are supported in the WHERE clause. For
+example, getting a list of all employees in rank 3 who earn a salary of 20000:
+
+```sql
+SELECT id, name from employees WHERE (rank, salary) = (3, 20000);
+```
+Or getting a list of employees who earn the maximum salary for their rank:
+
+```sql
+SELECT id, name from employees WHERE (rank, salary) IN (SELECT rank_id,
+max_salary FROM ranks);
+```
+
+## Examples
+
+##### Retrieve specific columns:
+
+```sql
+SELECT o_order_id, o_date FROM orders;
+```
+
+##### Retrieve the ROWID of all the rows that match the filter:
+
+```sql
+SELECT ROWID FROM orders WHERE o_name='product0015612';
+```
+
+##### Retrieve all columns by multiple filters:
+
+```sql
+SELECT * FROM orders
+WHERE (o_date > '2022-12-12' AND o_name like 'product001%')
+OR o_totalprice > 9000 ;
+```
+
+Return all the rows and columns of table `orders` if they answer one of the following conditions:
+
+Either there `o_date` is higher than ‘2022-12-12’ and their `o_name` starts with ‘product001’
+
+Or if their `o_totalprice` is greater than 9,000.
+
+##### Use `DISTINCT ON`:
+
+```sql
+SELECT DISTINCT ON(o_date) o_name,o_date FROM orders;
+```
+
+Return a single row for each distinct `o_date`.
+
+##### Retrieve rows based on a `GROUP BY`:
+
+```sql
+SELECT o_date, sum(o_totalprice), count(o_order_id)
+FROM orders
+GROUP BY o_date
+ORDER BY o_date;
+```
+
+Returns the count of `o_order_id` and their total `o_totalprice` grouped by a specific `o_date`, ordered by
+the `o_date` value (ascending order).
+
+##### Retrieve rows based on a `GROUP BY` and `HAVING`:
+
+```sql
+SELECT o_date, sum(o_totalprice ), count(o_order_id)
+FROM orders
+GROUP BY o_date
+HAVING sum(o_totalprice) > 45000
+ORDER BY o_date;
+```
+
+Same example as the previous, with an extra filter: return only the rows that their total
+`sum(o_totalprice)`is greater than 45,000.
+
+##### Retrieve sorted rows based on a `UNION` output:
+
+```sql
+SELECT o_date, c_name
+FROM
+(SELECT o_date, c_name
+FROM old_orders JOIN customers ON o_custkey=c_custkey
+WHERE o_date>'2020-1-1'
+UNION
+SELECT o_date, c_name
+FROM orders JOIN customers ON o_custkey=c_custkey
+) AS MY_UNION
+ORDER BY o_date;
+```
+
+Combine the results and remove duplicates (`UNION`) from the two queries within a subquery, and return the
+results ordered by the o_date column.
+
+##### Retrieve with `LIMIT` and `OFFSET`:
+
+```sql
+SELECT * FROM customers
+ORDER BY c_custkey DESC
+OFFSET 2 LIMIT 2;
+```
+
+Given 10 rows in the table with the c_custkey of 1-10 (1,2,3,..10), the following query results with the rows of
+c_custkey 8 and c_custkey 7.
+
+##### Retrieve rows using both `UNION` and `JOIN`:
+
+```sql 
+SELECT all_orders.o_date, c_name
+FROM
+(SELECT o_date,o_custkey FROM orders
+UNION
+SELECT o_date, o_custkey FROM old_orders
+) as all_orders JOIN customers ON all_orders.o_custkey = c_custkey;
+```
+
+Join the output of the unioned `orders` and `old_orders` with `customers`.
+
+
+##### Retrieve rows using `LEFT OUTER JOIN`:
+
+```sql
+SELECT COUNT(o_order_id), c_name as customer
+FROM customers LEFT OUTER JOIN orders on c_custkey = o_custkey
+AND o_name not like '%%special%%requests%%'
+GROUP BY 2
+ORDER BY 1 DESC , 2 DESC;
+```
+
+Left outer join the table `customers` with `orders` so that for every `c_name `it returns the count of
+`o_order_id` (or NULL if no rows match on the `orders` table).
+
+Rows on the table `orders` are being filtered as `not like` '`%%special%%requests%%`'.
+
+Return the results ordered by the count aggregation in a DESC order, and then by the `c_name` column with
+the alias `customer`.
+
+##### Retrieving rows using aliases:
+
+```sql
+SELECT SUM(o_totalprice), o_name order_name, o_date current_order_date
+FROM orders ,
+(SELECT o_date as old_orders_date FROM old_orders) as old_orders
+WHERE o_date > old_orders_date
+GROUP BY order_name , current_order_date;
+```
+
+Note that the `o_date` column in the `WHERE` clause had to be used in its original column name (unlike the
+`current_order_date` alias) because the `WHERE` clause has to receive the columns in their original names
+(filters can be parsed before the alias is assigned).
+

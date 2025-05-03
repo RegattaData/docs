@@ -4,3 +4,63 @@ title: NOT - IN
 
 The `IN` and `NOT IN` operators check if an expression is included or not included in the values returned by a
 subquery.
+
+## Synopsis
+---
+
+```sql
+expression [NOT] IN (subquery)
+row_constructor IN (subquery)
+```
+
+## Description
+---
+
+
+The left-hand expression or `row_constructor` are evaluated and compared to each row of the subquery result.
+
+The result of `IN` is “true” if any equal subquery row is found. The result is “false” if no equal row is found. Vice versa, the result of `NOT IN` is “false” if any equal subquery row is found. The result is “true” if no equal row is found. Those two cases include the case where the subquery returns no rows.
+
+
+## Parameters
+---
+
+
+##### `expression`
+
+A column_name or an expression to be compared with the subquery. The subquery (in the right-hand side in the parenthesized) must return exactly one column.
+
+##### `row_constructor`
+
+A composite value that builds a row value. The subquery (in the right-hand side in the parenthesized) must return the exact same number of columns.
+
+The constructed row columns order should match the subquery columns data types.
+
+## Examples
+---
+
+##### Return the rows that their column value is included in the subquery:
+
+```sql
+SELECT * FROM customers
+WHERE c_custkey IN (SELECT o_custkey FROM orders
+WHERE o_date>'2022-12-12');
+```
+
+##### Return the rows that their expression is not included in the subquery values:
+
+```sql
+SELECT * FROM orders
+WHERE o_date NOT IN ('2022-12-12','2022-11-12');
+```
+
+##### Return the rows based on a row constructor:
+
+```sql
+SELECT *
+FROM orders
+WHERE (o_totalprice,o_name) IN
+                            (SELECT MAX(o_totalprice),o_name
+                            FROM orders GROUP BY o_name
+);
+```

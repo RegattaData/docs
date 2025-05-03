@@ -6,3 +6,73 @@ System views are used to track database objects (as part of the [Database Catalo
 
 The system monitoring views are exposed by the SHOW commands. Those `SHOW` commands are Regatta proprietary commands and support the options listed below.
 
+## Synopsis
+
+```sql 
+SHOW view_name [ LIKE 'pattern' ][ IN object_type object_name ]
+[ ROWS BETWEEN n AND m ]
+where object_type is:
+{ TABLE | INDEX | DEVICE }
+```
+
+## Parameters
+
+##### `view_name`
+
+The system catalog view name.
+
+
+##### `LIKE '<pattern>'`
+
+Filters the view output by its main object (e.g filter by TABLE_NAME in `SHOW TABLES view,
+filter by INDEX_NAME` in `SHOW INDEXES view`). The filter uses case-sensitive pattern
+matching, with the support of optional leading and/or trailing percent signs.
+
+The percent sign (%) stands for sequences of zero or more characters.
+
+##### `IN object_type object_name`
+
+Show only results within the scope of a specific object in the relevant system view data.
+Possible object types and the views to which they apply:
+
+| Object type | System view                                                                 |
+| :---------- | :-------------------------------------------------------------------------- |
+| `IN TABLE`  | `SHOW INDEXES`, `SHOW COLUMNS`, `SHOW TABLE DEVICES`, `SHOW CONSTRAINTS`    |
+| `IN INDEX`  | `SHOW INDEX DEVICES`                                                        |
+| `IN DEVICE` | `SHOW DEVICE METRICS`                                                       |
+| `IN MODULE` | `SHOW MODULE METRICS`                                                       |
+
+
+The __table_name/index_name/device_id__ should be the fully-qualified name.
+
+Note that input names are converted to lower-case unless enclosed by double quotes.
+
+Therefore: `IN TABLE 'Employees'` and `IN TABLE 'employees'` both refer to the table
+named employees, while `IN TABLE '“Employees”'` refers to the table named
+`Employees`.
+
+
+##### `ROWS BETWEEN n AND m`
+
+Used to return only part of the output rows. This can be used to retrieve the results in parts and
+avoid exceeding the client's memory limitations.
+
+Note:
+
+- If the size of the output exceeds the client memory, an error is returned.
+- If objects are added and/or removed from the view in between two queries of
+consequent row ranges, an existing object may be returned in both queries or missing
+from both queries.
+- If the number of requested rows is larger than the actual number of rows in the view, the
+command should succeed and return only the existing rows.
+- The row number is zero-based.
+
+## Examples
+
+```sql
+SHOW TABLES;
+SHOW TABLES LIKE 'my%';
+SHOW COLUMNS IN TABLE 'my_table';
+SHOW COLUMNS LIKE '%product%' IN TABLE 'my_table';
+SHOW TABLES LIKE '%my' ROWS BETWEEN 100 AND 150;
+```
