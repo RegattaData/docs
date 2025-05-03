@@ -3,3 +3,71 @@ title: DELETE
 ---
 
 Removes rows from an existing table.
+
+## Synopsis
+---
+
+```sql
+DELETE FROM table_name [ [ AS ] alias ]
+[ WHERE condition ]
+[ RETURNING output_expression [[ AS ] output_name ] [, ...] ]
+```
+
+## Description
+
+The `DELETE` command removes rows from a specified table. The deletion can be specific by using the `WHERE`
+clause to identify the needed rows to delete. Without the `WHERE` clause, the command removes all the rows in
+the table and leaves it empty.
+
+## Parameters
+
+##### `table_name`
+The name of the table to delete rows from.
+
+##### `alias`
+A substitute alias name for `table_name`. The alias name should match the [Identifiers Limitations](/sql/appendices/indentifiers-limitations).
+
+##### WHERE
+
+The condition to filter the rows for deletion. If this parameter is omitted, all the rows in the table are
+removed.
+
+The `WHERE` clause can contain the rows `ROWID` with = or `IN` condition.
+
+##### `RETURNING output_expression`
+
+Returns the given expression for every row deleted by the command. Refer to the expression
+parameter of [SELECT](/sql/dql/select/select#parameters) for specification of the output_expression parameter.
+
+## Outputs
+
+On successful completion, the `DELETE` command returns the count of the deleted rows.
+
+## Examples
+---
+
+##### Delete rows based on a specific filter:
+
+```sql
+DELETE FROM orders WHERE o_date < '2020-1-1' ;
+```
+
+##### Delete rows based on another table filter:
+
+```sql
+DELETE FROM orders
+WHERE o_date <= (SELECT max(o_date) FROM old_orders);
+```
+
+
+##### Delete a row based on its ROWID: 
+
+```sql
+DELETE FROM orders
+WHERE ROWID = 12345678;
+```
+
+## Compatibility
+---
+
+The `DELETE` command conforms to the SQL standard with the exception of the `RETURNING` functionality.

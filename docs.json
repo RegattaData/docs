@@ -14,46 +14,54 @@
         "version": "1.0",
         "tabs": [
       {
-        "tab": "Getting Started Guide",
+        "tab": "Getting Started",
         
         "groups": [
           {
             "group": "Get Started",
             "pages": [
-              "introduction",
-              "quickstart",
+              "home",
+              "prerequisites",
               {
                 "group": "Regatta Platform",
                 "pages": ["regatta-platform/regatta-platform", "regatta-platform/access-the-platform", "regatta-platform/create-a-cluster"]
               }
             ]
-          },
+          }
+        ]
+      },
+      {
+        "tab": "Release Notes",
+        "groups": [
           {
-            "group": "Regatta Basics",
-            "pages": [
-              {
-                "group": "Creating a Table",
-                "pages": ["regatta-basics/creating-a-table/create-a-table", "regatta-basics/creating-a-table/default-device-mapping", "regatta-basics/creating-a-table/selected-device-mapping"]
-              },
-              "regatta-basics/insert-values",
-              "regatta-basics/select-values-from-table",
-              "regatta-basics/update-entry",
-              "regatta-basics/delete-entry-from-table",
-              "regatta-basics/drop-table",
-              "regatta-basics/credentials"
-            ]
-          },
-          {
-            "group": "Cloud Deployment",
-            "pages": [
-              {
-                "group": "Database Backup and Restore",
-                "pages": ["cloud-deployment/database-backup-restore", "cloud-deployment/backup", "cloud-deployment/restore"]
-              },
-              "/cloud-deployment/delete-cluster",
-              "/cloud-deployment/cluster-ip"
-            ]
-          },
+            "group": "Release Notes",
+            "pages": ["release-notes"]
+          }
+        ]
+      },
+      {
+        "tab": "Regatta Basics",
+        "groups": [
+        {
+          "group": "Regatta Basics",
+          "pages": [
+            {
+              "group": "Creating a Table",
+              "pages": ["regatta-basics/creating-a-table/create-a-table", "regatta-basics/creating-a-table/default-device-mapping", "regatta-basics/creating-a-table/selected-device-mapping"]
+            },
+            "regatta-basics/insert-values",
+            "regatta-basics/select-values-from-table",
+            "regatta-basics/update-entry",
+            "regatta-basics/delete-entry-from-table",
+            "regatta-basics/drop-table",
+            "regatta-basics/credentials"
+          ]
+        }
+      ]
+      },
+      {
+        "tab": "Linear Scaling",
+        "groups":[
           {
             "group": "Linear Scaling",
             "pages": [
@@ -75,50 +83,31 @@
                 ]
               }
             ]
-          },
-          {
-            "group": "Drivers and Clients",
-            "pages": [
-              "drivers-and-clients/drivers-support/driver-support",
-              {
-                "group": "Python",
-                "pages": [
-                  "/drivers-and-clients/drivers-support/python/python-drivers",
-                  "drivers-and-clients/drivers-support/python/install-the-driver",
-                  "drivers-and-clients/drivers-support/python/run-python-application"
-                ]
-              },
-              {
-                "group": "Java",
-                "pages": [
-                  "/drivers-and-clients/drivers-support/java/jbdc-driver",
-                  "drivers-and-clients/drivers-support/java/install-the-driver",
-                  "drivers-and-clients/drivers-support/java/set-up-dependency",
-                  "drivers-and-clients/drivers-support/java/run-java-application",
-                  "drivers-and-clients/drivers-support/java/hibernate",
-                  "drivers-and-clients/drivers-support/java/set-hibernate-dependency",
-                  "drivers-and-clients/drivers-support/java/set-up-configuration",
-                  "drivers-and-clients/drivers-support/java/run-a-hibernate"
-                ]
-              },
-              {
-                "group": "JavaScript",
-                "pages": [
-                  "/drivers-and-clients/drivers-support/javascript/nodejs",
-                  "drivers-and-clients/drivers-support/javascript/install-the-driver",
-                  "drivers-and-clients/drivers-support/javascript/run-nodejs-application",
-                  "drivers-and-clients/drivers-support/javascript/object-relation-map-tool",
-                  "drivers-and-clients/drivers-support/javascript/type-orm",
-                  "drivers-and-clients/drivers-support/javascript/install-orm-tools",
-                  "drivers-and-clients/drivers-support/javascript/run-typeorm-application"
-                ]
-              }
-            ]
           }
         ]
       },
       {
-        "tab": "On Prem Deployment Guide",
+        "tab": "Cloud Deployments",
+        "groups": [
+          {
+              "group": "Regatta Platform",
+              "pages": ["cloud-deployment/regatta-platform/regatta-platform", "cloud-deployment/regatta-platform/access-the-platform", "cloud-deployment/regatta-platform/create-a-cluster"]
+            
+          },
+          {
+            "group": "Database Backup and Restore",
+            "pages": [
+                "cloud-deployment/database-backup-restore", "cloud-deployment/backup", "cloud-deployment/restore",
+            "/cloud-deployment/delete-cluster",
+            "/cloud-deployment/cluster-ip"
+            ]
+            
+          }
+
+        ]
+      },
+      {
+        "tab": "Self-Hosted Deployments",
         "groups": [
           {
             "group": "Scripted Solution",
@@ -193,6 +182,71 @@
         ]
       },
       {
+        "tab": "Drivers & Clients",
+        "groups": [
+          {
+            "group": "Drivers & Clients",
+            "pages": [
+              {
+                  "group": "Connecting to Regatta",
+                  "pages": [
+                    "on-prem-getting-started-guide/connecting-to-regatta/connecting-to-regatta",
+                        "on-prem-getting-started-guide/connecting-to-regatta/regatta-client",
+                        "on-prem-getting-started-guide/connecting-to-regatta/regatta-connect"
+                  ]
+              },
+              {
+                  "group": "Regatta CLI",
+                  "pages": [
+                    "on-prem-getting-started-guide/regatta-cli/regatta-cli",
+                    "on-prem-getting-started-guide/regatta-cli/connecting-to-cli",
+                    "on-prem-getting-started-guide/regatta-cli/creating-a-table",
+                    "on-prem-getting-started-guide/regatta-cli/insert-values",
+                    "on-prem-getting-started-guide/regatta-cli/select-values-from-table",
+                    "on-prem-getting-started-guide/regatta-cli/update-entry",
+                    "on-prem-getting-started-guide/regatta-cli/delete-entry-from-table",
+                    "on-prem-getting-started-guide/regatta-cli/drop-table"
+                  ]
+                },
+              "drivers-and-clients/drivers-support/driver-support",
+              {
+                "group": "Python",
+                "pages": [
+                  "/drivers-and-clients/drivers-support/python/python-drivers",
+                  "drivers-and-clients/drivers-support/python/install-the-driver",
+                  "drivers-and-clients/drivers-support/python/run-python-application"
+                ]
+              },
+              {
+                "group": "Java",
+                "pages": [
+                  "/drivers-and-clients/drivers-support/java/jbdc-driver",
+                  "drivers-and-clients/drivers-support/java/install-the-driver",
+                  "drivers-and-clients/drivers-support/java/set-up-dependency",
+                  "drivers-and-clients/drivers-support/java/run-java-application",
+                  "drivers-and-clients/drivers-support/java/hibernate",
+                  "drivers-and-clients/drivers-support/java/set-hibernate-dependency",
+                  "drivers-and-clients/drivers-support/java/set-up-configuration",
+                  "drivers-and-clients/drivers-support/java/run-a-hibernate"
+                ]
+              },
+              {
+                "group": "JavaScript",
+                "pages": [
+                  "/drivers-and-clients/drivers-support/javascript/nodejs",
+                  "drivers-and-clients/drivers-support/javascript/install-the-driver",
+                  "drivers-and-clients/drivers-support/javascript/run-nodejs-application",
+                  "drivers-and-clients/drivers-support/javascript/object-relation-map-tool",
+                  "drivers-and-clients/drivers-support/javascript/type-orm",
+                  "drivers-and-clients/drivers-support/javascript/install-orm-tools",
+                  "drivers-and-clients/drivers-support/javascript/run-typeorm-application"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
         "tab": "SQL",
         "groups": [
           {
@@ -229,125 +283,31 @@
           {
             "group": "Data Definition Language (DDL) Commands",
             "pages": [
-              {
-                "group": "CREATE TABLE",
-                "pages": [
-                  "sql/ddl-commands/create-table/create-table",
-                  "sql/ddl-commands/create-table/synopsis",
-                  "sql/ddl-commands/create-table/description",
-                  "sql/ddl-commands/create-table/parameters",
-                  "sql/ddl-commands/create-table/examples",
-                  "sql/ddl-commands/create-table/compatibility"
-                ]
-              },
-              {
-                "group": "ALTER TABLE",
-                "pages": [
-                  "sql/ddl-commands/alter-table/alter-table",
-                  "sql/ddl-commands/alter-table/synopsis",
-                  "sql/ddl-commands/alter-table/description",
-                  "sql/ddl-commands/alter-table/parameters",
-                  "sql/ddl-commands/alter-table/examples",
-                  "sql/ddl-commands/alter-table/compatibility"
-                ]
-              },
-              {
-                "group": "DROP TABLE",
-                "pages": [
-                  "sql/ddl-commands/drop-table/drop-table",
-                  "sql/ddl-commands/drop-table/synopsis",
-                  "sql/ddl-commands/drop-table/description",
-                  "sql/ddl-commands/drop-table/parameters",
-                  "sql/ddl-commands/drop-table/examples",
-                  "sql/ddl-commands/drop-table/compatibility"
-                ]
-              }
+              "sql/ddl-commands/create-table/create-table",
+              "sql/ddl-commands/alter-table/alter-table",
+              "sql/ddl-commands/drop-table/drop-table"
             ]
           },
           {
             "group": "Data Manipulation Language Commands",
             "pages": [
-              {
-                "group": "INSERT TABLE",
-                "pages": [
-                  "sql/dml-commands/insert/insert",
-                  "sql/dml-commands/insert/synopsis",
-                  "sql/dml-commands/insert/description",
-                  "sql/dml-commands/insert/parameters",
-                  "sql/dml-commands/insert/outputs",
-                  "sql/dml-commands/insert/examples",
-                  "sql/dml-commands/insert/compatibility"
-                ]
-              },
-              {
-                "group": "UPDATE TABLE",
-                "pages": [
-                  "sql/dml-commands/update/update",
-                  "sql/dml-commands/update/synopsis",
-                  "sql/dml-commands/update/description",
-                  "sql/dml-commands/update/parameters",
-                  "sql/dml-commands/update/outputs",
-                  "sql/dml-commands/update/examples",
-                  "sql/dml-commands/update/compatibility"
-                ]
-              },
-              {
-                "group": "DELETE TABLE",
-                "pages": [
-                  "sql/dml-commands/delete/delete",
-                  "sql/dml-commands/delete/synopsis",
-                  "sql/dml-commands/delete/description",
-                  "sql/dml-commands/delete/parameters",
-                  "sql/dml-commands/delete/outputs",
-                  "sql/dml-commands/delete/examples",
-                  "sql/dml-commands/delete/compatibility"
-                ]
-              }
+              "sql/dml-commands/insert/insert",
+              "sql/dml-commands/update/update",
+              "sql/dml-commands/delete/delete"
             ]
           },
           {
             "group": "Transaction Control Language Commands",
             "pages": [
               "sql/tcl-commands/tcl-commands",
-              {
-                "group": "SET TRANSACTION",
-                "pages": [
-                  "sql/tcl-commands/set-transaction/set-transaction",
-                  "sql/tcl-commands/set-transaction/synopsis",
-                  "sql/tcl-commands/set-transaction/description",
-                  "sql/tcl-commands/set-transaction/parameters",
-                  "sql/tcl-commands/set-transaction/examples",
-                  "sql/tcl-commands/set-transaction/compatibility"
-                ]
-              }
+              "sql/tcl-commands/set-transaction/set-transaction"
             ]
           },
           {
             "group": "Data Query Language",
             "pages": [
-              {
-                "group": "SELECT",
-                "pages": [
-                  "sql/dql/select/select",
-                  "sql/dql/select/synopsis",
-                  "sql/dql/select/description",
-                  "sql/dql/select/parameters",
-                  "sql/dql/select/tuple-support",
-                  "sql/dql/select/examples"
-                ]
-              },
-              {
-                "group": "EXPLAIN",
-                "pages": [
-                  "sql/dql/explain/explain",
-                  "sql/dql/explain/synopsis",
-                  "sql/dql/explain/description",
-                  "sql/dql/explain/parameters",
-                  "sql/dql/explain/outputs",
-                  "sql/dql/explain/examples",
-                  "sql/dql/explain/compatibility"
-                ]
-              }
+              "sql/dql/select/select",
+              "sql/dql/explain/explain"
             ]
           },
           {
@@ -407,28 +367,14 @@
               {
                 "group": "Conditional Expressions",
                 "pages": [
-                  {
-                    "group": "CASE",
-                    "pages": [
-                      "sql/sql-functions-and-operators/conditional-expressions/case/case",
-                      "sql/sql-functions-and-operators/conditional-expressions/case/synopsis",
-                      "sql/sql-functions-and-operators/conditional-expressions/case/examples"
-                    ]
-                  }
+                  "sql/sql-functions-and-operators/conditional-expressions/case/"
                 ]
               },
               {
                 "group": "Convert Functions",
                 "pages": [
-                  {
-                    "group": "CAST",
-                    "pages": [
-                      "sql/sql-functions-and-operators/convert-function/cast/synopsis",
-                      "sql/sql-functions-and-operators/convert-function/cast/description",
-                      "sql/sql-functions-and-operators/convert-function/cast/parameters",
-                      "sql/sql-functions-and-operators/convert-function/cast/examples"
-                    ]
-                  },
+                  "sql/sql-functions-and-operators/convert-function/cast",
+
                   {
                     "group": "Date and Time Formatting Functions",
                     "pages": [
@@ -449,16 +395,7 @@
                 "group": "Subquery Expressions",
                 "pages": [
                   "sql/sql-functions-and-operators/subquery-expressions/subquery-expressions",
-                  {
-                    "group": "[NOT] IN",
-                    "pages": [
-                      "sql/sql-functions-and-operators/subquery-expressions/not-in/not-in",
-                      "sql/sql-functions-and-operators/subquery-expressions/not-in/synopsis",
-                      "sql/sql-functions-and-operators/subquery-expressions/not-in/description",
-                      "sql/sql-functions-and-operators/subquery-expressions/not-in/parameters",
-                      "sql/sql-functions-and-operators/subquery-expressions/not-in/examples"
-                    ]
-                  }
+                  "sql/sql-functions-and-operators/subquery-expressions/not-in/not-in"
                 ]
               }
             ]
@@ -466,53 +403,15 @@
           {
             "group": "Managing Users",
             "pages": [
-              {
-                "group": "CREATE USER",
-                "pages": [
-                  "sql/managing-users/create-user/create-user",
-                  "sql/managing-users/create-user/synopsis",
-                  "sql/managing-users/create-user/description",
-                  "sql/managing-users/create-user/parameters",
-                  "sql/managing-users/create-user/examples",
-                  "sql/managing-users/create-user/compatibility"
-                ]
-              },
-              {
-                "group": "ALTER USER",
-                "pages": [
-                  "sql/managing-users/alter-user/alter-user",
-                  "sql/managing-users/alter-user/synopsis",
-                  "sql/managing-users/alter-user/description",
-                  "sql/managing-users/alter-user/parameters",
-                  "sql/managing-users/alter-user/examples",
-                  "sql/managing-users/alter-user/compatibility"
-                ]
-              },
-              {
-                "group": "DROP USER",
-                "pages": [
-                  "sql/managing-users/drop-user/drop-user",
-                  "sql/managing-users/drop-user/synopsis",
-                  "sql/managing-users/drop-user/description",
-                  "sql/managing-users/drop-user/parameters",
-                  "sql/managing-users/drop-user/examples",
-                  "sql/managing-users/drop-user/compatibility"
-                ]
-              }
+              "sql/managing-users/create-user/create-user",
+              "sql/managing-users/alter-user/alter-user",
+              "sql/managing-users/drop-user/drop-user"
             ]
           },
           {
             "group": "System Monitoring",
             "pages": [
-              {
-                "group": "Using System Monitoring Views",
-                "pages": [
-                  "sql/system-monitoring/system-monitoring-views/system-monitoring-views",
-                  "sql/system-monitoring/system-monitoring-views/synopsis",
-                  "sql/system-monitoring/system-monitoring-views/parameters",
-                  "sql/system-monitoring/system-monitoring-views/examples"
-                ]
-              },
+              "sql/system-monitoring/system-monitoring-views/system-monitoring-views",
               "sql/system-monitoring/show-system-views",
               {
                 "group": "Database Catalog Data",
@@ -586,7 +485,7 @@
         ]
       },
       {
-        "tab": "Creating Tables and Indexes - best practices",
+        "tab": "Optimizing Performance",
         "groups": [
           {
             "group": "Optimizing Performance",
@@ -607,32 +506,6 @@
               "table-index-best-practices/other-limitations",
               "table-index-best-practices/closing-remarks",
               "table-index-best-practices/references"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "On Prem Getting Started Guide",
-        "groups": [
-          {
-            "group": "Drivers and Client",
-            "pages": [
-              "on-prem-getting-started-guide/connecting-to-regatta/connecting-to-regatta",
-                  "on-prem-getting-started-guide/connecting-to-regatta/regatta-client",
-                  "on-prem-getting-started-guide/connecting-to-regatta/regatta-connect"
-            ]
-          },
-          {
-            "group": "Regatta CLI",
-            "pages": [
-              "on-prem-getting-started-guide/regatta-cli/regatta-cli",
-              "on-prem-getting-started-guide/regatta-cli/connecting-to-cli",
-              "on-prem-getting-started-guide/regatta-cli/creating-a-table",
-              "on-prem-getting-started-guide/regatta-cli/insert-values",
-              "on-prem-getting-started-guide/regatta-cli/select-values-from-table",
-              "on-prem-getting-started-guide/regatta-cli/update-entry",
-              "on-prem-getting-started-guide/regatta-cli/delete-entry-from-table",
-              "on-prem-getting-started-guide/regatta-cli/drop-table"
             ]
           }
         ]
@@ -658,7 +531,7 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:info@regatta.dev"
+        "href": "https://rdbproject.atlassian.net/servicedesk/customer/portals"
       }
     ],
     "primary": {

@@ -2,3 +2,40 @@
 title: DROP TABLE
 ---
 Remove a table.
+
+## Synopsis
+
+```sql
+DROP TABLE table_name [RESTRICT]
+```
+
+## Description
+
+The `DROP TABLE` command is used to remove a table from the current database (and in the future the current
+schema), including all its rows, its metadata and related indexes.
+
+## Parameters
+
+##### `table_name`
+The name of the table to be dropped.
+
+##### `RESTRICT`
+Return an error if any column in the table to be dropped is referenced by another table’s column
+(foreign key).
+This is the default behavior, kept for compatibility with PostgreSQL.
+
+## Examples
+
+##### Drop a table:
+
+```sql
+DROP TABLE customers;
+```
+
+Drop the table `customers`.
+
+
+## Compatibility
+---
+
+The `DROP TABLE` command conforms to the SQL standard.

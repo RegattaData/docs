@@ -3,3 +3,41 @@ title: DROP USER
 ---
 
 Remove an existing user.
+
+## Synopsis
+
+```sql
+DROP USER user_name
+```
+
+
+## Description
+
+The `DROP USER` command removes an existing user from the database.
+
+If there is currently a connection to the database by the given user it will be terminated and all running transactions aborted.
+
+Notes:
+
+- A user can remove itself.
+- The last user cannot be removed.
+
+
+## Parameters
+
+##### `user_name`
+
+The name of the user to remove.
+
+## Examples
+---
+
+##### Remove a user:
+
+```sql
+DROP USER user1;
+```
+
+## Compatibility
+
+The `DROP USER` statement is a Regatta extension as there is no SQL standard for managing users.
