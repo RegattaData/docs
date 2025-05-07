@@ -13,6 +13,16 @@
       {
         "version": "1.0",
         "tabs": [
+          {
+            "tab": "Home",
+            "groups": [
+              {
+                "group": " ",
+                "pages": ["home"]
+              }
+            ]
+
+          },
       {
         "tab": "Getting Started",
         
@@ -20,7 +30,6 @@
           {
             "group": "Get Started",
             "pages": [
-              "home",
               "prerequisites",
               {
                 "group": "Regatta Platform",
@@ -91,15 +100,21 @@
         "groups": [
           {
               "group": "Regatta Platform",
-              "pages": ["cloud-deployment/regatta-platform/regatta-platform", "cloud-deployment/regatta-platform/access-the-platform", "cloud-deployment/regatta-platform/create-a-cluster"]
+              "pages": 
+              [
+                "cloud-deployment/regatta-platform/regatta-platform", 
+                "cloud-deployment/regatta-platform/access-the-platform", 
+                "cloud-deployment/regatta-platform/create-a-cluster",
+                "/cloud-deployment/regatta-platform/delete-cluster",
+                "/cloud-deployment/regatta-platform/cluster-ip"
+              ]
             
           },
           {
             "group": "Database Backup and Restore",
             "pages": [
-                "cloud-deployment/database-backup-restore", "cloud-deployment/backup", "cloud-deployment/restore",
-            "/cloud-deployment/delete-cluster",
-            "/cloud-deployment/cluster-ip"
+                "cloud-deployment/database-backup-restore", "cloud-deployment/backup", "cloud-deployment/restore"
+
             ]
             
           }
@@ -169,7 +184,7 @@
             "pages": [
               "deployment-guide/support/support",
               {
-                "group": "collect_data script",
+                "group": "Collecting Data",
                 "pages": [
                   "deployment-guide/support/collect-data-script/collect-data-script",
                   "deployment-guide/support/collect-data-script/prerequisites",
@@ -184,6 +199,11 @@
       {
         "tab": "Drivers & Clients",
         "groups": [
+
+          {
+            "group": " ",
+            "pages": ["/on-prem-getting-started-guide/connecting-to-regatta/introduction"]
+          },
           {
             "group": "Drivers & Clients",
             "pages": [
@@ -208,40 +228,67 @@
                     "on-prem-getting-started-guide/regatta-cli/drop-table"
                   ]
                 },
-              "drivers-and-clients/drivers-support/driver-support",
+              "drivers-and-clients/drivers-support/driver-support"
+            ]
+          },
+          {
+            "group": "Python",
+            "pages": [
               {
-                "group": "Python",
+                "group": "Python Driver",
                 "pages": [
                   "/drivers-and-clients/drivers-support/python/python-drivers",
                   "drivers-and-clients/drivers-support/python/install-the-driver",
                   "drivers-and-clients/drivers-support/python/run-python-application"
                 ]
-              },
+              }
+            ]
+          },
+          {
+            "group": "Java",
+            "pages": [
               {
-                "group": "Java",
+                "group": "JBDC Driver",
                 "pages": [
                   "/drivers-and-clients/drivers-support/java/jbdc-driver",
                   "drivers-and-clients/drivers-support/java/install-the-driver",
                   "drivers-and-clients/drivers-support/java/set-up-dependency",
-                  "drivers-and-clients/drivers-support/java/run-java-application",
+                  "drivers-and-clients/drivers-support/java/run-java-application"
+                ]
+              },
+              {
+                "group": "Hibernate",
+                "pages": [
                   "drivers-and-clients/drivers-support/java/hibernate",
                   "drivers-and-clients/drivers-support/java/set-hibernate-dependency",
                   "drivers-and-clients/drivers-support/java/set-up-configuration",
                   "drivers-and-clients/drivers-support/java/run-a-hibernate"
                 ]
-              },
+              }
+            
+            ]
+          },
+          {
+
+            "group": "JavaScript",
+            "pages": [
               {
-                "group": "JavaScript",
+                "group": "Nodejs Driver",
                 "pages": [
                   "/drivers-and-clients/drivers-support/javascript/nodejs",
                   "drivers-and-clients/drivers-support/javascript/install-the-driver",
-                  "drivers-and-clients/drivers-support/javascript/run-nodejs-application",
-                  "drivers-and-clients/drivers-support/javascript/object-relation-map-tool",
+                  "drivers-and-clients/drivers-support/javascript/run-nodejs-application"
+                ]
+              },
+              "drivers-and-clients/drivers-support/javascript/object-relation-map-tool",
+             {
+                "group": "TypeORM",
+                "pages": [
                   "drivers-and-clients/drivers-support/javascript/type-orm",
                   "drivers-and-clients/drivers-support/javascript/install-orm-tools",
                   "drivers-and-clients/drivers-support/javascript/run-typeorm-application"
                 ]
-              }
+             }
             ]
           }
         ]
@@ -447,29 +494,9 @@
               {
                 "group": "System Management",
                 "pages": [
-                  {
-                    "group": "The SYSTEM command",
-                    "pages": [
-                      "sql/system-monitoring/system-management/system-command/synopsis",
-                      "sql/system-monitoring/system-management/system-command/description"
-                    ]
-                  },
-                  {
-                    "group": "SYSTEM SHUTDOWN",
-                    "pages": [
-                      "sql/system-monitoring/system-management/system-shutdown/synopsis",
-                      "sql/system-monitoring/system-management/system-shutdown/description",
-                      "sql/system-monitoring/system-management/system-shutdown/parameters"
-                    ]
-                  },
-                  {
-                    "group": "SHOW SYSTEM STATE",
-                    "pages": [
-                      "sql/system-monitoring/system-management/system-state/synopsis",
-                      "sql/system-monitoring/system-management/system-state/description",
-                      "sql/system-monitoring/system-management/system-state/parameters"
-                    ]
-                  }
+                  "sql/system-monitoring/system-management/system-command/system-command",
+                  "sql/system-monitoring/system-management/system-shutdown/system-shutdown",
+                  "sql/system-monitoring/system-management/system-state/system-state"
                 ]
               }
             ]

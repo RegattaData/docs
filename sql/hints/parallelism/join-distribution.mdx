@@ -2,7 +2,7 @@
 title: Hint - Join distribution
 ---
 
-### Synopsis:
+### Synopsis
 
 `DISTRIBUTE JOIN ([ join_alias, ] number)`
 
@@ -12,7 +12,7 @@ Like all the other hints related to joins, this hint requires an explicit join w
 
 Specifying multiple hints with the same **join_alias** and different numbers is contradictory and is not allowed. Specifying multiple hints without **join_alias** and with different numbers is contradictory and is not allowed.
 
-### Example:
+### Example
 
 ```sql 
 SELECT /*++ DISTRIBUTE JOIN (dept_join, 2) */ s.name, o.id

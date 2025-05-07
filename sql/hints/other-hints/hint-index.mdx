@@ -2,7 +2,7 @@
 title: Hint - INDEX
 ---
 
-### Synopsis:
+### Synopsis
 
 `INDEX (table_name, { COLUMN column_name | ALL | NONE } )`
 
@@ -18,7 +18,7 @@ A combination of **column_name** and `ALL` for the same table is redundant but v
 
 <Note>*Note: ‘ALL’ is in fact redundant because the current implementation always uses all the indexes it can (given there is no hint telling otherwise). But it’s added here for completeness, and in case the behavior may change at some point to be more dynamically-optimized.*</Note>
 
-### Example:
+### Example
 
 ```sql
 SELECT /*++ INDEX(o, COLUMN deptno), INDEX(s, ALL) */

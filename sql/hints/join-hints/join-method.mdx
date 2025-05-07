@@ -3,7 +3,7 @@ title: Hint - Join method
 ---
 
 
-### Synopsis:
+### Synopsis
 
 `JOIN METHOD ( [ joint_alias, ] { HASH | NL } )`
 
@@ -14,7 +14,7 @@ The **join_alias** parameter is optional. If it’s absent, the hint applies to 
 Specifying multiple hints with different methods for the same alias is contradictory and is not allowed. 
 
 
-### Example:
+### Example 
 
 ```sql
 SELECT /*++ JOIN METHOD (dept_join, HASH) */ s.name, o.id
