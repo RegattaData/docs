@@ -2,7 +2,7 @@
 title: Examples
 ---
 
-#### Basic aggregations based on groups of values:
+#### Basic aggregations based on groups of values
 
 ```sql
 SELECT SUM(o_totalprice) AS sum_of_totalprice,
@@ -20,7 +20,7 @@ ORDER BY sum_of_totalprice;
 Calculate the mathematical aggregations for any given different `o_name` value.
 
 
-#### Using the aggregation as a subquery:
+#### Using the aggregation as a subquery
 
 ```sql
 SELECT *
@@ -31,7 +31,7 @@ FROM orders
 Returns the row with the highest `o_totalprice`.
 ```
 
-#### Using the aggregation with no `GROUP BY` column:
+#### Using the aggregation with no `GROUP BY` column
 
 ```sql
 SELECT
@@ -41,7 +41,7 @@ FROM transactions;
 
 Calculate the total profit of all the different transactions.
 
-#### Count by distinct column or expression:
+#### Count by distinct column or expression
 
 ```sql
 SELECT COUNT( DISTINCT c_name) as customers FROM customers;

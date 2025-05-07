@@ -1,8 +1,24 @@
 ---
-title: Parameters
+title: SHOW SYSTEM STATE
 ---
 
-### `DETAILED`
+## Synopsis
+
+```sql
+SHOW SYSTEM STATE [ DETAILED ]
+```
+
+## Description
+
+This command is used to query the operational state of the system.
+The command returns a single row. In its basic form, the row contains a single `STATE` field, which can take one
+of the following values: `{ACTIVE, SHUTTING DOWN}`. With the
+
+
+## Parameters
+
+
+##### `DETAILED`
 
 With this optional parameter, the result contains additional columns.
 The following table lists the columns of the result, including the ones appearing in the basic view and the ones

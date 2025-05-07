@@ -18,7 +18,7 @@ By default, the Regatta client driver `AUTOCOMMIT` mode is set to ON.
 
 Important note: Passing through transaction control commands (`BEGIN/COMMIT/ROLLBACK`) as strings through the regular SQL statement API would result in an error.
 
-### Transaction control and DDL:
+### Transaction control and DDL
 
 DDL commands don't conform to the standard transaction ACID rules, therefore, they cannot be executed as part of a transaction like other SQL commands. Technically, they are executed in single-statement pseudo transactions to retain the basic protocol that encapsulates statements within transactions. But those transactions don’t provide the isolation guarantee among transactions.
 
