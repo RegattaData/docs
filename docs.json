@@ -199,11 +199,6 @@
       {
         "tab": "Drivers & Clients",
         "groups": [
-
-          {
-            "group": " ",
-            "pages": ["/on-prem-getting-started-guide/connecting-to-regatta/introduction"]
-          },
           {
             "group": "Drivers & Clients",
             "pages": [
@@ -228,7 +223,8 @@
                     "on-prem-getting-started-guide/regatta-cli/drop-table"
                   ]
                 },
-              "drivers-and-clients/drivers-support/driver-support"
+              "drivers-and-clients/drivers-support/driver-support",
+              "drivers-and-clients/drivers-support/object-relation-map-tool"
             ]
           },
           {
@@ -280,7 +276,6 @@
                   "drivers-and-clients/drivers-support/javascript/run-nodejs-application"
                 ]
               },
-              "drivers-and-clients/drivers-support/javascript/object-relation-map-tool",
              {
                 "group": "TypeORM",
                 "pages": [
