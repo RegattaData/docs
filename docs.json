@@ -14,87 +14,87 @@
         "version": "1.0",
         "tabs": [
           {
-            "tab": "Home",
+            "tab": "Documentation",
             "groups": [
               {
                 "group": " ",
                 "pages": ["home"]
+              },
+              {
+                "group": "Get Started",
+                "pages": [
+                  "prerequisites",
+                  {
+                    "group": "Regatta Platform",
+                    "pages": ["regatta-platform/regatta-platform", "regatta-platform/access-the-platform", "regatta-platform/create-a-cluster"]
+                  }
+                ]
+              },
+              {
+                "group": "Release Notes",
+                "pages": ["release-notes"]
+              },
+              {
+                "group": "Regatta Basics",
+                "pages": [
+                  {
+                    "group": "Creating a Table",
+                    "pages": ["regatta-basics/creating-a-table/create-a-table", "regatta-basics/creating-a-table/default-device-mapping", "regatta-basics/creating-a-table/selected-device-mapping"]
+                  },
+                  "regatta-basics/insert-values",
+                  "regatta-basics/select-values-from-table",
+                  "regatta-basics/update-entry",
+                  "regatta-basics/delete-entry-from-table",
+                  "regatta-basics/drop-table",
+                  "regatta-basics/credentials"
+                ]
+              },
+              {
+                "group": "Linear Scaling",
+                "pages": [
+                  "linear-scaling/linear-scaling",
+                  {
+                    "group": "Creating the Demo Environment",
+                    "pages": [
+                      "linear-scaling/creating-demo-environment/create-demo-environment",
+                      "linear-scaling/creating-demo-environment/table-schema",
+                      "linear-scaling/creating-demo-environment/creating-demo-clusters"
+                    ]
+                  },
+                  {
+                    "group": "Comparing Performance",
+                    "pages": [
+                      "linear-scaling/comparing-performance/comparing-performance",
+                      "linear-scaling/comparing-performance/xsmall-cluster",
+                      "linear-scaling/comparing-performance/medium-cluster"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Optimizing Performance",
+                "pages": [
+                  {
+                    "group": "Introduction",
+                    "pages": [
+                      "table-index-best-practices/introduction/introduction",
+                      "table-index-best-practices/introduction/structure-regatta-cluster",
+                      "table-index-best-practices/introduction/data-distribution-table",
+                      "table-index-best-practices/introduction/data-distribution-index",
+                      "table-index-best-practices/introduction/sql-statement"
+                    ]
+                  },
+                  "table-index-best-practices/distributing-tables",
+                  "table-index-best-practices/distributing-indexes",
+                  "table-index-best-practices/other-index",
+                  "table-index-best-practices/other-limitations",
+                  "table-index-best-practices/closing-remarks",
+                  "table-index-best-practices/references"
+                ]
               }
             ]
 
           },
-      {
-        "tab": "Getting Started",
-        
-        "groups": [
-          {
-            "group": "Get Started",
-            "pages": [
-              "prerequisites",
-              {
-                "group": "Regatta Platform",
-                "pages": ["regatta-platform/regatta-platform", "regatta-platform/access-the-platform", "regatta-platform/create-a-cluster"]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Release Notes",
-        "groups": [
-          {
-            "group": "Release Notes",
-            "pages": ["release-notes"]
-          }
-        ]
-      },
-      {
-        "tab": "Regatta Basics",
-        "groups": [
-        {
-          "group": "Regatta Basics",
-          "pages": [
-            {
-              "group": "Creating a Table",
-              "pages": ["regatta-basics/creating-a-table/create-a-table", "regatta-basics/creating-a-table/default-device-mapping", "regatta-basics/creating-a-table/selected-device-mapping"]
-            },
-            "regatta-basics/insert-values",
-            "regatta-basics/select-values-from-table",
-            "regatta-basics/update-entry",
-            "regatta-basics/delete-entry-from-table",
-            "regatta-basics/drop-table",
-            "regatta-basics/credentials"
-          ]
-        }
-      ]
-      },
-      {
-        "tab": "Linear Scaling",
-        "groups":[
-          {
-            "group": "Linear Scaling",
-            "pages": [
-              "linear-scaling/linear-scaling",
-              {
-                "group": "Creating the Demo Environment",
-                "pages": [
-                  "linear-scaling/creating-demo-environment/create-demo-environment",
-                  "linear-scaling/creating-demo-environment/table-schema",
-                  "linear-scaling/creating-demo-environment/creating-demo-clusters"
-                ]
-              },
-              {
-                "group": "Comparing Performance",
-                "pages": [
-                  "linear-scaling/comparing-performance/comparing-performance",
-                  "linear-scaling/comparing-performance/xsmall-cluster",
-                  "linear-scaling/comparing-performance/medium-cluster"
-                ]
-              }
-            ]
-          }
-        ]
-      },
       {
         "tab": "Cloud Deployments",
         "groups": [
@@ -502,32 +502,6 @@
               "sql/appendices/indentifiers-limitations",
               "sql/appendices/database-limitations",
               "sql/appendices/reserved-words"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Optimizing Performance",
-        "groups": [
-          {
-            "group": "Optimizing Performance",
-            "pages": [
-              {
-                "group": "Introduction",
-                "pages": [
-                  "table-index-best-practices/introduction/introduction",
-                  "table-index-best-practices/introduction/structure-regatta-cluster",
-                  "table-index-best-practices/introduction/data-distribution-table",
-                  "table-index-best-practices/introduction/data-distribution-index",
-                  "table-index-best-practices/introduction/sql-statement"
-                ]
-              },
-              "table-index-best-practices/distributing-tables",
-              "table-index-best-practices/distributing-indexes",
-              "table-index-best-practices/other-index",
-              "table-index-best-practices/other-limitations",
-              "table-index-best-practices/closing-remarks",
-              "table-index-best-practices/references"
             ]
           }
         ]
