@@ -307,19 +307,19 @@
               {
                 "group": "Regatta Platform",
                 "pages": [
-                  "cloud-deployment/regatta-platform/regatta-cloud",
-                  "cloud-deployment/regatta-platform/access-the-cloud",
-                  "cloud-deployment/regatta-platform/create-a-cluster",
-                  "/cloud-deployment/regatta-platform/delete-cluster",
-                  "/cloud-deployment/regatta-platform/cluster-ip"
+                  "regatta-cloud/regatta-cloud/regatta-cloud",
+                  "regatta-cloud/regatta-cloud/access-the-cloud",
+                  "regatta-cloud/regatta-cloud/create-a-cluster",
+                  "regatta-cloud/regatta-cloud/delete-cluster",
+                  "regatta-cloud/regatta-cloud/cluster-ip"
                 ]
               },
               {
                 "group": "Database Backup and Restore",
                 "pages": [
-                  "cloud-deployment/database-backup-restore",
-                  "cloud-deployment/backup",
-                  "cloud-deployment/restore"
+                  "regatta-cloud/database-backup-restore",
+                  "regatta-cloud/backup",
+                  "regatta-cloud/restore"
                 ]
               }
             ]
