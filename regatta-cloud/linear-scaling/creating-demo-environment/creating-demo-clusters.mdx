@@ -1,0 +1,69 @@
+---
+title: Creating Demo Clusters
+---
+
+Now for the 2 clusters.
+
+The first cluster will be **demo-xsmal** which is the same type of cluster used previously - a single 
+node cluster with a single device. The other cluster will be **demo-medium** which is comprised 
+of 10 nodes of the same type as **demo-xsmall.** 
+
+To deploy **demo-xsmall,** follow the steps described in Creating a Cluster, select the XSMALL 
+cluster type, but this time switch on the **Deploy Demo Data** button as can be seen in the 
+screenshot below:
+
+<Frame caption="Figure 37 Create demo clusters.">
+  <img src="/images/36.png" />
+</Frame>
+
+Repeat the same steps for **demo-medium** but this time select the MEDIUM type.
+Deploying the clusters will take roughly 10 minutes.
+
+Once completed, each of the clusters will have the three populated tables described in Tables’ 
+Schemas. 
+
+Let’s see the number of nodes for each cluster. Just run the following command for each of the 
+clusters in its respective CLI:
+
+```SQL
+SHOW NODES
+```
+
+For each we will see the nodes comprising it.
+
+For **demo-xsmall**
+
+<Frame caption="Figure 38 SHOW NODES demo-xsmall.">
+  <img src="/images/37.png" />
+</Frame>
+
+There’s a single node in the cluster.
+
+For **demo-medium:**
+
+<Frame caption="Figure 39 SHOW NODES demo-medium.">
+  <img src="/images/38.png" />
+</Frame>
+
+Indeed, there are 10 nodes though you will need to scroll down to see the 10th one).
+
+Both tables in both clusters are now populated with the same data. 20 million rows in each 
+table. Performing the following command for each of the tables (namely, Customers and
+Purchases) will show that. 
+
+```SQL
+SELECT COUNT (*) FROM <table-name>
+```
+
+From **demo-xsmall:**
+
+<Frame caption="Figure 40 SELECT COUNT (*) FROM <table-name> for demo-xsmall.">
+  <img src="/images/39.png" />
+</Frame>
+
+From **demo-medium:**
+
+<Frame caption="Figure 41 SELECT COUNT (*) FROM <table-name> for demo-medium.">
+  <img src="/images/40.png" />
+</Frame>
+

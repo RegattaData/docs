@@ -1,0 +1,57 @@
+---
+title: Selected Device Mapping
+---
+
+If you do decide to select the devices to where the table will be mapped, you may specify them. 
+
+NOTE: It’s an all-or-nothing option. You cannot specify the devices for the table and let Regatta 
+select the devices for the indexes. If you decide to specify mapping, then you need to add all 
+required mapping.
+
+The first command should display the devices that are used in the cluster.
+We enter SHOW DEVICES in the CLI command line:
+
+```SQL
+SHOW DEVICES
+```
+
+Then press SEND. In return we get the following:
+
+<Frame caption="Figure 10 SHOW DEVICES">
+  <img src="/images/10.png" />
+</Frame>
+
+The next command will be the CREATE TABLE command. This command will look as follows 
+(note the usage of the devices). Let’s create a similar table called **workers.** Enter the following 
+command:
+
+```SQL
+CREATE TABLE workers (
+ worker_key INT PRIMARY KEY INDEX WITH (devices = (m10d1)),
+ worker_name VARCHAR(40) NOT NULL,
+ worker_salary INT,
+ worker_department VARCHAR(50) NOT NULL)
+WITH (devices = (m10d1))
+```
+
+Running it will create the desired table.
+
+<Frame caption="Figure 11 CREATE TABLE mapped devices.">
+  <img src="/images/11.png" />
+</Frame>
+
+Enter the SQL command:
+
+```SQL
+SHOW TABLES
+```
+
+In response, the following will be displayed:
+
+<Frame caption="Figure 12 Mapped devices table created.">
+  <img src="/images/12.jpg" />
+</Frame>
+
+We can see the table with all the columns and the device mapping. 
+
+We will continue here using the **employees** table.
