@@ -29,13 +29,13 @@
         
         "groups": [
           {
-            "group": "Get Started",
+            "group": "Getting Started",
             "pages": [
               {
-                "group": "Regatta Platform",
-                "pages": ["regatta-platform/regatta-platform", "regatta-platform/access-the-platform", "regatta-platform/create-a-cluster"]
+                "group": "Regatta Cloud",
+                "pages": ["getting-started/regatta-cloud/regatta-cloud", "getting-started/regatta-cloud/access-the-cloud", "getting-started/regatta-cloud/create-a-cluster"]
               },
-              "prerequisites"
+              "getting-started/prerequisites"
             ]
           },
           {
@@ -43,34 +43,34 @@
             "pages": [
               {
                 "group": "Creating a table",
-                "pages": ["regatta-basics/creating-a-table/create-a-table", "regatta-basics/creating-a-table/default-device-mapping", "regatta-basics/creating-a-table/selected-device-mapping"]
+                "pages": ["regatta-cloud/regatta-basics/creating-a-table/create-a-table", "getting-started/regatta-basics/creating-a-table/default-device-mapping", "getting-started/regatta-basics/creating-a-table/selected-device-mapping"]
               },
-              "regatta-basics/insert-values",
-              "regatta-basics/select-values-from-table",
-              "regatta-basics/update-entry",
-              "regatta-basics/delete-entry-from-table",
-              "regatta-basics/drop-table",
-              "regatta-basics/credentials"
+              "getting-started/regatta-basics/insert-values",
+              "getting-started/regatta-basics/select-values-from-table",
+              "getting-started/regatta-basics/update-entry",
+              "getting-started/regatta-basics/delete-entry-from-table",
+              "getting-started/regatta-basics/drop-table",
+              "getting-started/regatta-basics/credentials"
             ]
           },
           {
             "group": "Linear Scaling",
             "pages": [
-              "linear-scaling/linear-scaling",
+              "getting-started/linear-scaling/linear-scaling",
               {
                 "group": "Creating the Demo Environment",
                 "pages": [
-                  "linear-scaling/creating-demo-environment/create-demo-environment",
-                  "linear-scaling/creating-demo-environment/table-schema",
-                  "linear-scaling/creating-demo-environment/creating-demo-clusters"
+                  "getting-started/linear-scaling/creating-demo-environment/create-demo-environment",
+                  "getting-started/linear-scaling/creating-demo-environment/table-schema",
+                  "getting-started/linear-scaling/creating-demo-environment/creating-demo-clusters"
                 ]
               },
               {
                 "group": "Comparing Performance",
                 "pages": [
-                  "linear-scaling/comparing-performance/comparing-performance",
-                  "linear-scaling/comparing-performance/xsmall-cluster",
-                  "linear-scaling/comparing-performance/medium-cluster"
+                  "getting-started/linear-scaling/comparing-performance/comparing-performance",
+                  "getting-started/linear-scaling/comparing-performance/xsmall-cluster",
+                  "getting-started/linear-scaling/comparing-performance/medium-cluster"
                 ]
               }
             ]
@@ -110,36 +110,36 @@
           },
           {
             "group": "SQL Syntax Conventions",
-            "pages": ["sql/sql-syntax-convention/sql-syntax-convention"]
+            "pages": ["sql/sql-syntax-convention"]
           },
           {
             "group": "Data Definition Language (DDL) Commands",
             "pages": [
-              "sql/ddl-commands/create-table/create-table",
-              "sql/ddl-commands/alter-table/alter-table",
-              "sql/ddl-commands/drop-table/drop-table"
+              "sql/ddl-commands/create-table",
+              "sql/ddl-commands/alter-table",
+              "sql/ddl-commands/drop-table"
             ]
           },
           {
             "group": "Data Manipulation Language Commands",
             "pages": [
-              "sql/dml-commands/insert/insert",
-              "sql/dml-commands/update/update",
-              "sql/dml-commands/delete/delete"
+              "sql/dml-commands/insert",
+              "sql/dml-commands/update",
+              "sql/dml-commands/delete"
             ]
           },
           {
             "group": "Transaction Control Language Commands",
             "pages": [
               "sql/tcl-commands/tcl-commands",
-              "sql/tcl-commands/set-transaction/set-transaction"
+              "sql/tcl-commands/set-transaction"
             ]
           },
           {
             "group": "Data Query Language",
             "pages": [
-              "sql/dql/select/select",
-              "sql/dql/explain/explain"
+              "sql/dql/select",
+              "sql/dql/explain"
             ]
           },
           {
@@ -235,9 +235,9 @@
           {
             "group": "Managing Users",
             "pages": [
-              "sql/managing-users/create-user/create-user",
-              "sql/managing-users/alter-user/alter-user",
-              "sql/managing-users/drop-user/drop-user"
+              "sql/managing-users/create-user",
+              "sql/managing-users/alter-user",
+              "sql/managing-users/drop-user"
             ]
           },
           {
@@ -279,9 +279,9 @@
               {
                 "group": "System Management",
                 "pages": [
-                  "sql/system-monitoring/system-management/system-command/system-command",
-                  "sql/system-monitoring/system-management/system-shutdown/system-shutdown",
-                  "sql/system-monitoring/system-management/system-state/system-state"
+                  "sql/system-monitoring/system-management/system-command",
+                  "sql/system-monitoring/system-management/system-shutdown",
+                  "sql/system-monitoring/system-management/system-state"
                 ]
               }
             ]
@@ -304,18 +304,18 @@
               "group": "Regatta Platform",
               "pages": 
               [
-                "cloud-deployment/regatta-platform/regatta-platform", 
-                "cloud-deployment/regatta-platform/access-the-platform", 
-                "cloud-deployment/regatta-platform/create-a-cluster",
-                "/cloud-deployment/regatta-platform/delete-cluster",
-                "/cloud-deployment/regatta-platform/cluster-ip"
+                "regatta-cloud/regatta-cloud/regatta-cloud", 
+                "regatta-cloud/regatta-cloud/access-the-cloud", 
+                "regatta-cloud/regatta-cloud/create-a-cluster",
+                "regatta-cloud/regatta-cloud/delete-cluster",
+                "regatta-cloud/regatta-cloud/cluster-ip"
               ]
             
           },
           {
             "group": "Database Backup and Restore",
             "pages": [
-                "cloud-deployment/database-backup-restore", "cloud-deployment/backup", "cloud-deployment/restore"
+                "regatta-cloud/database-backup-restore", "regatta-cloud/backup", "regatta-cloud/restore"
 
             ]
             
@@ -324,75 +324,75 @@
         ]
       },
       {
-        "anchor": "Self-Hosted Deployments",
+        "anchor": "Self-Hosted",
         "icon": "server",
         "groups": [
           {
             "group": "Scripted Solution",
             "pages": [
-              "deployment-guide/prerequisites"
+              "self-hosted/prerequisites"
             ]
           },
           {
             "group": "Manual Deployment",
             "pages": [
-              "deployment-guide/manual-deployment/manual-deployment",
-              "deployment-guide/manual-deployment/user-setup",
+              "self-hosted/manual-deployment/manual-deployment",
+              "self-hosted/manual-deployment/user-setup",
               {
                 "group": "Regatta Configuration",
                 "pages": [
-                  "deployment-guide/manual-deployment/regatta-configuration/regatta-configuration",
-                  "deployment-guide/manual-deployment/regatta-configuration/rdb",
-                  "deployment-guide/manual-deployment/regatta-configuration/sequencer",
-                  "deployment-guide/manual-deployment/regatta-configuration/dcm",
-                  "deployment-guide/manual-deployment/regatta-configuration/gdd"
+                  "self-hosted/manual-deployment/regatta-configuration/regatta-configuration",
+                  "self-hosted/manual-deployment/regatta-configuration/rdb",
+                  "self-hosted/manual-deployment/regatta-configuration/sequencer",
+                  "self-hosted/manual-deployment/regatta-configuration/dcm",
+                  "self-hosted/manual-deployment/regatta-configuration/gdd"
                 ]
               },
               {
                 "group": "Configuration File",
                 "pages": [
-                  "deployment-guide/manual-deployment/configuration-file/configuration-file",
-                  "deployment-guide/manual-deployment/configuration-file/configuration-file-example",
-                  "deployment-guide/manual-deployment/configuration-file/main-configuration-top-part",
-                  "deployment-guide/manual-deployment/configuration-file/unique-module-configuration"
+                  "self-hosted/manual-deployment/configuration-file/configuration-file",
+                  "self-hosted/manual-deployment/configuration-file/configuration-file-example",
+                  "self-hosted/manual-deployment/configuration-file/main-configuration-top-part",
+                  "self-hosted/manual-deployment/configuration-file/unique-module-configuration"
                 ]
               },
-              "deployment-guide/manual-deployment/filewall",
-              "deployment-guide/manual-deployment/starting-the-system",
-              "deployment-guide/manual-deployment/cli-and-drivers",
-              "deployment-guide/manual-deployment/configuration-template-file"
+              "self-hosted/manual-deployment/filewall",
+              "self-hosted/manual-deployment/starting-the-system",
+              "self-hosted/manual-deployment/cli-and-drivers",
+              "self-hosted/manual-deployment/configuration-template-file"
             ]
           },
           {
             "group": "Scripted Solution",
             "pages": [
-              "deployment-guide/scripted-solution/scripted-solution",
-              "deployment-guide/scripted-solution/setup",
-              "deployment-guide/scripted-solution/configjson",
-              "deployment-guide/scripted-solution/setup-cluster"
+              "self-hosted/scripted-solution/scripted-solution",
+              "self-hosted/scripted-solution/setup",
+              "self-hosted/scripted-solution/configjson",
+              "self-hosted/scripted-solution/setup-cluster"
             ]
           },
           {
             "group": "Hybrid Deployment",
             "pages": [
-              "deployment-guide/hybrid-deployment/hybrid-deployment",
-              "deployment-guide/hybrid-deployment/process",
-              "deployment-guide/hybrid-deployment/inventory",
-              "deployment-guide/hybrid-deployment/configuration",
-              "deployment-guide/hybrid-deployment/start"
+              "self-hosted/hybrid-deployment/hybrid-deployment",
+              "self-hosted/hybrid-deployment/process",
+              "self-hosted/hybrid-deployment/inventory",
+              "self-hosted/hybrid-deployment/configuration",
+              "self-hosted/hybrid-deployment/start"
             ]
           },
           {
             "group": "Support",
             "pages": [
-              "deployment-guide/support/support",
+              "self-hosted/support/support",
               {
                 "group": "Collecting Data",
                 "pages": [
-                  "deployment-guide/support/collect-data-script/collect-data-script",
-                  "deployment-guide/support/collect-data-script/prerequisites",
-                  "deployment-guide/support/collect-data-script/setup",
-                  "deployment-guide/support/collect-data-script/execution"
+                  "self-hosted/support/collect-data-script/collect-data-script",
+                  "self-hosted/support/collect-data-script/prerequisites",
+                  "self-hosted/support/collect-data-script/setup",
+                  "self-hosted/support/collect-data-script/execution"
                 ]
               }
             ]
@@ -409,22 +409,22 @@
               {
                   "group": "Connecting to Regatta",
                   "pages": [
-                    "on-prem-getting-started-guide/connecting-to-regatta/connecting-to-regatta",
-                        "on-prem-getting-started-guide/connecting-to-regatta/regatta-client",
-                        "on-prem-getting-started-guide/connecting-to-regatta/regatta-connect"
+                    "drivers-and-clients/connecting-to-regatta/connecting-to-regatta/connecting-to-regatta",
+                        "drivers-and-clients/connecting-to-regatta/connecting-to-regatta/regatta-client",
+                        "drivers-and-clients/connecting-to-regatta/connecting-to-regatta/regatta-connect"
                   ]
               },
               {
                   "group": "Regatta CLI",
                   "pages": [
-                    "on-prem-getting-started-guide/regatta-cli/regatta-cli",
-                    "on-prem-getting-started-guide/regatta-cli/connecting-to-cli",
-                    "on-prem-getting-started-guide/regatta-cli/creating-a-table",
-                    "on-prem-getting-started-guide/regatta-cli/insert-values",
-                    "on-prem-getting-started-guide/regatta-cli/select-values-from-table",
-                    "on-prem-getting-started-guide/regatta-cli/update-entry",
-                    "on-prem-getting-started-guide/regatta-cli/delete-entry-from-table",
-                    "on-prem-getting-started-guide/regatta-cli/drop-table"
+                    "drivers-and-clients/connecting-to-regatta/regatta-cli/regatta-cli",
+                    "drivers-and-clients/connecting-to-regatta/regatta-cli/connecting-to-cli",
+                    "drivers-and-clients/connecting-to-regatta/regatta-cli/creating-a-table",
+                    "drivers-and-clients/connecting-to-regatta/regatta-cli/insert-values",
+                    "drivers-and-clients/connecting-to-regatta/regatta-cli/select-values-from-table",
+                    "drivers-and-clients/connecting-to-regatta/regatta-cli/update-entry",
+                    "drivers-and-clients/connecting-to-regatta/regatta-cli/delete-entry-from-table",
+                    "drivers-and-clients/connecting-to-regatta/regatta-cli/drop-table"
                   ]
                 },
               "drivers-and-clients/drivers-support/driver-support",
@@ -502,19 +502,19 @@
               {
                 "group": "Introduction",
                 "pages": [
-                  "table-index-best-practices/introduction/introduction",
-                  "table-index-best-practices/introduction/structure-regatta-cluster",
-                  "table-index-best-practices/introduction/data-distribution-table",
-                  "table-index-best-practices/introduction/data-distribution-index",
-                  "table-index-best-practices/introduction/sql-statement"
+                  "optimizing-performance/introduction/introduction",
+                  "optimizing-performance/introduction/structure-regatta-cluster",
+                  "optimizing-performance/introduction/data-distribution-table",
+                  "optimizing-performance/introduction/data-distribution-index",
+                  "optimizing-performance/introduction/sql-statement"
                 ]
               },
-              "table-index-best-practices/distributing-tables",
-              "table-index-best-practices/distributing-indexes",
-              "table-index-best-practices/other-index",
-              "table-index-best-practices/other-limitations",
-              "table-index-best-practices/closing-remarks",
-              "table-index-best-practices/references"
+              "optimizing-performance/distributing-tables",
+              "optimizing-performance/distributing-indexes",
+              "optimizing-performance/other-index",
+              "optimizing-performance/other-limitations",
+              "optimizing-performance/closing-remarks",
+              "optimizing-performance/references"
             ]
           }
         ]
