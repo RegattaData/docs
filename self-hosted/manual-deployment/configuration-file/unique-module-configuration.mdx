@@ -1,0 +1,34 @@
+---
+title: Unique Module Configuration 
+---
+
+As stated previously, the bottom 3 lines are unique per module. The lines are (as an example):
+
+- core_total_ram_budget_for_module_mb = 29908
+- ranger_dev_num=1
+- core_pdbg_port=5004
+
+These 3 lines should be set as follows:
+
+### core_total_ram_budget_for_module_mb
+
+The capacity which is dedicated to the module in MB. The guidelines are:
+
+1. Decrease the total capacity by 1 GB for the OS usage
+2. For the GDD, DCM, Sequencer dedicate at least 300MB each
+3. For the RDB dedicate whatever is left on the server.
+
+For example, in a system with 20GB RAM, if there’s only an RDB installed – the RAM budget will 
+be 19GB for the RDB module. If there are also GDD, Sequencer and DCM, give each 300MB, and 
+the rest of the RAM, 18.1GB, will go to the RDB.
+
+Do that by updating the configuration file for each module accordingly.
+
+### ranger_dev_num
+
+Leave it set to 1.
+
+### core_pdbg_port
+
+This number should be unique for each module in the server and should be a number in the 
+range of 5000 and above.

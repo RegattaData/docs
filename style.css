@@ -1,0 +1,17 @@
+.max-w-8xl {
+    max-width: none;
+}
+
+#sidebar-content::-webkit-scrollbar {
+    display: none;
+  } 
+
+  #sidebar-content {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+#sidebar-title {
+    color: #ff6600
+}
+ 

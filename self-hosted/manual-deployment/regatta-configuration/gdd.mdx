@@ -1,0 +1,32 @@
+---
+title: GDD- Global Deadlock Detector
+---
+
+The GDD module is responsible for detecting circular distributed dependencies between 
+transactions in the system and resolving them.
+
+When setting up the Regatta Cluster you will need to determine what modules will reside where. 
+You may have an RDB on each of the servers. The other modules should be deployed only once.
+
+The recommended configuration is:
+- RDB – on all server
+- GDD, DCM, Sequencer – all on the same server alongside one of the RDBs
+
+Once decided, please distribute the different RPMs according to selected configurations.
+
+The RPMs are located in the package you received from Regatta support. Save it in a desired 
+directory and open it. The RPMs will be located under
+
+```
+./deploy/ansible/roles/regatta.rdb/files
+```
+Install the RPMs using the following command:
+
+```javascript
+sudo yum install <path/to/regatta_rpm>
+```
+
+Where `<path/to/>` is the full or relative path to where the rpm was saved on.
+
+Once completed, the installation of the RPM will also include an example configuration file
+called cluster.template for each module.
