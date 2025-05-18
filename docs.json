@@ -63,21 +63,21 @@
               {
                 "group": "Linear Scaling",
                 "pages": [
-                  "linear-scaling/linear-scaling",
+                  "regatta-cloud/linear-scaling/linear-scaling",
                   {
                     "group": "Creating the Demo Environment",
                     "pages": [
-                      "linear-scaling/creating-demo-environment/create-demo-environment",
-                      "linear-scaling/creating-demo-environment/table-schema",
-                      "linear-scaling/creating-demo-environment/creating-demo-clusters"
+                      "regatta-cloud/linear-scaling/creating-demo-environment/create-demo-environment",
+                      "regatta-cloud/linear-scaling/creating-demo-environment/table-schema",
+                      "regatta-cloud/linear-scaling/creating-demo-environment/creating-demo-clusters"
                     ]
                   },
                   {
                     "group": "Comparing Performance",
                     "pages": [
-                      "linear-scaling/comparing-performance/comparing-performance",
-                      "linear-scaling/comparing-performance/xsmall-cluster",
-                      "linear-scaling/comparing-performance/medium-cluster"
+                      "regatta-cloud/linear-scaling/comparing-performance/comparing-performance",
+                      "regatta-cloud/linear-scaling/comparing-performance/xsmall-cluster",
+                      "regatta-cloud/linear-scaling/comparing-performance/medium-cluster"
                     ]
                   }
                 ]
@@ -117,34 +117,34 @@
               },
               {
                 "group": "SQL Syntax Conventions",
-                "pages": ["sql/sql-syntax-convention/sql-syntax-convention"]
+                "pages": ["sql/sql-syntax-convention"]
               },
               {
                 "group": "Data Definition Language (DDL) Commands",
                 "pages": [
-                  "sql/ddl-commands/create-table/create-table",
-                  "sql/ddl-commands/alter-table/alter-table",
-                  "sql/ddl-commands/drop-table/drop-table"
+                  "sql/ddl-commands/create-table",
+                  "sql/ddl-commands/alter-table",
+                  "sql/ddl-commands/drop-table"
                 ]
               },
               {
                 "group": "Data Manipulation Language Commands",
                 "pages": [
-                  "sql/dml-commands/insert/insert",
-                  "sql/dml-commands/update/update",
-                  "sql/dml-commands/delete/delete"
+                  "sql/dml-commands/insert",
+                  "sql/dml-commands/update",
+                  "sql/dml-commands/delete"
                 ]
               },
               {
                 "group": "Transaction Control Language Commands",
                 "pages": [
                   "sql/tcl-commands/tcl-commands",
-                  "sql/tcl-commands/set-transaction/set-transaction"
+                  "sql/tcl-commands/set-transaction"
                 ]
               },
               {
                 "group": "Data Query Language",
-                "pages": ["sql/dql/select/select", "sql/dql/explain/explain"]
+                "pages": ["sql/dql/select", "sql/dql/explain"]
               },
               {
                 "group": "Hints",
@@ -239,9 +239,9 @@
               {
                 "group": "Managing Users",
                 "pages": [
-                  "sql/managing-users/create-user/create-user",
-                  "sql/managing-users/alter-user/alter-user",
-                  "sql/managing-users/drop-user/drop-user"
+                  "sql/managing-users/create-user",
+                  "sql/managing-users/alter-user",
+                  "sql/managing-users/drop-user"
                 ]
               },
               {
@@ -283,9 +283,9 @@
                   {
                     "group": "System Management",
                     "pages": [
-                      "sql/system-monitoring/system-management/system-command/system-command",
-                      "sql/system-monitoring/system-management/system-shutdown/system-shutdown",
-                      "sql/system-monitoring/system-management/system-state/system-state"
+                      "sql/system-monitoring/system-management/system-command",
+                      "sql/system-monitoring/system-management/system-shutdown",
+                      "sql/system-monitoring/system-management/system-state"
                     ]
                   }
                 ]
@@ -408,22 +408,22 @@
                   {
                     "group": "Connecting to Regatta",
                     "pages": [
-                      "drivers-and-clients/connecting-to-regatta/connecting-to-regatta",
-                      "drivers-and-clients/connecting-to-regatta/regatta-client",
-                      "drivers-and-clients/connecting-to-regatta/regatta-connect"
+                      "on-prem-getting-started-guide/connecting-to-regatta/connecting-to-regatta",
+                      "on-prem-getting-started-guide/connecting-to-regatta/regatta-client",
+                      "on-prem-getting-started-guide/connecting-to-regatta/regatta-connect"
                     ]
                   },
                   {
                     "group": "Regatta CLI",
                     "pages": [
-                      "drivers-and-clients/regatta-cli/regatta-cli",
-                      "drivers-and-clients/regatta-cli/connecting-to-cli",
-                      "drivers-and-clients/regatta-cli/creating-a-table",
-                      "drivers-and-clients/regatta-cli/insert-values",
-                      "drivers-and-clients/regatta-cli/select-values-from-table",
-                      "drivers-and-clients/regatta-cli/update-entry",
-                      "drivers-and-clients/regatta-cli/delete-entry-from-table",
-                      "drivers-and-clients/regatta-cli/drop-table"
+                      "on-prem-getting-started-guide/regatta-cli/regatta-cli",
+                      "on-prem-getting-started-guide/regatta-cli/connecting-to-cli",
+                      "on-prem-getting-started-guide/regatta-cli/creating-a-table",
+                      "on-prem-getting-started-guide/regatta-cli/insert-values",
+                      "on-prem-getting-started-guide/regatta-cli/select-values-from-table",
+                      "on-prem-getting-started-guide/regatta-cli/update-entry",
+                      "on-prem-getting-started-guide/regatta-cli/delete-entry-from-table",
+                      "on-prem-getting-started-guide/regatta-cli/drop-table"
                     ]
                   },
                   "drivers-and-clients/drivers-support/driver-support",
@@ -490,28 +490,28 @@
             ]
           },
           {
-            "anchor": "Tuning Performance",
+            "anchor": "Optimizing Performance",
             "icon": "rocket",
             "groups": [
               {
-                "group": "Tuning Performance",
+                "group": "Optimizing Performance",
                 "pages": [
                   {
                     "group": "Introduction",
                     "pages": [
-                      "tuning-performance/introduction/introduction",
-                      "tuning-performance/introduction/structure-regatta-cluster",
-                      "tuning-performance/introduction/data-distribution-table",
-                      "tuning-performance/introduction/data-distribution-index",
-                      "tuning-performance/introduction/sql-statement"
+                      "table-index-best-practices/introduction/introduction",
+                      "table-index-best-practices/introduction/structure-regatta-cluster",
+                      "table-index-best-practices/introduction/data-distribution-table",
+                      "table-index-best-practices/introduction/data-distribution-index",
+                      "table-index-best-practices/introduction/sql-statement"
                     ]
                   },
-                  "tuning-performance/distributing-tables",
-                  "tuning-performance/distributing-indexes",
-                  "tuning-performance/other-index",
-                  "tuning-performance/other-limitations",
-                  "tuning-performance/closing-remarks",
-                  "tuning-performance/references"
+                  "table-index-best-practices/distributing-tables",
+                  "table-index-best-practices/distributing-indexes",
+                  "table-index-best-practices/other-index",
+                  "table-index-best-practices/other-limitations",
+                  "table-index-best-practices/closing-remarks",
+                  "table-index-best-practices/references"
                 ]
               }
             ]
