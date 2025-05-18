@@ -29,13 +29,13 @@
         
         "groups": [
           {
-            "group": "Get Started",
+            "group": "Getting Started",
             "pages": [
               {
-                "group": "Regatta Platform",
-                "pages": ["regatta-platform/regatta-platform", "regatta-platform/access-the-platform", "regatta-platform/create-a-cluster"]
+                "group": "Regatta Cloud",
+                "pages": ["regatta-cloud/regatta-cloud", "regatta-cloud/access-the-platform", "regatta-cloud/create-a-cluster"]
               },
-              "prerequisites"
+              "regatta-cloud/prerequisites"
             ]
           },
           {
@@ -43,14 +43,14 @@
             "pages": [
               {
                 "group": "Creating a table",
-                "pages": ["regatta-basics/creating-a-table/create-a-table", "regatta-basics/creating-a-table/default-device-mapping", "regatta-basics/creating-a-table/selected-device-mapping"]
+                "pages": ["regatta-cloud/regatta-basics/creating-a-table/create-a-table", "regatta-cloud/regatta-basics/creating-a-table/default-device-mapping", "regatta-cloud/regatta-basics/creating-a-table/selected-device-mapping"]
               },
-              "regatta-basics/insert-values",
-              "regatta-basics/select-values-from-table",
-              "regatta-basics/update-entry",
-              "regatta-basics/delete-entry-from-table",
-              "regatta-basics/drop-table",
-              "regatta-basics/credentials"
+              "regatta-cloud/regatta-basics/insert-values",
+              "regatta-cloud/regatta-basics/select-values-from-table",
+              "regatta-cloud/regatta-basics/update-entry",
+              "regatta-cloud/regatta-basics/delete-entry-from-table",
+              "regatta-cloud/regatta-basics/drop-table",
+              "regatta-cloud/regatta-basics/credentials"
             ]
           },
           {
