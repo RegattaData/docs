@@ -1,0 +1,64 @@
+---
+title: Structure of a Regatta cluster
+---
+
+A Regatta cluster runs on one or more nodes.  A node may be a bare-metal server or a virtual machine.  
+
+Within the nodes, a cluster of software modules runs the database operations.  One or more modules may be placed in each node.  Regatta has several different module types performing different functionalities.  The _RDB_ module holds tables and indexes and runs transactions.  There are several other modules dedicated to other cluster-wide tasks but for the sake of this document we only care about the RDB modules.  Each RDB module runs on a separate Regatta node.
+
+The storage devices on the nodes running the RDB modules are used for storing table data (rows) and indexes.  In the example cluster below, devices are named by their module number and then the device number within that module.  For example, m3d2 is a device attached to the node running module number 3.
+
+### Finding information on nodes, modules and devices
+
+The example output below shows a cluster with 3 RDB modules on 3 nodes.  The RDB modules have IDs 3, 4 and 5, running on nodes 0, 1 and 2 respectively.
+
+```sql
+rdb> show modules;
+statement executed successfully
+| MODULE_ROLE | MODULE_ID | NODE_NAME | MODULE_VERSION |
+--------------------------------------------------------
+| DCM         |         2 | node_0    | 0.0.0.0        |
+| GDD         |         1 | node_0    | 0.0.0.0        |
+| RDB         |         3 | node_0    | 0.0.0.0        |
+| RDB         |         4 | node_1    | 0.0.0.0        |
+| RDB         |         5 | node_2    | 0.0.0.0        |
+| Sequencer   |         0 | node_0    | 0.0.0.0        |
+rdb>
+```
+
+In this cluster, each RDB module has 3 devices, each 64TB, as can be seen in the following query:
+
+```sql
+rdb> show devices;
+statement executed successfully
+| DEVICE_ID | MODULE_ID | CAPACITY    | TYPE         |
+------------------------------------------------------
+| m3d0      |         3 | 64424509440 | fast_devices |
+| m3d1      |         3 | 64424509440 | fast_devices |
+| m3d2      |         3 | 64424509440 | fast_devices |
+| m4d0      |         4 | 64424509440 | fast_devices |
+| m4d1      |         4 | 64424509440 | fast_devices |
+| m4d2      |         4 | 64424509440 | fast_devices |
+| m5d0      |         5 | 64424509440 | fast_devices |
+| m5d1      |         5 | 64424509440 | fast_devices |
+| m5d2      |         5 | 64424509440 | fast_devices |
+rdb>
+```
+
+The following query shows the current metrics for device m3d1.  The values for both its “metadata consumption percentage” and “row data consumption percentage” are 0, meaning the device is currently empty.  The device would be full when these two metrics sum to 100.  As shown in the other fields, the device is currently performing 342 writes per second with 1,274 KB/sec throughput, and no reads.
+
+```sql
+rdb> show device metrics in device m3d1;
+statement executed successfully
+| METRIC_NAME                            | METRIC_ID | MODULE_ID | DEVICE_ID | VALUE | …
+-------------------------------------------------------------------------------------- …
+| Device metadata consumption percentage |      1001 |         3 |         1 |     0 | …
+| Device read rate                       |      1002 |         3 |         1 |     0 | …
+| Device read throughput                 |      1004 |         3 |         1 |     0 | …
+| Device row data consumption percentage |      1000 |         3 |         1 |     0 | …
+| Device write rate                      |      1003 |         3 |         1 |   342 | …
+| Device write throughput                |      1005 |         3 |         1 |  1274 | …
+rdb>
+```
+
+(Output truncated to make the lines presentable here.)

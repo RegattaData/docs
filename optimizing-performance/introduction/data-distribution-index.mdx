@@ -1,0 +1,11 @@
+---
+title: Data distribution of an index
+---
+
+Regatta implements indexes using a high-performance proprietary B-tree variant.  This means that the keys are maintained in order, facilitating fast and efficient range scans.  
+
+Indexes are stored in __index segments__ which are distributed across storage devices.  Each index segment resides on a specific device and stores a sub-range of the overall key range in its own independent B-tree.  The overall index layout can be thought of as a forest of B-trees.  This allows Regatta to distribute the operations on the index across multiple modules and devices.  The boundaries between the index segment ranges are called __range separators__.  The first index segment indexes all the rows whose values in the indexed column are strictly less than the first range separator.  Each range separator in turn is then the lower bound for the next index segment.  This means that the number of segments is one more than the number of range separators.
+
+There are many implications of this index distribution.  An index lookup (also known as a “point query”) needs to be sent only to one index segment.  A range scan executes in parallel in all the index segments whose sub-ranges overlap that of the scan.
+
+In the current release, the boundaries between index segments must be specified manually during index creation.  It is the responsibility of the user to choose the range separators in such a way that the index segments will be roughly the same size.  The number of index segments is also important as this determines the parallelism of range scans and the total throughput of multiple queries and scans.  More segments across more nodes/devices lead to higher parallel processing, which is important with big tables and/or high workloads (many small transactions and/or large queries).  Both lookups (queries) and inserts (when rows are inserted) are affected by the choice of the number of index segments and their key ranges.  Imbalanced index segment sizes lead to an imbalance of the workload during scans, which could impact performance.  Also, the larger an index segment, the higher the latency of index lookup.  
