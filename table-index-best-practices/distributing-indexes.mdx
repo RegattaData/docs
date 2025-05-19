@@ -1,5 +1,5 @@
 ---
-title: Distributing Indexes
+title: "Distributing Indexes"
 ---
 
 ### Index creation with default data distribution
@@ -18,15 +18,16 @@ CREATE TABLE "table_w_index" (
 ```
 
 ### Overriding the default index creation parameters
-While creating a default index is good for a quick start, it won’t necessarily provide optimal performance.  The entire index will be stored in the one index segment.  All index queries and scans run on the same segment, potentially making it a performance bottleneck.  
+
+While creating a default index is good for a quick start, it won’t necessarily provide optimal performance.  The entire index will be stored in the one index segment.  All index queries and scans run on the same segment, potentially making it a performance bottleneck.
 
 In order to optimize index layouts, you can specify a list of devices on which to place the index segments and the range separators that divide the key range between the different index segments.
 
-The index may be given segments on multiple devices and distributed to multiple nodes to get more parallelism and performance.  If the index segments all contain roughly the same number of entries, this will also spread the load evenly, parallelizing scans optimally and making key lookups quickest on average.  On the other hand, having many small index segments can lead to excess operators.
+The index may be given segments on multiple devices and distributed to multiple nodes to get more parallelism and performance.  If the index segments all contain roughly the same number of entries, this will also spread the load evenly, parallelizing scans optimally and making key lookups quickest on average.  On the other hand, having too many small index segments can lead to excess operators.
 
 On a particular device, experience with the current version has shown that 3 index segments is optimal in terms of maximizing IOs to the device and CPU usage.
 
-Once the number of index segments has been decided, it is necessary to figure out the separators between them.  If it is possible to gain insight into the distribution of values in the indexed column, this information can be used to find separators that divide that distribution roughly equally.  Total precision is not necessary.  If the distribution is unknown, use your best guess. 
+Once the number of index segments has been decided, it is necessary to figure out the separators between them.  If it is possible to gain insight into the distribution of values in the indexed column, this information can be used to find separators that divide that distribution roughly equally.  Total precision is not necessary.  If the distribution is unknown, use your best guess.
 
 Reusing the earlier example of the person table with columns name and age, with a non-unique index on age with range separators (20, 40, 55, 70) and 5 data segments, this is what its `CREATE TABLE` might look like:
 
@@ -39,6 +40,8 @@ CREATE TABLE index_seps (
 WITH (DEVICES = (m5d1, m3d2, m4d2, m5d2, m3d0));
 ```
 
+When specifiying the index structure in this way, both the `RANGE_SEPARATORS` and `DEVICES` clauses must be specified.  If the `WITH DEVICES` clause is not specified for the table, it will still receive the default layout.
 
-<Note>Note: distribution helps parallelization of operations.  However, in the case of a small table, you should consider placing the data and index segments of the table on one and the same device.</Note>
-
+<Note>
+  Note: distribution helps parallelization of operations.  However, in the case of a small table, you should consider placing the data and index segments of the table on one and the same device.
+</Note>
