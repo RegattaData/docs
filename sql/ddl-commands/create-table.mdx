@@ -175,8 +175,7 @@ CREATE TABLE customers (
   c_name VARCHAR(40) NOT NULL
     INDEX WITH (devices = (m1d2, m2d5, m3d3), range_separators = ('j', 'p')),
   c_gender CHAR(1)
-)
-WITH (devices = (m1d2, m2d5, m3d3));
+) WITH (devices = (m1d2, m2d5, m3d3));
 ```
 
 Create the table `customers` and set it ready for DML. Set the column `c_custkey` as the primary key,
@@ -197,12 +196,12 @@ The table data is stored on the devices (m1d2, m2d5, m3d3).
 
 ```sql
 CREATE TABLE SET NOT READY orders (
-o_order_id CHAR(10) PRIMARY KEY INDEX WITH (devices = (m1d2)),
-o_name VARCHAR(120) NOT NULL,
-o_custkey INT NOT NULL
-REFERENCES customers INDEX WITH (devices = (m1d3)),
-o_totalprice DECIMAL (5,2),
-o_date date DEFAULT NOW() NOT NULL
+  o_order_id CHAR(10) PRIMARY KEY INDEX WITH (devices = (m1d2)),
+  o_name VARCHAR(120) NOT NULL,
+  o_custkey INT NOT NULL
+    REFERENCES customers INDEX WITH (devices = (m1d3)),
+  o_totalprice DECIMAL (5,2),
+  o_date date DEFAULT NOW() NOT NULL
 ) WITH (devices = (m1d4));
 ```
 
@@ -210,33 +209,29 @@ Create the table `orders` with a foreign key referencing the primary key of the 
 
 Set the table as `NOT READY` for DML, so it can still be modified with the [ALTER TABLE](/sql/ddl-commands/alter-table) command.
 
-The table primary key (`o_order_id`) is using an index stored on device m1d2
+The table primary key (`o_order_id`) is using an index stored on device `m1d2`
 
-The o_name and `o_date` columns have a constraint prohibiting NULL values. The `o_date` also has a default
-value of the current date (by using the function `NOW()`).
+The `o_name` and `o_date` columns have a constraint prohibiting NULL values. The `o_date` also has a default value of the current date (by using the function `NOW()`).
 
-The `o_custkey` column is a foreign key to the primary key of table `customers`. It has the `NOT NULL`
-constraint, and it must contain values that exist in the primary key (`c_custke`y) in the table customers. This
-foreign key column has an index, stored on the device m1d3.
+The `o_custkey` column is a foreign key to the primary key of table `customers`. It has the `NOT NULL` constraint, and it must contain values that exist in the primary key (`c_custkey`) in the table customers. This foreign key column has an index, stored on the device `m1d3`.
 
-The table itself is stored on the device m1d4.
+The table itself is stored on the device `m1d4`.
 
 ### Create a table with a calculated column:
 
 ```sql
 CREATE TABLE transactions (
-transactions_id INT PRIMARY KEY INDEX WITH (devices = (m1d2)),
-transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-product_name VARCHAR(100) NOT NULL,
-purchse_price FLOAT NOT NULL,
-sale_price FLOAT,
-number_of_sold_items INT,
-profit FLOAT )
-WITH (devices = (m1d2, m2d5, m3d3));
+  transactions_id INT PRIMARY KEY INDEX WITH (devices = (m1d2)),
+  transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  product_name VARCHAR(100) NOT NULL,
+  purchse_price FLOAT NOT NULL,
+  sale_price FLOAT,
+  number_of_sold_items INT,
+  profit FLOAT
+) WITH (devices = (m1d2, m2d5, m3d3));
 ```
 
-Create the table `transactions`. Set the `transaction_date` column with the default of setting the current
-time.
+Create the table `transactions`. Set the `transaction_date` column with the default of setting the current time.
 
 ## Compatibility
 
