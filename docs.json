@@ -499,19 +499,19 @@
                   {
                     "group": "Introduction",
                     "pages": [
-                      "optimizing-performance/introduction/introduction",
-                      "optimizing-performance/introduction/structure-regatta-cluster",
-                      "optimizing-performance/introduction/data-distribution-table",
-                      "optimizing-performance/introduction/data-distribution-index",
-                      "optimizing-performance/introduction/sql-statement"
+                      "tuning-performance/introduction/introduction",
+                      "tuning-performance/introduction/structure-regatta-cluster",
+                      "tuning-performance/introduction/data-distribution-table",
+                      "tuning-performance/introduction/data-distribution-index",
+                      "tuning-performance/introduction/sql-statement"
                     ]
                   },
-                  "optimizing-performance/distributing-tables",
-                  "optimizing-performance/distributing-indexes",
-                  "optimizing-performance/other-index",
-                  "optimizing-performance/other-limitations",
-                  "optimizing-performance/closing-remarks",
-                  "optimizing-performance/references"
+                  "tuning-performance/distributing-tables",
+                  "tuning-performance/distributing-indexes",
+                  "tuning-performance/other-index",
+                  "tuning-performance/other-limitations",
+                  "tuning-performance/closing-remarks",
+                  "tuning-performance/references"
                 ]
               }
             ]
