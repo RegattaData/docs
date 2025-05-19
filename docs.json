@@ -47,7 +47,7 @@
                   {
                     "group": "Creating a table",
                     "pages": [
-                      "regatta-cloud/regatta-basics/creating-a-table/create-a-table",
+                      "getting-started/regatta-basics/creating-a-table/create-a-table",
                       "getting-started/regatta-basics/creating-a-table/default-device-mapping",
                       "getting-started/regatta-basics/creating-a-table/selected-device-mapping"
                     ]
@@ -305,7 +305,7 @@
             "icon": "cloud",
             "groups": [
               {
-                "group": "Regatta Platform",
+                "group": "Regatta Cloud",
                 "pages": [
                   "regatta-cloud/regatta-cloud/regatta-cloud",
                   "regatta-cloud/regatta-cloud/access-the-cloud",
@@ -408,22 +408,22 @@
                   {
                     "group": "Connecting to Regatta",
                     "pages": [
-                      "drivers-and-clients/connecting-to-regatta/connecting-to-regatta/connecting-to-regatta",
-                      "drivers-and-clients/connecting-to-regatta/connecting-to-regatta/regatta-client",
-                      "drivers-and-clients/connecting-to-regatta/connecting-to-regatta/regatta-connect"
+                      "drivers-and-clients/connecting-to-regatta/connecting-to-regatta",
+                      "drivers-and-clients/connecting-to-regatta/regatta-client",
+                      "drivers-and-clients/connecting-to-regatta/regatta-connect"
                     ]
                   },
                   {
                     "group": "Regatta CLI",
                     "pages": [
-                      "drivers-and-clients/connecting-to-regatta/regatta-cli/regatta-cli",
-                      "drivers-and-clients/connecting-to-regatta/regatta-cli/connecting-to-cli",
-                      "drivers-and-clients/connecting-to-regatta/regatta-cli/creating-a-table",
-                      "drivers-and-clients/connecting-to-regatta/regatta-cli/insert-values",
-                      "drivers-and-clients/connecting-to-regatta/regatta-cli/select-values-from-table",
-                      "drivers-and-clients/connecting-to-regatta/regatta-cli/update-entry",
-                      "drivers-and-clients/connecting-to-regatta/regatta-cli/delete-entry-from-table",
-                      "drivers-and-clients/connecting-to-regatta/regatta-cli/drop-table"
+                      "drivers-and-clients/regatta-cli/regatta-cli",
+                      "drivers-and-clients/regatta-cli/connecting-to-cli",
+                      "drivers-and-clients/regatta-cli/creating-a-table",
+                      "drivers-and-clients/regatta-cli/insert-values",
+                      "drivers-and-clients/regatta-cli/select-values-from-table",
+                      "drivers-and-clients/regatta-cli/update-entry",
+                      "drivers-and-clients/regatta-cli/delete-entry-from-table",
+                      "drivers-and-clients/regatta-cli/drop-table"
                     ]
                   },
                   "drivers-and-clients/drivers-support/driver-support",
@@ -436,7 +436,7 @@
                   {
                     "group": "Python Driver",
                     "pages": [
-                      "/drivers-and-clients/drivers-support/python/python-drivers",
+                      "drivers-and-clients/drivers-support/python/python-drivers",
                       "drivers-and-clients/drivers-support/python/install-the-driver",
                       "drivers-and-clients/drivers-support/python/run-python-application"
                     ]
@@ -449,7 +449,7 @@
                   {
                     "group": "JBDC Driver",
                     "pages": [
-                      "/drivers-and-clients/drivers-support/java/jbdc-driver",
+                      "drivers-and-clients/drivers-support/java/jbdc-driver",
                       "drivers-and-clients/drivers-support/java/install-the-driver",
                       "drivers-and-clients/drivers-support/java/set-up-dependency",
                       "drivers-and-clients/drivers-support/java/run-java-application"
@@ -472,7 +472,7 @@
                   {
                     "group": "Nodejs Driver",
                     "pages": [
-                      "/drivers-and-clients/drivers-support/javascript/nodejs",
+                      "drivers-and-clients/drivers-support/javascript/nodejs",
                       "drivers-and-clients/drivers-support/javascript/install-the-driver",
                       "drivers-and-clients/drivers-support/javascript/run-nodejs-application"
                     ]
