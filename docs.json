@@ -210,6 +210,193 @@
                     "group": "Convert Functions",
                     "pages": [
                       "sql/sql-functions-and-operators/convert-function/cast",
+          {
+            "anchor": "Getting Started",
+
+            "groups": [
+              {
+                "group": "Getting Started",
+                "pages": [
+                  {
+                    "group": "Regatta Cloud",
+                    "pages": [
+                      "getting-started/regatta-cloud/regatta-cloud",
+                      "getting-started/regatta-cloud/access-the-cloud",
+                      "getting-started/regatta-cloud/create-a-cluster"
+                    ]
+                  },
+                  "getting-started/prerequisites"
+                ]
+              },
+              {
+                "group": "Regatta Basics",
+                "pages": [
+                  {
+                    "group": "Creating a table",
+                    "pages": [
+                      "regatta-cloud/regatta-basics/creating-a-table/create-a-table",
+                      "getting-started/regatta-basics/creating-a-table/default-device-mapping",
+                      "getting-started/regatta-basics/creating-a-table/selected-device-mapping"
+                    ]
+                  },
+                  "getting-started/regatta-basics/insert-values",
+                  "getting-started/regatta-basics/select-values-from-table",
+                  "getting-started/regatta-basics/update-entry",
+                  "getting-started/regatta-basics/delete-entry-from-table",
+                  "getting-started/regatta-basics/drop-table",
+                  "getting-started/regatta-basics/credentials"
+                ]
+              },
+              {
+                "group": "Linear Scaling",
+                "pages": [
+                  "getting-started/linear-scaling/linear-scaling",
+                  {
+                    "group": "Creating the Demo Environment",
+                    "pages": [
+                      "getting-started/linear-scaling/creating-demo-environment/create-demo-environment",
+                      "getting-started/linear-scaling/creating-demo-environment/table-schema",
+                      "getting-started/linear-scaling/creating-demo-environment/creating-demo-clusters"
+                    ]
+                  },
+                  {
+                    "group": "Comparing Performance",
+                    "pages": [
+                      "getting-started/linear-scaling/comparing-performance/comparing-performance",
+                      "getting-started/linear-scaling/comparing-performance/xsmall-cluster",
+                      "getting-started/linear-scaling/comparing-performance/medium-cluster"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "anchor": "SQL",
+            "icon": "code",
+            "groups": [
+              {
+                "group": "SQL Specification",
+                "pages": ["/sql/specification"]
+              },
+              {
+                "group": "Data Types",
+                "pages": [
+                  {
+                    "group": "Numeric types",
+                    "pages": [
+                      "sql/data-types/numeric-types/exact-numeric-data-type",
+                      "sql/data-types/numeric-types/approximate-numeric-data-type"
+                    ]
+                  },
+                  "sql/data-types/character-types",
+                  "sql/data-types/date-time-types",
+                  "sql/data-types/boolean-types",
+                  {
+                    "group": "Type Conversion",
+                    "pages": [
+                      "sql/data-types/type-conversion/type-conversion",
+                      "sql/data-types/type-conversion/type-conversion-table"
+                    ]
+                  },
+                  "sql/data-types/row-ids"
+                ]
+              },
+              {
+                "group": "SQL Syntax Conventions",
+                "pages": ["sql/sql-syntax-convention"]
+              },
+              {
+                "group": "Data Definition Language (DDL) Commands",
+                "pages": [
+                  "sql/ddl-commands/create-table",
+                  "sql/ddl-commands/alter-table",
+                  "sql/ddl-commands/drop-table"
+                ]
+              },
+              {
+                "group": "Data Manipulation Language Commands",
+                "pages": [
+                  "sql/dml-commands/insert",
+                  "sql/dml-commands/update",
+                  "sql/dml-commands/delete"
+                ]
+              },
+              {
+                "group": "Transaction Control Language Commands",
+                "pages": [
+                  "sql/tcl-commands/tcl-commands",
+                  "sql/tcl-commands/set-transaction"
+                ]
+              },
+              {
+                "group": "Data Query Language",
+                "pages": ["sql/dql/select", "sql/dql/explain"]
+              },
+              {
+                "group": "Hints",
+                "pages": [
+                  "sql/hints/overview",
+                  "sql/hints/general-notes",
+                  {
+                    "group": "Join hints",
+                    "pages": [
+                      "sql/hints/join-hints/join-hints",
+                      "sql/hints/join-hints/join-direction",
+                      "sql/hints/join-hints/join-method",
+                      "sql/hints/join-hints/join-distribution"
+                    ]
+                  },
+                  {
+                    "group": "Hints for parallelism of distributed operations",
+                    "pages": [
+                      "sql/hints/parallelism/hints-for-parallelism",
+                      "sql/hints/parallelism/sorting",
+                      "sql/hints/parallelism/join-distribution"
+                    ]
+                  },
+                  {
+                    "group": "Other hints",
+                    "pages": [
+                      "sql/hints/other-hints/other-hints",
+                      "sql/hints/other-hints/hint-index",
+                      "sql/hints/other-hints/hint-cardinality"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "SQL Functions and Operators",
+                "pages": [
+                  "sql/sql-functions-and-operators/sql-functions-and-operators",
+                  "sql/sql-functions-and-operators/comparison-function",
+                  {
+                    "group": "Mathematical Functions and Operators",
+                    "pages": [
+                      "sql/sql-functions-and-operators/maths-functions-operators/maths-functions-operators",
+                      "sql/sql-functions-and-operators/maths-functions-operators/maths-operators",
+                      "sql/sql-functions-and-operators/maths-functions-operators/maths-functions"
+                    ]
+                  },
+                  "sql/sql-functions-and-operators/string-functions-operators",
+                  {
+                    "group": "Date/Time Functions and Operators",
+                    "pages": [
+                      "sql/sql-functions-and-operators/date-time-functions-operators/date-time-functions-operators",
+                      "sql/sql-functions-and-operators/date-time-functions-operators/date-time-operators",
+                      "sql/sql-functions-and-operators/date-time-functions-operators/date-time-functions"
+                    ]
+                  },
+                  {
+                    "group": "Conditional Expressions",
+                    "pages": [
+                      "sql/sql-functions-and-operators/conditional-expressions/case/"
+                    ]
+                  },
+                  {
+                    "group": "Convert Functions",
+                    "pages": [
+                      "sql/sql-functions-and-operators/convert-function/cast",
 
                       {
                         "group": "Date and Time Formatting Functions",
@@ -325,73 +512,73 @@
             ]
           },
           {
-            "anchor": "Self-Hosted",
+            "anchor": "Self-Hosted Deployment",
             "icon": "server",
             "groups": [
               {
                 "group": "Scripted Solution",
-                "pages": ["self-hosted/prerequisites"]
+                "pages": ["self-hosted-deployment/prerequisites"]
               },
               {
                 "group": "Manual Deployment",
                 "pages": [
-                  "self-hosted/manual-deployment/manual-deployment",
-                  "self-hosted/manual-deployment/user-setup",
+                  "self-hosted-deployment/manual-deployment/manual-deployment",
+                  "self-hosted-deployment/manual-deployment/user-setup",
                   {
                     "group": "Regatta Configuration",
                     "pages": [
-                      "self-hosted/manual-deployment/regatta-configuration/regatta-configuration",
-                      "self-hosted/manual-deployment/regatta-configuration/rdb",
-                      "self-hosted/manual-deployment/regatta-configuration/sequencer",
-                      "self-hosted/manual-deployment/regatta-configuration/dcm",
-                      "self-hosted/manual-deployment/regatta-configuration/gdd"
+                      "self-hosted-deployment/manual-deployment/regatta-configuration/regatta-configuration",
+                      "self-hosted-deployment/manual-deployment/regatta-configuration/rdb",
+                      "self-hosted-deployment/manual-deployment/regatta-configuration/sequencer",
+                      "self-hosted-deployment/manual-deployment/regatta-configuration/dcm",
+                      "self-hosted-deployment/manual-deployment/regatta-configuration/gdd"
                     ]
                   },
                   {
                     "group": "Configuration File",
                     "pages": [
-                      "self-hosted/manual-deployment/configuration-file/configuration-file",
-                      "self-hosted/manual-deployment/configuration-file/configuration-file-example",
-                      "self-hosted/manual-deployment/configuration-file/main-configuration-top-part",
-                      "self-hosted/manual-deployment/configuration-file/unique-module-configuration"
+                      "self-hosted-deployment/manual-deployment/configuration-file/configuration-file",
+                      "self-hosted-deployment/manual-deployment/configuration-file/configuration-file-example",
+                      "self-hosted-deployment/manual-deployment/configuration-file/main-configuration-top-part",
+                      "self-hosted-deployment/manual-deployment/configuration-file/unique-module-configuration"
                     ]
                   },
-                  "self-hosted/manual-deployment/filewall",
-                  "self-hosted/manual-deployment/starting-the-system",
-                  "self-hosted/manual-deployment/cli-and-drivers",
-                  "self-hosted/manual-deployment/configuration-template-file"
+                  "self-hosted-deployment/manual-deployment/filewall",
+                  "self-hosted-deployment/manual-deployment/starting-the-system",
+                  "self-hosted-deployment/manual-deployment/cli-and-drivers",
+                  "self-hosted-deployment/manual-deployment/configuration-template-file"
                 ]
               },
               {
                 "group": "Scripted Solution",
                 "pages": [
-                  "self-hosted/scripted-solution/scripted-solution",
-                  "self-hosted/scripted-solution/setup",
-                  "self-hosted/scripted-solution/configjson",
-                  "self-hosted/scripted-solution/setup-cluster"
+                  "self-hosted-deployment/scripted-solution/scripted-solution",
+                  "self-hosted-deployment/scripted-solution/setup",
+                  "self-hosted-deployment/scripted-solution/configjson",
+                  "self-hosted-deployment/scripted-solution/setup-cluster"
                 ]
               },
               {
                 "group": "Hybrid Deployment",
                 "pages": [
-                  "self-hosted/hybrid-deployment/hybrid-deployment",
-                  "self-hosted/hybrid-deployment/process",
-                  "self-hosted/hybrid-deployment/inventory",
-                  "self-hosted/hybrid-deployment/configuration",
-                  "self-hosted/hybrid-deployment/start"
+                  "self-hosted-deployment/hybrid-deployment/hybrid-deployment",
+                  "self-hosted-deployment/hybrid-deployment/process",
+                  "self-hosted-deployment/hybrid-deployment/inventory",
+                  "self-hosted-deployment/hybrid-deployment/configuration",
+                  "self-hosted-deployment/hybrid-deployment/start"
                 ]
               },
               {
                 "group": "Support",
                 "pages": [
-                  "self-hosted/support/support",
+                  "self-hosted-deployment/support/support",
                   {
                     "group": "Collecting Data",
                     "pages": [
-                      "self-hosted/support/collect-data-script/collect-data-script",
-                      "self-hosted/support/collect-data-script/prerequisites",
-                      "self-hosted/support/collect-data-script/setup",
-                      "self-hosted/support/collect-data-script/execution"
+                      "self-hosted-deployment/support/collect-data-script/collect-data-script",
+                      "self-hosted-deployment/support/collect-data-script/prerequisites",
+                      "self-hosted-deployment/support/collect-data-script/setup",
+                      "self-hosted-deployment/support/collect-data-script/execution"
                     ]
                   }
                 ]
@@ -544,3 +731,4 @@
     }
   }
 }
+
