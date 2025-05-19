@@ -408,22 +408,22 @@
                   {
                     "group": "Connecting to Regatta",
                     "pages": [
-                      "drivers-and-clients/connecting-to-regatta/connecting-to-regatta",
-                      "drivers-and-clients/connecting-to-regatta/regatta-client",
-                      "drivers-and-clients/connecting-to-regatta/regatta-connect"
+                      "on-prem-getting-started-guide/connecting-to-regatta/connecting-to-regatta",
+                      "on-prem-getting-started-guide/connecting-to-regatta/regatta-client",
+                      "on-prem-getting-started-guide/connecting-to-regatta/regatta-connect"
                     ]
                   },
                   {
                     "group": "Regatta CLI",
                     "pages": [
-                      "drivers-and-clients/regatta-cli/regatta-cli",
-                      "drivers-and-clients/regatta-cli/connecting-to-cli",
-                      "drivers-and-clients/regatta-cli/creating-a-table",
-                      "drivers-and-clients/regatta-cli/insert-values",
-                      "drivers-and-clients/regatta-cli/select-values-from-table",
-                      "drivers-and-clients/regatta-cli/update-entry",
-                      "drivers-and-clients/regatta-cli/delete-entry-from-table",
-                      "drivers-and-clients/regatta-cli/drop-table"
+                      "on-prem-getting-started-guide/regatta-cli/regatta-cli",
+                      "on-prem-getting-started-guide/regatta-cli/connecting-to-cli",
+                      "on-prem-getting-started-guide/regatta-cli/creating-a-table",
+                      "on-prem-getting-started-guide/regatta-cli/insert-values",
+                      "on-prem-getting-started-guide/regatta-cli/select-values-from-table",
+                      "on-prem-getting-started-guide/regatta-cli/update-entry",
+                      "on-prem-getting-started-guide/regatta-cli/delete-entry-from-table",
+                      "on-prem-getting-started-guide/regatta-cli/drop-table"
                     ]
                   },
                   "drivers-and-clients/drivers-support/driver-support",
@@ -499,19 +499,19 @@
                   {
                     "group": "Introduction",
                     "pages": [
-                      "tuning-performance/introduction/introduction",
-                      "tuning-performance/introduction/structure-regatta-cluster",
-                      "tuning-performance/introduction/data-distribution-table",
-                      "tuning-performance/introduction/data-distribution-index",
-                      "tuning-performance/introduction/sql-statement"
+                      "table-index-best-practices/introduction/introduction",
+                      "table-index-best-practices/introduction/structure-regatta-cluster",
+                      "table-index-best-practices/introduction/data-distribution-table",
+                      "table-index-best-practices/introduction/data-distribution-index",
+                      "table-index-best-practices/introduction/sql-statement"
                     ]
                   },
-                  "tuning-performance/distributing-tables",
-                  "tuning-performance/distributing-indexes",
-                  "tuning-performance/other-index",
-                  "tuning-performance/other-limitations",
-                  "tuning-performance/closing-remarks",
-                  "tuning-performance/references"
+                  "table-index-best-practices/distributing-tables",
+                  "table-index-best-practices/distributing-indexes",
+                  "table-index-best-practices/other-index",
+                  "table-index-best-practices/other-limitations",
+                  "table-index-best-practices/closing-remarks",
+                  "table-index-best-practices/references"
                 ]
               }
             ]
