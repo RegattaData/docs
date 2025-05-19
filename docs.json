@@ -490,11 +490,11 @@
             ]
           },
           {
-            "anchor": "Optimizing Performance",
+            "anchor": "Tuning Performance",
             "icon": "rocket",
             "groups": [
               {
-                "group": "Optimizing Performance",
+                "group": "Tuning Performance",
                 "pages": [
                   {
                     "group": "Introduction",
