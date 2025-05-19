@@ -22,504 +22,501 @@
                 "pages": ["home"]
               }
             ]
+          },
+          {
+            "anchor": "Getting Started",
 
-          },
-      {
-        "anchor": "Getting Started",
-        
-        "groups": [
-          {
-            "group": "Get Started",
-            "pages": [
+            "groups": [
               {
-                "group": "Regatta Platform",
-                "pages": ["regatta-platform/regatta-platform", "regatta-platform/access-the-platform", "regatta-platform/create-a-cluster"]
-              },
-              "prerequisites"
-            ]
-          },
-          {
-            "group": "Regatta Basics",
-            "pages": [
-              {
-                "group": "Creating a table",
-                "pages": ["regatta-basics/creating-a-table/create-a-table", "regatta-basics/creating-a-table/default-device-mapping", "regatta-basics/creating-a-table/selected-device-mapping"]
-              },
-              "regatta-basics/insert-values",
-              "regatta-basics/select-values-from-table",
-              "regatta-basics/update-entry",
-              "regatta-basics/delete-entry-from-table",
-              "regatta-basics/drop-table",
-              "regatta-basics/credentials"
-            ]
-          },
-          {
-            "group": "Linear Scaling",
-            "pages": [
-              "linear-scaling/linear-scaling",
-              {
-                "group": "Creating the Demo Environment",
+                "group": "Get Started",
                 "pages": [
-                  "linear-scaling/creating-demo-environment/create-demo-environment",
-                  "linear-scaling/creating-demo-environment/table-schema",
-                  "linear-scaling/creating-demo-environment/creating-demo-clusters"
-                ]
-              },
-              {
-                "group": "Comparing Performance",
-                "pages": [
-                  "linear-scaling/comparing-performance/comparing-performance",
-                  "linear-scaling/comparing-performance/xsmall-cluster",
-                  "linear-scaling/comparing-performance/medium-cluster"
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "anchor": "SQL",
-        "icon": "code",
-        "groups": [
-          {
-            "group": "SQL Specification",
-            "pages": ["/sql/specification"]
-          },
-          {
-            "group": "Data Types",
-            "pages": [
-              {
-                "group": "Numeric types",
-                "pages": [
-                  "sql/data-types/numeric-types/exact-numeric-data-type",
-                  "sql/data-types/numeric-types/approximate-numeric-data-type"
-                ]
-              },
-              "sql/data-types/character-types",
-              "sql/data-types/date-time-types",
-              "sql/data-types/boolean-types",
-              {
-                "group": "Type Conversion",
-                "pages": [
-                  "sql/data-types/type-conversion/type-conversion",
-                  "sql/data-types/type-conversion/type-conversion-table"
-                ]
-              },
-              "sql/data-types/row-ids"
-            ]
-          },
-          {
-            "group": "SQL Syntax Conventions",
-            "pages": ["sql/sql-syntax-convention/sql-syntax-convention"]
-          },
-          {
-            "group": "Data Definition Language (DDL) Commands",
-            "pages": [
-              "sql/ddl-commands/create-table/create-table",
-              "sql/ddl-commands/alter-table/alter-table",
-              "sql/ddl-commands/drop-table/drop-table"
-            ]
-          },
-          {
-            "group": "Data Manipulation Language Commands",
-            "pages": [
-              "sql/dml-commands/insert/insert",
-              "sql/dml-commands/update/update",
-              "sql/dml-commands/delete/delete"
-            ]
-          },
-          {
-            "group": "Transaction Control Language Commands",
-            "pages": [
-              "sql/tcl-commands/tcl-commands",
-              "sql/tcl-commands/set-transaction/set-transaction"
-            ]
-          },
-          {
-            "group": "Data Query Language",
-            "pages": [
-              "sql/dql/select/select",
-              "sql/dql/explain/explain"
-            ]
-          },
-          {
-            "group": "Hints",
-            "pages": [
-              "sql/hints/overview",
-              "sql/hints/general-notes",
-              {
-                "group": "Join hints",
-                "pages": [
-                  "sql/hints/join-hints/join-hints",
-                  "sql/hints/join-hints/join-direction",
-                  "sql/hints/join-hints/join-method",
-                  "sql/hints/join-hints/join-distribution"
-                ]
-              },
-              {
-                "group": "Hints for parallelism of distributed operations",
-                "pages": [
-                  "sql/hints/parallelism/hints-for-parallelism",
-                  "sql/hints/parallelism/sorting",
-                  "sql/hints/parallelism/join-distribution"
-                ]
-              },
-              {
-                "group": "Other hints",
-                "pages": [
-                  "sql/hints/other-hints/other-hints",
-                  "sql/hints/other-hints/hint-index",
-                  "sql/hints/other-hints/hint-cardinality"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "SQL Functions and Operators",
-            "pages": [
-              "sql/sql-functions-and-operators/sql-functions-and-operators",
-              "sql/sql-functions-and-operators/comparison-function",
-              {
-                "group": "Mathematical Functions and Operators",
-                "pages": [
-                  "sql/sql-functions-and-operators/maths-functions-operators/maths-functions-operators",
-                  "sql/sql-functions-and-operators/maths-functions-operators/maths-operators",
-                  "sql/sql-functions-and-operators/maths-functions-operators/maths-functions"
-                ]
-              },
-              "sql/sql-functions-and-operators/string-functions-operators",
-              {
-                "group": "Date/Time Functions and Operators",
-                "pages": [
-                  "sql/sql-functions-and-operators/date-time-functions-operators/date-time-functions-operators",
-                  "sql/sql-functions-and-operators/date-time-functions-operators/date-time-operators",
-                  "sql/sql-functions-and-operators/date-time-functions-operators/date-time-functions"
-                ]
-              },
-              {
-                "group": "Conditional Expressions",
-                "pages": [
-                  "sql/sql-functions-and-operators/conditional-expressions/case/"
-                ]
-              },
-              {
-                "group": "Convert Functions",
-                "pages": [
-                  "sql/sql-functions-and-operators/convert-function/cast",
-
                   {
-                    "group": "Date and Time Formatting Functions",
+                    "group": "Regatta Platform",
                     "pages": [
-                      "sql/sql-functions-and-operators/convert-function/date-time-format-functions/date-time-format-functions",
-                      "sql/sql-functions-and-operators/convert-function/date-time-format-functions/examples"
+                      "regatta-platform/regatta-platform",
+                      "regatta-platform/access-the-platform",
+                      "regatta-platform/create-a-cluster"
+                    ]
+                  },
+                  "prerequisites"
+                ]
+              },
+              {
+                "group": "Regatta Basics",
+                "pages": [
+                  {
+                    "group": "Creating a table",
+                    "pages": [
+                      "regatta-basics/creating-a-table/create-a-table",
+                      "regatta-basics/creating-a-table/default-device-mapping",
+                      "regatta-basics/creating-a-table/selected-device-mapping"
+                    ]
+                  },
+                  "regatta-basics/insert-values",
+                  "regatta-basics/select-values-from-table",
+                  "regatta-basics/update-entry",
+                  "regatta-basics/delete-entry-from-table",
+                  "regatta-basics/drop-table",
+                  "regatta-basics/credentials"
+                ]
+              },
+              {
+                "group": "Linear Scaling",
+                "pages": [
+                  "linear-scaling/linear-scaling",
+                  {
+                    "group": "Creating the Demo Environment",
+                    "pages": [
+                      "linear-scaling/creating-demo-environment/create-demo-environment",
+                      "linear-scaling/creating-demo-environment/table-schema",
+                      "linear-scaling/creating-demo-environment/creating-demo-clusters"
+                    ]
+                  },
+                  {
+                    "group": "Comparing Performance",
+                    "pages": [
+                      "linear-scaling/comparing-performance/comparing-performance",
+                      "linear-scaling/comparing-performance/xsmall-cluster",
+                      "linear-scaling/comparing-performance/medium-cluster"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "anchor": "SQL",
+            "icon": "code",
+            "groups": [
+              {
+                "group": "SQL Specification",
+                "pages": ["/sql/specification"]
+              },
+              {
+                "group": "Data Types",
+                "pages": [
+                  {
+                    "group": "Numeric types",
+                    "pages": [
+                      "sql/data-types/numeric-types/exact-numeric-data-type",
+                      "sql/data-types/numeric-types/approximate-numeric-data-type"
+                    ]
+                  },
+                  "sql/data-types/character-types",
+                  "sql/data-types/date-time-types",
+                  "sql/data-types/boolean-types",
+                  {
+                    "group": "Type Conversion",
+                    "pages": [
+                      "sql/data-types/type-conversion/type-conversion",
+                      "sql/data-types/type-conversion/type-conversion-table"
+                    ]
+                  },
+                  "sql/data-types/row-ids"
+                ]
+              },
+              {
+                "group": "SQL Syntax Conventions",
+                "pages": ["sql/sql-syntax-convention/sql-syntax-convention"]
+              },
+              {
+                "group": "Data Definition Language (DDL) Commands",
+                "pages": [
+                  "sql/ddl-commands/create-table/create-table",
+                  "sql/ddl-commands/alter-table/alter-table",
+                  "sql/ddl-commands/drop-table/drop-table"
+                ]
+              },
+              {
+                "group": "Data Manipulation Language Commands",
+                "pages": [
+                  "sql/dml-commands/insert/insert",
+                  "sql/dml-commands/update/update",
+                  "sql/dml-commands/delete/delete"
+                ]
+              },
+              {
+                "group": "Transaction Control Language Commands",
+                "pages": [
+                  "sql/tcl-commands/tcl-commands",
+                  "sql/tcl-commands/set-transaction/set-transaction"
+                ]
+              },
+              {
+                "group": "Data Query Language",
+                "pages": ["sql/dql/select/select", "sql/dql/explain/explain"]
+              },
+              {
+                "group": "Hints",
+                "pages": [
+                  "sql/hints/overview",
+                  "sql/hints/general-notes",
+                  {
+                    "group": "Join hints",
+                    "pages": [
+                      "sql/hints/join-hints/join-hints",
+                      "sql/hints/join-hints/join-direction",
+                      "sql/hints/join-hints/join-method",
+                      "sql/hints/join-hints/join-distribution"
+                    ]
+                  },
+                  {
+                    "group": "Hints for parallelism of distributed operations",
+                    "pages": [
+                      "sql/hints/parallelism/hints-for-parallelism",
+                      "sql/hints/parallelism/sorting",
+                      "sql/hints/parallelism/join-distribution"
+                    ]
+                  },
+                  {
+                    "group": "Other hints",
+                    "pages": [
+                      "sql/hints/other-hints/other-hints",
+                      "sql/hints/other-hints/hint-index",
+                      "sql/hints/other-hints/hint-cardinality"
                     ]
                   }
                 ]
               },
               {
-                "group": "Aggregate Functions",
+                "group": "SQL Functions and Operators",
                 "pages": [
-                  "sql/sql-functions-and-operators/aggregate-functions/aggregate-functions",
-                  "sql/sql-functions-and-operators/aggregate-functions/examples"
-                ]
-              },
-              {
-                "group": "Subquery Expressions",
-                "pages": [
-                  "sql/sql-functions-and-operators/subquery-expressions/subquery-expressions",
-                  "sql/sql-functions-and-operators/subquery-expressions/not-in/not-in"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "Managing Users",
-            "pages": [
-              "sql/managing-users/create-user/create-user",
-              "sql/managing-users/alter-user/alter-user",
-              "sql/managing-users/drop-user/drop-user"
-            ]
-          },
-          {
-            "group": "System Monitoring",
-            "pages": [
-              "sql/system-monitoring/system-monitoring-views/system-monitoring-views",
-              "sql/system-monitoring/show-system-views",
-              {
-                "group": "Database Catalog Data",
-                "pages": [
-                  "sql/system-monitoring/database-catalog/database-catalog",
-                  "sql/system-monitoring/database-catalog/show-tables",
-                  "sql/system-monitoring/database-catalog/show-table-devices",
-                  "sql/system-monitoring/database-catalog/show-index",
-                  "sql/system-monitoring/database-catalog/show-index-devices",
-                  "sql/system-monitoring/database-catalog/show-columns",
-                  "sql/system-monitoring/database-catalog/show-constraints",
-                  "sql/system-monitoring/database-catalog/show-users"
-                ]
-              },
-              {
-                "group": "System Catalog Data",
-                "pages": [
-                  "sql/system-monitoring/system-catalog/show-nodes",
-                  "sql/system-monitoring/system-catalog/show-modules",
-                  "sql/system-monitoring/system-catalog/show-devices"
-                ]
-              },
-              {
-                "group": "Dynamic System Data",
-                "pages": [
-                  "sql/system-monitoring/dynamic-system/dynamic-system",
-                  "sql/system-monitoring/dynamic-system/show-metric-description",
-                  "sql/system-monitoring/dynamic-system/show-database-metric",
-                  "sql/system-monitoring/dynamic-system/show-module-metrics",
-                  "sql/system-monitoring/dynamic-system/show-device-metrics"
-                ]
-              },
-              {
-                "group": "System Management",
-                "pages": [
-                  "sql/system-monitoring/system-management/system-command/system-command",
-                  "sql/system-monitoring/system-management/system-shutdown/system-shutdown",
-                  "sql/system-monitoring/system-management/system-state/system-state"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "Appendices",
-            "pages": [
-              "sql/appendices/indentifiers-limitations",
-              "sql/appendices/database-limitations",
-              "sql/appendices/reserved-words"
-            ]
-          }
-        ]
-      },
-      {
-        "anchor": "Regatta Cloud",
-        "icon": "cloud",
-        "groups": [
-          {
-              "group": "Regatta Platform",
-              "pages": 
-              [
-                "cloud-deployment/regatta-platform/regatta-platform", 
-                "cloud-deployment/regatta-platform/access-the-platform", 
-                "cloud-deployment/regatta-platform/create-a-cluster",
-                "/cloud-deployment/regatta-platform/delete-cluster",
-                "/cloud-deployment/regatta-platform/cluster-ip"
-              ]
-            
-          },
-          {
-            "group": "Database Backup and Restore",
-            "pages": [
-                "cloud-deployment/database-backup-restore", "cloud-deployment/backup", "cloud-deployment/restore"
+                  "sql/sql-functions-and-operators/sql-functions-and-operators",
+                  "sql/sql-functions-and-operators/comparison-function",
+                  {
+                    "group": "Mathematical Functions and Operators",
+                    "pages": [
+                      "sql/sql-functions-and-operators/maths-functions-operators/maths-functions-operators",
+                      "sql/sql-functions-and-operators/maths-functions-operators/maths-operators",
+                      "sql/sql-functions-and-operators/maths-functions-operators/maths-functions"
+                    ]
+                  },
+                  "sql/sql-functions-and-operators/string-functions-operators",
+                  {
+                    "group": "Date/Time Functions and Operators",
+                    "pages": [
+                      "sql/sql-functions-and-operators/date-time-functions-operators/date-time-functions-operators",
+                      "sql/sql-functions-and-operators/date-time-functions-operators/date-time-operators",
+                      "sql/sql-functions-and-operators/date-time-functions-operators/date-time-functions"
+                    ]
+                  },
+                  {
+                    "group": "Conditional Expressions",
+                    "pages": [
+                      "sql/sql-functions-and-operators/conditional-expressions/case/"
+                    ]
+                  },
+                  {
+                    "group": "Convert Functions",
+                    "pages": [
+                      "sql/sql-functions-and-operators/convert-function/cast",
 
-            ]
-            
-          }
-
-        ]
-      },
-      {
-        "anchor": "Self-Hosted Deployments",
-        "icon": "server",
-        "groups": [
-          {
-            "group": "Scripted Solution",
-            "pages": [
-              "deployment-guide/prerequisites"
-            ]
-          },
-          {
-            "group": "Manual Deployment",
-            "pages": [
-              "deployment-guide/manual-deployment/manual-deployment",
-              "deployment-guide/manual-deployment/user-setup",
-              {
-                "group": "Regatta Configuration",
-                "pages": [
-                  "deployment-guide/manual-deployment/regatta-configuration/regatta-configuration",
-                  "deployment-guide/manual-deployment/regatta-configuration/rdb",
-                  "deployment-guide/manual-deployment/regatta-configuration/sequencer",
-                  "deployment-guide/manual-deployment/regatta-configuration/dcm",
-                  "deployment-guide/manual-deployment/regatta-configuration/gdd"
+                      {
+                        "group": "Date and Time Formatting Functions",
+                        "pages": [
+                          "sql/sql-functions-and-operators/convert-function/date-time-format-functions/date-time-format-functions",
+                          "sql/sql-functions-and-operators/convert-function/date-time-format-functions/examples"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "Aggregate Functions",
+                    "pages": [
+                      "sql/sql-functions-and-operators/aggregate-functions/aggregate-functions",
+                      "sql/sql-functions-and-operators/aggregate-functions/examples"
+                    ]
+                  },
+                  {
+                    "group": "Subquery Expressions",
+                    "pages": [
+                      "sql/sql-functions-and-operators/subquery-expressions/subquery-expressions",
+                      "sql/sql-functions-and-operators/subquery-expressions/not-in/not-in"
+                    ]
+                  }
                 ]
               },
               {
-                "group": "Configuration File",
+                "group": "Managing Users",
                 "pages": [
-                  "deployment-guide/manual-deployment/configuration-file/configuration-file",
-                  "deployment-guide/manual-deployment/configuration-file/configuration-file-example",
-                  "deployment-guide/manual-deployment/configuration-file/main-configuration-top-part",
-                  "deployment-guide/manual-deployment/configuration-file/unique-module-configuration"
+                  "sql/managing-users/create-user/create-user",
+                  "sql/managing-users/alter-user/alter-user",
+                  "sql/managing-users/drop-user/drop-user"
                 ]
               },
-              "deployment-guide/manual-deployment/filewall",
-              "deployment-guide/manual-deployment/starting-the-system",
-              "deployment-guide/manual-deployment/cli-and-drivers",
-              "deployment-guide/manual-deployment/configuration-template-file"
-            ]
-          },
-          {
-            "group": "Scripted Solution",
-            "pages": [
-              "deployment-guide/scripted-solution/scripted-solution",
-              "deployment-guide/scripted-solution/setup",
-              "deployment-guide/scripted-solution/configjson",
-              "deployment-guide/scripted-solution/setup-cluster"
-            ]
-          },
-          {
-            "group": "Hybrid Deployment",
-            "pages": [
-              "deployment-guide/hybrid-deployment/hybrid-deployment",
-              "deployment-guide/hybrid-deployment/process",
-              "deployment-guide/hybrid-deployment/inventory",
-              "deployment-guide/hybrid-deployment/configuration",
-              "deployment-guide/hybrid-deployment/start"
-            ]
-          },
-          {
-            "group": "Support",
-            "pages": [
-              "deployment-guide/support/support",
               {
-                "group": "Collecting Data",
+                "group": "System Monitoring",
                 "pages": [
-                  "deployment-guide/support/collect-data-script/collect-data-script",
-                  "deployment-guide/support/collect-data-script/prerequisites",
-                  "deployment-guide/support/collect-data-script/setup",
-                  "deployment-guide/support/collect-data-script/execution"
+                  "sql/system-monitoring/system-monitoring-views/system-monitoring-views",
+                  "sql/system-monitoring/show-system-views",
+                  {
+                    "group": "Database Catalog Data",
+                    "pages": [
+                      "sql/system-monitoring/database-catalog/database-catalog",
+                      "sql/system-monitoring/database-catalog/show-tables",
+                      "sql/system-monitoring/database-catalog/show-table-devices",
+                      "sql/system-monitoring/database-catalog/show-index",
+                      "sql/system-monitoring/database-catalog/show-index-devices",
+                      "sql/system-monitoring/database-catalog/show-columns",
+                      "sql/system-monitoring/database-catalog/show-constraints",
+                      "sql/system-monitoring/database-catalog/show-users"
+                    ]
+                  },
+                  {
+                    "group": "System Catalog Data",
+                    "pages": [
+                      "sql/system-monitoring/system-catalog/show-nodes",
+                      "sql/system-monitoring/system-catalog/show-modules",
+                      "sql/system-monitoring/system-catalog/show-devices"
+                    ]
+                  },
+                  {
+                    "group": "Dynamic System Data",
+                    "pages": [
+                      "sql/system-monitoring/dynamic-system/dynamic-system",
+                      "sql/system-monitoring/dynamic-system/show-metric-description",
+                      "sql/system-monitoring/dynamic-system/show-database-metric",
+                      "sql/system-monitoring/dynamic-system/show-module-metrics",
+                      "sql/system-monitoring/dynamic-system/show-device-metrics"
+                    ]
+                  },
+                  {
+                    "group": "System Management",
+                    "pages": [
+                      "sql/system-monitoring/system-management/system-command/system-command",
+                      "sql/system-monitoring/system-management/system-shutdown/system-shutdown",
+                      "sql/system-monitoring/system-management/system-state/system-state"
+                    ]
+                  }
                 ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "anchor": "Drivers & Clients",
-        "icon": "download",
-        "groups": [
-          {
-            "group": "Drivers & Clients",
-            "pages": [
-              {
-                  "group": "Connecting to Regatta",
-                  "pages": [
-                    "on-prem-getting-started-guide/connecting-to-regatta/connecting-to-regatta",
-                        "on-prem-getting-started-guide/connecting-to-regatta/regatta-client",
-                        "on-prem-getting-started-guide/connecting-to-regatta/regatta-connect"
-                  ]
               },
               {
-                  "group": "Regatta CLI",
-                  "pages": [
-                    "on-prem-getting-started-guide/regatta-cli/regatta-cli",
-                    "on-prem-getting-started-guide/regatta-cli/connecting-to-cli",
-                    "on-prem-getting-started-guide/regatta-cli/creating-a-table",
-                    "on-prem-getting-started-guide/regatta-cli/insert-values",
-                    "on-prem-getting-started-guide/regatta-cli/select-values-from-table",
-                    "on-prem-getting-started-guide/regatta-cli/update-entry",
-                    "on-prem-getting-started-guide/regatta-cli/delete-entry-from-table",
-                    "on-prem-getting-started-guide/regatta-cli/drop-table"
-                  ]
-                },
-              "drivers-and-clients/drivers-support/driver-support",
-              "drivers-and-clients/drivers-support/object-relation-map-tool"
-            ]
-          },
-          {
-            "group": "Python",
-            "pages": [
-              {
-                "group": "Python Driver",
+                "group": "Appendices",
                 "pages": [
-                  "/drivers-and-clients/drivers-support/python/python-drivers",
-                  "drivers-and-clients/drivers-support/python/install-the-driver",
-                  "drivers-and-clients/drivers-support/python/run-python-application"
+                  "sql/appendices/indentifiers-limitations",
+                  "sql/appendices/database-limitations",
+                  "sql/appendices/reserved-words"
                 ]
               }
             ]
           },
           {
-            "group": "Java",
-            "pages": [
+            "anchor": "Regatta Cloud",
+            "icon": "cloud",
+            "groups": [
               {
-                "group": "JBDC Driver",
+                "group": "Regatta Platform",
                 "pages": [
-                  "/drivers-and-clients/drivers-support/java/jbdc-driver",
-                  "drivers-and-clients/drivers-support/java/install-the-driver",
-                  "drivers-and-clients/drivers-support/java/set-up-dependency",
-                  "drivers-and-clients/drivers-support/java/run-java-application"
+                  "cloud-deployment/regatta-platform/regatta-platform",
+                  "cloud-deployment/regatta-platform/access-the-platform",
+                  "cloud-deployment/regatta-platform/create-a-cluster",
+                  "/cloud-deployment/regatta-platform/delete-cluster",
+                  "/cloud-deployment/regatta-platform/cluster-ip"
                 ]
               },
               {
-                "group": "Hibernate",
+                "group": "Database Backup and Restore",
                 "pages": [
-                  "drivers-and-clients/drivers-support/java/hibernate",
-                  "drivers-and-clients/drivers-support/java/set-hibernate-dependency",
-                  "drivers-and-clients/drivers-support/java/set-up-configuration",
-                  "drivers-and-clients/drivers-support/java/run-a-hibernate"
+                  "cloud-deployment/database-backup-restore",
+                  "cloud-deployment/backup",
+                  "cloud-deployment/restore"
                 ]
               }
-            
             ]
           },
           {
-
-            "group": "JavaScript",
-            "pages": [
+            "anchor": "Self-Hosted Deployments",
+            "icon": "server",
+            "groups": [
               {
-                "group": "Nodejs Driver",
+                "group": "Scripted Solution",
+                "pages": ["deployment-guide/prerequisites"]
+              },
+              {
+                "group": "Manual Deployment",
                 "pages": [
-                  "/drivers-and-clients/drivers-support/javascript/nodejs",
-                  "drivers-and-clients/drivers-support/javascript/install-the-driver",
-                  "drivers-and-clients/drivers-support/javascript/run-nodejs-application"
+                  "deployment-guide/manual-deployment/manual-deployment",
+                  "deployment-guide/manual-deployment/user-setup",
+                  {
+                    "group": "Regatta Configuration",
+                    "pages": [
+                      "deployment-guide/manual-deployment/regatta-configuration/regatta-configuration",
+                      "deployment-guide/manual-deployment/regatta-configuration/rdb",
+                      "deployment-guide/manual-deployment/regatta-configuration/sequencer",
+                      "deployment-guide/manual-deployment/regatta-configuration/dcm",
+                      "deployment-guide/manual-deployment/regatta-configuration/gdd"
+                    ]
+                  },
+                  {
+                    "group": "Configuration File",
+                    "pages": [
+                      "deployment-guide/manual-deployment/configuration-file/configuration-file",
+                      "deployment-guide/manual-deployment/configuration-file/configuration-file-example",
+                      "deployment-guide/manual-deployment/configuration-file/main-configuration-top-part",
+                      "deployment-guide/manual-deployment/configuration-file/unique-module-configuration"
+                    ]
+                  },
+                  "deployment-guide/manual-deployment/filewall",
+                  "deployment-guide/manual-deployment/starting-the-system",
+                  "deployment-guide/manual-deployment/cli-and-drivers",
+                  "deployment-guide/manual-deployment/configuration-template-file"
                 ]
               },
-             {
-                "group": "TypeORM",
+              {
+                "group": "Scripted Solution",
                 "pages": [
-                  "drivers-and-clients/drivers-support/javascript/type-orm",
-                  "drivers-and-clients/drivers-support/javascript/install-orm-tools",
-                  "drivers-and-clients/drivers-support/javascript/run-typeorm-application"
+                  "deployment-guide/scripted-solution/scripted-solution",
+                  "deployment-guide/scripted-solution/setup",
+                  "deployment-guide/scripted-solution/configjson",
+                  "deployment-guide/scripted-solution/setup-cluster"
                 ]
-             }
+              },
+              {
+                "group": "Hybrid Deployment",
+                "pages": [
+                  "deployment-guide/hybrid-deployment/hybrid-deployment",
+                  "deployment-guide/hybrid-deployment/process",
+                  "deployment-guide/hybrid-deployment/inventory",
+                  "deployment-guide/hybrid-deployment/configuration",
+                  "deployment-guide/hybrid-deployment/start"
+                ]
+              },
+              {
+                "group": "Support",
+                "pages": [
+                  "deployment-guide/support/support",
+                  {
+                    "group": "Collecting Data",
+                    "pages": [
+                      "deployment-guide/support/collect-data-script/collect-data-script",
+                      "deployment-guide/support/collect-data-script/prerequisites",
+                      "deployment-guide/support/collect-data-script/setup",
+                      "deployment-guide/support/collect-data-script/execution"
+                    ]
+                  }
+                ]
+              }
             ]
-          }
-        ]
-      },
-      {
-        "anchor": "Tuning Performance",
-        "icon": "rocket",
-        "groups": [
+          },
           {
-            "group": "Tuning Performance",
-            "pages": [
+            "anchor": "Drivers & Clients",
+            "icon": "download",
+            "groups": [
               {
-                "group": "Introduction",
+                "group": "Drivers & Clients",
                 "pages": [
-                  "table-index-best-practices/introduction/introduction",
-                  "table-index-best-practices/introduction/structure-regatta-cluster",
-                  "table-index-best-practices/introduction/data-distribution-table",
-                  "table-index-best-practices/introduction/data-distribution-index",
-                  "table-index-best-practices/introduction/sql-statement"
+                  {
+                    "group": "Connecting to Regatta",
+                    "pages": [
+                      "drivers-and-clients/connecting-to-regatta/connecting-to-regatta",
+                      "drivers-and-clients/connecting-to-regatta/regatta-client",
+                      "drivers-and-clients/connecting-to-regatta/regatta-connect"
+                    ]
+                  },
+                  {
+                    "group": "Regatta CLI",
+                    "pages": [
+                      "drivers-and-clients/regatta-cli/regatta-cli",
+                      "drivers-and-clients/regatta-cli/connecting-to-cli",
+                      "drivers-and-clients/regatta-cli/creating-a-table",
+                      "drivers-and-clients/regatta-cli/insert-values",
+                      "drivers-and-clients/regatta-cli/select-values-from-table",
+                      "drivers-and-clients/regatta-cli/update-entry",
+                      "drivers-and-clients/regatta-cli/delete-entry-from-table",
+                      "drivers-and-clients/regatta-cli/drop-table"
+                    ]
+                  },
+                  "drivers-and-clients/drivers-support/driver-support",
+                  "drivers-and-clients/drivers-support/object-relation-map-tool"
                 ]
               },
-              "table-index-best-practices/distributing-tables",
-              "table-index-best-practices/distributing-indexes",
-              "table-index-best-practices/other-index",
-              "table-index-best-practices/other-limitations",
-              "table-index-best-practices/closing-remarks",
-              "table-index-best-practices/references"
+              {
+                "group": "Python",
+                "pages": [
+                  {
+                    "group": "Python Driver",
+                    "pages": [
+                      "/drivers-and-clients/drivers-support/python/python-drivers",
+                      "drivers-and-clients/drivers-support/python/install-the-driver",
+                      "drivers-and-clients/drivers-support/python/run-python-application"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Java",
+                "pages": [
+                  {
+                    "group": "JBDC Driver",
+                    "pages": [
+                      "/drivers-and-clients/drivers-support/java/jbdc-driver",
+                      "drivers-and-clients/drivers-support/java/install-the-driver",
+                      "drivers-and-clients/drivers-support/java/set-up-dependency",
+                      "drivers-and-clients/drivers-support/java/run-java-application"
+                    ]
+                  },
+                  {
+                    "group": "Hibernate",
+                    "pages": [
+                      "drivers-and-clients/drivers-support/java/hibernate",
+                      "drivers-and-clients/drivers-support/java/set-hibernate-dependency",
+                      "drivers-and-clients/drivers-support/java/set-up-configuration",
+                      "drivers-and-clients/drivers-support/java/run-a-hibernate"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "JavaScript",
+                "pages": [
+                  {
+                    "group": "Nodejs Driver",
+                    "pages": [
+                      "/drivers-and-clients/drivers-support/javascript/nodejs",
+                      "drivers-and-clients/drivers-support/javascript/install-the-driver",
+                      "drivers-and-clients/drivers-support/javascript/run-nodejs-application"
+                    ]
+                  },
+                  {
+                    "group": "TypeORM",
+                    "pages": [
+                      "drivers-and-clients/drivers-support/javascript/type-orm",
+                      "drivers-and-clients/drivers-support/javascript/install-orm-tools",
+                      "drivers-and-clients/drivers-support/javascript/run-typeorm-application"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "anchor": "Tuning Performance",
+            "icon": "rocket",
+            "groups": [
+              {
+                "group": "Tuning Performance",
+                "pages": [
+                  {
+                    "group": "Introduction",
+                    "pages": [
+                      "tuning-performance/introduction/introduction",
+                      "tuning-performance/introduction/structure-regatta-cluster",
+                      "tuning-performance/introduction/data-distribution-table",
+                      "tuning-performance/introduction/data-distribution-index",
+                      "tuning-performance/introduction/sql-statement"
+                    ]
+                  },
+                  "tuning-performance/distributing-tables",
+                  "tuning-performance/distributing-indexes",
+                  "tuning-performance/other-index",
+                  "tuning-performance/other-limitations",
+                  "tuning-performance/closing-remarks",
+                  "tuning-performance/references"
+                ]
+              }
             ]
           }
         ]
-      }
-    ]
       }
     ]
   },
