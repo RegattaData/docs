@@ -90,11 +90,12 @@
             "groups": [
               {
                 "group": "SQL Specification",
-                "pages": ["/sql/specification"]
+                "pages": ["/sql/introduction"]
               },
               {
                 "group": "Data Types",
                 "pages": [
+                  "sql/data-types/introduction",
                   {
                     "group": "Numeric types",
                     "pages": [
