@@ -1,20 +1,19 @@
 ---
-title: UPDATE
+title: "UPDATE"
 ---
 
 Modifies rows in an existing table.
-
 
 ## Synopsis
 
 ```sql
 UPDATE table_name[ [ AS ] alias ]
-SET { column_name = { expression | DEFAULT } |
-( column_name [, ...] ) = ( { expression | DEFAULT } [, ...] ) |
-( column_name [, ...] ) = ( sub-SELECT )
-} [, ...]
-[ WHERE condition ]
-[ RETURNING output_expression [[ AS ] output_name ] [, ...] ]
+  SET { column_name = { expression | DEFAULT } |
+        ( column_name [, ...] ) = ( { expression | DEFAULT } [, ...] ) |
+        ( column_name [, ...] ) = ( sub-SELECT )
+      } [, ...]
+  [ WHERE condition ]
+  [ RETURNING output_expression [[ AS ] output_name ] [, ...] ]
 ```
 
 ## Description
@@ -23,57 +22,63 @@ The `UPDATE` command modifies the values of specific columns in all rows that sa
 
 ## Parameters
 
-##### `table_name`
+**`table_name`**
+
 The name of the table to modify its rows.
 
-##### `alias`
+**`alias`**
+
 A substitute alias name for `table_name`. The alias name should match the [Identifiers Limitations](/sql/appendices/indentifiers-limitations).
 
-##### `SET`
+**`SET`**
+
 The requested change. Contains a tuple of column names and a tuple of their new values.
 
-##### `column_name`
-The name(s) of the column(s) to modify. The columns should not include the table name (`SET
-tab1.c_id = 1 is invalid`).
+**`column_name`**
 
-##### `expression`
+The name(s) of the column(s) to modify. The columns should not include the table name (`SET tab1.c_id = 1` is invalid).
+
+**`expression`**
+
 The new value to replace the existing value per column.
 
-##### `DEFAULT`
+**`DEFAULT`**
+
 Set the new column value to the column default value as set for the column in the table definition.
 
-##### `sub-SELECT`
+**`sub-SELECT`**
 
-Subquery that returns exactly one row. The subquery returned columns should match the `SET` clause
-columns and their data types.
+Subquery that returns exactly one row. The subquery returned columns should match the `SET` clause columns and their data types.
 
-<Note> Note: If the subquery returns ‘no rows’, the value of all the updated columns in the updated rows is set
-to NULL.</Note>
+<Note>
+  Note: If the subquery returns no rows, the value of all the updated columns in the updated rows is set to NULL.
+</Note>
 
-##### `WHERE`
-A filter to decide which rows in the table to update. If no condition is set, all the rows in the table are
-updated.
+**`WHERE`**
+
+A filter to decide which rows in the table to update. If no condition is set, all the rows in the table are updated.
 
 The `WHERE` clause can contain the rows `ROWID` with ‘=’ or `‘IN` (`<`list of literals`>`)’
 condition.
 
-##### `RETURNING output_expression`
+**`RETURNING output_expression`**
+
 Returns the given expression for every row modified by the command. Refer to the `expression`
 parameter of [SELECT](/sql/dql/select/select#parameters) for specification of the **output_expression** parameter.
 
 ## Outputs
 
-On successful completion, the `UPDATE` command returns the count of the updated rows. 
+On successful completion, the `UPDATE` command returns the count of the updated rows.
 
 ## Examples
 
-##### Update the rows based on a simple predicate:
+### Update the rows based on a simple predicate
 
 ```sql
 UPDATE orders SET o_date = '2022-01-01' WHERE c_custkey = 1
 ```
 
-##### Update multiple columns and return the update rows ROWIDs:
+### Update multiple columns and return the update rows ROWIDs
 
 ```sql
 UPDATE orders SET o_date = '2022-01-01', o_totalprice = O_totalprice * 0.1
@@ -81,14 +86,14 @@ WHERE o_name = 'order of John Doe1' AND o_date > '2000-01-01'
 RETURNING ROWID;
 ```
 
-##### Update a table based on ROWID:
+### Update a table based on ROWID
 
 ```sql
 UPDATE orders SET o_date = '2022-01-01'
 WHERE ROWID in (12345678, 12345677, 12345676);
 ```
 
-##### Update a table using a result from a non-correlated subquery:
+### Update a table using a result from a non-correlated subquery
 
 ```sql
 UPDATE orders
