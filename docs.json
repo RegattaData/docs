@@ -30,206 +30,9 @@
               {
                 "group": "Getting Started",
                 "pages": [
-                  {
-                    "group": "Regatta Cloud",
-                    "pages": [
-                      "getting-started/regatta-cloud/regatta-cloud",
-                      "getting-started/regatta-cloud/access-the-cloud",
-                      "getting-started/regatta-cloud/create-a-cluster"
-                    ]
-                  },
-                  "getting-started/prerequisites"
-                ]
-              },
-              {
-                "group": "Regatta Basics",
-                "pages": [
-                  {
-                    "group": "Creating a table",
-                    "pages": [
-                      "regatta-cloud/regatta-basics/creating-a-table/create-a-table",
-                      "getting-started/regatta-basics/creating-a-table/default-device-mapping",
-                      "getting-started/regatta-basics/creating-a-table/selected-device-mapping"
-                    ]
-                  },
-                  "getting-started/regatta-basics/insert-values",
-                  "getting-started/regatta-basics/select-values-from-table",
-                  "getting-started/regatta-basics/update-entry",
-                  "getting-started/regatta-basics/delete-entry-from-table",
-                  "getting-started/regatta-basics/drop-table",
-                  "getting-started/regatta-basics/credentials"
-                ]
-              },
-              {
-                "group": "Linear Scaling",
-                "pages": [
-                  "getting-started/linear-scaling/linear-scaling",
-                  {
-                    "group": "Creating the Demo Environment",
-                    "pages": [
-                      "getting-started/linear-scaling/creating-demo-environment/create-demo-environment",
-                      "getting-started/linear-scaling/creating-demo-environment/table-schema",
-                      "getting-started/linear-scaling/creating-demo-environment/creating-demo-clusters"
-                    ]
-                  },
-                  {
-                    "group": "Comparing Performance",
-                    "pages": [
-                      "getting-started/linear-scaling/comparing-performance/comparing-performance",
-                      "getting-started/linear-scaling/comparing-performance/xsmall-cluster",
-                      "getting-started/linear-scaling/comparing-performance/medium-cluster"
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "anchor": "SQL",
-            "icon": "code",
-            "groups": [
-              {
-                "group": "SQL Specification",
-                "pages": ["/sql/specification"]
-              },
-              {
-                "group": "Data Types",
-                "pages": [
-                  {
-                    "group": "Numeric types",
-                    "pages": [
-                      "sql/data-types/numeric-types/exact-numeric-data-type",
-                      "sql/data-types/numeric-types/approximate-numeric-data-type"
-                    ]
-                  },
-                  "sql/data-types/character-types",
-                  "sql/data-types/date-time-types",
-                  "sql/data-types/boolean-types",
-                  {
-                    "group": "Type Conversion",
-                    "pages": [
-                      "sql/data-types/type-conversion/type-conversion",
-                      "sql/data-types/type-conversion/type-conversion-table"
-                    ]
-                  },
-                  "sql/data-types/row-ids"
-                ]
-              },
-              {
-                "group": "SQL Syntax Conventions",
-                "pages": ["sql/sql-syntax-convention"]
-              },
-              {
-                "group": "Data Definition Language (DDL) Commands",
-                "pages": [
-                  "sql/ddl-commands/create-table",
-                  "sql/ddl-commands/alter-table",
-                  "sql/ddl-commands/drop-table"
-                ]
-              },
-              {
-                "group": "Data Manipulation Language Commands",
-                "pages": [
-                  "sql/dml-commands/insert",
-                  "sql/dml-commands/update",
-                  "sql/dml-commands/delete"
-                ]
-              },
-              {
-                "group": "Transaction Control Language Commands",
-                "pages": [
-                  "sql/tcl-commands/tcl-commands",
-                  "sql/tcl-commands/set-transaction"
-                ]
-              },
-              {
-                "group": "Data Query Language",
-                "pages": ["sql/dql/select", "sql/dql/explain"]
-              },
-              {
-                "group": "Hints",
-                "pages": [
-                  "sql/hints/overview",
-                  "sql/hints/general-notes",
-                  {
-                    "group": "Join hints",
-                    "pages": [
-                      "sql/hints/join-hints/join-hints",
-                      "sql/hints/join-hints/join-direction",
-                      "sql/hints/join-hints/join-method",
-                      "sql/hints/join-hints/join-distribution"
-                    ]
-                  },
-                  {
-                    "group": "Hints for parallelism of distributed operations",
-                    "pages": [
-                      "sql/hints/parallelism/hints-for-parallelism",
-                      "sql/hints/parallelism/sorting",
-                      "sql/hints/parallelism/join-distribution"
-                    ]
-                  },
-                  {
-                    "group": "Other hints",
-                    "pages": [
-                      "sql/hints/other-hints/other-hints",
-                      "sql/hints/other-hints/hint-index",
-                      "sql/hints/other-hints/hint-cardinality"
-                    ]
-                  }
-                ]
-              },
-              {
-                "group": "SQL Functions and Operators",
-                "pages": [
-                  "sql/sql-functions-and-operators/sql-functions-and-operators",
-                  "sql/sql-functions-and-operators/comparison-function",
-                  {
-                    "group": "Mathematical Functions and Operators",
-                    "pages": [
-                      "sql/sql-functions-and-operators/maths-functions-operators/maths-functions-operators",
-                      "sql/sql-functions-and-operators/maths-functions-operators/maths-operators",
-                      "sql/sql-functions-and-operators/maths-functions-operators/maths-functions"
-                    ]
-                  },
-                  "sql/sql-functions-and-operators/string-functions-operators",
-                  {
-                    "group": "Date/Time Functions and Operators",
-                    "pages": [
-                      "sql/sql-functions-and-operators/date-time-functions-operators/date-time-functions-operators",
-                      "sql/sql-functions-and-operators/date-time-functions-operators/date-time-operators",
-                      "sql/sql-functions-and-operators/date-time-functions-operators/date-time-functions"
-                    ]
-                  },
-                  {
-                    "group": "Conditional Expressions",
-                    "pages": [
-                      "sql/sql-functions-and-operators/conditional-expressions/case/"
-                    ]
-                  },
-                  {
-                    "group": "Convert Functions",
-                    "pages": [
-                      "sql/sql-functions-and-operators/convert-function/cast",
-          {
-            "anchor": "Getting Started",
-
-            "groups": [
-              {
-                "group": "Getting Started",
-                "pages": [
-                  {
-                    "group": "Regatta Cloud",
-                    "group": "Regatta Cloud",
-                    "pages": [
-                      "getting-started/regatta-cloud/regatta-cloud",
-                      "getting-started/regatta-cloud/access-the-cloud",
-                      "getting-started/regatta-cloud/create-a-cluster"
-                      "getting-started/regatta-cloud/regatta-cloud",
-                      "getting-started/regatta-cloud/access-the-cloud",
-                      "getting-started/regatta-cloud/create-a-cluster"
-                    ]
-                  },
-                  "getting-started/prerequisites"
+                  "getting-started/regatta-cloud",
+                  "getting-started/access-the-cloud",
+                  "getting-started/create-a-cluster",
                   "getting-started/prerequisites"
                 ]
               },
@@ -250,25 +53,15 @@
                   "getting-started/regatta-basics/delete-entry-from-table",
                   "getting-started/regatta-basics/drop-table",
                   "getting-started/regatta-basics/credentials"
-                  "getting-started/regatta-basics/insert-values",
-                  "getting-started/regatta-basics/select-values-from-table",
-                  "getting-started/regatta-basics/update-entry",
-                  "getting-started/regatta-basics/delete-entry-from-table",
-                  "getting-started/regatta-basics/drop-table",
-                  "getting-started/regatta-basics/credentials"
                 ]
               },
               {
                 "group": "Linear Scaling",
                 "pages": [
                   "getting-started/linear-scaling/linear-scaling",
-                  "getting-started/linear-scaling/linear-scaling",
                   {
                     "group": "Creating the Demo Environment",
                     "pages": [
-                      "getting-started/linear-scaling/creating-demo-environment/create-demo-environment",
-                      "getting-started/linear-scaling/creating-demo-environment/table-schema",
-                      "getting-started/linear-scaling/creating-demo-environment/creating-demo-clusters"
                       "getting-started/linear-scaling/creating-demo-environment/create-demo-environment",
                       "getting-started/linear-scaling/creating-demo-environment/table-schema",
                       "getting-started/linear-scaling/creating-demo-environment/creating-demo-clusters"
@@ -277,9 +70,6 @@
                   {
                     "group": "Comparing Performance",
                     "pages": [
-                      "getting-started/linear-scaling/comparing-performance/comparing-performance",
-                      "getting-started/linear-scaling/comparing-performance/xsmall-cluster",
-                      "getting-started/linear-scaling/comparing-performance/medium-cluster"
                       "getting-started/linear-scaling/comparing-performance/comparing-performance",
                       "getting-started/linear-scaling/comparing-performance/xsmall-cluster",
                       "getting-started/linear-scaling/comparing-performance/medium-cluster"
@@ -323,14 +113,10 @@
               {
                 "group": "SQL Syntax Conventions",
                 "pages": ["sql/sql-syntax-convention"]
-                "pages": ["sql/sql-syntax-convention"]
               },
               {
                 "group": "Data Definition Language (DDL) Commands",
                 "pages": [
-                  "sql/ddl-commands/create-table",
-                  "sql/ddl-commands/alter-table",
-                  "sql/ddl-commands/drop-table"
                   "sql/ddl-commands/create-table",
                   "sql/ddl-commands/alter-table",
                   "sql/ddl-commands/drop-table"
@@ -342,9 +128,6 @@
                   "sql/dml-commands/insert",
                   "sql/dml-commands/update",
                   "sql/dml-commands/delete"
-                  "sql/dml-commands/insert",
-                  "sql/dml-commands/update",
-                  "sql/dml-commands/delete"
                 ]
               },
               {
@@ -352,12 +135,10 @@
                 "pages": [
                   "sql/tcl-commands/tcl-commands",
                   "sql/tcl-commands/set-transaction"
-                  "sql/tcl-commands/set-transaction"
                 ]
               },
               {
                 "group": "Data Query Language",
-                "pages": ["sql/dql/select", "sql/dql/explain"]
                 "pages": ["sql/dql/select", "sql/dql/explain"]
               },
               {
@@ -456,9 +237,6 @@
                   "sql/managing-users/create-user",
                   "sql/managing-users/alter-user",
                   "sql/managing-users/drop-user"
-                  "sql/managing-users/create-user",
-                  "sql/managing-users/alter-user",
-                  "sql/managing-users/drop-user"
                 ]
               },
               {
@@ -503,9 +281,6 @@
                       "sql/system-monitoring/system-management/system-command",
                       "sql/system-monitoring/system-management/system-shutdown",
                       "sql/system-monitoring/system-management/system-state"
-                      "sql/system-monitoring/system-management/system-command",
-                      "sql/system-monitoring/system-management/system-shutdown",
-                      "sql/system-monitoring/system-management/system-state"
                     ]
                   }
                 ]
@@ -532,19 +307,11 @@
                   "regatta-cloud/regatta-cloud/create-a-cluster",
                   "regatta-cloud/regatta-cloud/delete-cluster",
                   "regatta-cloud/regatta-cloud/cluster-ip"
-                  "regatta-cloud/regatta-cloud/regatta-cloud",
-                  "regatta-cloud/regatta-cloud/access-the-cloud",
-                  "regatta-cloud/regatta-cloud/create-a-cluster",
-                  "regatta-cloud/regatta-cloud/delete-cluster",
-                  "regatta-cloud/regatta-cloud/cluster-ip"
                 ]
               },
               {
                 "group": "Database Backup and Restore",
                 "pages": [
-                  "regatta-cloud/database-backup-restore",
-                  "regatta-cloud/backup",
-                  "regatta-cloud/restore"
                   "regatta-cloud/database-backup-restore",
                   "regatta-cloud/backup",
                   "regatta-cloud/restore"
@@ -554,12 +321,10 @@
           },
           {
             "anchor": "Self-Hosted Deployment",
-            "anchor": "Self-Hosted Deployment",
             "icon": "server",
             "groups": [
               {
                 "group": "Scripted Solution",
-                "pages": ["self-hosted-deployment/prerequisites"]
                 "pages": ["self-hosted-deployment/prerequisites"]
               },
               {
@@ -567,16 +332,9 @@
                 "pages": [
                   "self-hosted-deployment/manual-deployment/manual-deployment",
                   "self-hosted-deployment/manual-deployment/user-setup",
-                  "self-hosted-deployment/manual-deployment/manual-deployment",
-                  "self-hosted-deployment/manual-deployment/user-setup",
                   {
                     "group": "Regatta Configuration",
                     "pages": [
-                      "self-hosted-deployment/manual-deployment/regatta-configuration/regatta-configuration",
-                      "self-hosted-deployment/manual-deployment/regatta-configuration/rdb",
-                      "self-hosted-deployment/manual-deployment/regatta-configuration/sequencer",
-                      "self-hosted-deployment/manual-deployment/regatta-configuration/dcm",
-                      "self-hosted-deployment/manual-deployment/regatta-configuration/gdd"
                       "self-hosted-deployment/manual-deployment/regatta-configuration/regatta-configuration",
                       "self-hosted-deployment/manual-deployment/regatta-configuration/rdb",
                       "self-hosted-deployment/manual-deployment/regatta-configuration/sequencer",
@@ -591,16 +349,8 @@
                       "self-hosted-deployment/manual-deployment/configuration-file/configuration-file-example",
                       "self-hosted-deployment/manual-deployment/configuration-file/main-configuration-top-part",
                       "self-hosted-deployment/manual-deployment/configuration-file/unique-module-configuration"
-                      "self-hosted-deployment/manual-deployment/configuration-file/configuration-file",
-                      "self-hosted-deployment/manual-deployment/configuration-file/configuration-file-example",
-                      "self-hosted-deployment/manual-deployment/configuration-file/main-configuration-top-part",
-                      "self-hosted-deployment/manual-deployment/configuration-file/unique-module-configuration"
                     ]
                   },
-                  "self-hosted-deployment/manual-deployment/filewall",
-                  "self-hosted-deployment/manual-deployment/starting-the-system",
-                  "self-hosted-deployment/manual-deployment/cli-and-drivers",
-                  "self-hosted-deployment/manual-deployment/configuration-template-file"
                   "self-hosted-deployment/manual-deployment/filewall",
                   "self-hosted-deployment/manual-deployment/starting-the-system",
                   "self-hosted-deployment/manual-deployment/cli-and-drivers",
@@ -610,10 +360,6 @@
               {
                 "group": "Scripted Solution",
                 "pages": [
-                  "self-hosted-deployment/scripted-solution/scripted-solution",
-                  "self-hosted-deployment/scripted-solution/setup",
-                  "self-hosted-deployment/scripted-solution/configjson",
-                  "self-hosted-deployment/scripted-solution/setup-cluster"
                   "self-hosted-deployment/scripted-solution/scripted-solution",
                   "self-hosted-deployment/scripted-solution/setup",
                   "self-hosted-deployment/scripted-solution/configjson",
@@ -628,25 +374,15 @@
                   "self-hosted-deployment/hybrid-deployment/inventory",
                   "self-hosted-deployment/hybrid-deployment/configuration",
                   "self-hosted-deployment/hybrid-deployment/start"
-                  "self-hosted-deployment/hybrid-deployment/hybrid-deployment",
-                  "self-hosted-deployment/hybrid-deployment/process",
-                  "self-hosted-deployment/hybrid-deployment/inventory",
-                  "self-hosted-deployment/hybrid-deployment/configuration",
-                  "self-hosted-deployment/hybrid-deployment/start"
                 ]
               },
               {
                 "group": "Support",
                 "pages": [
                   "self-hosted-deployment/support/support",
-                  "self-hosted-deployment/support/support",
                   {
                     "group": "Collecting Data",
                     "pages": [
-                      "self-hosted-deployment/support/collect-data-script/collect-data-script",
-                      "self-hosted-deployment/support/collect-data-script/prerequisites",
-                      "self-hosted-deployment/support/collect-data-script/setup",
-                      "self-hosted-deployment/support/collect-data-script/execution"
                       "self-hosted-deployment/support/collect-data-script/collect-data-script",
                       "self-hosted-deployment/support/collect-data-script/prerequisites",
                       "self-hosted-deployment/support/collect-data-script/setup",
@@ -664,29 +400,24 @@
               {
                 "group": "Drivers & Clients",
                 "pages": [
-                  {
-                    "group": "Connecting to Regatta",
-                    "pages": [
-                      "drivers-and-clients/connecting-to-regatta/connecting-to-regatta",
-                      "drivers-and-clients/connecting-to-regatta/regatta-client",
-                      "drivers-and-clients/connecting-to-regatta/regatta-connect"
-                    ]
-                  },
-                  {
-                    "group": "Regatta CLI",
-                    "pages": [
-                      "drivers-and-clients/regatta-cli/regatta-cli",
-                      "drivers-and-clients/regatta-cli/connecting-to-cli",
-                      "drivers-and-clients/regatta-cli/creating-a-table",
-                      "drivers-and-clients/regatta-cli/insert-values",
-                      "drivers-and-clients/regatta-cli/select-values-from-table",
-                      "drivers-and-clients/regatta-cli/update-entry",
-                      "drivers-and-clients/regatta-cli/delete-entry-from-table",
-                      "drivers-and-clients/regatta-cli/drop-table"
-                    ]
-                  },
-                  "drivers-and-clients/drivers-support/driver-support",
-                  "drivers-and-clients/drivers-support/object-relation-map-tool"
+                  "drivers-and-clients/connecting-to-regatta",
+                  "drivers-and-clients/regatta-client",
+                  "drivers-and-clients/regatta-connect",
+                  "drivers-and-clients/driver-support",
+                  "drivers-and-clients/object-relation-map-tool"
+                ]
+              },
+              {
+                "group": "Regatta CLI",
+                "pages": [
+                  "drivers-and-clients/regatta-cli/regatta-cli",
+                  "drivers-and-clients/regatta-cli/connecting-to-cli",
+                  "drivers-and-clients/regatta-cli/creating-a-table",
+                  "drivers-and-clients/regatta-cli/insert-values",
+                  "drivers-and-clients/regatta-cli/select-values-from-table",
+                  "drivers-and-clients/regatta-cli/update-entry",
+                  "drivers-and-clients/regatta-cli/delete-entry-from-table",
+                  "drivers-and-clients/regatta-cli/drop-table"
                 ]
               },
               {
@@ -695,9 +426,9 @@
                   {
                     "group": "Python Driver",
                     "pages": [
-                      "drivers-and-clients/drivers-support/python/python-drivers",
-                      "drivers-and-clients/drivers-support/python/install-the-driver",
-                      "drivers-and-clients/drivers-support/python/run-python-application"
+                      "drivers-and-clients/python/python-drivers",
+                      "drivers-and-clients/python/install-the-driver",
+                      "drivers-and-clients/python/run-python-application"
                     ]
                   }
                 ]
@@ -708,19 +439,19 @@
                   {
                     "group": "JBDC Driver",
                     "pages": [
-                      "drivers-and-clients/drivers-support/java/jbdc-driver",
-                      "drivers-and-clients/drivers-support/java/install-the-driver",
-                      "drivers-and-clients/drivers-support/java/set-up-dependency",
-                      "drivers-and-clients/drivers-support/java/run-java-application"
+                      "drivers-and-clients/java/jbdc-driver",
+                      "drivers-and-clients/java/install-the-driver",
+                      "drivers-and-clients/java/set-up-dependency",
+                      "drivers-and-clients/java/run-java-application"
                     ]
                   },
                   {
                     "group": "Hibernate",
                     "pages": [
-                      "drivers-and-clients/drivers-support/java/hibernate",
-                      "drivers-and-clients/drivers-support/java/set-hibernate-dependency",
-                      "drivers-and-clients/drivers-support/java/set-up-configuration",
-                      "drivers-and-clients/drivers-support/java/run-a-hibernate"
+                      "drivers-and-clients/java/hibernate",
+                      "drivers-and-clients/java/set-hibernate-dependency",
+                      "drivers-and-clients/java/set-up-configuration",
+                      "drivers-and-clients/java/run-a-hibernate"
                     ]
                   }
                 ]
@@ -731,17 +462,17 @@
                   {
                     "group": "Nodejs Driver",
                     "pages": [
-                      "drivers-and-clients/drivers-support/javascript/nodejs",
-                      "drivers-and-clients/drivers-support/javascript/install-the-driver",
-                      "drivers-and-clients/drivers-support/javascript/run-nodejs-application"
+                      "drivers-and-clients/javascript/nodejs",
+                      "drivers-and-clients/javascript/install-the-driver",
+                      "drivers-and-clients/javascript/run-nodejs-application"
                     ]
                   },
                   {
                     "group": "TypeORM",
                     "pages": [
-                      "drivers-and-clients/drivers-support/javascript/type-orm",
-                      "drivers-and-clients/drivers-support/javascript/install-orm-tools",
-                      "drivers-and-clients/drivers-support/javascript/run-typeorm-application"
+                      "drivers-and-clients/javascript/type-orm",
+                      "drivers-and-clients/javascript/install-orm-tools",
+                      "drivers-and-clients/javascript/run-typeorm-application"
                     ]
                   }
                 ]
@@ -749,11 +480,11 @@
             ]
           },
           {
-            "anchor": "Optimizing Performance",
+            "anchor": "Tuning Performance",
             "icon": "rocket",
             "groups": [
               {
-                "group": "Optimizing Performance",
+                "group": "Tuning Performance",
                 "pages": [
                   {
                     "group": "Introduction",
@@ -763,19 +494,8 @@
                       "tuning-performance/introduction/data-distribution-table",
                       "tuning-performance/introduction/data-distribution-index",
                       "tuning-performance/introduction/sql-statement"
-                      "tuning-performance/introduction/introduction",
-                      "tuning-performance/introduction/structure-regatta-cluster",
-                      "tuning-performance/introduction/data-distribution-table",
-                      "tuning-performance/introduction/data-distribution-index",
-                      "tuning-performance/introduction/sql-statement"
                     ]
                   },
-                  "tuning-performance/distributing-tables",
-                  "tuning-performance/distributing-indexes",
-                  "tuning-performance/other-index",
-                  "tuning-performance/other-limitations",
-                  "tuning-performance/closing-remarks",
-                  "tuning-performance/references"
                   "tuning-performance/distributing-tables",
                   "tuning-performance/distributing-indexes",
                   "tuning-performance/other-index",
@@ -814,4 +534,3 @@
     }
   }
 }
-
