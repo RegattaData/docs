@@ -5,27 +5,37 @@ title: "Other Index Consideration"
 ### Indexing nullable columns
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 When a nullable column is indexed, the `NULL` value is considered to be lower than any value of the type of the column. This means that it is possible to have an index segment with only the NULL values by specifying a first range separator that is smaller than any expected value of that column. (Note: In the case of a string type, the minimal possible value is the empty string `''`.)
 
 ### Indexing high frequency values
 
 Sometimes, in the case of a non-unique index, the indexed column has a few values that appear a large number of times. It is possible, using range separators, to index each such value in an index segment of their own. This has an advantage that values that collate close to those values will not be in large index segments.
 =======
+=======
+>>>>>>> 1fb8e6a (most updated json)
 When a nullable column is indexed, the `NULL` value is considered to be lower than any value of the type of the column.  This means that it is possible to have an index segment with only the NULL values by specifying a first range separator that is smaller than any expected value of that column.  (Note: In the case of a string type, the minimal possible value is the empty string `''`.)
 
 ### Indexing high frequency values
 
 Sometimes, in the case of a non-unique index, the indexed column has a few values that appear a large number of times.  It is possible, using range separators, to index each such value in an index segment of their own.  This has an advantage that values that collate close to those values will not be in large index segments.
+<<<<<<< HEAD
 >>>>>>> 36dafd7 (DRIVERS_AND_CLIENTS: Update section layout)
+=======
+>>>>>>> 1fb8e6a (most updated json)
 
 As an (artificial) example, consider an `orders` table that has an `order_status` column.\
 Suppose that there is a large number of possible values that `order_status` could have.\
 Also, there is a large number of rows with status `delivered` and `returned`.\
 <<<<<<< HEAD
+<<<<<<< HEAD
 There are also an unknown number of `orders` that don’t have a status, that is, their status is `NULL`. Without getting into too much business logic in this artificial example, suppose that scans are likely over `order_status` values that are not `delivered` or `returned`. For example, periodically the application may want to send reminders for orders that are `unpaid`. The following definition of the range separators would put the index for rows with `order_status` of `NULL`, `delivered` and `returned` into separate index segments that contain only those values:
 =======
 There are also an unknown number of `orders` that don’t have a status, that is, their status is `NULL`.  Without getting into too much business logic in this artificial example, suppose that scans are likely over `order_status` values that are not `delivered` or `returned`.  For example, periodically the application may want to send reminders for orders that are `unpaid`.  The following definition of the range separators would put the index for rows with `order_status` of `NULL`, `delivered` and `returned` into separate index segments that contain only those values:
 >>>>>>> 36dafd7 (DRIVERS_AND_CLIENTS: Update section layout)
+=======
+There are also an unknown number of `orders` that don’t have a status, that is, their status is `NULL`.  Without getting into too much business logic in this artificial example, suppose that scans are likely over `order_status` values that are not `delivered` or `returned`.  For example, periodically the application may want to send reminders for orders that are `unpaid`.  The following definition of the range separators would put the index for rows with `order_status` of `NULL`, `delivered` and `returned` into separate index segments that contain only those values:
+>>>>>>> 1fb8e6a (most updated json)
 
 ```sql
 CREATE TABLE orders (
@@ -38,6 +48,7 @@ CREATE TABLE orders (
 ```
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Note that this example has 6 devices for the 5 range separators, as required. The index segment on the first device holds the index for all the values strictly less than the first range separator. In this example, the first range separator is the empty string, `''`. As explained in above, all the rows that have a `NULL order_status` will be indexed in this index segment (and only those rows).
 
 There is a subtle difference between the range separators `'delivered'` and `'delivered '`. The difference is the extra space at the end of the second. The only strings that are greater than or equal to the first but less than the second are those that are exactly `'delivered'`, so only rows with this value as their `order_status` will be indexed in this index segment. The same logic holds for `'returned'` and `'returned '`.
@@ -46,3 +57,8 @@ Note that this example has 6 devices for the 5 range separators, as required.  T
 
 There is a subtle difference between the range separators `'delivered'` and `'delivered '`.  The difference is the extra space at the end of the second.  The only strings that are greater than or equal to the first but less than the second are those that are exactly `'delivered'`, so only rows with this value as their `order_status` will be indexed in this index segment.  The same logic holds for `'returned'` and `'returned '`.
 >>>>>>> 36dafd7 (DRIVERS_AND_CLIENTS: Update section layout)
+=======
+Note that this example has 6 devices for the 5 range separators, as required.  The index segment on the first device holds the index for all the values strictly less than the first range separator.  In this example, the first range separator is the empty string, `''`.  As explained in above, all the rows that have a `NULL order_status` will be indexed in this index segment (and only those rows).
+
+There is a subtle difference between the range separators `'delivered'` and `'delivered '`.  The difference is the extra space at the end of the second.  The only strings that are greater than or equal to the first but less than the second are those that are exactly `'delivered'`, so only rows with this value as their `order_status` will be indexed in this index segment.  The same logic holds for `'returned'` and `'returned '`.
+>>>>>>> 1fb8e6a (most updated json)
