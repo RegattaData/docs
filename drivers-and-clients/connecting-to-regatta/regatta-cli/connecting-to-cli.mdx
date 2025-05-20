@@ -1,0 +1,31 @@
+---
+title: Connecting to the CLI 
+---
+
+Run the CLI. 
+
+```
+/opt/regatta/1.0/connect/cli/bin/client_cli
+```
+
+
+You will get the following prompt:
+
+```
+rdb>
+```
+
+Choose one of the cluster RDB IPs, say aaa.bbb.ccc.ddd:ppp from the configuration file and run the following command in the CLI:
+
+```
+rdb>\connect user=admin pass=RegattaDefault1234! url=aaa.bbb.ccc.ddd:ppp
+```
+
+In this command we used the default credentials. See the Credentials section below for details.
+In response you will get: 
+
+```
+Successfully connected to cluster 
+```
+
+<Note> NOTE: From this point forward the rdb> prompt will be omitted. </Note>
