@@ -167,7 +167,7 @@ If storage parameters are not specified for an index, the default is to create a
 
 ## Examples
 
-### Create a table with a primary key:
+**Create a table with a primary key:**
 
 ```sql
 CREATE TABLE customers (
@@ -192,7 +192,7 @@ The column `c_name` has an index on it with the following devices:
 
 The table data is stored on the devices (m1d2, m2d5, m3d3).
 
-### Create a table with a foreign key:
+**Create a table with a foreign key:**
 
 ```sql
 CREATE TABLE SET NOT READY orders (
@@ -217,7 +217,7 @@ The `o_custkey` column is a foreign key to the primary key of table `customers`.
 
 The table itself is stored on the device `m1d4`.
 
-### Create a table with a calculated column:
+**Create a table with a calculated column:**
 
 ```sql
 CREATE TABLE transactions (

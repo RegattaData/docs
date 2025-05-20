@@ -72,13 +72,13 @@ On successful completion, the `UPDATE` command returns the count of the updated 
 
 ## Examples
 
-### Update the rows based on a simple predicate
+Update the rows based on a simple predicate:
 
 ```sql
 UPDATE orders SET o_date = '2022-01-01' WHERE c_custkey = 1
 ```
 
-### Update multiple columns and return the update rows ROWIDs
+Update multiple columns and return the update rows ROWIDs:
 
 ```sql
 UPDATE orders SET o_date = '2022-01-01', o_totalprice = O_totalprice * 0.1
