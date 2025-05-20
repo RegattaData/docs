@@ -30,14 +30,9 @@
               {
                 "group": "Getting Started",
                 "pages": [
-                  {
-                    "group": "Regatta Cloud",
-                    "pages": [
-                      "getting-started/regatta-cloud/regatta-cloud",
-                      "getting-started/regatta-cloud/access-the-cloud",
-                      "getting-started/regatta-cloud/create-a-cluster"
-                    ]
-                  },
+                  "getting-started/regatta-cloud",
+                  "getting-started/access-the-cloud",
+                  "getting-started/create-a-cluster",
                   "getting-started/prerequisites"
                 ]
               },
@@ -405,26 +400,26 @@
               {
                 "group": "Drivers & Clients",
                 "pages": [
-					"drivers-and-clients/connecting-to-regatta",
-					"drivers-and-clients/regatta-client",
-					"drivers-and-clients/regatta-connect",
-					"drivers-and-clients/driver-support",
-					"drivers-and-clients/object-relation-map-tool"
+                  "drivers-and-clients/connecting-to-regatta",
+                  "drivers-and-clients/regatta-client",
+                  "drivers-and-clients/regatta-connect",
+                  "drivers-and-clients/driver-support",
+                  "drivers-and-clients/object-relation-map-tool"
                 ]
               },
-			  {
-				  "group": "Regatta CLI",
-				  "pages": [
-					"drivers-and-clients/regatta-cli/regatta-cli",
-					"drivers-and-clients/regatta-cli/connecting-to-cli",
-					"drivers-and-clients/regatta-cli/creating-a-table",
-					"drivers-and-clients/regatta-cli/insert-values",
-					"drivers-and-clients/regatta-cli/select-values-from-table",
-					"drivers-and-clients/regatta-cli/update-entry",
-					"drivers-and-clients/regatta-cli/delete-entry-from-table",
-					"drivers-and-clients/regatta-cli/drop-table"
-				  ]
-				},
+              {
+                "group": "Regatta CLI",
+                "pages": [
+                  "drivers-and-clients/regatta-cli/regatta-cli",
+                  "drivers-and-clients/regatta-cli/connecting-to-cli",
+                  "drivers-and-clients/regatta-cli/creating-a-table",
+                  "drivers-and-clients/regatta-cli/insert-values",
+                  "drivers-and-clients/regatta-cli/select-values-from-table",
+                  "drivers-and-clients/regatta-cli/update-entry",
+                  "drivers-and-clients/regatta-cli/delete-entry-from-table",
+                  "drivers-and-clients/regatta-cli/drop-table"
+                ]
+              },
               {
                 "group": "Python",
                 "pages": [
