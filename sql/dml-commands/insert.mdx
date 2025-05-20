@@ -1,5 +1,5 @@
 ---
-title: INSERT
+title: "INSERT"
 ---
 
 Inserts data into an existing table.
@@ -8,62 +8,55 @@ Inserts data into an existing table.
 
 ```sql
 INSERT INTO table_name [ AS alias ] [ ( column_name [, ...] ) ]
-{ VALUES ( { expression | DEFAULT } [, ...] ) [, ...] | query }
-[ RETURNING output_expression [[ AS ] output_name ] [, ...] ]
+  { VALUES ( { expression | DEFAULT } [, ...] ) [, ...] | query }
+  [ RETURNING output_expression [[ AS ] output_name ] [, ...] ]
 ```
 
 ## Description
 
-The `INSERT` command inserts one or more rows into an existing table. The values inserted into each column
-in the table can either be explicitly-specified using the `VALUES` keyword, or use the result of a query.
+The `INSERT` command inserts one or more rows into an existing table. The values inserted into each column in the table can either be explicitly-specified using the `VALUES` keyword, or use the result of a query.
 
-Parameters
----
+## Parameters
 
-##### `table_name`
+**`table_name`**
+
 The name of the table to be inserted with the new rows.
 
-##### `alias`
+**`alias`**
+
 A substitute alias name for `table_name`. The alias name should match the [Identifiers Limitations](/sql/appendices/indentifiers-limitations).
 
-##### `column_name`
-A list of columns in the table. The columns can be listed in any order, as long as the expressions in the
-VALUES clause are listed in the same order. Each missing column is set to `NULL` or to its default value
-specified in the `CREATE TABLE` statement. In case of a missing column that has no default value and
-the column has a `NOT NULL` constraint, the command fails.
+**`column_name`**
 
-This parameter is optional. If no column names were specified, the values are assigned to the columns
-in the order of columns defined in the table’s creation. If the number of values is less than the number
-of columns, the values are assigned to the first columns and the rest are assigned default values, or
-`NULL` for columns with no default value. If such columns for which there is no specified value doesn’t
-have a default value and also has the `NOT NULL` constraint, the command fails with an error.
+A list of columns in the table. The columns can be listed in any order, as long as the expressions in the VALUES clause are listed in the same order. Each missing column is set to `NULL` or to its default value specified in the `CREATE TABLE` statement. In case of a missing column that has no default value and the column has a `NOT NULL` constraint, the command fails.
 
-##### `VALUES`
-Specifies the values to insert into the corresponding columns in the table. The data types of the values
-should be compatible with the data types of the corresponding columns in the column list (note that in some cases, Regatta will overcome mismatches with implicit conversion).
+This parameter is optional. If no column names were specified, the values are assigned to the columns in the order of columns defined in the table’s creation. If the number of values is less than the number of columns, the values are assigned to the first columns and the rest are assigned default values, or
+`NULL` for columns with no default value. If such columns for which there is no specified value doesn’t have a default value and also has the `NOT NULL` constraint, the command fails with an error.
 
-The list of values can only contain literals (e.g. 'hello'), the `DEFAULT` and `NULL` keywords, expressions
-or functions that can be computed at the planning time such as `NOW()` or 5*50.
+**`VALUES`**
+
+Specifies the values to insert into the corresponding columns in the table. The data types of the values should be compatible with the data types of the corresponding columns in the column list (note that in some cases, Regatta will overcome mismatches with implicit conversion).
+
+The list of values can only contain literals (e.g. 'hello'), the `DEFAULT` and `NULL` keywords, expressions or functions that can be computed at the planning time such as `NOW()` or 5\*50.
 
 String literals and date literals in the `VALUES` list must be enclosed by single quotes (').
 
-##### `expression`
+**`expression`**
 
-An expression or value to assign to the corresponding column. The expression is given as a string and
-Regatta attempts to convert it to the desired data type.
+An expression or value to assign to the corresponding column. The expression is given as a string and Regatta attempts to convert it to the desired data type.
 
-##### `DEFAULT`
+**`DEFAULT`**
+
 Store the column default value as it's defined for the column at the [CREATE TABLE](/sql/ddl-commands/create-table) or [ALTER TABLE](/sql/ddl-commands/alter-table)
 statements.
 
-Note that if all the columns in the table have `DEFAULT` values, the following syntax can be used to
-insert a single row with all the columns set to the default values:
-INSERT INTO -table name- DEFAULT VALUES;
+Note that if all the columns in the table have `DEFAULT` values, the following syntax can be used to insert a single row with all the columns set to the default values: `INSERT INTO <table name> DEFAULT VALUES;`
 
-##### `query`
+**`query`**
+
 A SELECT statement that supplies the rows to be inserted. See [SELECT](/sql/dql/select).
 
-##### `RETURNING output_expression`
+**`RETURNING output_expression`**
 
 Returns the given expression for every row inserted by the command. Refer to the **expression**
 parameter of [SELECT](/sql/dql/select/select#parameters) for specification of the **output_expression** parameter.
@@ -75,40 +68,38 @@ If only `ROWID` is specified as the **output_expression**, the returned ROWIDs a
 
 On successful completion, the `INSERT` command returns the count of the inserted rows.
 
-
 ## Examples
 
-The commands to create the tables referenced in these examples can be found in the [CREATE TABLE](/sql/ddl-commands/create-table/create-table#examples) Example.
+The commands to create the tables referenced in these examples can be found in the [CREATE TABLE](/sql/ddl-commands/create-table/create-table#examples) Examples.
 
-##### Insert of a single row:
+### Insert of a single row
 
 ```sql
 INSERT INTO customers (c_custkey,c_name,c_gender)
 VALUES (1,'John Doe1','M');
 ```
 
-##### Insert of multiple rows in a single command:
+### Insert of multiple rows in a single command
 
 ```sql
 INSERT INTO customers (c_custkey,c_name,c_gender)
-VALUES (2,'John Doe2','M'),(3,'John Doe3','M'),(4,'John Doe4','M');
+VALUES (2, 'John Doe2', 'M'), (3, 'John Doe3', 'M'), (4, 'John Doe4', 'M');
 ```
 
-##### Insert partial column list:
+### Insert partial column list
 
 ```sql
 INSERT INTO orders (o_order_id,o_name,o_custkey,o_date)
-VALUES (1022,'order of John Doe1',1,DEFAULT);
+VALUES (1022, 'order of John Doe1', 1, DEFAULT);
 ```
 
 In this example, we specifically write the values of the mentioned columns.
 
 The column `o_date` is loaded with its DEFAULT value as defined in the table definition.
 
-Missing columns (`o_totalprice`) will write their default value, or NULL. If no DEFAULT was defined and the
-column is set with the NOT NULL constraint, the `INSERT` will fail.
+Missing columns (`o_totalprice`) will write their default value, or NULL. If no DEFAULT was defined and the column is set with the NOT NULL constraint, the `INSERT` will fail.
 
-##### Insert based on a query result:
+### Insert based on a query result
 
 ```sql
 INSERT INTO old_orders SELECT * FROM orders WHERE o_date < '2020-01-01';
@@ -117,4 +108,3 @@ INSERT INTO old_orders SELECT * FROM orders WHERE o_date < '2020-01-01';
 ## Compatibility
 
 The `INSERT` command conforms to the SQL standard with the exception of the `RETURNING` functionality.
-
