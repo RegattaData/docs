@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 ---
 title: "Other Limitations"
 ---
@@ -33,44 +31,3 @@ The current release of Regatta supports indexes only on a single column. In the 
 ### PRIMARY KEY INDEX
 
 Note that in the current release, Regatta requires the keyword `INDEX` after the constraint `PRIMARY KEY`.
-=======
-=======
->>>>>>> 1fb8e6a (most updated json)
----
-title: "Other Limitations"
----
-
-### Fully define a new table before using it
-
-The current release of Regatta does not support `ALTER TABLE` operations after the table has been created.  It is still possible to split the table creation into multiple statements if the first statement contains the `SET NOT READY` clause:
-
-```sql
-CREATE TABLE SET NOT READY <table> …
-```
-
-It is then possible to use `ALTER TABLE` statements with this table.  For example:
-
-```sql
-ALTER TABLE <table> ADD COLUMN <column> <type> <constraint> …
-```
-
-The last statement in the table creation sequence should then be
-
-```sql
-ALTER TABLE <table> SET READY;
-```
-
-Note that the table cannot be used (rows cannot be inserted), until after the completion of the `SET READY` command.  That command declares that the table is fully defined and available for use.
-
-### Index on a single column only
-
-The current release of Regatta supports indexes only on a single column.  In the case that a combination of columns needs to be indexed, a compound field may be created and maintained, with the index on the compound field.
-
-### PRIMARY KEY INDEX
-
-<<<<<<< HEAD
-Note that in the current release, Regatta requires the keyword `INDEX` after the constraint `PRIMARY KEY`.
->>>>>>> 36dafd7 (DRIVERS_AND_CLIENTS: Update section layout)
-=======
-Note that in the current release, Regatta requires the keyword `INDEX` after the constraint `PRIMARY KEY`.
->>>>>>> 1fb8e6a (most updated json)
