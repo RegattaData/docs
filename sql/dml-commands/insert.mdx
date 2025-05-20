@@ -72,21 +72,19 @@ On successful completion, the `INSERT` command returns the count of the inserted
 
 The commands to create the tables referenced in these examples can be found in the [CREATE TABLE](/sql/ddl-commands/create-table/create-table#examples) Examples.
 
-### Insert of a single row
+Insert of a single row:
 
 ```sql
 INSERT INTO customers (c_custkey,c_name,c_gender)
 VALUES (1,'John Doe1','M');
 ```
 
-### Insert of multiple rows in a single command
+Insert of multiple rows in a single command:
 
-```sql
-INSERT INTO customers (c_custkey,c_name,c_gender)
+INSERT INTO customers (c_custkey,c_name,c_gender)\
 VALUES (2, 'John Doe2', 'M'), (3, 'John Doe3', 'M'), (4, 'John Doe4', 'M');
-```
 
-### Insert partial column list
+Insert partial column list:
 
 ```sql
 INSERT INTO orders (o_order_id,o_name,o_custkey,o_date)
@@ -99,7 +97,7 @@ The column `o_date` is loaded with its DEFAULT value as defined in the table def
 
 Missing columns (`o_totalprice`) will write their default value, or NULL. If no DEFAULT was defined and the column is set with the NOT NULL constraint, the `INSERT` will fail.
 
-### Insert based on a query result
+Insert based on a query result:
 
 ```sql
 INSERT INTO old_orders SELECT * FROM orders WHERE o_date < '2020-01-01';
