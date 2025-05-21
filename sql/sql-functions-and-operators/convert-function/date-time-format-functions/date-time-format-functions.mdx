@@ -10,10 +10,10 @@ The default `TIMESTAMP` format is: `YYYY-MM-DD HH24:MI:SS.MS`
 
 In all the functions below, the first argument is the value to be converted and the second argument is a template that defines the output or input format. The input string is of one of the [Character types](/sql/data-types/character-types).
 
-| Function                                                | Description and Comments                                                                                   | Example                                                                                                                                                                      |
-| :------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `TO_DATE(STRING, format)`                                 | Converts string to `DATE` according to the given format<br />Returns `DATE`                                    | `to_date('21 Jun 2023', 'dd mon YYYY')`<br />=\> 2023-06-21                                                                                                                  |
-| `TO_TIMESTAMP(STRING, format)`                            | Converts string to `TIMESTAMP` according to the given format<br />Returns `TIMESTAMP`                          | `TO_TIMESTAMP('_2023-12-13_ 04:05:06.789', 'yyyy-dd-mm hh24:mi:ss.ms')`<br />=\> 2023-12-13 04:05:06.789                                                                     |
+| Function                                                    | Description and Comments                                                                                         | Example                                                                                                                                                                      |
+| :---------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TO_DATE(STRING, format)`                                   | Converts string to `DATE` according to the given format<br />Returns `DATE`                                      | `to_date('21 Jun 2023', 'dd mon YYYY')`<br />=\> 2023-06-21                                                                                                                  |
+| `TO_TIMESTAMP(STRING, format)`                              | Converts string to `TIMESTAMP` according to the given format<br />Returns `TIMESTAMP`                            | `TO_TIMESTAMP('_2023-12-13_ 04:05:06.789', 'yyyy-dd-mm hh24:mi:ss.ms')`<br />=\> 2023-12-13 04:05:06.789                                                                     |
 | `TO_CHAR(DATE, format)` <br /> `TO_CHAR(TIMESTAMP, format)` | Converts a `DATE` or `TIMESTAMP` data type to a string in the given format<br />Returns `VARCHAR`<br />See notes | `TO_CHAR(date '2022-12-12', 'yy-mm-dd')`<br />=\> 22-12-12<br /><br />`TO_CHAR(TIMESTAMP '2022-12-24 16:27:30', 'dd-mm-yyyy HH12:MI:SS am')`<br />=\> 24-12-2022 04:27:30 pm |
 
 Template Patterns for Date/Time Formatting:
@@ -33,3 +33,24 @@ Template Patterns for Date/Time Formatting:
 | `Mon`                  | First three letters of the month ('Jan', 'Feb', and so on) |
 | `DD`                   | day of month (01-31)                                       |
 | `AM`, `am`, `PM`, `pm` | meridiem indicator                                         |
+
+## Examples
+
+Convert the input format to a DATE/TIMESTAMP that can identified as such:
+
+```sql
+SELECT TO_DATE('2012-JAN-12','YYYY-MON-DD');
+SELECT TO_DATE('20/12/12','YY/MM/DD');
+SELECT TO_DATE('2012.07.23', 'YYYY.MM.DD');
+SELECT TO_DATE('20200526','YYYYMMDD');
+SELECT TO_TIMESTAMP('20/12/12 17:12:12.45','YY/MM/DD HH24:MI:SS.MS');
+SELECT TO_TIMESTAMP('2010-Aug-09 12:00:01 PM' , 'yyyy-Mon-dd HH:MI:SS PM');
+```
+
+Convert the DATE/TIMESTAMP to the desired output format:
+
+```sql
+SELECT TO_CHAR(TIMESTAMP '2022-12-12 16:27:30.41', 'dd-mm-yyyy HH12:MI:SS
+am');
+SELECT TO_CHAR(date_column, 'YY-MM-DD HH:MI:SS.MS AM') FROM my_table;
+```
