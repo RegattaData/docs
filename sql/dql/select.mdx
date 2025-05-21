@@ -6,7 +6,7 @@ The command to read and process data.
 
 ## Synopsis
 
-```sql
+```
 [ WITH with_query [, ...] ]
 SELECT [ ALL | DISTINCT [ ON ( expression [, ...] ) ] ]
   [ ROWID | * | expression [ [ AS ] output_name ] [, ...] ]
@@ -292,7 +292,7 @@ ORDER BY o_date;
 Returns the count of `o_order_id` and their total `o_totalprice` grouped by a specific `o_date`, ordered by
 the `o_date` value (ascending order).
 
-**``Retrieve rows based on a GROUP BY and HAVING:``**
+**`Retrieve rows based on a GROUP BY and HAVING:`**
 
 ```sql
 SELECT o_date, sum(o_totalprice ), count(o_order_id)
@@ -322,7 +322,7 @@ ORDER BY o_date;
 
 Combine the results and remove duplicates (`UNION`) from the two queries within a subquery, and return the results ordered by the o_date column.
 
-**``Retrieve with LIMIT and OFFSET:``**
+**`Retrieve with LIMIT and OFFSET:`**
 
 ```sql
 SELECT * FROM customers
@@ -333,7 +333,7 @@ OFFSET 2 LIMIT 2;
 Given 10 rows in the table with the c_custkey of 1-10 (1,2,3,..10), the following query results with the rows of
 c_custkey 8 and c_custkey 7.
 
-**``Retrieve rows using both UNION and JOIN:``**
+**`Retrieve rows using both UNION and JOIN:`**
 
 ```sql
 SELECT all_orders.o_date, c_name
