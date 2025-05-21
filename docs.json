@@ -406,10 +406,7 @@
                 "group": "Drivers & Clients",
                 "pages": [
 					"drivers-and-clients/connecting-applications-to-regatta",
-					"drivers-and-clients/regatta-client",
-					"drivers-and-clients/regatta-connect",
-					"drivers-and-clients/driver-support",
-					"drivers-and-clients/object-relation-map-tool"
+					"drivers-and-clients/client-lib"
                 ]
               },
 			  {
