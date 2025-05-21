@@ -30,23 +30,17 @@
               {
                 "group": "Getting Started",
                 "pages": [
-                  "getting-started/regatta-cloud",
+                  "getting-started/getting-started-using-regatta-cloud",
                   "getting-started/access-the-cloud",
-                  "getting-started/create-a-cluster",
-                  "getting-started/prerequisites"
+                  "getting-started/creating-a-cluster"
                 ]
               },
               {
                 "group": "Regatta Basics",
                 "pages": [
-                  {
-                    "group": "Creating a table",
-                    "pages": [
-                      "getting-started/regatta-basics/creating-a-table/create-a-table",
-                      "getting-started/regatta-basics/creating-a-table/default-device-mapping",
-                      "getting-started/regatta-basics/creating-a-table/selected-device-mapping"
-                    ]
-                  },
+                  "getting-started/regatta-basics/creating-a-table/create-a-table",
+                  "getting-started/regatta-basics/creating-a-table/default-device-mapping",
+                  "getting-started/regatta-basics/creating-a-table/selected-device-mapping",
                   "getting-started/regatta-basics/insert-values",
                   "getting-started/regatta-basics/select-values-from-table",
                   "getting-started/regatta-basics/update-entry",
@@ -62,7 +56,7 @@
                   {
                     "group": "Creating the Demo Environment",
                     "pages": [
-                      "getting-started/linear-scaling/creating-demo-environment/create-demo-environment",
+                      "getting-started/linear-scaling/creating-demo-environment/creating-demo-environment",
                       "getting-started/linear-scaling/creating-demo-environment/table-schema",
                       "getting-started/linear-scaling/creating-demo-environment/creating-demo-clusters"
                     ]
