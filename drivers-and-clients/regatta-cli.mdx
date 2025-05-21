@@ -1,30 +1,60 @@
 ---
 title: "Regatta CLI"
+description: "A lightweight command-line tool for connecting to, managing, and querying your Regatta database clusters."
 ---
 
-The Regatta CLI is an easy way to access your Regatta database. To access the database, you need a user’s credentials and an active IP on the Regatta Database cluster.
+The Regatta Command-Line Interface (CLI) provides a quick and convenient way to manage and query your Regatta database. You’ll need:
 
-## Connecting to the CLI
+1. Valid user credentials
+2. Network access to an active Regatta cluster
 
-Run the CLI:
+## Installation
 
-```
+<Tabs>
+  <Tab title="Linux">
+    Copy the Regatta Connect RPM package to your target Linux machine and install it:
+
+    ```bash
+    yum install ./regatta-connect-<version>.el7.x86_64.rpm
+    ```
+
+    Verify the CLI binary is installed:
+
+    ```
+    ls /opt/regatta/1.0/connect/cli/bin/client_cli
+    ```
+
+    You should see:
+
+    ```
+    /opt/regatta/<version>/connect/cli/bin/client_cli
+    ```
+  </Tab>
+</Tabs>
+
+## Launch the CLI
+
+Start the client:
+
+```bash
 /opt/regatta/1.0/connect/cli/bin/client_cli
 ```
 
-You will get the following prompt:
+You’ll see the prompt:
 
-```
+```powershell
 rdb>
 ```
 
-Use your credentials to connect to the database:
+## Connect to Your Cluster
 
-```
+Authenticate with your credentials and cluster address:
+
+```powershell
 rdb>\connect user=admin pass=RegattaDefault1234! url=aaa.bbb.ccc.ddd:ppp
 ```
 
-In response you will get:
+On success, you’ll see:
 
 ```
 Successfully connected to cluster 
@@ -34,20 +64,11 @@ Successfully connected to cluster 
   NOTE: From this point forward the rdb\> prompt will be omitted.
 </Note>
 
-## Examples
+## Table Management
 
-### Creating a table
+### Create a Table
 
-Assume you would like to create the following table:
-
-`employees`
-
-- `employee_key INT`
-- `employee_name VARCHAR (40)`
-- `employee_salary INT`
-- `employee_department VARCHAR (50)`
-
-Run the create table command:
+Let's create an `employees` table:
 
 ```sql
 CREATE TABLE employees (
@@ -57,19 +78,17 @@ CREATE TABLE employees (
   employee_department VARCHAR(50) NOT NULL);
 ```
 
-Running this command will create the desired table:
+If successful:
 
 ```sql
 statement executed successfully 
 ```
 
-Enter the SQL command `SHOW TABLES`:
+Verify with:
 
 ```sql
 SHOW TABLES;
 ```
-
-In response, the following will be displayed (zoomed out):
 
 ```sql
 | TABLE_NAME    | IS_READY | PRIMARY_KEY_COLUMN | DEVICES |
@@ -77,13 +96,9 @@ In response, the following will be displayed (zoomed out):
 | employees     | true     | employee_key       | m10d1   |
 ```
 
-We can see the table with all the columns and the device mapping. Going forward, we will continue using the **employees** table.
+### Insert Data
 
-### Inserting values
-
-Inserting values into Regatta is no different than PostgreSQL.
-
-The following command will insert a few values into the **employees** table:
+Insert multiple rows:
 
 ```sql
 INSERT INTO employees (
@@ -98,23 +113,17 @@ VALUES
   (4,'Rachel Roe', 19555, 'Support');
 ```
 
-In response we will see:
-
 ```sql
 statement executed successfully  
 ```
 
-### Select values from table
+### Query Data
 
-The `SELECT` command is also the same as PostgreSQL.
-
-Run the following command to see all values in the table:
+Select all records:
 
 ```sql
 SELECT * from employees;
 ```
-
-The CLI will display all entries as follows:
 
 ```sql
 statement executed successfully
@@ -126,13 +135,13 @@ statement executed successfully
 |            4 | Rachel Roe    |           19555 | Support             |
 ```
 
-Obviously, we can perform a more complex `SELECT` command. For example:
+Filter with a WHERE clause:
 
 ```sql
-SELECT employee_name, employee_salary FROM employees WHERE employee_salary > 18324;
+SELECT employee_name, employee_salary
+FROM employees
+WHERE employee_salary > 18324;
 ```
-
-The output, as expected, will be Jane Doe and Rachel Roe since their salary is more than 18324:
 
 ```sql
 statement executed successfully
@@ -142,15 +151,15 @@ statement executed successfully
 | Rachel Roe    |           19555 |
 ```
 
-### Update entry
+### Update Records
 
-Let’s give Richard Roe a raise.
+Give Richard Roe a raise:
 
 ```sql
 UPDATE employees SET employee_salary=20202 WHERE employee_name='Richard Roe';
 ```
 
-Execute the `SELECT` command from the previous section and see if Richard Roe appears now:
+Re-run the previous `SELECT` to confirm:
 
 ```sql
 statement executed successfully
@@ -161,17 +170,19 @@ statement executed successfully
 | Rachel Roe    |           19555 |
 ```
 
-Indeed, Richard Roe is now with a higher salary.
+### Delete Records
 
-### Delete entry from table
-
-At this stage we will remove the employee with the highest salary; that will be Jane Roe. We will execute the following SQL command:
+Remove the employee with the highest salary:
 
 ```sql
-DELETE FROM employees WHERE employee_salary = (SELECT max(employee_salary) FROM employees); 
+DELETE FROM employees
+WHERE employee_salary = (
+  SELECT MAX(employee_salary)
+  FROM employees
+);
 ```
 
-We will run the previous `SELECT` again to see what we get now:
+Verify deletion:
 
 ```sql
 statement executed successfully
@@ -181,11 +192,9 @@ statement executed successfully
 | Rachel Roe    |           19555 |
 ```
 
-As expected, Jane Roe was deleted.
+### Drop the Table
 
-### Drop table
-
-Now we will remove the table and get back to an empty database. First, let’s run:
+List tables:
 
 ```sql
 SHOW TABLES;
@@ -193,22 +202,31 @@ SHOW TABLES;
 
 This will present all the tables in the database:
 
-Now, perform the following SQL `DROP` command:
+```sql
+| TABLE_NAME    | IS_READY | PRIMARY_KEY_COLUMN | DEVICES |
+-----------------------------------------------------------
+| employees     | true     | employee_key       | m10d1   |
+```
+
+Drop `employees`:
 
 ```sql
 DROP TABLE employees;
 ```
 
-And then:
+Confirm it’s gone:
 
 ```sql
 SHOW TABLES
 ```
-
-And indeed, there are no tables in the database:
 
 ```sql
 statement executed successfully
 | TABLE_NAME | IS_READY | PRIMARY_KEY_COLUMN | DEVICES | TABLE_METADATA |
 -------------------------------------------------------------------------
 ```
+
+## Next Steps
+
+- Explore advanced CLI commands usding the [SQL guide](/sql/specification).
+- Integrate with your preferred language using one of our [language-specific drivers.](/drivers-and-clients/connecting-applications-to-regatta)
