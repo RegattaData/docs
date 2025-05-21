@@ -406,22 +406,10 @@
                 "group": "Drivers & Clients",
                 "pages": [
 					"drivers-and-clients/connecting-applications-to-regatta",
-					"drivers-and-clients/client-lib"
+					"drivers-and-clients/client-lib",
+                    "drivers-and-clients/regatta-cli"
                 ]
               },
-			  {
-				  "group": "Regatta CLI",
-				  "pages": [
-					"drivers-and-clients/regatta-cli/regatta-cli",
-					"drivers-and-clients/regatta-cli/connecting-to-cli",
-					"drivers-and-clients/regatta-cli/creating-a-table",
-					"drivers-and-clients/regatta-cli/insert-values",
-					"drivers-and-clients/regatta-cli/select-values-from-table",
-					"drivers-and-clients/regatta-cli/update-entry",
-					"drivers-and-clients/regatta-cli/delete-entry-from-table",
-					"drivers-and-clients/regatta-cli/drop-table"
-				  ]
-				},
               {
                 "group": "Python",
                 "pages": [
