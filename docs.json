@@ -211,7 +211,7 @@
                     "group": "Convert Functions",
                     "pages": [
                       "sql/sql-functions-and-operators/convert-function/cast",
-                      "sql/sql-functions-and-operators/convert-function/date-time-format-functions/date-time-format-functions"
+                      "sql/sql-functions-and-operators/convert-function/date-time-format-functions"
                     ]
                   },
                   {
