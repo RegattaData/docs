@@ -211,14 +211,7 @@
                     "group": "Convert Functions",
                     "pages": [
                       "sql/sql-functions-and-operators/convert-function/cast",
-
-                      {
-                        "group": "Date and Time Formatting Functions",
-                        "pages": [
-                          "sql/sql-functions-and-operators/convert-function/date-time-format-functions/date-time-format-functions",
-                          "sql/sql-functions-and-operators/convert-function/date-time-format-functions/examples"
-                        ]
-                      }
+                      "sql/sql-functions-and-operators/convert-function/date-time-format-functions/date-time-format-functions"
                     ]
                   },
                   {
