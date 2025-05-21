@@ -1,0 +1,21 @@
+---
+title: Delete Entry from Table
+---
+
+At this stage we will remove the employee with the highest salary; that will be Jane Roe. We will execute the following SQL command:
+
+```sql
+DELETE FROM employees WHERE employee_salary = (SELECT max(employee_salary) FROM employees); 
+```
+
+We will run the previous SELECT again to see what we get now:
+
+```sql
+statement executed successfully
+| employee_name | employee_salary |
+-----------------------------------
+| Richard Roe   |           20202 |
+| Rachel Roe    |           19555 |
+```
+
+As expected, Jane Roe was deleted.
