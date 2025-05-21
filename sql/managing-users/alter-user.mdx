@@ -16,31 +16,22 @@ The `ALTER USER` command should be used to modify an existing user password.
 
 Currently all the users have the same privileges and can manage users.
 
-
-
 ## Parameters
----
 
-##### `user_name`
+**`user_name`**
 The name of the user to modify.
 
-
-##### `password`
+**`password`**
 The new password string. See [CREATE USER](/sql/managing-users/create-user) for password requirements.
 
-
-
-
 ## Examples
----
 
-##### Alter the user password
+Alter the user password:
 
 ```sql
 ALTER USER user1 WITH PASSWORD 'Xr5kg7s3m@aAB'
 ```
 
 ## Compatibility
----
 
 The `ALTER USER` statement is a Regatta extension as there is no SQL standard for managing users.
