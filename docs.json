@@ -14,12 +14,12 @@
         "version": "1.0",
         "anchors": [
           {
-            "anchor": "Home",
+            "anchor": "Docs Home",
             "icon": "house",
             "groups": [
               {
                 "group": " ",
-                "pages": ["home"]
+                "pages": ["documentation"]
               }
             ]
           },
