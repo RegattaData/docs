@@ -30,28 +30,17 @@
               {
                 "group": "Getting Started",
                 "pages": [
-                  {
-                    "group": "Regatta Cloud",
-                    "pages": [
-                      "getting-started/regatta-cloud/regatta-cloud",
-                      "getting-started/regatta-cloud/access-the-cloud",
-                      "getting-started/regatta-cloud/create-a-cluster"
-                    ]
-                  },
-                  "getting-started/prerequisites"
+                  "getting-started/getting-started-using-regatta-cloud",
+                  "getting-started/access-the-cloud",
+                  "getting-started/creating-a-cluster"
                 ]
               },
               {
                 "group": "Regatta Basics",
                 "pages": [
-                  {
-                    "group": "Creating a table",
-                    "pages": [
-                      "getting-started/regatta-basics/creating-a-table/create-a-table",
-                      "getting-started/regatta-basics/creating-a-table/default-device-mapping",
-                      "getting-started/regatta-basics/creating-a-table/selected-device-mapping"
-                    ]
-                  },
+                  "getting-started/regatta-basics/creating-a-table/create-a-table",
+                  "getting-started/regatta-basics/creating-a-table/default-device-mapping",
+                  "getting-started/regatta-basics/creating-a-table/selected-device-mapping",
                   "getting-started/regatta-basics/insert-values",
                   "getting-started/regatta-basics/select-values-from-table",
                   "getting-started/regatta-basics/update-entry",
@@ -67,7 +56,7 @@
                   {
                     "group": "Creating the Demo Environment",
                     "pages": [
-                      "getting-started/linear-scaling/creating-demo-environment/create-demo-environment",
+                      "getting-started/linear-scaling/creating-demo-environment/creating-demo-environment",
                       "getting-started/linear-scaling/creating-demo-environment/table-schema",
                       "getting-started/linear-scaling/creating-demo-environment/creating-demo-clusters"
                     ]
@@ -399,29 +388,9 @@
               {
                 "group": "Drivers & Clients",
                 "pages": [
-                  {
-                    "group": "Connecting to Regatta",
-                    "pages": [
-                      "drivers-and-clients/connecting-to-regatta/connecting-to-regatta",
-                      "drivers-and-clients/connecting-to-regatta/regatta-client",
-                      "drivers-and-clients/connecting-to-regatta/regatta-connect"
-                    ]
-                  },
-                  {
-                    "group": "Regatta CLI",
-                    "pages": [
-                      "drivers-and-clients/regatta-cli/regatta-cli",
-                      "drivers-and-clients/regatta-cli/connecting-to-cli",
-                      "drivers-and-clients/regatta-cli/creating-a-table",
-                      "drivers-and-clients/regatta-cli/insert-values",
-                      "drivers-and-clients/regatta-cli/select-values-from-table",
-                      "drivers-and-clients/regatta-cli/update-entry",
-                      "drivers-and-clients/regatta-cli/delete-entry-from-table",
-                      "drivers-and-clients/regatta-cli/drop-table"
-                    ]
-                  },
-                  "drivers-and-clients/drivers-support/driver-support",
-                  "drivers-and-clients/drivers-support/object-relation-map-tool"
+					"drivers-and-clients/connecting-applications-to-regatta",
+					"drivers-and-clients/client-lib",
+                    "drivers-and-clients/regatta-cli"
                 ]
               },
               {
@@ -430,9 +399,9 @@
                   {
                     "group": "Python Driver",
                     "pages": [
-                      "drivers-and-clients/drivers-support/python/python-drivers",
-                      "drivers-and-clients/drivers-support/python/install-the-driver",
-                      "drivers-and-clients/drivers-support/python/run-python-application"
+                      "drivers-and-clients/python/python-drivers",
+                      "drivers-and-clients/python/install-the-driver",
+                      "drivers-and-clients/python/run-python-application"
                     ]
                   }
                 ]
@@ -443,19 +412,19 @@
                   {
                     "group": "JBDC Driver",
                     "pages": [
-                      "drivers-and-clients/drivers-support/java/jbdc-driver",
-                      "drivers-and-clients/drivers-support/java/install-the-driver",
-                      "drivers-and-clients/drivers-support/java/set-up-dependency",
-                      "drivers-and-clients/drivers-support/java/run-java-application"
+                      "drivers-and-clients/java/jbdc-driver",
+                      "drivers-and-clients/java/install-the-driver",
+                      "drivers-and-clients/java/set-up-dependency",
+                      "drivers-and-clients/java/run-java-application"
                     ]
                   },
                   {
                     "group": "Hibernate",
                     "pages": [
-                      "drivers-and-clients/drivers-support/java/hibernate",
-                      "drivers-and-clients/drivers-support/java/set-hibernate-dependency",
-                      "drivers-and-clients/drivers-support/java/set-up-configuration",
-                      "drivers-and-clients/drivers-support/java/run-a-hibernate"
+                      "drivers-and-clients/java/hibernate",
+                      "drivers-and-clients/java/set-hibernate-dependency",
+                      "drivers-and-clients/java/set-up-configuration",
+                      "drivers-and-clients/java/run-a-hibernate"
                     ]
                   }
                 ]
@@ -466,17 +435,17 @@
                   {
                     "group": "Nodejs Driver",
                     "pages": [
-                      "drivers-and-clients/drivers-support/javascript/nodejs",
-                      "drivers-and-clients/drivers-support/javascript/install-the-driver",
-                      "drivers-and-clients/drivers-support/javascript/run-nodejs-application"
+                      "drivers-and-clients/javascript/nodejs",
+                      "drivers-and-clients/javascript/install-the-driver",
+                      "drivers-and-clients/javascript/run-nodejs-application"
                     ]
                   },
                   {
                     "group": "TypeORM",
                     "pages": [
-                      "drivers-and-clients/drivers-support/javascript/type-orm",
-                      "drivers-and-clients/drivers-support/javascript/install-orm-tools",
-                      "drivers-and-clients/drivers-support/javascript/run-typeorm-application"
+                      "drivers-and-clients/javascript/type-orm",
+                      "drivers-and-clients/javascript/install-orm-tools",
+                      "drivers-and-clients/javascript/run-typeorm-application"
                     ]
                   }
                 ]

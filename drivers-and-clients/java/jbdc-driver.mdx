@@ -1,0 +1,19 @@
+---
+title: JBDC Driver
+---
+
+The Regatta JDBC driver is used in the same manner as any JDBC database driver. You need to 
+install the driver, create the dependency, and start using it.
+
+You may replace the existing JDBC driver with the Regatta one so the same application will work 
+with the Regatta database. Please note that you might be required to perform minor changes to 
+some of the SQL commands that Regatta implements a little differently.
+
+Currently we support most of the common API functionality. If you do use a JDBC command 
+which is not supported, you will receive the following exception:
+
+```java
+class RegFeatureNotSupportedException extends SQLFeatureNotSupportedException
+```
+
+In such a case, contact Regatta Support for assistance.

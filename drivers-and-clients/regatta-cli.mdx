@@ -1,0 +1,232 @@
+---
+title: "Regatta CLI"
+description: "A lightweight command-line tool for connecting to, managing, and querying your Regatta database clusters."
+---
+
+The Regatta Command-Line Interface (CLI) provides a quick and convenient way to manage and query your Regatta database. You’ll need:
+
+1. Valid user credentials
+2. Network access to an active Regatta cluster
+
+## Installation
+
+<Tabs>
+  <Tab title="Linux">
+    Copy the Regatta Connect RPM package to your target Linux machine and install it:
+
+    ```bash
+    yum install ./regatta-connect-<version>.el7.x86_64.rpm
+    ```
+
+    Verify the CLI binary is installed:
+
+    ```
+    ls /opt/regatta/1.0/connect/cli/bin/client_cli
+    ```
+
+    You should see:
+
+    ```
+    /opt/regatta/<version>/connect/cli/bin/client_cli
+    ```
+  </Tab>
+</Tabs>
+
+## Launch the CLI
+
+Start the client:
+
+```bash
+/opt/regatta/1.0/connect/cli/bin/client_cli
+```
+
+You’ll see the prompt:
+
+```powershell
+rdb>
+```
+
+## Connect to Your Cluster
+
+Authenticate with your credentials and cluster address:
+
+```powershell
+rdb>\connect user=admin pass=RegattaDefault1234! url=aaa.bbb.ccc.ddd:ppp
+```
+
+On success, you’ll see:
+
+```
+Successfully connected to cluster 
+```
+
+<Note>
+  NOTE: From this point forward the rdb\> prompt will be omitted.
+</Note>
+
+## Table Management
+
+### Create a Table
+
+Let's create an `employees` table:
+
+```sql
+CREATE TABLE employees (
+  employee_key INT PRIMARY KEY INDEX,
+  employee_name VARCHAR(40) NOT NULL,
+  employee_salary INT,
+  employee_department VARCHAR(50) NOT NULL);
+```
+
+If successful:
+
+```sql
+statement executed successfully 
+```
+
+Verify with:
+
+```sql
+SHOW TABLES;
+```
+
+```sql
+| TABLE_NAME    | IS_READY | PRIMARY_KEY_COLUMN | DEVICES |
+-----------------------------------------------------------
+| employees     | true     | employee_key       | m10d1   |
+```
+
+### Insert Data
+
+Insert multiple rows:
+
+```sql
+INSERT INTO employees (
+  employee_key,
+  employee_name,
+  employee_salary,
+  employee_department)
+VALUES 
+  (1,'John Doe', 10932, 'DevOps'),    
+  (2,'Richard Roe', 18324, 'Legal'),
+  (3,'Jane Roe', 20411, 'SoftwareDev'),
+  (4,'Rachel Roe', 19555, 'Support');
+```
+
+```sql
+statement executed successfully  
+```
+
+### Query Data
+
+Select all records:
+
+```sql
+SELECT * from employees;
+```
+
+```sql
+statement executed successfully
+| employee_key | employee_name | employee_salary | employee_department |
+------------------------------------------------------------------------
+|            1 | John Doe      |           10932 | DevOps              |
+|            2 | Richard Roe   |           18324 | Legal               |
+|            3 | Jane Roe      |           20411 | SoftwareDev         |
+|            4 | Rachel Roe    |           19555 | Support             |
+```
+
+Filter with a WHERE clause:
+
+```sql
+SELECT employee_name, employee_salary
+FROM employees
+WHERE employee_salary > 18324;
+```
+
+```sql
+statement executed successfully
+| employee_name | employee_salary |
+-----------------------------------
+| Jane Roe      |           20411 |
+| Rachel Roe    |           19555 |
+```
+
+### Update Records
+
+Give Richard Roe a raise:
+
+```sql
+UPDATE employees SET employee_salary=20202 WHERE employee_name='Richard Roe';
+```
+
+Re-run the previous `SELECT` to confirm:
+
+```sql
+statement executed successfully
+| employee_name | employee_salary |
+-----------------------------------
+| Richard Roe   |           20202 |
+| Jane Roe      |           20411 |
+| Rachel Roe    |           19555 |
+```
+
+### Delete Records
+
+Remove the employee with the highest salary:
+
+```sql
+DELETE FROM employees
+WHERE employee_salary = (
+  SELECT MAX(employee_salary)
+  FROM employees
+);
+```
+
+Verify deletion:
+
+```sql
+statement executed successfully
+| employee_name | employee_salary |
+-----------------------------------
+| Richard Roe   |           20202 |
+| Rachel Roe    |           19555 |
+```
+
+### Drop the Table
+
+List tables:
+
+```sql
+SHOW TABLES;
+```
+
+This will present all the tables in the database:
+
+```sql
+| TABLE_NAME    | IS_READY | PRIMARY_KEY_COLUMN | DEVICES |
+-----------------------------------------------------------
+| employees     | true     | employee_key       | m10d1   |
+```
+
+Drop `employees`:
+
+```sql
+DROP TABLE employees;
+```
+
+Confirm it’s gone:
+
+```sql
+SHOW TABLES
+```
+
+```sql
+statement executed successfully
+| TABLE_NAME | IS_READY | PRIMARY_KEY_COLUMN | DEVICES | TABLE_METADATA |
+-------------------------------------------------------------------------
+```
+
+## Next Steps
+
+- Explore advanced CLI commands usding the [SQL guide](/sql/specification).
+- Integrate with your preferred language using one of our [language-specific drivers.](/drivers-and-clients/connecting-applications-to-regatta)
