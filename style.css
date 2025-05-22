@@ -3,9 +3,22 @@
     left:0;
 }
 
-@media (min-width: 1024px) {
-  .lg\:px-12 {
-      padding-left: 0;
-      padding-right: 0;
+#sidebar-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* Styles applied at the xl breakpoint (min-width: 1280px) */
+@media (min-width: 1280px) {
+  .navbar {
+    /* width: 100vw; */
+  margin-left: calc(-50vw + 50%); 
+  padding-left: 0;
+  padding-right: 0;
   }
+
+  .lg\:px-12 {
+    padding-left: 1vw;
+    padding-right: 1vw;
+}
+
 }
