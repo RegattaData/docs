@@ -1,26 +1,26 @@
 ---
-title: EXPLAIN
+title: "EXPLAIN"
 ---
 
 The command returns the execution plan of a statement, without actually executing it.
 
 ## Synopsis
 
-```sql
+```
 EXPLAIN [ (option [, ... ]) ] statement
+
 where option is one of:
-VERBOSE [ {TRUE | FALSE} ]
-COSTS [ {TRUE | FALSE} ]
+  VERBOSE [ {TRUE | FALSE} ]
+  COSTS [ {TRUE | FALSE} ]
 ```
 
 ## Description
 
 The `EXPLAIN` command displays the execution plan that would be generated for the given statement.
 
-
 ## Parameters
 
-##### statement
+**`statement`**
 
 The SQL statement.
 
@@ -28,57 +28,56 @@ The statement can be any `SELECT`, `UPDATE`, `INSERT`, or `DELETE` statement.
 
 ## Outputs
 
-
 The output of the command is the execution plan in tabular format, with the following details:
 
-
-|**Column**|**Description**|
-| :- | :- |
-|ID|Unique identifier assigned to each operation in the query plan.|
-|Parent ID|The Identifier of the parent operation.|
-|Operation|The name of the operation, e.g. FILTER, FULL SCAN, JOIN, etc.|
-|Information|Either the name of the object (e.g. table or index) referenced by the operation, or an expression the operation applies (e.g. a JOIN operation condition).|
-
+| **Column**  | **Description**                                                                                                                                            |
+| :---------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ID          | Unique identifier assigned to each operation in the query plan.                                                                                            |
+| Parent ID   | The Identifier of the parent operation.                                                                                                                    |
+| Operation   | The name of the operation, e.g. FILTER, FULL SCAN, JOIN, etc.                                                                                              |
+| Information | Either the name of the object (e.g. table or index) referenced by the operation, or an expression the operation applies (e.g. a JOIN operation condition). |
 
 The output is a table that represents a tree structure. Each row represents a node in the tree. The row with ID=1 is the root of the tree and all other rows have a Parent ID that indicates the parent node ID.
 
-Following is a list of operation names that may appear in the Operation column: FULL SCAN – a scan of all the rows in a table.
+Following is a list of operation names that may appear in the Operation column:
 
-PARTIAL SCAN – a scan of one or more rows in a table.
+`FULL SCAN` – a scan of all the rows in a table.
 
-VALUES SCAN – a sequential scan of all the values that are either given in the SQL statement or produced by another operation.
+`PARTIAL SCAN` – a scan of one or more rows in a table.
 
-INDEX SCAN – a scan on an index. That includes full scan, range scan, or lookup of one or more specific values.
+`VALUES SCAN` – a sequential scan of all the values that are either given in the SQL statement or produced by another operation.
 
-INDEX RANGE – when an index scan has a range predicate, this specifies the range. FILTER – filter the results of another operation based on a boolean predicate.
+`INDEX SCAN` – a scan on an index. That includes full scan, range scan, or lookup of one or more specific values.
 
-SELECTION – an operation that applies a set of filters to a set of records produced by another operation. The operation and the filters are children of the SELECTION operation.
+`INDEX RANGE` – when an index scan has a range predicate, this specifies the range.
 
-SORT – sort the results of another operation.
+`FILTER` – filter the results of another operation based on a boolean predicate.
 
-UNION – combine the results of two other operations.
+`SELECTION` – an operation that applies a set of filters to a set of records produced by another operation. The operation and the filters are children of the SELECTION operation.
 
-DISTINCT – eliminate duplicates from a sorted list of records produced by another operation.
+`SORT` – sort the results of another operation.
 
-JOIN – intersect the results of two other operations. Each such operation has two parameters, algorithmic and functional. See the list of options below.
+`UNION` – combine the results of two other operations.
 
-GROUP BY – group the results of another operation according to the value of a certain set of columns. OFFSET – Trim the beginning of the results of another operation by a given number of records.
+`DISTINCT` – eliminate duplicates from a sorted list of records produced by another operation.
 
-LIMIT – Trim the end of the results of another operation, leaving only the first given number of records. INSERT – insert rows into a table.
+`JOIN` – intersect the results of two other operations. Each such operation has two parameters, algorithmic and functional. See the list of options below.
 
-UPDATE – update existing rows of a table.
+`GROUP BY` – group the results of another operation according to the value of a certain set of columns. OFFSET – Trim the beginning of the results of another operation by a given number of records.
 
-DELETE – delete rows of a table.
+`LIMIT` – Trim the end of the results of another operation, leaving only the first given number of records. INSERT – insert rows into a table.
 
-MULTI OP – this represents a node in the execution tree which aggregates two or more operations that are performed in combination in parallel. (For example, FULL SCAN and FILTER.) Those operations are children of this node in the execution tree.
+`UPDATE` – update existing rows of a table.
 
-SINGLE ROW SUBQUERY – a query that is expected to return a single record. If it returns more than one record, the execution fails.
+`DELETE` – delete rows of a table.
 
+`MULTI OP` – this represents a node in the execution tree which aggregates two or more operations that are performed in combination in parallel. (For example, `FULL SCAN` and `FILTER`.) Those operations are children of this node in the execution tree.
 
-**Note:**
+`SINGLE ROW SUBQUERY` – a query that is expected to return a single record. If it returns more than one record, the execution fails.
 
-The UNION operation stands for combining two sets or records without eliminating duplicate records. When duplicate records should be eliminated, the output contains a DISTINCT operation which is parent of the UNION operation, and applies to the result of the UNION operation.
-
+<Note>
+  The `UNION` operation stands for combining two sets or records without eliminating duplicate records. When duplicate records should be eliminated, the output contains a `DISTINCT` operation which is parent of the `UNION` operation, and applies to the result of the `UNION` operation.
+</Note>
 
 **Join operation details:**
 
@@ -88,53 +87,50 @@ Each join operation in the output is a 3-token string of the form: `algorithm va
 
 **variant** is one of the following: `INNER`, `LEFT` `[SEMI]`, `RIGHT` `[SEMI]`, `FULL`, `CROSS`
 
-<Note> Note: By algorithm we refer to the algorithm used to process the two input record sets inside each module participating in the join operation. There is also the distribution algorithm, which is either ‘broadcast’ or ‘hash partitioning’, but this is not included in the EXPLAIN output. </Note>
-
-
+<Note>
+  Note: By algorithm we refer to the algorithm used to process the two input record sets inside each module participating in the join operation. There is also the distribution algorithm, which is either `broadcast` or `hash partitioning`, but this is not included in the `EXPLAIN` output.
+</Note>
 
 ## Examples
 
-##### Query on a table, filtering by a column that is not indexed:
+Query on a table, filtering by a column that is not indexed:
 
 ```SQL
 EXPLAIN SELECT name FROM employees WHERE num_rewards = 0;
 +----+--------+------------------+-----------------------------------------+
-| id | parent | operation | information |
+| id | parent | operation | information                                    |
 +----+--------+------------------+-----------------------------------------+
-| 1 | 0 | MULTI OP | |
-| 2 | 1 | FULL SCAN | on: employees |
-| 3 | 1 | FILTER | num_rewards = 0 |
+| 1  | 0      | MULTI OP  |                                                |
+| 2  | 1      | FULL SCAN | on: employees                                  |
+| 3  | 1      | FILTER    | num_rewards = 0                                |
 +----+--------+------------------+-----------------------------------------+
 ```
 
-The same query, when the column is indexed and the query planner chooses to use the index to determine
-which rows should be deleted:
+The same query, when the column is indexed and the query planner chooses to use the index to determine which rows should be deleted:
 
 ```sql
 EXPLAIN SELECT name FROM employees WHERE num_rewards = 0;
-+----+--------+------------------+-----------------------------------------+
-| id | parent | operation | information |
-+----+--------+------------------+-----------------------------------------+
-| 1 | 0 | PARTIAL SCAN | on: employees |
-| 2 | 1 | INDEX SCAN | using key: num_rewards |
-| 3 | 2 | VALUES SCAN | |
-+----+--------+------------------+-----------------------------------------+
++----+--------+--------------+---------------------------------------------+
+| id | parent | operation    | information                                 |
++----+--------+--------------+---------------------------------------------+
+| 1  | 0      | PARTIAL SCAN | on: employees                               |
+| 2  | 1      | INDEX SCAN   | using key: num_rewards                      |
+| 3  | 2      | VALUES SCAN  |                                             |
++----+--------+--------------+---------------------------------------------+
 ```
 
-In processing the above query, the DB treats the expression in the WHERE clause as a list of values (one
-value in this case) that are looked up in the index.
+In processing the above query, the DB treats the expression in the WHERE clause as a list of values (one value in this case) that are looked up in the index.
 
-In the following query, it is treated as a boolean expression that generate a range scan, thus there is no values
-scan in the plan:
+In the following query, it is treated as a boolean expression that generate a range scan, thus there is no values scan in the plan:
 
 ```sql
 EXPLAIN SELECT name FROM employees WHERE num_rewards > 3;
-+----+--------+------------------+-----------------------------------------+
-| id | parent | operation | information |
-+----+--------+------------------+-----------------------------------------+
-| 1 | 0 | PARTIAL SCAN | on: employees |
-| 2 | 1 | INDEX SCAN | using key: num_rewards |
-+----+--------+------------------+-----------------------------------------+
++----+--------+--------------+---------------------------------------------+
+| id | parent | operation    | information                                 |
++----+--------+--------------+---------------------------------------------+
+| 1  | 0      | PARTIAL SCAN | on: employees                               |
+| 2  | 1      | INDEX SCAN   | using key: num_rewards                      |
++----+--------+--------------+---------------------------------------------+
 ```
 
 ## Compatibility

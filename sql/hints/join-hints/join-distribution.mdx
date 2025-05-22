@@ -1,13 +1,15 @@
 ---
-title: Hint - Join distribution method
+title: "Hint - Join distribution method"
 ---
 
 ### Synopsis
 
 `JOIN DISTRIBUTION METHOD ( [ joint_alias, ] { HASH DIVIDE | BROADCAST } )`
 
-This hint instructs the system which method to use for *distributing* the input records for the join operation – either hash-divide or broadcast. This hint is honored as long as it’s possible – some distribution methods are not applicable for certain join methods, and in those cases the hint won’t be applied.
+This hint instructs the system which method to use for _distributing_ the input records for the join operation – either hash-divide or broadcast. This hint is honored as long as it’s possible – some distribution methods are not applicable for certain join methods, and in those cases the hint won’t be applied.
 
 The **join_alias** parameter is optional. If it’s absent, the hint applies to all the joins in the statement (including explicit and implicit joins). Also, if there is a `JOIN DISTRIBUTION METHOD` hint without alias, any other `JOIN DISTRIBUTION METHOD` hint is contradictory and results in ignoring all the hints.
+
+If no join is specified, the hint will affect all the joins in the statement.
 
 Specifying multiple hints with different distribution methods for the same alias is contradictory and is not allowed.

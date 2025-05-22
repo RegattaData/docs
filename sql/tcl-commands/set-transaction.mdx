@@ -1,19 +1,19 @@
 ---
-title: SET TRANSACTION
+title: "SET TRANSACTION"
 ---
 
 Define the characteristics of the current transaction.
 
 ## Synopsis
 
-
-```sql
+```
 SET TRANSACTION transaction_mode [, ...]
+
 where transaction_mode is one of:
-ISOLATION LEVEL { SERIALIZABLE |
-REPEATABLE READ |
-READ COMMITTED }
-{ READ WRITE | READ ONLY }
+  ISOLATION LEVEL { SERIALIZABLE |
+                    REPEATABLE READ |
+                    READ COMMITTED }
+  { READ WRITE | READ ONLY }
 ```
 
 ## Description
@@ -22,55 +22,51 @@ The `SET TRANSACTION` command defines the characteristics of the current transac
 
 Note that this command should be the first statement in the transaction (after `BEGIN/START TRANSACTION`). If this is not the case, an error is returned.
 
-
 ## Parameters
 
-
-##### `ISOLATION LEVEL`
+**ISOLATION LEVEL**
 
 Defines how the transaction is isolated from other transactions. When not specified in the `SET TRANSACTION` command, the transaction isolation level is the level that was defined for the client connection or the database default.
 
-Note that in all isolation levels, transactions always see their own (uncommitted) changes. 
+Note that in all isolation levels, transactions always see their own (uncommitted) changes.
 
-      ###### `READ COMMITTED`
+**`READ COMMITTED`**
 
-      Each statement sees only data committed before it started execution; it never sees either uncommitted data or changes committed by concurrent transactions during the statement's execution.
+Each statement sees only data committed before it started execution; it never sees either uncommitted data or changes committed by concurrent transactions during the statement's execution.
 
-      Note that two statements can see different data, even though they are within a single transaction, if other transactions commit changes after the first statement starts and before the second statement starts.
+Note that two statements can see different data, even though they are within a single transaction, if other transactions commit changes after the first statement starts and before the second statement starts.
 
-      This is the database default isolation level. 
+This is the database default isolation level.
 
-      ###### `REPEATABLE READ`
+**`REPEATABLE READ`**
 
-      Statements within the transaction only see data committed before the transaction began; it never sees either uncommitted data or changes committed by concurrent transactions during the transaction's execution.
+Statements within the transaction only see data committed before the transaction began; it never sees either uncommitted data or changes committed by concurrent transactions during the transaction's execution.
 
-      In contrast to `READ COMMITTED` level, in this level all the statements within a transaction see the same version of the data.
+In contrast to `READ COMMITTED` level, in this level all the statements within a transaction see the same version of the data.
 
-      ###### `SERIALIZABLE`
+**`SERIALIZABLE`**
 
-      Each statement within the transaction reads the last committed version of any row. Regatta provides that any concurrent execution of a set of serializable transactions is guaranteed to produce the same effect as running them one at a time in some order. In addition, in Regatta this mode provides *external consistency*: The order of execution of transactions as it appears to any other transaction is the commitment order.
+Each statement within the transaction reads the last committed version of any row. Regatta provides that any concurrent execution of a set of serializable transactions is guaranteed to produce the same effect as running them one at a time in some order. In addition, in Regatta this mode provides _external consistency_: The order of execution of transactions as it appears to any other transaction is the commitment order.
 
-##### `READ WRITE`
+**`READ WRITE`**
 
 Define the transaction as capable of both read and write changes in the database. This is the default.
 
-##### `READ ONLY`
+**`READ ONLY`**
 
 Define the transaction as capable of only reading data from the database. Attempts to write will fail the statement and the transaction.
 
-
 ## Examples
 
-
-##### Start a transaction and set its isolation mode:
+**Start a transaction and set its isolation mode:**
 
 ```sql
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-INSERT INTO customers (c_custkey ,c_name,c_gender)
-VALUES (1,'John Doe1','M');
+INSERT INTO customers (c_custkey, c_name, c_gender)
+VALUES (1, 'John Doe1', 'M');
 ```
 
-##### Start a transaction, set its isolation level and set it to READ ONLY:
+**Start a transaction, set its isolation level and set it to READ ONLY:**
 
 ```sql
 SET TRANSACTION ISOLATION LEVEL REPEATABLE READ , READ ONLY;

@@ -1,7 +1,6 @@
 ---
-title: Hint - Join direction
+title: "Hint - Join direction"
 ---
-
 
 ### Synopsis
 
@@ -10,13 +9,13 @@ title: Hint - Join direction
 Joins – except for outer left and right joins – are logically symmetric. However, their execution is often asymmetric. This hint instructs the system how to execute the join in two aspect
 
 1. If the execution plan uses the hash method, the hint defines which side of the join should be loaded into a hash table. (The other side is traversed and each of its records is looked up in the hash table).
-1. If the execution plan uses the broadcast distribution method, the hint defines which side of the join should be broadcasted to all the nodes containing the other side.
+2. If the execution plan uses the broadcast distribution method, the hint defines which side of the join should be broadcasted to all the nodes containing the other side.
 
 The **join_alias** parameter is optional. If it’s absent, the hint applies to all the joins in the statement (including explicit and implicit joins) except for joins that have a hint specifically for them.
 
 Essentially, this hint tells the system that the left side of the join (as it appears in the SQL statement) is the smaller one. Without the hint, the query optimizer tries to figure out by itself which side is the smaller record set.
 
-### Example
+### Example:
 
 ```sql
 SELECT /*++ JOIN DIRECTION */ s.name, o.id
