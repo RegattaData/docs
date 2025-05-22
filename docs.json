@@ -394,24 +394,9 @@
               {
                 "group": "Drivers & Clients",
                 "pages": [
-                  "drivers-and-clients/connecting-to-regatta",
-                  "drivers-and-clients/regatta-client",
-                  "drivers-and-clients/regatta-connect",
-                  "drivers-and-clients/driver-support",
-                  "drivers-and-clients/object-relation-map-tool"
-                ]
-              },
-              {
-                "group": "Regatta CLI",
-                "pages": [
-                  "drivers-and-clients/regatta-cli/regatta-cli",
-                  "drivers-and-clients/regatta-cli/connecting-to-cli",
-                  "drivers-and-clients/regatta-cli/creating-a-table",
-                  "drivers-and-clients/regatta-cli/insert-values",
-                  "drivers-and-clients/regatta-cli/select-values-from-table",
-                  "drivers-and-clients/regatta-cli/update-entry",
-                  "drivers-and-clients/regatta-cli/delete-entry-from-table",
-                  "drivers-and-clients/regatta-cli/drop-table"
+					"drivers-and-clients/connecting-applications-to-regatta",
+					"drivers-and-clients/client-lib",
+                    "drivers-and-clients/regatta-cli"
                 ]
               },
               {
