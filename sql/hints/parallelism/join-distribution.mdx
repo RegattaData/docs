@@ -1,5 +1,5 @@
 ---
-title: Hint - Join distribution
+title: "Hint - Join distribution"
 ---
 
 ### Synopsis
@@ -14,8 +14,8 @@ Specifying multiple hints with the same **join_alias** and different numbers is 
 
 ### Example
 
-```sql 
-SELECT /*++ DISTRIBUTE JOIN (dept_join, 2) */ s.name, o.id
+```sql
+SELECT /*++ DISTRIBUTE JOIN (dept_join, 2) */ name, id
 FROM (staff s JOIN org o ON s.deptno = o.deptno) as dept_join
 WHERE o.division = 'EASTERN';
 ```
