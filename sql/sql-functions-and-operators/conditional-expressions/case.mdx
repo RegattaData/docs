@@ -1,18 +1,20 @@
 ---
-title: CASE
+title: "CASE"
 ---
 
 Evaluates a list of conditions and returns one of multiple possible result expressions.
 
 ## Synopsis
+
 ---
 
 The following 2 syntaxes are supported:
 
 ```sql
 CASE WHEN condition THEN result
-[WHEN ...]
-[ELSE result]
+     [WHEN ...]
+     [...]
+     [ELSE result]
 END
 ```
 
@@ -20,18 +22,17 @@ Or
 
 ```sql
 CASE expression
-WHEN value THEN result
-[WHEN ...]
-[ELSE result]
+    WHEN value THEN result
+    [WHEN ...]
+    [ELSE result]
 END
 ```
 
-
-In the upper syntax:
+In the first syntax:
 
 Each condition is an expression that returns a boolean result. If the condition result is true, then the value of the `CASE` expression is the result that follows the condition, and the remainder of the `CASE` expression is not processed. If the condition result is false, then any subsequent `WHEN` clauses are examined in the same manner. If no `WHEN` condition result is true, the value of the `CASE` expression is the result of the `ELSE` clause. If the `ELSE` clause is omitted and no condition is true, the result is NULL.
 
-In the lower syntax:
+In the second syntax:
 
 The first expression is computed, then compared to each of the value expressions in the `WHEN` clauses until one is found that is equal to it. If no value matches the expression, the result of the `ELSE` clause is returned. If the `ELSE` clause is omitted and no condition is true, the result is NULL.
 
@@ -40,45 +41,45 @@ The data types of input expression and each value must be the same or compatible
 The `CASE()` can be used in all the statements and their clauses that allow a valid expression. This includes the clauses: s`elect_list`, `IN`, `WHERE`, `ORDER BY`, and `HAVING`.
 
 ## Examples
+
 ---
 
-##### `CASE` command using the first syntax above
+`CASE` command using the first syntax above:
 
 ```sql
 SELECT *,
-CASE
-WHEN o_totalprice >= 1000000 THEN o_totalprice*0.20
-WHEN o_totalprice >= 500000 THEN o_totalprice*0.10
-WHEN o_totalprice >= 100 THEN o_totalprice
-END AS price_after_discount
+  CASE
+    WHEN o_totalprice >= 1000000 THEN o_totalprice * 0.80
+    WHEN o_totalprice >= 500000 THEN o_totalprice * 0.90
+    WHEN o_totalprice >= 100000 THEN o_totalprice * 0.95
+    ELSE o_totalprice
+  END AS price_after_discount
 FROM orders;
 ```
 
-##### `CASE` command using the second syntax above
+`CASE` command using the second syntax above:
 
 ```sql
 SELECT c_name,
-CASE c_gender
-WHEN 'F' THEN 'Female'
-WHEN 'M' THEN 'Male'
-ELSE NULL
-END AS customer_gender
+  CASE c_gender
+    WHEN 'F' THEN 'Female'
+    WHEN 'M' THEN 'Male'
+    ELSE NULL
+  END AS customer_gender
 FROM customers;
 ```
 
-##### Using `CASE` in the `WHERE` clause
+Using `CASE` in the `WHERE` clause:
 
 ```sql
-SELECT COUNT(*),
-SUM(o_totalprice),
-o_name
+SELECT COUNT(*), SUM(o_totalprice), o_name
 FROM orders, customers
 WHERE o_custkey=c_custkey
 AND CASE WHEN o_name='this is first expression'
-THEN o_date>'2020-01-01'
-WHEN o_name='this is the second expression'
-THEN o_date<'2020-01-01'
-ELSE o_date IS NULL
-END
+           THEN o_date>'2020-01-01'
+         WHEN o_name='this is the second expression'
+           THEN o_date<'2020-01-01'
+         ELSE o_date IS NULL
+    END
 GROUP BY o_name;
 ```

@@ -1,32 +1,28 @@
 ---
-title: CREATE USER
+title: "CREATE USER"
 ---
 
 Create a new user account in the database.
 
-
 ## Synopsis
 
-```sql
+```
 CREATE USER user_name WITH PASSWORD password
 ```
 
-
 ## Description
 
-`CREATE USER` creates a new user account in the database. Currently all the users have the same privileges
-and can manage users.
-
-
+`CREATE USER` creates a new user account in the database. Currently all the users have the same privileges and can manage users.
 
 ## Parameters
 
-##### `user_name`
+**`user_name`**
+
 The name of the user to create.
 
 The user name should be unique and conform with the [Identifiers Limitations](/sql/appendices/indentifiers-limitations).
 
-##### `password`
+**`password`**
 
 The password string.
 
@@ -35,26 +31,22 @@ Password requirements:
 - Password length should be between 8 and 100 characters
 - A password must contain at least 3 of the following character classes:
 
-        ○ Upper case characters
+  ○ Upper case characters
 
-        ○ Lower case characters
+  ○ Lower case characters
 
-        ○ Numbers
+  ○ Numbers
 
-        ○ Symbols. Any of the following symbols can be used. The list is enclosed in double
-        quotes. “ ' ~ ! @ # $ % ^ & * ( ) _ - + = { } [ ] \ / < > , . ; ? ‘ : | (space)”.
+  ○ Symbols. Any of the following symbols can be used. The list is enclosed in double
+  quotes. “ ' ~ \! @ # \$ % ^ & \* ( ) \_ - \+ =   [ ] \\ / \< \> , . ; ? ‘ : | (space)”.
 
+## Examples
 
-
-
-## Examples 
-
-##### Create a new user:
+**Create a new user:**
 
 ```sql
 CREATE USER user1 WITH PASSWORD 'Rdyv#1Cguko';
 ```
-
 
 ## Compatibility
 

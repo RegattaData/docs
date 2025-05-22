@@ -1,38 +1,35 @@
 ---
-title: DROP USER
+title: "DROP USER"
 ---
 
 Remove an existing user.
 
 ## Synopsis
 
-```sql
+```
 DROP USER user_name
 ```
-
 
 ## Description
 
 The `DROP USER` command removes an existing user from the database.
 
-If there is currently a connection to the database by the given user it will be terminated and all running transactions aborted.
+If there is currently a connection to the database by the given user it will be terminated and all running transactions on that connection will be aborted.
 
 Notes:
 
 - A user can remove itself.
-- The last user cannot be removed.
-
+- If there is only one user, it cannot be removed.
 
 ## Parameters
 
-##### `user_name`
+**`user_name`**
 
 The name of the user to remove.
 
 ## Examples
----
 
-##### Remove a user:
+Remove a user:
 
 ```sql
 DROP USER user1;

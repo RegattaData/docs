@@ -1,24 +1,22 @@
 ---
-title: SHOW COLUMNS
+title: "SHOW COLUMNS"
 ---
 
 This view has a row for every column in every table in the database.
 
-The output is ordered by the (`table_name,column_name`) columns.
+The output is ordered by the (`table_name, column_name`) columns.
 
 Data can be filtered with `IN TABLE` table_name syntax.
 
 The following table lists the output’s columns:
 
-| Column name | Data type | Description |
-| :--- | :--- | :--- |
-| TABLE_NAME | VARCHAR(127) | The table name |
-| COLUMN_NAME | VARCHAR(127) | The column name. This is the filter column |
-| DATA_TYPE | VARCHAR(30) | The column data type. One of the supported data types ([Data Types](/sql/data-types)) |
-| COLUMN_SIZE | INT | The number of chars for CHAR, the maximum number of chars for VARCHAR, the precision of the column for NUMERIC, REAL or DOUBLE PRECISION, the number of fractional digits retained in the seconds field for TIME or TIMESTAMP.<br/>Null for all other types. |
-| SCALE | INT | The number of digits to the right of the decimal point in a number.<br/>Null when not relevant |
-| NOT_NULL | BOOLEAN | True if defined as NOT NULL. |
-| DEFAULT | VARCHAR(8000) | The column's default value (NULL if there is no default value). |
-| ORDINAL_POSITION | INT | Ordinal position of the column within the table (count starts at 1) |
-
-
+| Column name      | Data type     | Description                                                                                                                                                                                                                                                   |
+| :--------------- | :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| TABLE_NAME       | `VARCHAR(127)`  | The table name                                                                                                                                                                                                                                                |
+| COLUMN_NAME      | `VARCHAR(127)`  | The column name. This is the filter column                                                                                                                                                                                                                    |
+| DATA_TYPE        | `VARCHAR(30)`   | The column data type. One of the supported data types ([Data Types](/sql/data-types))                                                                                                                                                                         |
+| COLUMN_SIZE      | `INT`           | The number of chars for CHAR, the maximum number of chars for VARCHAR, the precision of the column for NUMERIC, REAL or DOUBLE PRECISION, the number of fractional digits retained in the seconds field for TIME or TIMESTAMP.<br />Null for all other types. |
+| SCALE            | `INT`           | The number of digits to the right of the decimal point in a number.<br />Null when not relevant                                                                                                                                                               |
+| NOT_NULL         | `BOOLEAN`       | True if defined as NOT NULL.                                                                                                                                                                                                                                  |
+| DEFAULT          | `VARCHAR(8000)` | The column's default value (NULL if there is no default value).                                                                                                                                                                                               |
+| ORDINAL_POSITION | `INT`           | Ordinal position of the column within the table (count starts at 1)                                                                                                                                                                                           |

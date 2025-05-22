@@ -2,8 +2,7 @@
 title: SHOW CONSTRAINTS
 ---
 
-This view has a row for every constraint in every table in the database, except for NULL constraints. Those are
-presented as the column `IS_NULLABLE` at SHOW COLUMNS view.
+This view has a row for every constraint in every table in the database, except for `NULL` constraints. Those are presented as the column `IS_NULLABLE` at `SHOW COLUMNS` view.
 
 The output is ordered by the `table_name` column.
 
@@ -13,9 +12,9 @@ The following table lists the output’s columns:
 
 | Column name | Data type | Description |
 | :--- | :--- | :--- |
-| TABLE_NAME | `VARCHAR(127`) | The table name. This is the filter column. |
-| COLUMN_NAME | `VARCHAR(127`) | The column the constraint is set on |
+| TABLE_NAME | `VARCHAR(127)` | The table name. This is the filter column. |
+| COLUMN_NAME | `VARCHAR(127)` | The column the constraint is set on |
 | CONSTRAINT_TYPE | `CHAR(1)` | `r` = foreign key constraint, `p` = primary key constraint, `u` = unique constraint |
-| REF_TABLE_NAME | `VARCHAR(127`) | For foreign key constraint: The referenced table the foreign key is pointing to. Otherwise null. |
-| REF_COL_NAME | `VARCHAR(127`) | For foreign key constraint: The column in the reference table the foreign key is referring to. Otherwise null. |
+| REF_TABLE_NAME | `VARCHAR(127)` | For foreign key constraint: The referenced table the foreign key is pointing to. Otherwise null. |
+| REF_COL_NAME | `VARCHAR(127)` | For foreign key constraint: The column in the reference table the foreign key is referring to. Otherwise null. |
 
