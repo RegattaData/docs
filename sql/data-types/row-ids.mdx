@@ -1,11 +1,11 @@
 ---
-title: ROW IDs
+title: "ROW IDs"
 ---
 
 Every row in every table is automatically assigned a row identifier. Row IDs are 64-bit unsigned integers. Each row has a row ID unique within the containing table. The ID of a row is constant and never changes. The row ID is not part of the table’s schema, and is not considered to be a column of the table. However, it can be queried and used within SQL commands as described below.
 
-Row IDs can be returned from queries instead of table columns or expressions. For example: `SELECT ROWID FROM my\_table`. See the [SELECT](/sql/dql/select) command for more details.
+Row IDs can be returned from queries instead of table columns or expressions. For example: `SELECT ROWID FROM my_table`. See the [SELECT](/sql/dql/select) command for more details.
 
 Row IDs can also be used in the `WHERE` clause of commands.
 
-Row IDs of the affected rows are returned by the `INSERT`, `UPDATE` and `DELETE` commands if the `RETURNING` `ROWID` clause is specified.
+Row IDs of the affected rows are returned by the `INSERT`, `UPDATE` and `DELETE` commands if the `RETURNING ROWID` clause is specified.

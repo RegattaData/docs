@@ -1,16 +1,10 @@
 ---
-title: Overview
+title: "Overview"
 ---
 
 SQL, at its core, is a declarative language to access relational data. SQL commands such as SELECT,
-INSERT, UPDATE, DELETE specify *what* should be done on the DB, not *how* it should be done. That leaves a
-lot of room for the query planner to build an optimal execution plan considering static and dynamic aspects of
-the query and the involved tables.
+INSERT, UPDATE, DELETE specify **_what_** should be done on the DB, not **_how_** it should be done. That leaves a lot of room for the query planner to build an optimal execution plan considering static and dynamic aspects of the query and the involved tables.
 
-Regatta supports various hints that can be specified with the SQL statement that provide guidance to the query
-planner in cases the client user or application wants to direct the query planner to a specific option according to
-knowledge it has that the query planner might not have the insight into.
+Regatta supports various hints that can be specified with the SQL statement that provide guidance to the query planner in cases the client user or application wants to direct the query planner to a specific option according to knowledge it has that the query planner might not have the insight into.
 
-The syntax used to specify the hints is enclosing them with C language style comments and use double plus
-signs in the beginning of it, i.e. `/*++ <hint> */`.
-
+The syntax used to specify the hints is enclosing them with C language style comments and use double plus signs in the beginning of it, i.e. `/*++ <hint> */`.
