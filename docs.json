@@ -14,7 +14,7 @@
         "version": "1.0",
         "anchors": [
           {
-            "anchor": "Home",
+            "anchor": "Docs Home",
             "icon": "house",
             "groups": [
               {
@@ -388,9 +388,9 @@
               {
                 "group": "Drivers & Clients",
                 "pages": [
-					"drivers-and-clients/connecting-applications-to-regatta",
-					"drivers-and-clients/client-lib",
-                    "drivers-and-clients/regatta-cli"
+                  "drivers-and-clients/connecting-applications-to-regatta",
+                  "drivers-and-clients/client-lib",
+                  "drivers-and-clients/regatta-cli"
                 ]
               },
               {
