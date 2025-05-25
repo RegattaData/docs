@@ -24,7 +24,7 @@
             ]
           },
           {
-            "anchor": "Getting Started",
+            "anchor": "Quickstart",
 
             "groups": [
               {
@@ -473,8 +473,7 @@
                   "tuning-performance/distributing-indexes",
                   "tuning-performance/other-index",
                   "tuning-performance/other-limitations",
-                  "tuning-performance/closing-remarks",
-                  "tuning-performance/references"
+                  "tuning-performance/closing-remarks"
                 ]
               }
             ]
