@@ -1,49 +1,16 @@
 ---
-title: Backup
+title: "Backup"
 ---
 
-To back up the database, complete any desired operation and stop any access to the database, 
-either manual or through an application. Do note that this is a recommended procedure as the 
-database will not be accessible once the backup process starts. Once ready, click the 
-**Backup/Restore** button on the left-hand-side. You will transition to the following page:
+To back up the database, complete any desired operation and stop any access to the database,
+either manual or through an application. Do note that this is a recommended procedure as the
+database will not be accessible once the backup process starts. Once ready, click the
+**Backup/Restore** button on the left-hand-side. You will transition to the **Backup/Restore** page.
 
-<Frame caption="Figure 19 BACKUP/RESTORE page">
-  <img src="/images/19.png" />
-</Frame>
+Clicking on the **\+ CREATE NEW BACKUP** button will redirect you to the New Backup page. Name the new backup, say **my-1st-cluster-backup** and select the cluster to be backed-up, then click the **SAVE** button.
 
-Clicking on the + CREATE NEW BACKUP button will redirect you to the New Backup page:
+A popup window will appear asking you to confirm that you would like to perform the backup (as the cluster will stop and become unavailable). Once you click on **CONFIRM**, the platform will stop the cluster and the backup process will start. The backup will appear to be in the **IN PROGRESS** state.
 
-<Frame caption="Figure 20 Create a Backup">
-  <img src="/images/20.png" />
-</Frame>
-
-Give a name to the new backup, say **my-1st-cluster-backup** and select the cluster to be 
-backed-up, then click the **SAVE** button.
-
-<Frame caption="Figure 21 Define Backup parameters">
-  <img src="/images/21.png" />
-</Frame>
-
-A popup window will appear (as seen below) asking you to confirm that you would like to 
-perform the backup (as the cluster will stop and become unavailable).
-
-<Frame caption="Figure 22 Confirm restore">
-  <img src="/images/22.jpg" />
-</Frame>
-
-Once you click on CONFIRM, the platform will stop the cluster and the backup process will 
-start. The backup will appear to be in the **IN PROGRESS** state.
-
-<Frame caption="Figure 23 Backup in progress">
-  <img src="/images/23.png" />
-</Frame>
-
-Once completed, the status will change to **SUCCESS** and the platform will restart the cluster. 
-Wait until the cluster is back in the **RUNNING** status. Now that backup will be available when 
-one would like to restore the database back to that point in time. This will be demonstrated in 
-the next section.
-
-
-<Frame caption="Figure 24 Backup completed">
-  <img src="/images/24.png" />
-</Frame>
+Once completed, the status will change to **SUCCESS** and the platform will restart the cluster.
+Wait until the cluster is back in the **RUNNING** status. Now that backup will be available when
+one would like to restore the database back to that point in time. 
