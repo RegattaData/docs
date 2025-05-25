@@ -1,11 +1,7 @@
 ---
-title: Linear Scaling
+title: "Linear Scaling"
 ---
 
-One of the most important features of the Regatta Database is its linear scaling capabilities. We
-will show that as the cluster grows, the same OLAP query will have a faster response time
-proportional to the cluster growth.
+One of the most exciting features of the Regatta Database is its **linear scaling** capability: performance scales linearly with cluster size for both OLTP and OLAP workloads.
 
-To demonstrate that, we will create 2 new clusters that will also use the **Deploy Demo Data**
-option. This is a switch button in the **Create New Cluster** screen. Selecting that will create 2
-predefined tables and populate them with predefined data.
+Below, we’ll demonstrate this using an OLAP query, showing how response times improve in proportion to cluster growth. To do that, we’ll create two clusters and enable the **Deploy Demo Data** option (a toggle on the **Create New Cluster** screen). Enabling it automatically creates two predefined tables and populates them with sample data.
