@@ -30,7 +30,7 @@
               {
                 "group": "Getting Started",
                 "pages": [
-                  "getting-started/getting-started-using-regatta-cloud",
+                  "getting-started/quickstart-using-regatta-cloud",
                   "getting-started/access-the-cloud",
                   "getting-started/creating-a-cluster"
                 ]
