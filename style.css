@@ -13,17 +13,21 @@ body::-webkit-scrollbar-track {
   background-color: #f1f1f1; /* Scrollbar track color */
 }
 
-#sidebar {
-    padding: 20px;
-    left:0;
-}
-
 #sidebar-content::-webkit-scrollbar {
   display: none;
 }
 
 /* Styles applied at the xl breakpoint (min-width: 1280px) */
 @media (min-width: 1280px) {
+
+  #sidebar {
+    padding: 20px;
+    left:0;
+}
+
+  .max-w-8xl {
+    max-width: none;
+}
 
   .lg\:px-12 {
     padding-left: 1vw;
