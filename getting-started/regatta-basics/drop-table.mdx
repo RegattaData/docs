@@ -1,5 +1,5 @@
 ---
-title: Drop Table
+title: "Drop Table"
 ---
 
 Now we will remove the table and get back to an empty database. First, let’s run:
@@ -8,11 +8,7 @@ Now we will remove the table and get back to an empty database. First, let’s r
 SHOW TABLES
 ```
 
-This will present all the tables in the database:
-
-<Frame caption="Figure 32 Show tables before DROP">
-  <img src="/images/31.png" />
-</Frame>
+This will present all the tables in the database. 
 
 Now, perform the following SQL DROP command:
 
@@ -20,20 +16,16 @@ Now, perform the following SQL DROP command:
 DROP TABLE employees
 ```
 
-And don’t forget to also drop the workers table”
+And don’t forget to also drop the workers table:
 
 ```SQL
 DROP TABLE workers
 ```
 
-And then:
+Then run:
 
 ```SQL
 SHOW TABLES
 ```
 
 And indeed, there are no tables in the database.
-
-<Frame caption="Figure 33 DROP TABLE command">
-  <img src="/images/32.png" />
-</Frame>

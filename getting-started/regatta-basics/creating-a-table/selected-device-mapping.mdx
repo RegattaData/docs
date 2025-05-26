@@ -1,28 +1,17 @@
 ---
-title: Selected Device Mapping
+title: "Selected Device Mapping"
 ---
 
-If you do decide to select the devices to where the table will be mapped, you may specify them. 
+If you do decide to select to define the mapping for either data or indexes, you may do so. If you define one and not the other, Regatta will complete the definition for you. For example, if you do map the table to some devices but not decaler where an indexed key should go, Regatta will select a random device and map the index to it.
 
-NOTE: It’s an all-or-nothing option. You cannot specify the devices for the table and let Regatta 
-select the devices for the indexes. If you decide to specify mapping, then you need to add all 
-required mapping.
-
-The first command should display the devices that are used in the cluster.
-We enter SHOW DEVICES in the CLI command line:
+The first command should display the devices that are used in the cluster. We enter SHOW DEVICES in the WebCLI command line:
 
 ```SQL
 SHOW DEVICES
 ```
 
-Then press SEND. In return we get the following:
-
-<Frame caption="Figure 10 SHOW DEVICES">
-  <img src="/images/10.png" />
-</Frame>
-
-The next command will be the CREATE TABLE command. This command will look as follows 
-(note the usage of the devices). Let’s create a similar table called **workers.** Enter the following 
+The next command will be the CREATE TABLE command. This command will look as follows
+(note the usage of the devices). Let’s create a similar table called **workers.** Enter the following
 command:
 
 ```SQL
@@ -36,22 +25,12 @@ WITH (devices = (m10d1))
 
 Running it will create the desired table.
 
-<Frame caption="Figure 11 CREATE TABLE mapped devices.">
-  <img src="/images/11.png" />
-</Frame>
-
-Enter the SQL command:
+Enter the SQL show tables command:
 
 ```SQL
 SHOW TABLES
 ```
 
-In response, the following will be displayed:
-
-<Frame caption="Figure 12 Mapped devices table created.">
-  <img src="/images/12.jpg" />
-</Frame>
-
-We can see the table with all the columns and the device mapping. 
+We can see the table with all the columns and the device mapping. Note that in the **workers** table, the data is only mapped once to the device since this is what we chose as opposed to **employees** where Regatta mapped it 3 times.
 
 We will continue here using the **employees** table.
