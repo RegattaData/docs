@@ -65,7 +65,7 @@
                     "group": "Comparing Performance",
                     "pages": [
                       "getting-started/linear-scaling/comparing-performance/comparing-performance",
-                      "getting-started/linear-scaling/comparing-performance/xsmall-cluster",
+                      "getting-started/linear-scaling/comparing-performance/small-cluster",
                       "getting-started/linear-scaling/comparing-performance/medium-cluster"
                     ]
                   }
