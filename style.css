@@ -33,4 +33,8 @@ body::-webkit-scrollbar-track {
     padding-left: 1vw;
     padding-right: 1vw;
 }
+
+#content-area {
+  margin-left: 4vw;
+}
 }
