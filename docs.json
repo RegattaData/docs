@@ -25,45 +25,45 @@
 
         "groups": [
           {
-            "group": "Getting Started",
+            "group": "Quickstart",
             "pages": [
-              "getting-started/getting-started-using-regatta-cloud",
-              "getting-started/access-the-cloud",
-              "getting-started/creating-a-cluster"
+              "quickstart/getting-started-using-regatta-cloud",
+              "quickstart/access-the-cloud",
+              "quickstart/creating-a-cluster"
             ]
           },
           {
             "group": "Regatta Basics",
             "pages": [
-              "getting-started/regatta-basics/creating-a-table/create-a-table",
-              "getting-started/regatta-basics/creating-a-table/default-device-mapping",
-              "getting-started/regatta-basics/creating-a-table/selected-device-mapping",
-              "getting-started/regatta-basics/insert-values",
-              "getting-started/regatta-basics/select-values-from-table",
-              "getting-started/regatta-basics/update-entry",
-              "getting-started/regatta-basics/delete-entry-from-table",
-              "getting-started/regatta-basics/drop-table",
-              "getting-started/regatta-basics/credentials"
+              "quickstart/regatta-basics/creating-a-table/create-a-table",
+              "quickstart/regatta-basics/creating-a-table/default-device-mapping",
+              "quickstart/regatta-basics/creating-a-table/selected-device-mapping",
+              "quickstart/regatta-basics/insert-values",
+              "quickstart/regatta-basics/select-values-from-table",
+              "quickstart/regatta-basics/update-entry",
+              "quickstart/regatta-basics/delete-entry-from-table",
+              "quickstart/regatta-basics/drop-table",
+              "quickstart/regatta-basics/credentials"
             ]
           },
           {
             "group": "Linear Scaling",
             "pages": [
-              "getting-started/linear-scaling/linear-scaling",
+              "quickstart/linear-scaling/linear-scaling",
               {
                 "group": "Creating the Demo Environment",
                 "pages": [
-                  "getting-started/linear-scaling/creating-demo-environment/creating-demo-environment",
-                  "getting-started/linear-scaling/creating-demo-environment/table-schema",
-                  "getting-started/linear-scaling/creating-demo-environment/creating-demo-clusters"
+                  "quickstart/linear-scaling/creating-demo-environment/creating-demo-environment",
+                  "quickstart/linear-scaling/creating-demo-environment/table-schema",
+                  "quickstart/linear-scaling/creating-demo-environment/creating-demo-clusters"
                 ]
               },
               {
                 "group": "Comparing Performance",
                 "pages": [
-                  "getting-started/linear-scaling/comparing-performance/comparing-performance",
-                  "getting-started/linear-scaling/comparing-performance/small-cluster",
-                  "getting-started/linear-scaling/comparing-performance/medium-cluster"
+                  "quickstart/linear-scaling/comparing-performance/comparing-performance",
+                  "quickstart/linear-scaling/comparing-performance/small-cluster",
+                  "quickstart/linear-scaling/comparing-performance/medium-cluster"
                 ]
               }
             ]
