@@ -26,13 +26,13 @@ Below is a description of each column:
 
 1. **OS** - Indicates the operating system for which this package was built.
 2. **Architecture** - The CPU architecture supported by this package.
-3. **Version** - The specific release number of the driver or tool. Follows Semantic Versioning (Major.Minor.Patch).
-4. **Type** - Can be of the following:\
-   - **Full**: Includes the Regatta client library bundled together with the driver. Recommended for a “zero-prep” installation: copy, extract, and run, without any additional dependencies.\
+3. **Version** - The specific release number of the driver or tool. Follows Semantic Versioning `(Major.Minor.Patch)`.
+4. **Type** - Can be of the following:
+   - **Full**: Includes the Regatta client library bundled together with the driver. Recommended for a “zero-prep” installation: copy, extract, and run, without any additional dependencies.
    - **Standalone**: Contains only the driver (no embedded client library). Requires that you have already installed (or will install) the [**Regatta Client Library**](https://docs.regatta.dev/drivers-and-clients/client-lib) separately. Useful if you want to manage client library upgrades independently of the driver.
 5. **Supported DB Versions** - Specifies which Regatta Database cluster versions are compatible with this driver/tool.\
-   Examples:\
-   - `1.0.0.1034 – 1.0.0.1296` means “This release works with any Regatta cluster running versions `1.0.0.1034` through `1.0.0.1296`.”\
+   Examples:
+   - `1.0.0.1034 – 1.0.0.1296` means “This release works with any Regatta cluster running versions `1.0.0.1034` through `1.0.0.1296`.”
    - `1.0.0.1297 +` means “This release requires Regatta `1.0.0.1297` or later.”
 6. **Download Button** - Click **Download** to retrieve that specific RPM/TAR/GZ (or compressed ZIP) package.
 
