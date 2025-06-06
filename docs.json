@@ -395,6 +395,7 @@
                 "group": "Drivers & Clients",
                 "pages": [
 					"drivers-and-clients/connecting-applications-to-regatta",
+                    "drivers-and-clients/download-drivers-and-clients",
 					"drivers-and-clients/client-lib",
                     "drivers-and-clients/regatta-cli"
                 ]
