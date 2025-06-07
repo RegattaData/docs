@@ -1,0 +1,50 @@
+---
+title: "Install Your Python Client"
+description: "Description of your new file."
+---
+
+## Drivers
+
+<Tabs>
+  <Tab title="Python">
+    1. [Download the Python driver](/drivers-and-clients/download-drivers-and-clients).
+    2. Install the driver:
+
+       ```bash
+       $ pip3 install pyregatta-<version>_<type>.tar.gz
+       ```
+
+       <Note>
+         Regatta driver requires Python version 3.6 and above. When using the "Full" driver type, the installation will automatically include the Regatta client library. If you are using the "Standalone" version, you should make sure you have the [client lib installed](/drivers-and-clients/client-lib).
+       </Note>
+  </Tab>
+</Tabs>
+
+## ORM frameworks
+
+<Tabs>
+  <Tab title="SQLAlchemy">
+    1. [Download the Regatta SQLAlchemy dialect](/drivers-and-clients/download-drivers-and-clients).
+    2. Install the package:
+
+       ```bash
+       $ pip3 install sqlalchemy-regatta-<version>.tar.gz
+       ```
+
+       <Note>
+         Regatta supports SQLAlchemy version 2.0.34 and above. Refer to the [official SQLAlchemy documentation](https://docs.sqlalchemy.org/en/20/intro.html#installation-guide) for installation instructions.
+       </Note>
+  </Tab>
+  <Tab title="Django">
+    1. [Download the Regatta Django package](/drivers-and-clients/download-drivers-and-clients).
+    2. Install the package:
+
+       ```bash
+       $ pip3 install django-regatta-<version>.tar.gz
+       ```
+
+       <Note>
+         Regatta supports Django version 4.2 and above. Refer to the [official Django documentation](https://docs.djangoproject.com/en/4.2/) for installation instructions.
+       </Note>
+  </Tab>
+</Tabs>

@@ -406,8 +406,7 @@
                   {
                     "group": "Python Driver",
                     "pages": [
-                      "drivers-and-clients/python/python-drivers",
-                      "drivers-and-clients/python/install-the-driver",
+                      "drivers-and-clients/python/install-your-python-client",
                       "drivers-and-clients/python/run-python-application"
                     ]
                   }
