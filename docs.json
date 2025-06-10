@@ -320,7 +320,7 @@
               {
                 "group": "Regatta Configuration",
                 "pages": [
-                  "self-hosted-deployment/manual-deployment/regatta-configuration/regatta-configuration",
+                  "self-hosted-deployment/manual-deployment/regatta-configuration/regatta-software-modules",
                   "self-hosted-deployment/manual-deployment/regatta-configuration/configurating-regatta"
                 ]
               },
