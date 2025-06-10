@@ -1,8 +1,8 @@
 ---
-title: Configuration File Example
+title: "Configuration File Example - REMOVE"
 ---
 
-Below is an example of a configuration file for a 3-node Regatta cluster. The proceeding 
+Below is an example of a configuration file for a 3-node Regatta cluster. The proceeding
 documentation will be based on this configuration as an actual example.
 
 ```java
@@ -101,22 +101,22 @@ ranger_dev_num=1
 core_pdbg_port=5004
 ```
 
-You will need to update this configurations template file to reflect the desired configuration of 
-the Regatta Cluster. The cluster.template shows how the cluster configuration file should 
-look once updated. Once you are done editing and updating it, save it in the same directory 
+You will need to update this configurations template file to reflect the desired configuration of
+the Regatta Cluster. The cluster.template shows how the cluster configuration file should
+look once updated. Once you are done editing and updating it, save it in the same directory
 under the name cluster.config.
 
 This file is the same for all modules on all servers but for:
 
 - System Number of CPUs (system_num_cpus)
-and 
+  and
 - 3 bottom lines
 
 These are module specific parameters.
 
-The `cluster.template` file can be seen below in the Configuration Template File section. 
+The `cluster.template` file can be seen below in the Configuration Template File section.
 
-The recommended way to handle this is to create the basic configuration file WITHOUT 
+The recommended way to handle this is to create the basic configuration file WITHOUT
 updating the 4 module-specific lines. Copy it to all modules on all servers and then go one-by-one and update them accordingly.
 
 Once completed, don’t forget to save it in the same directory under the name `cluster.config`
