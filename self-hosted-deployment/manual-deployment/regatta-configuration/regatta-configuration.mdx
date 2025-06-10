@@ -1,6 +1,22 @@
 ---
-title: Regatta Configuration
+title: "Regatta Configuration"
 ---
 
-Regatta has four software modules which are required to run the Regatta Database. The 
+Regatta has four software modules which are required to run the Regatta Database. The
 modules are:
+
+### RDB
+
+The RDB module allows optimal usage of the server resources (CPU, Network and IO). To increase Regatta’s performance and capacity, simply add servers with the RDB module deployed on them.
+
+### Sequencer
+
+The Sequencer module coordinates distributed events between all Regatta components.
+
+### DCM
+
+The Database Catalog Manager (DCM) module manages the database catalog which contains all the schema definitions including tables, materialized views and data types, as well as hierarchical schema structures.
+
+### GDD
+
+The Global Deadlock Detector (GDD) module is responsible for detecting circular distributed dependencies between transactions in the system and resolving them.
