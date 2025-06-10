@@ -321,17 +321,13 @@
                 "group": "Regatta Configuration",
                 "pages": [
                   "self-hosted-deployment/manual-deployment/regatta-configuration/regatta-configuration",
-                  "self-hosted-deployment/manual-deployment/regatta-configuration/rdb",
-                  "self-hosted-deployment/manual-deployment/regatta-configuration/sequencer",
-                  "self-hosted-deployment/manual-deployment/regatta-configuration/dcm",
-                  "self-hosted-deployment/manual-deployment/regatta-configuration/gdd"
+                  "self-hosted-deployment/manual-deployment/regatta-configuration/configurating-regatta"
                 ]
               },
               {
                 "group": "Configuration File",
                 "pages": [
                   "self-hosted-deployment/manual-deployment/configuration-file/configuration-file",
-                  "self-hosted-deployment/manual-deployment/configuration-file/configuration-file-example",
                   "self-hosted-deployment/manual-deployment/configuration-file/main-configuration-top-part",
                   "self-hosted-deployment/manual-deployment/configuration-file/unique-module-configuration"
                 ]
@@ -355,7 +351,6 @@
             "group": "Hybrid Deployment",
             "pages": [
               "self-hosted-deployment/hybrid-deployment/hybrid-deployment",
-              "self-hosted-deployment/hybrid-deployment/process",
               "self-hosted-deployment/hybrid-deployment/inventory",
               "self-hosted-deployment/hybrid-deployment/configuration",
               "self-hosted-deployment/hybrid-deployment/start"
