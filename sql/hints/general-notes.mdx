@@ -1,34 +1,29 @@
 ---
-title: General notes
+title: "General notes"
 ---
 
+ 1. Syntax: `/*++ hint [, ...] */`
+    - All hints should be given in comments with the ‘\+\+’ sign:
+    - Failure to include the “\+\+” right after the comment opening characters will result in regarding the hint as a regular comment, effectively ignoring it.
+ 2. Hints apply only to the statement block in which they appear.
+ 3. A statement block can have only one comment containing hints. The hints-comment must follow a `SELECT`, `UPDATE`, or `DELETE` keyword. A hints comment that appears anywhere else in the SQL statement would result in an error.
+ 4. Statement blocks that can contain hints are:
 
-1. All hints should be given in comments with the ‘++’ sign:
+    4.1. A simple `SELECT`, `UPDATE`, or `DELETE` statement.
 
-    1.1. Failure to include the “++” right after the comment opening characters will result in regarding the hint as a regular comment, effectively ignoring it.
-2. Hints apply only to the statement block in which they appear.
-3. A statement block can have only one comment containing hints. The hints-comment must follow a SELECT, UPDATE, or DELETE keyword. A hints comment that appears anywhere else in the SQL statement would result in an error.
-4. Statement blocks that can contain hints are:
+    4.2. A parent query or subquery of a complex statement.
 
-   4.1. A simple `SELECT`, `UPDATE`, or `DELETE` statement.
+    4.3. A part of a compound query (such as when using `UNION`).
+ 5. Multiple hints should be separated by commas: For example: \
+    `/*++ JOIN METHOD (HASH), INDEX (b, my_idx) */`
+ 6. A syntax error in a hint-comment may result in a parsing error that would cause ignoring all the hints in the comment, even if some hints are valid.
+ 7. A hint must be applied by the query planner unless it is invalid. Invalid hints should be ignored. A hint is invalid if either of the following holds:
+    - It is impossible to apply the hint (e.g., a hint to use an index scan rather than a table scan when the relevant column is not indexed)
+    - Applying the hint would lead to incorrect results.
 
-   4.2. A parent query or subquery of a complex statement.
-
-   4.3. A part of a compound query (such as when using `UNION`).
-
-5. Multiple hints should be separated by commas: E.g.: `/*++ JOIN METHOD (HASH), INDEX (b, my_idx) */`
-6. Note: A syntax error in a hint-comment may result in a parsing error that would cause ignoring all the hints in the comment, even if some hints are valid.
-7. A hint must be applied by the query planner unless it is invalid. Invalid hints should be ignored. A hint is invalid if either of the following holds:
-
-    7.1. It is impossible to apply the hint (e.g., a hint to use an index scan rather than a table scan when the relevant column is not indexed)
-    
-    7.2. Applying the hint would lead to incorrect results.
-
-   Hints are either applied or ignored, but never fail the statement.
-
-8. When a hints comment contains multiple hints with a mix of valid and invalid hints, the valid hints are applied.
-9. When there are any conflicting hints, all the hints in the pertinent comment are ignored. (The possible contradictions are listed under each hint in the sub-sections below.)
+    Hints are either applied or ignored, but never fail the statement.
+ 8. When a hints comment contains multiple hints with a mix of valid and invalid hints, the valid hints are applied.
+ 9. When there are any conflicting hints, all the hints in the pertinent comment are ignored. (The possible contradictions are listed under each hint in the sub-sections below.)
 10. If a table appears in a query with an alias, the hint must specify the alias name rather than the table name.
 11. Hints related to joins require an explicit join and an alias, and the alias name specified in the hint parameter.
 12. If a hint references a table that appears multiple times in a query, the hint relates to first occurrence. An alias can be used in order to apply a hint to other occurrences of the table.
-

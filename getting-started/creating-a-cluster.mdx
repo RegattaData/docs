@@ -1,20 +1,10 @@
 ---
-title: Creating a Cluster
+title: "Creating a Cluster"
 ---
 
-You may select to use one of the available clusters or create a new one. In this example, we will 
-create a new cluster.
+You may select to use one of the available clusters or create a new one. In this example, we will create a new cluster.
 
-The following section describes how to create a new cluster. 
-
-Clicking on the **+ CREATE NEW CLUSTER** button (see Figure 2 Clusters page) will redirect you to the 
-**Create New Cluster** screen:
-
-<Frame caption="Figure 3 Create New Cluster">
-  <img src="/images/figure3-create-cluseter-page.png" />
-</Frame>
-
-
+Clicking on the **\+ CREATE NEW CLUSTER** button will redirect you to the **Create New Cluster** screen.
 
 Choose a name for the cluster (one that wasn’t used before). Here we named it **my-1st-regatta-cluster**.
 
@@ -24,25 +14,8 @@ Select the Provider from the available list and the Region from the drop-menu.
 
 Please note that currently we only offer **Google Cloud Platform** as a Provider and the **us_east** as region.
 
-Then select the **Cluster Type**. Once you click on the field, a drop-down menu will appear offering different cluster sizes (Figure 4). Please select the size required.
+Then select the **Cluster Type**. Once you click on the field, a drop-down menu will appear offering different cluster sizes. Please select the size required. In this example we select the **XSMALL** cluster.
 
-<Frame caption="Figure 4 Cluster types">
-  <img src="/images/figure4-cluster-type.png" />
-</Frame>
+Click the **CONFIRM** button to complete the process. In response, you will go back to the **Clusters** screen and your new cluster will appear in the **Starting** status. Please wait until the cluster becomes available. The status will change from **Starting** to **Running**.
 
-In this example we select the **XSMALL** cluster.
-
-Click the **CONFIRM** button to complete the process. In response, you will go back to the **Clusters** screen and your new cluster will appear in the **Starting** status.
-
-<Frame caption="Figure 5 Cluster starting">
-  <img src="/images/figure5-cluster-starting.png" />
-</Frame>
-
-Please wait until the cluster becomes available. The status will change from **Starting** to **Running** as seen below (Frame 6).
-
-<Frame caption="Figure 6 Cluster ready">
-  <img src="/images/figure6-cluster-ready.png" />
-</Frame>
-
-You just created your first Regatta cluster. You can start deploying your database. This can be done via multiple ways of connecting to a Regatta cluster. The following steps will use the Regatta Cloud user interface CLI. Other methods of connecting to a Regatta cluster will be covered in subsequent sections.
-
+You just created your first Regatta cluster. You can start deploying your database. This can be done via multiple ways of connecting to a Regatta cluster. The following steps will use the Regatta Cloud WebCLI. Other methods of connecting to a Regatta cluster will be covered in subsequent sections.

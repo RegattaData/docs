@@ -1,15 +1,14 @@
 ---
-title: Character types
+title: "Character types"
 ---
 
-|Data type|Alias|Description|
-| :- | :- | :- |
-|CHAR(n)|CHARACTER(n)|Fixed size in (n) chars. See [Database Limitations](/sql/appendices/database-limitations).|
-|VARCHAR[(n)]|CHARACTER VARYING [(n)], TEXT|variable-length with optional limit (n).<br></br> If n isn’t specified, the maximum is used. See [Database Limitations](/sql/appendices/database-limitations).|
+| Data type      | Alias                             | Description                                                                                                                                                 |
+| :------------- | :-------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `CHAR(n)`      | `CHARACTER(n)`                    | Fixed size character string of size n. See [Database Limitations](/sql/appendices/database-limitations).                                                    |
+| `VARCHAR[(n)]` | `CHARACTER VARYING [(n)]`, `TEXT` | variable-length with optional limit (n).<br /> If n isn’t specified, the maximum is used. See [Database Limitations](/sql/appendices/database-limitations). |
 
+Notes
 
-<Note> Note: Only ASCII characters are supported, 1 char = 1 byte.</Note>
+- Only ASCII characters are supported, 1 char = 1 byte.
 
-<Note> Note: Character type literals should be surrounded by single quotes. Those must be the basic ASCII character
-39 ('). Other variants, such as the left single-quote and right single-quote ASCII characters 145-146 (‘like this’),
-are not supported and would result in an error.</Note>
+- Character type literals should be surrounded by single quotes. Those must be the basic ASCII character 39 ('). Other variants, such as the left single-quote and right single-quote ASCII characters 145-146 (‘like this’), are not supported and would result in an error.

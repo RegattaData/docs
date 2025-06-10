@@ -1,13 +1,12 @@
 ---
-title: Type Conversion
+title: "Type Conversion"
 ---
-
 
 Type conversion can happen in the following cases:
 
 1. When mixing different data types while combining two result sets with `UNION`.
-1. When passing to functions and operators, operands of different types than their input operand types.
-1. When assigning values of different types to table row cells.
+2. When passing to functions and operators, operands of different types than their input operand types.
+3. When assigning values of different types to table row cells.
 
 In these cases, either Regatta implicitly converts them into a data type that allows the operation to continue, or they can be explicitly converted into the desired data type using the general [Convert Function](/sql/sql-functions-and-operators/convert-function) or the type-specific conversion functions listed in the table below.
 
@@ -16,28 +15,23 @@ The following rules apply to type conversions:
 1. When combining queries (`UNION` [`ALL`]), Regatta converts the data types of both queries to the “larger” data type of them.
 
    E.g: During `UNION` on two queries, if the first returns `DATE` and the other returns `TIMESTAMP`, Regatta converts the `DATE` into `TIMESTAMP`.
-
 2. When converting strings to other data types, the conversion fails if the string is not a valid representation of the value of the target type.
 
    For example, conversion of '3' to Integer would succeed but conversion of 'ttt' or '3.1' to integer would fail.
-
 3. When converting from `FLOAT4/8` or `DECIMAL` to integers, the value is rounded to the closest integer.
-3. During `INSERT` and `UPDATE` operations, Regatta converts the value to the datatype of the affected column. If the value is too large for the target data type, the operation fails.
-3. Conversion from `TIMESTAMP` to `DATE` or `TIME` extracts the relevant part of the `TIMESTAMP` into the target element.
+4. During `INSERT` and `UPDATE` operations, Regatta converts the value to the datatype of the affected column. If the value is too large for the target data type, the operation fails.
+5. Conversion from `TIMESTAMP` to `DATE` or `TIME` extracts the relevant part of the `TIMESTAMP` into the target element.
 
-   E.g: `SELECT '2023-12-12 23:00:05'::time` returns 23:00:05.
+   E.g: `SELECT '2023-12-12 23:00:05'::time` returns `23:00:05`.
+6. When converting integral types to `BOOLEAN`, `0` is converted to `FALSE` and any other value is converted to `TRUE`.
+7. Any conversion (explicit or implicit) to a numeric type (integers, floating point and decimals) would fail if the value cannot fit within the range of the target type.
 
-6. When converting integral types to `BOOLEAN`, 0 is converted to FALSE and any other value is converted to `TRUE`.
-6. Any conversion (explicit or implicit) to a numeric type (integers, floating point and decimals) would fail if the value cannot fit within the range of the target type.
-
-   For example, `SELECT 1234567::SMALLINT`; will fail since the value is out of the `SMALLINT` range.
-
+   For example, `SELECT 1234567::SMALLINT` will fail since the value is out of the `SMALLINT` range.
 8. Explicit conversion to [Character types](/sql/data-types/character-types) trims the converted string to fit the size of the target type, however, implicit conversion would not trim the text and would result in an error.
 
-   For example: `CAST(150 as CHAR(2))` returns '15' but assigning 150 to a `CHAR(2)` column without explicit casting would fail.
-
+   For example: `CAST(150 as CHAR(2))` returns `15` but assigning `150` to a `CHAR(2)` column without explicit casting would fail.
 9. `CHAR` types are implicitly converted to `VARCHAR` (and the trailing spaces are trimmed) when they are used as inputs to any function/operation.
 
-   For example: Comparison of `VARCHAR(10)` containing the value `‘Regatta`’ and `CHAR(10)`containing the value `‘Regatta` ’ results in true.
+   For example: Comparison of `VARCHAR(10)` containing the value `‘Regatta’` and `CHAR(10)` containing the value `‘Regatta   ’` results in `TRUE`.
 
-   Note: If the `VARCHAR` contains trailing spaces as part of its string, the comparison will return false. For example: `CHAR(10`) with the text 'Regatta' `VARCHAR(10)` with the text 'Regatta '.
+   Note: If the `VARCHAR` contains trailing spaces as part of its string, the comparison will return `FALSE`. For example: `CHAR(10)` with the text `'Regatta'` is not equal to `VARCHAR(10)` with the text `'Regatta '`.

@@ -9,25 +9,28 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "anchors": [
+    "versions": [
       {
-        "anchor": "Docs Home",
-        "icon": "house",
-        "groups": [
+        "version": "1.0",
+        "anchors": [
           {
-            "group": " ",
-            "pages": ["home"]
-          }
-        ]
-      },
-      {
-        "anchor": "Quickstart",
+            "anchor": "Docs Home",
+            "icon": "house",
+            "groups": [
+              {
+                "group": " ",
+                "pages": ["home"]
+              }
+            ]
+          },
+          {
+            "anchor": "Quickstart",
 
             "groups": [
               {
                 "group": "Getting Started",
                 "pages": [
-                  "getting-started/getting-started-using-regatta-cloud",
+                  "getting-started/quickstart-using-regatta-cloud",
                   "getting-started/access-the-cloud",
                   "getting-started/creating-a-cluster"
                 ]
@@ -76,11 +79,12 @@
             "groups": [
               {
                 "group": "SQL Specification",
-                "pages": ["/sql/specification"]
+                "pages": ["/sql/introduction"]
               },
               {
                 "group": "Data Types",
                 "pages": [
+                  "sql/data-types/introduction",
                   {
                     "group": "Numeric types",
                     "pages": [
@@ -196,14 +200,7 @@
                     "group": "Convert Functions",
                     "pages": [
                       "sql/sql-functions-and-operators/convert-function/cast",
-
-                      {
-                        "group": "Date and Time Formatting Functions",
-                        "pages": [
-                          "sql/sql-functions-and-operators/convert-function/date-time-format-functions/date-time-format-functions",
-                          "sql/sql-functions-and-operators/convert-function/date-time-format-functions/examples"
-                        ]
-                      }
+                      "sql/sql-functions-and-operators/convert-function/date-time-format-functions"
                     ]
                   },
                   {
@@ -391,10 +388,9 @@
               {
                 "group": "Drivers & Clients",
                 "pages": [
-					"drivers-and-clients/connecting-applications-to-regatta",
-                    "drivers-and-clients/download-drivers-and-clients",
-					"drivers-and-clients/client-lib",
-                    "drivers-and-clients/regatta-cli"
+                  "drivers-and-clients/connecting-applications-to-regatta",
+                  "drivers-and-clients/client-lib",
+                  "drivers-and-clients/regatta-cli"
                 ]
               },
               {
@@ -403,7 +399,8 @@
                   {
                     "group": "Python Driver",
                     "pages": [
-                      "drivers-and-clients/python/install-your-python-client",
+                      "drivers-and-clients/python/python-drivers",
+                      "drivers-and-clients/python/install-the-driver",
                       "drivers-and-clients/python/run-python-application"
                     ]
                   }
@@ -476,8 +473,7 @@
                   "tuning-performance/distributing-indexes",
                   "tuning-performance/other-index",
                   "tuning-performance/other-limitations",
-                  "tuning-performance/closing-remarks",
-                  "tuning-performance/references"
+                  "tuning-performance/closing-remarks"
                 ]
               }
             ]

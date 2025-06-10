@@ -1,22 +1,21 @@
 ---
-title: Exact numeric data type
+title: "Exact numeric data type"
 ---
 
-
-|Data type|Aliases|Size|Range|
-| :-                | :-                                   | :-       | :-             |
-|`SMALLINT`         |`INT2`                                |2 bytes   |-32768 to +32767|
-|`INT`              |`INTEGER`, <br></br> `INT4`           |4 bytes   |-2147483648 to +2147483647|
-|`BIGINT`           |`INT8`                                |8 bytes   |-9223372036854775808 to <br></br> +9223372036854775807|
-|`NUMERIC` [`(p,s)`]|`DECIMAL` [`(p,s)`], `DEC` [`(p,s)`]  |variable  | Exact numeric of selectable precision. <br></br> Boundaries depend on whether or not (p,s) were specified. <br></br> See notes below|.
+| Data type           | Aliases                              | Size     | Range                                                                                                                         |
+| :------------------ | :----------------------------------- | :------- | :---------------------------------------------------------------------------------------------------------------------------- |
+| `SMALLINT`          | `INT2`                               | 2 bytes  | -32768 to \+32767                                                                                                             |
+| `INT`               | `INTEGER`, <br /> `INT4`             | 4 bytes  | -2147483648 to \+2147483647                                                                                                   |
+| `BIGINT`            | `INT8`                               | 8 bytes  | -9223372036854775808 to <br /> \+9223372036854775807                                                                          |
+| `NUMERIC` [`(p,s)`] | `DECIMAL` [`(p,s)`], `DEC` [`(p,s)`] | variable | Exact numeric of selectable precision. <br /> Boundaries depend on whether or not (p,s) were specified.<br />See notes below. |
 
 Notes:
 
-- The types ``SMALLINT``, ``INTEGER``, and ``BIGINT`` store integrals, that is, numbers without fractional components, of various ranges. Attempts to store values outside of the allowed range will result in an error.
+- The types `SMALLINT`, `INTEGER`, and `BIGINT` store integrals, that is, numbers without fractional components, of various ranges. Attempts to store values outside of the allowed range will result in an error.
 - Numeric:
-    - The precision (p) is the maximum number of significant digits in the whole number (that is, the number of digits to both sides of the decimal point).
-    - `NUMERIC` precision (p) must be between 1 and 1000.
-    - The scale (s) is the maximum number of digits to the right of the decimal point.
-    - `NUMERIC` scale (s) must be between 0 and 1000.
-    - If `p` and s are not specified, the column can contain up to 131072 digits before the decimal point, and up to 16383 digits after the decimal point.
-    - If only `p` is specified, then the s is zero.
+  - The precision (p) is the maximum number of significant digits in the whole number (that is, the number of digits to both sides of the decimal point).
+  - `NUMERIC` precision (p) must be between 1 and 1000.
+  - The scale (s) is the maximum number of digits to the right of the decimal point.
+  - `NUMERIC` scale (s) must be between 0 and 1000.
+  - If `p` and `s` are not specified, the column can contain up to 131072 digits before the decimal point, and up to 16383 digits after the decimal point.
+  - If only `p` is specified, then the `s` is zero.

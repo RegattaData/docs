@@ -1,55 +1,48 @@
 ---
-title: Comparison Functions and Operators
+title: "Comparison Functions and Operators"
 ---
 
 All the following operators return `BOOLEAN`.
 
 The right arrow (⇒ ) indicates the result.
 
-datatype refers to an operand of any supported compatible data type (see [Data Types](/sql/data-types)). 
+`datatype` refers to an operand of any supported compatible data type (see [Data Types](/sql/data-types)).
 
-boolean refers to an operand of `BOOLEAN` data type.
+`boolean` refers to an operand of `BOOLEAN` data type.
 
-
-
-| Operator | Description and Comments | Example |
-|:---------|:--------------------------|:--------|
-| datatype `<` datatype | Less than | `8 < 7`<br/>⇒ false |
-| datatype `>` datatype | Greater than | `8 > 7`<br/>⇒ true |
-| datatype `<=` datatype | Less than or equal to | `8 <= 8`<br/>⇒ true |
-| datatype `>=` datatype | Greater than or equal to | `8 >= 8`<br/>⇒ true |
-| datatype `=` datatype | Equal | `7 = 7`<br/>⇒ true |
-| datatype `<>` datatype | Not equal | `7 <> 7`<br/>⇒ false |
-| datatype `!=` datatype | Not equal | `7 != 7`<br/>⇒ false |
-| datatype `BETWEEN` datatype `AND` datatype | Between (inclusive) the range endpoints.<br/>See notes. | `2 BETWEEN 1 AND 3`<br/>⇒ true<br/>`2 BETWEEN 3 AND 1`<br/>⇒ false |
-| datatype `NOT BETWEEN` datatype `AND` datatype | Not between (inclusive) the range endpoints.<br/>See notes. | `2 NOT BETWEEN 1 AND 3`<br/>⇒ false |
-| datatype `BETWEEN SYMMETRIC` datatype `AND` datatype | Between, after sorting the two endpoint values | `2 BETWEEN SYMMETRIC 3 AND 1`<br/>⇒ true |
-| datatype `NOT BETWEEN SYMMETRIC` datatype `AND` datatype | Not between, after sorting the two endpoint values | `2 NOT BETWEEN SYMMETRIC 3 AND 1`<br/>⇒ false |
-| datatype `IS NULL` | Check whether value is NULL.<br/>See notes. | `5 IS NULL`<br/>⇒ false |
-| datatype `IS NOT NULL` | Check whether value is not NULL.<br/>See notes. | `5 IS NOT NULL`<br/>⇒ true |
-| boolean `IS TRUE` | Check whether boolean expression produces true | `5 < 6 IS TRUE`<br/>⇒ false |
-| boolean `IS NOT TRUE` | Check whether boolean expression produces false or unknown | `NULL::boolean IS NOT TRUE`<br/>⇒ true |
-| boolean `IS FALSE` | Check whether boolean expression produces false | `NULL::boolean IS FALSE`<br/>⇒ false |
-| boolean `IS NOT FALSE` | Check whether boolean expression produces true or unknown | `NULL::boolean IS NOT FALSE`<br/>⇒ true |
-| boolean `IS UNKNOWN` | Check whether boolean expression produces unknown | `NULL::boolean IS UNKNOWN`<br/>⇒ true |
-| boolean `IS NOT UNKNOWN` | Check whether boolean expression produces true or false | `NULL::boolean IS NOT UNKNOWN`<br/>⇒ false |
-
+| Operator                                               | Description and Comments                                     | Example                                                               |
+| :----------------------------------------------------- | :----------------------------------------------------------- | :-------------------------------------------------------------------- |
+| `datatype < datatype`                                  | Less than                                                    | `8 < 7`<br />⇒ false                                                  |
+| `datatype > datatype`                                  | Greater than                                                 | `8 > 7`<br />⇒ true                                                   |
+| `datatype <= datatype`                                 | Less than or equal to                                        | `8 <= 8`<br />⇒ true                                                  |
+| `datatype >= datatype`                                 | Greater than or equal to                                     | `8 >= 8`<br />⇒ true                                                  |
+| `datatype = datatype`                                  | Equal                                                        | `7 = 7`<br />⇒ true                                                   |
+| `datatype <> datatype`                                 | Not equal                                                    | `7 <> 7`<br />⇒ false                                                 |
+| `datatype != datatype`                                 | Not equal                                                    | `7 != 7`<br />⇒ false                                                 |
+| `datatype BETWEEN datatype AND datatype`               | Between (inclusive) the range endpoints.<br />See notes.     | `2 BETWEEN 1 AND 3`<br />⇒ true<br />`2 BETWEEN 3 AND 1`<br />⇒ false |
+| `datatype NOT BETWEEN datatype AND datatype`           | Not between (inclusive) the range endpoints.<br />See notes. | `2 NOT BETWEEN 1 AND 3`<br />⇒ false                                  |
+| `datatype BETWEEN SYMMETRIC datatype AND datatype`     | Between, after sorting the two endpoint values               | `2 BETWEEN SYMMETRIC 3 AND 1`<br />⇒ true                             |
+| `datatype NOT BETWEEN SYMMETRIC datatype AND datatype` | Not between, after sorting the two endpoint values           | `2 NOT BETWEEN SYMMETRIC 3 AND 1`<br />⇒ false                        |
+| `datatype IS NULL`                                     | Check whether value is NULL.<br />See notes.                 | `5 IS NULL`<br />⇒ false                                              |
+| `datatype IS NOT NULL`                                 | Check whether value is not NULL.<br />See notes.             | `5 IS NOT NULL`<br />⇒ true                                           |
+| `boolean IS TRUE`                                      | Check whether boolean expression produces true               | `5 < 6 IS TRUE`<br />⇒ false                                          |
+| `boolean IS NOT TRUE`                                  | Check whether boolean expression produces false or unknown   | `NULL::boolean IS NOT TRUE`<br />⇒ true                               |
+| `boolean IS FALSE`                                     | Check whether boolean expression produces false              | `NULL::boolean IS FALSE`<br />⇒ false                                 |
+| `boolean IS NOT FALSE`                                 | Check whether boolean expression produces true or unknown    | `NULL::boolean IS NOT FALSE`<br />⇒ true                              |
+| `boolean IS UNKNOWN`                                   | Check whether boolean expression produces unknown            | `NULL::boolean IS UNKNOWN`<br />⇒ true                                |
+| `boolean IS NOT UNKNOWN`                               | Check whether boolean expression produces true or false      | `NULL::boolean IS NOT UNKNOWN`<br />⇒ false                           |
 
 #### Comparison Functions and Operators Notes
 
+1. `BETWEEN` operator: it is expected that the first value is lower than the second one. If the first value is
+   greater than the second one the result is an empty result set.
 
-1.  `BETWEEN` operator: it is expected that the first value is lower than the second one. If the first value is
-greater than the second one the result is an empty result set.
+   To avoid the need to consider which of the two values is greater than the other, use the keyword `SYMMETRIC`.
 
-    To avoid the need to consider which of the two values is greater than the other, use the keyword `SYMMETRIC`.
+   For example:
 
-    For example:
+```sql
+SELECT o_date FROM orders WHERE (o_order_id BETWEEN SYMMETRIC 10 AND 1);
+```
 
- ```sql
- SELECT o_date FROM orders WHERE (o_order_id BETWEEN SYMMETRIC 10 AND 1);
- ```
-
- 2. `NULL` is not “equal to” `NULL`, therefore, avoid using the expression '= `NULL`' and use `IS [ NOT ]`
-`NULL` instead.   
-
-
+2. `NULL` is not “equal to” `NULL`, therefore, avoid using the expression `= NULL` and use `IS [ NOT ] NULL` instead.

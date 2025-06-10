@@ -1,19 +1,19 @@
 ---
-title: CREATE TABLE
+title: "CREATE TABLE"
 ---
 
 Define a new table.
 
 ## Synopsis
 
-```SQL
-CREATE TABLE [ IF NOT EXISTS ] [ SET { READY | NOT READY } ]
-table_name ([
-{ column_name data_type [ column_constraint [ ... ] ] 
-[ INDEX [ index_parameters] ]}
-[, ... ]
-])
+```
+CREATE TABLE [ SET { READY | NOT READY } ]
+  table_name ([
+    { column_name data_type [ column_constraint [ ... ] ] [ INDEX [ index_parameters] ]}
+    [, ... ]
+  ])
 [ WITH ( storage_parameter [= value] [, ... ] ] )
+
 where column_constraint is:
 { NULL |
 NOT NULL |
@@ -27,7 +27,6 @@ WITH ( storage_parameter [= value] [, ... ] )
 
 ## Description
 
-
 The `CREATE TABLE` command is used to create a new empty table, with columns, indexes and constraints, in the current database.
 
 Once created, unless set as `NOT READY`, the table’s definition is fixed and cannot be altered, additional indexes cannot be added or removed.
@@ -38,90 +37,66 @@ Note: If there is `UNIQUE`, `PRIMARY KEY` or `REFERENCES` constraints, then ther
 
 ## Parameters
 
+### `SET READY`
 
-##### `SET`
+Set the table as ready to accept Data Manipulation Language (DML) commands.
 
-        `READY`: set the table as ready to accept Data Manipulation Language (DML) commands.
+Once a table is set as ready, changes to its columns, constraints and indexes are not allowed. This is the default behavior.
 
-        Once a table is set as ready, changes to its columns, constraints and indexes are not allowed. This is
-        the default behavior.
+### `SET NOT READY`
 
-        `NOT READY`: Set the table as not ready to accept DML commands, and allow further changes to its
-        definition such as creating new indexes and adding new columns.
+Set the table as not ready to accept DML commands, and allow further changes to its definition such as creating new indexes and adding new columns.
 
-        Note: A table with zero columns can be created as long as it’s set to `NOT READY`. At least one column
-        is required in order to set its state to `READY`.
+Note: A table with zero columns can be created as long as it’s set to `NOT READY`. At least one column is required in order to set its state to `READY`.
 
+### `table_name`
 
-##### `table_name`
+The name of the table to be created.
 
-        The name of the table to be created.
+The table name must not exist in the database, and conform with the [Identifiers Limitations](/sql/appendices/indentifiers-limitations).
 
-        The table name must not exist in the database (unless `IF NOT EXISTS` is specified), and conform
-        with the [Identifiers Limitations](/sql/appendices/indentifiers-limitations). If the command specifies `IF NOT EXISTS`, the table is created only if a
-        table with the same name doesn’t exist, and if a table with the same name exists the command returns
-        successful status and does nothing.
+### `column_name`
 
-##### `column_name`
+The name of the column to be created in the new table. Column names should be unique within the table and conform with the [Identifiers Limitations](/sql/appendices/indentifiers-limitations).
 
-The name of the column to be created in the new table. Column names should be unique within the
-table and conform with the [Identifiers Limitations](/sql/appendices/indentifiers-limitations).
+### `data_type`
 
+The data type of the column. For more information on the supported data types, refer to [Data Types](/sql/data-types).
 
-##### `data_type`
+### `NULL`
 
-        The data type of the column. For more information on the supported data types, refer to [Data Types](/sql/data-types).
+The column is allowed to contain `NULL` values. This is the default.
 
+### `NOT NULL`
 
-##### `NULL`
+The column is not allowed to contain `NULL` values.
 
-        The column is allowed to contain `NULL` values. This is the default.
+### `DEFAULT default_expr`
 
+An optional default value to set in the column level. If no default is specified then the default value is `NULL`. (Note that when the default value is `NULL` and `NOT NULL` constraint is specified, you cannot insert rows with the `DEFAULT` keyword.)
 
-##### `NOT NULL`
-        The column is not allowed to contain `NULL` values.
+A possible default values are either a literal (e.g, `DEFAULT 'my default'` or `DEFAULT 1`) or a variable-free expression that returns a single value
+(suitable to store in a single table cell) that is being evaluated at the time the row is created (e.g., `DEFAULT NOW()` for current date/timestamp (depends on the column data type)). Note that expressions which include other columns in the current table are not allowed.
 
+### `UNIQUE`
 
-##### `DEFAULT`
+The `UNIQUE` constraint specifies that the column can contain only unique values. The constraint therefore enforces that any two rows in the same table must differ in this column (note that Regatta is case-sensitive) (e.g., ‘**Regatta**’ \<\> ’**REGATTA**’ \<\> ‘**regatta**’).
 
-An optional default value to set in the column level. If no default is specified then the default value is `NULL`.
-(Note that when the default value is `NULL` and `NOT NULL` constraint is specified, you cannot insert rows with
-the `DEFAULT` keyword.)
+Note: If the `UNIQUE` constraint is specified, the `NOT NULL` constraint is required.
 
-- `default_expr`
+Unique constraints implicitly create an index on that column, hence the index clause is required.
 
-        A possible default values are either - literal (e.g: `DEFAULT` '`my default`' for a string data
-        type, or `DEFAULT 1` for numeric, etc.), or a variable-free expression that returns a single value
-        (suitable to store in a single table cell) that is being evaluated at the time the row is created (e.g:
-        `DEFAULT NOW()` for current date/timestamp (depends on the column data type)). Note that
-        expressions which include other columns in the current table are not allowed.
+### `PRIMARY KEY`
 
-##### `UNIQUE`
+The `PRIMARY KEY` constraint specifies this column can contain only unique, non-NULL values. Only one primary key can be specified for a table. Since `PRIMARY KEY` implies `UNIQUE` and `NOT NULL` – if any of the latter two is specified for the same column, it is ignored (as it is already implied by the `PRIMARY KEY` constraint).
 
+<Note>
+  _`Note: PostgreSQL allows specifying the combination of PRIMARY KEY with NULL constraint, but it ignores the latter and requires only non-NULL values. In Regatta, specifying this contradictory combination of constraints results in an error.`_
+</Note>
 
-        The `UNIQUE` constraint specifies that the column can contain only unique values. The constraint
-        therefore enforces that any two rows in the same table must differ in this column (note that Regatta is
-        case-sensitive) (e.g: ‘**Regatta**’ => ’**REGATTA**’ => ‘**regatta**’).
+A primary key constraint implicitly creates an index on the column, hence the index clause is required.
 
-        Note: If the `UNIQUE` constraint is specified, the `NOT NULL` constraint is required.
-
-        Unique constraints implicitly create an index on that column, hence the index clause is required.
-
-##### `PRIMARY KEY`
-
-        The `PRIMARY KEY` constraint specifies this column can contain only unique, non-NULL values. Only
-        one primary key can be specified for a table. Since `PRIMARY KEY` implies `UNIQUE` and `NOT NULL` – if
-        any of the latter two is specified for the same column, it is ignored (as it is already implied by the
-        `PRIMARY KEY` constraint).
-
-        <Note>*Note: PostgreSQL allows specifying the combination of `PRIMARY KEY `with NULL constraint, but it
-        ignores the latter and requires only non-NULL values. In Regatta, specifying this contradictory
-        combination of constraints results in an error.*</Note>
-
-        A primary key constraint implicitly creates an index on the column, hence the index clause is required.
-
-
-##### `REFERENCES reftable [ refcolumn ] [ ON DELETE referential_action ] [ ON UPDATE referential_action ]`
+### `REFERENCES reftable [ refcolumn ] [ ON DELETE referential_action ] [ ON UPDATE referential_action ]`
 
 This clause specifies a foreign key constraint and links data in that table column with another table
 primary key. The referenced column must be the `PRIMARY KEY` constraint in the referenced table, in
@@ -135,10 +110,10 @@ referenced table.
 
 Foreign key restrictions:
 
-        1. The referencing column and the reference column must be of the same data type, and have the same type parameters (e.g. a `VARCHAR(200`) column cannot reference a `VARCHAR(100)` column.)
-        2. A column cannot reference another column in the same table.
-        3. A column can only reference a primary key column
-        4. A column can reference at most one other column. In other words, a column cannot have more than one “foreign key” constraint.
+1. The referencing column and the reference column must be of the same data type, and have the same type parameters (e.g. a `VARCHAR(200)` column cannot reference a `VARCHAR(100)` column.)
+2. A column cannot reference another column in the same table.
+3. A column can only reference a primary key column
+4. A column can reference at most one other column. In other words, a column cannot have more than one “foreign key” constraint.
 
 ON `DELETE` this clause specifies the action to perform when a referenced row in the referenced table is being deleted.
 
@@ -146,11 +121,11 @@ ON `UPDATE` this clause specifies the action to perform when a referenced column
 
 `Referential_action`
 
-        **`RESTRICT`** The `DELETE/UPDATE` fails if the check identifies that a foreign key constraint is about to be violated.
+**`RESTRICT`** The `DELETE/UPDATE` fails if the check identifies that a foreign key constraint is about to be violated.
 
-        Updating a referenced column is not allowed, and the explicit `RESTRICT` option is supported for compatibility reasons (but that's also the default behavior).
+Updating a referenced column is not allowed, and the explicit `RESTRICT` option is supported for compatibility reasons (but that's also the default behavior).
 
-##### INDEX **index_parameter**
+### `INDEX index_parameter`
 
 This clause specifies that an index shall be created for the pertinent column.
 
@@ -158,15 +133,15 @@ The index column size should not exceed the index maximum column size. See [Data
 
 This clause is required if `REFERENCES`, `UNIQUE` or `PRIMARY KEY` constraints are specified, and is optional otherwise.
 
-**Storage parameters:**
+### Storage parameters
 
-Storage parameters, specified after the keyword WITH, are optional for both tables and indexes. Possible storage parameters:
+Storage parameters, specified after the keyword `WITH`, are optional for both tables and indexes. Possible storage parameters:
 
-##### `devices`
+### `devices`
 
 A list of one or more device names, separated by commas, surrounded by parentheses. Device names shall be specified as they appear in the output of the [SHOW DEVICES](/sql/system-monitoring/system-catalog/show-devices). This parameter is required for both tables and indexes.
 
-##### `range_separators`
+### **`range_separators`**
 
 Specify key range separators for index segments.
 
@@ -182,7 +157,7 @@ Notes:
 
 1. The range separators must be literal constants that match the column data type, and cannot be `NULL`.
 2. The list of values must be strictly monotonically increasing.
-3. The specified separator values are the first values in each range, starting with the second one. (In the example above, 'j' is the first value within the second range and '`p`' is the first value in the third range).
+3. The specified separator values are the first values in each range, starting with the second one. (In the example above, 'j' is the first value within the second range and 'p' is the first value in the third range).
 4. `NULL` values are always stored in the beginning of the first range.
 5. A device can appear multiple times in the device list, in such case multiple ranges will be stored on the same device.
 
@@ -190,20 +165,17 @@ If storage parameters are not specified for the table, the default is to create 
 
 If storage parameters are not specified for an index, the default is to create a single segment for the index on a randomly chosen device.
 
-
 ## Examples
 
-##### Create a table with a primary key:
+**Create a table with a primary key:**
 
 ```sql
-CREATE TABLE customers(
-c_custkey INT PRIMARY KEY INDEX WITH (devices = (m1d2)),
-c_name VARCHAR(40) NOT NULL
-INDEX WITH (devices = (m1d2, m2d5, m3d3),
-range_separators = ('j', 'p')),
-c_gender CHAR(1)
-)
-WITH (devices = (m1d2, m2d5, m3d3));
+CREATE TABLE customers (
+  c_custkey INT PRIMARY KEY INDEX WITH (devices = (m1d2)),
+  c_name VARCHAR(40) NOT NULL
+    INDEX WITH (devices = (m1d2, m2d5, m3d3), range_separators = ('j', 'p')),
+  c_gender CHAR(1)
+) WITH (devices = (m1d2, m2d5, m3d3));
 ```
 
 Create the table `customers` and set it ready for DML. Set the column `c_custkey` as the primary key,
@@ -213,23 +185,23 @@ The primary key index is using the device (m1d2) - note that it has only 1 devic
 `RANGE_SEPARATORS` clause is not needed.
 
 The column `c_name` has an index on it with the following devices:
-* Device m1d2 stores values lower than or equal to 'j'
-* Device m2d5 stores values greater than 'j' and lower than or equal to 'p',
-* Device m3d3 stores values greater than 'p'.
+
+- Device m1d2 stores values lower than or equal to 'j'
+- Device m2d5 stores values greater than 'j' and lower than or equal to 'p',
+- Device m3d3 stores values greater than 'p'.
 
 The table data is stored on the devices (m1d2, m2d5, m3d3).
 
-
-##### Create a table with a foreign key:
+**Create a table with a foreign key:**
 
 ```sql
 CREATE TABLE SET NOT READY orders (
-o_order_id CHAR(10) PRIMARY KEY INDEX WITH (devices = (m1d2)),
-o_name VARCHAR(120) NOT NULL,
-o_custkey INT NOT NULL
-REFERENCES customers INDEX WITH (devices = (m1d3)),
-o_totalprice DECIMAL (5,2),
-o_date date DEFAULT NOW() NOT NULL
+  o_order_id CHAR(10) PRIMARY KEY INDEX WITH (devices = (m1d2)),
+  o_name VARCHAR(120) NOT NULL,
+  o_custkey INT NOT NULL
+    REFERENCES customers INDEX WITH (devices = (m1d3)),
+  o_totalprice DECIMAL (5,2),
+  o_date date DEFAULT NOW() NOT NULL
 ) WITH (devices = (m1d4));
 ```
 
@@ -237,33 +209,29 @@ Create the table `orders` with a foreign key referencing the primary key of the 
 
 Set the table as `NOT READY` for DML, so it can still be modified with the [ALTER TABLE](/sql/ddl-commands/alter-table) command.
 
-The table primary key (`o_order_id`) is using an index stored on device m1d2
+The table primary key (`o_order_id`) is using an index stored on device `m1d2`
 
-The o_name and `o_date` columns have a constraint prohibiting NULL values. The `o_date` also has a default
-value of the current date (by using the function `NOW()`).
+The `o_name` and `o_date` columns have a constraint prohibiting NULL values. The `o_date` also has a default value of the current date (by using the function `NOW()`).
 
-The `o_custkey` column is a foreign key to the primary key of table `customers`. It has the `NOT NULL`
-constraint, and it must contain values that exist in the primary key (`c_custke`y) in the table customers. This
-foreign key column has an index, stored on the device m1d3.
+The `o_custkey` column is a foreign key to the primary key of table `customers`. It has the `NOT NULL` constraint, and it must contain values that exist in the primary key (`c_custkey`) in the table customers. This foreign key column has an index, stored on the device `m1d3`.
 
-The table itself is stored on the device m1d4.
+The table itself is stored on the device `m1d4`.
 
-##### Create a table with a calculated column:
+**Create a table with a calculated column:**
 
 ```sql
 CREATE TABLE transactions (
-transactions_id INT PRIMARY KEY INDEX WITH (devices = (m1d2)),
-transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-product_name VARCHAR(100) NOT NULL,
-purchse_price FLOAT NOT NULL,
-sale_price FLOAT,
-number_of_sold_items INT,
-profit FLOAT )
-WITH (devices = (m1d2, m2d5, m3d3));
+  transactions_id INT PRIMARY KEY INDEX WITH (devices = (m1d2)),
+  transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  product_name VARCHAR(100) NOT NULL,
+  purchse_price FLOAT NOT NULL,
+  sale_price FLOAT,
+  number_of_sold_items INT,
+  profit FLOAT
+) WITH (devices = (m1d2, m2d5, m3d3));
 ```
 
-Create the table `transactions`. Set the `transaction_date` column with the default of setting the current
-time.
+Create the table `transactions`. Set the `transaction_date` column with the default of setting the current time.
 
 ## Compatibility
 

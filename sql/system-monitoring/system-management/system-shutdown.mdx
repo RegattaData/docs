@@ -1,21 +1,19 @@
 ---
-title: SYSTEM SHUTDOWN
+title: "SYSTEM SHUTDOWN"
 ---
 
 ## Synopsis
 
-```sql
+```
 SYSTEM SHUTDOWN [ WAIT N ]
 ```
 
 ## Description
 
-This command begins the shutdown of the system. The shutdown process proceeds asynchronously after the
-command completes. The system will start rejecting new transactions, all the outstanding transactions will be
-aborted, and the system will shut down.
+This command begins the shutdown of the system. The shutdown process proceeds asynchronously after the command completes. The system will start rejecting new transactions, all the outstanding transactions will be aborted, and the system will shut down.
 
 ## Parameters
 
-##### `WAIT N`
-Wait up to N seconds to allow ongoing transactions to complete. Any transaction that is still active after N
-seconds will be aborted. If this parameter is not specified – ongoing transactions will be aborted immediately.
+**`WAIT N`**
+
+Wait up to N seconds to allow ongoing transactions to complete. Any transaction that is still active after N seconds will be aborted. If this parameter is not specified – ongoing transactions will be aborted immediately.
