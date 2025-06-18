@@ -309,7 +309,7 @@
         "icon": "server",
         "groups": [
           {
-            "group": "Scripted Solution",
+            "group": "Self-Hosted Deployment",
             "pages": ["self-hosted-deployment/prerequisites"]
           },
           {
