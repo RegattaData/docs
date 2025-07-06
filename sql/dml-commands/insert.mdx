@@ -9,7 +9,10 @@ Inserts data into an existing table.
 ```
 INSERT INTO table_name [ AS alias ] [ ( column_name [, ...] ) ]
   { VALUES ( { expression | DEFAULT } [, ...] ) [, ...] | query }
+  [ WITH devices = ( device_list ) IN MODULES ( module_list ) ]
   [ RETURNING output_expression [[ AS ] output_name ] [, ...] ]
+
+where device_list is a comman-separated list of device identifiers and module_list is a comma-separated list of the module identifiers of the modules to which the devices belong.
 ```
 
 ## Description
@@ -55,6 +58,12 @@ Note that if all the columns in the table have `DEFAULT` values, the following s
 **`query`**
 
 A SELECT statement that supplies the rows to be inserted. See [SELECT](/sql/dql/select).
+
+`WITH devices = ( device_list ) IN MODULES ( module_list )`
+
+Regatta uses an internal algorithm to distribute the rows of a table across the table storage devices optimally. You can override it by specifying one or more device into which the rows will be inserted. The modules containing the devices should also be specified.
+
+Use of this clause is generally discouraged as it could interfere with Regatta's internal data distribution algorithms and degrade performance and/or cause a storage device to fill up unintentionally. It should be used with care in very specific use cases.
 
 **`RETURNING output_expression`**
 
