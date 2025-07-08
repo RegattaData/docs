@@ -9,7 +9,7 @@ The system monitoring views are exposed by the `SHOW` commands. Those `SHOW` com
 ## Synopsis
 
 ```sql
-SHOW view_name [ LIKE 'pattern' ][ IN object_type object_name ] [ ROWS BETWEEN n AND m ]
+SHOW view_name [ { LIKE | ILIKE } 'pattern' ][ IN object_type object_name ] [ ROWS BETWEEN n AND m ]
 
 where object_type is:
 { TABLE | INDEX | DEVICE }
@@ -26,6 +26,10 @@ The system catalog view name.
 Filters the view output by its main object (e.g filter by table name in `SHOW TABLES` view, filter by index name in `SHOW INDEXES` view). The filter uses case-sensitive pattern matching, with the support of optional leading and/or trailing percent signs.
 
 The percent sign (%) stands for sequences of zero or more characters.
+
+`ILIKE '<pattern>'`
+
+Similar to **LIKE** except that the pattern matching is case-insensitive.
 
 **`IN object_type object_name`**
 
@@ -66,6 +70,6 @@ Note:
 SHOW TABLES;
 SHOW TABLES LIKE 'my%';
 SHOW COLUMNS IN TABLE "my_table";
-SHOW COLUMNS LIKE '%product%' IN TABLE "my_table";
+SHOW COLUMNS ILIKE '%product%' IN TABLE "my_table";
 SHOW TABLES LIKE '%my' ROWS BETWEEN 100 AND 150;
 ```

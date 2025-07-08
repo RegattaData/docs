@@ -1,5 +1,5 @@
 ---
-title: SHOW METRIC DESCRIPTION
+title: "SHOW METRIC DESCRIPTION"
 ---
 
 Contains information about the dynamic system data metrics (see [Dynamic System Data](/sql/system-monitoring/dynamic-system)).
@@ -10,46 +10,45 @@ Note: All the metrics are for the current time and not historical or cumulative.
 
 The following table lists the output’s columns:
 
-
-
-|Column name|Data type|Description|
-| :- | :- | :- |
-|METRIC_NAME|`VARCHAR(255)`|<p>Unique short name for the metric. This is the filter column.</p><p>Note that some metrics appear in more than 1 view (in both [SHOW DATABASE METRICS](/sql/system-monitoring/dynamic-system/show-database-metric) and [SHOW MODULE METRICS](/sql/system-monitoring/dynamic-system/show-module-metrics)).</p>|
-|METRIC_ID|`INT`|The unique metric identifier.|
-|DESCRIPTION|`VARCHAR(4000)`|Metric description.|
+| Column name | Data type       | Description                                                                                                                                                                              |
+| :---------- | :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| METRIC_NAME | `VARCHAR(255)`  | <p> Unique short name for the metric. This is the filter column.</p>  <p> Note that some metrics appear in more than 1 view (in both SHOW DATABASE METRICS and SHOW MODULE METRICS).</p> |
+| METRIC_ID   | `INT`           | The unique metric identifier.                                                                                                                                                            |
+| DESCRIPTION | `VARCHAR(4000)` | Metric description.                                                                                                                                                                      |
 
 The following table lists the available metrics and their descriptions:
 
-| Metric id | Name in SHOW METRIC DESCRIPTION view | Description in SHOW METRIC DESCRIPTION view |
-| :--- | :--- | :--- |
-| 23 | Average CPU usage percentage | The average CPU usage percentage |
-| 22 | Average memory usage percentage | The average memory usage percentage |
-| 0 | Deadlock detections rate | The deadlock detections rate per second |
-| 1 | DELETE statements average latency | The average execution time of successful DELETE statements in milliseconds |
-| 2 | DELETE statements rate | The rate of successful DELETE statements per second |
-| 1000 | Device row data consumption percentage | The amount of space used for table rows data, as percentage of the device capacity. (This metric includes capacity reserved for internal operations.) |
-| 1001 | Device metadata consumption percentage | The amount of space used for metadata associated with table rows, including indexes, as percentage of the device capacity. |
-| 3 | Inbound network throughput | The inbound (from the Client to Regatta) network throughput |
-| 4 | Index entry reads rate | The rate of index entry reads per second |
-| 5 | Index updates rate | The index updates rate per second |
-| 6 | INSERT statements average latency | The average execution time of successful INSERT statements in milliseconds |
-| 7 | INSERT statements rate | The rate of successful INSERT statements per second |
-| 8 | Longest active statement time | The time of the longest currently active statement in seconds |
-| 9 | Number of active transactions | The number of active transactions |
-| 10 | Number of open clients connections | The number of open clients connections |
-| 11 | Outbound network throughput | The outbound (from Regatta to the Client) network throughput |
-| 12 | Row deletions rate | The rate of row deletions per second |
-| 13 | Row insertions rate | The rate of row insertions per second |
-| 14 | Row output rate | The rate of rows returned in result sets per second |
-| 15 | Row updates rate | The rate of row updates per second |
-| 16 | Statements error rate | The rate of failed statements per second |
-| 24 | SELECT statements average latency | The average execution time of successful SELECT statements in milliseconds |
-| 25 | SELECT statements rate | The rate of successful SELECT statements per second |
-| 17 | Table row reads rate | The rate of row reads per second |
-| 28 | Transaction aborts rate | The rate of transactions aborted per second |
-| 19 | Transactions in conflict wait rate | The rate of transactions waiting to commit, due to conflicts with other transactions, per second |
-| 20 | UPDATE statements average latency | The average execution time of successful UPDATE statements in milliseconds |
-| 21 | UPDATE statements rate | The rate of successful UPDATE statements per second |
+| Metric id | Name in SHOW METRIC DESCRIPTION view   | Description in SHOW METRIC DESCRIPTION view                                                                                                           |
+| :-------- | :------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 23        | Average CPU usage percentage           | The average CPU usage percentage                                                                                                                      |
+| 22        | Average memory usage percentage        | The average memory usage percentage                                                                                                                   |
+| 0         | Deadlock detections rate               | The deadlock detections rate per second                                                                                                               |
+| 1         | DELETE statements average latency      | The average execution time of successful DELETE statements in milliseconds                                                                            |
+| 2         | DELETE statements rate                 | The rate of successful DELETE statements per second                                                                                                   |
+| 1000      | Device row data consumption percentage | The amount of space used for table rows data, as percentage of the device capacity. (This metric includes capacity reserved for internal operations.) |
+| 1001      | Device metadata consumption percentage | The amount of space used for metadata associated with table rows, including indexes, as percentage of the device capacity.                            |
+| 3         | Inbound network throughput             | The inbound (from the Client to Regatta) network throughput in bytes per second                                                                       |
+| 4         | Index entry reads rate                 | The rate of index entry reads per second                                                                                                              |
+| 5         | Index updates rate                     | The index updates rate per second                                                                                                                     |
+| 6         | INSERT statements average latency      | The average execution time of successful INSERT statements in milliseconds                                                                            |
+| 7         | INSERT statements rate                 | The rate of successful INSERT statements per second                                                                                                   |
+| 8         | Longest active statement time          | The time of the longest currently active statement in seconds                                                                                         |
+| 9         | Number of active transactions          | The number of active transactions                                                                                                                     |
+| 10        | Number of open clients connections     | The number of open clients connections                                                                                                                |
+| 11        | Outbound network throughput            | The outbound (from Regatta to the Client) network throughput in bytes per second                                                                      |
+| 12        | Row deletions rate                     | The rate of row deletions per second                                                                                                                  |
+| 13        | Row insertions rate                    | The rate of row insertions per second                                                                                                                 |
+| 14        | Row output rate                        | The rate of rows returned in result sets per second                                                                                                   |
+| 15        | Row updates rate                       | The rate of row updates per second                                                                                                                    |
+| 16        | Statements error rate                  | The rate of failed statements per second                                                                                                              |
+| 24        | SELECT statements average latency      | The average execution time of successful SELECT statements in milliseconds                                                                            |
+| 25        | SELECT statements rate                 | The rate of successful SELECT statements per second                                                                                                   |
+| 17        | Table row reads rate                   | The rate of row reads per second                                                                                                                      |
+| 28        | Transaction aborts rate                | The rate of transactions aborted per second                                                                                                           |
+| 19        | Transactions in conflict wait rate     | The rate of transactions waiting to commit, due to conflicts with other transactions, per second                                                      |
+| 20        | UPDATE statements average latency      | The average execution time of successful UPDATE statements in milliseconds                                                                            |
+| 21        | UPDATE statements rate                 | The rate of successful UPDATE statements per second                                                                                                   |
 
-
-<Note> Note that `INSERT AS SELECT` is counted as both `INSERT` and `SELECT` statements. </Note>
+<Note>
+   Note that `INSERT AS SELECT` is counted as both `INSERT` and `SELECT` statements. 
+</Note>
