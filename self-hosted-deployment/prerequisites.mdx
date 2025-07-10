@@ -1,27 +1,24 @@
 ---
-title: Prerequisites
+title: "Prerequisites"
 ---
 
 The following should be available
+
 - Servers to deploy Regatta Cluster on
-     - OS: Oracle 8 or REHEL 8.10
-     - Required dependencies:
-        - shadow-utils
-        - glibc 
-        - openssl-libs
-        - libaio
-        - ncurses-compat-libs
-        - python3-pip
-    - Memory: At least 32 GB
-    - Disk space for deployment: 300 MB per software module
-    - CPUs: At least 4 CPUs
-    - Operational storage devices: At least one 350 GB NVMe or SSD, which is not the 
+  - OS: Red-Hat 8 Based such as Oracle 8 or RHEL 8.10
+  - Required dependencies:
+    - shadow-utils
+    - glibc
+    - openssl-libs
+    - libaio
+  - Memory: At least 32 GB
+  - Disk space for deployment: 500 MB per software module
+  - CPUs: At least 4 CPUs
+  - Operational storage devices: At least one 350 GB NVMe or SSD, which is not the
     system device, which can be dedicated to the Regatta cluster
-
 - Connectivity
-    - At least 10GB network between all Regatta servers
-    - Internet access (for downloads – optional)
-
+  - At least 10GB network between all Regatta servers
+  - Internet access (for downloads – optional)
 - Software
-    - Download all RPMS from Regatta and have them readily available to distribute to
-the servers.
+  - Download all RPMS from Regatta and have them readily available to distribute to
+    the servers.
