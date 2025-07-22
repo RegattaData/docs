@@ -2,12 +2,13 @@
 title: "Configuration File"
 ---
 
-As stated, the configuration file template will be deployed for each module as part of the RPM
-installation. This file can be found at:
+As stated, a configuration file example will be deployed for each module as part of the RPM installation. This file can be found at:
 
 ```code
 /opt/regatta/1.0/<module name>/conf/cluster.template
 ```
+
+The Regatta modules are expecting to read a cluster configuration file named `cluster.config`. You can create a `cluster.config` file from scratch, following a convetion explained in the coming section of this document, or use the `cluster.template` file as a base template. 
 
 ### Configuration File Example
 
@@ -109,8 +110,6 @@ ranger_dev_num=1
 core_pdbg_port=5004
 ```
 
-You will need to update this configurations template file to reflect the desired configuration of the Regatta Cluster. The cluster.template shows how the cluster configuration file should look once updated. Once you are done editing and updating it, save it in the same directory under the name cluster.config.
-
 This file is the same for all modules on all servers but for:
 
 - System Number of CPUs (system_num_cpus) and
@@ -120,10 +119,13 @@ These are module specific parameters.
 
 The `cluster.template` file can be seen below in the Configuration Template File section.
 
-The recommended way to handle this is to create the basic configuration file WITHOUT updating the 4 module-specific lines. Copy it to all modules on all servers and then go one-by-one and update them accordingly.
+The recommended way to handle this is to:\
+1.  Create a common configuration file WITHOUT including the module-specific parameters at the end of the file and save it as `cluster.config`\
+2.  Copy the common `cluster.config` to all the cluster's servers and put a copy of it in each module's `conf` directory.\
+3. Edit the `cluster.config` under each module conf folder to include the module specific parameters for that module.
 
-Once completed, don’t forget to save it in the same directory under the name `cluster.config` for all Regatta modules:
+Once completed, you should have a `cluster.config` file for all Regatta modules in the following path:
 
-```java
+```shellscript
 /opt/regatta/1.0/<module>/conf/cluster.config
 ```
