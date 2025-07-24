@@ -7,7 +7,7 @@ Now for the 2 clusters.
 The first cluster will be **demo-small** - a single‑node cluster with a single device. The other cluster will be **demo-medium** which is comprised of 10 nodes of the same type as **demo‑small**.
 
 To deploy **demo-small**, follow the steps described in Creating a Cluster, select the SMALL cluster type this time, but this time switch on the **Deploy Demo Data** button. Repeat the same steps for **demo-medium** but this time select the MEDIUM type.\
- Deploying the clusters will take roughly 10 minutes. Once completed, each of the clusters will have the two tables described previously, populated.
+Deploying the clusters will take roughly 10 minutes. Once completed, each of the clusters will have the two tables described previously, populated.
 
 Let’s see the number of nodes for each cluster. Just run the following command for each of the clusters in its respective WebCLI:
 
@@ -15,13 +15,11 @@ Let’s see the number of nodes for each cluster. Just run the following command
 SHOW NODES
 ```
 
-For each we will see the nodes comprising it. 
+For each we will see the nodes comprising it.
 
-For **demo-xsmall **there are 3 nodes in the cluster, and for **demo-medium **there are 10 nodes (though you will need to scroll down to see the 10th one).
+For \*\*demo-xsmall \*\*there are 3 nodes in the cluster, and for \*\*demo-medium \*\*there are 10 nodes (though you will need to scroll down to see the 10th one).
 
-Both tables in both clusters are now populated with the same data. 20 million rows in each
-table. Performing the following command for each of the tables (namely, Customers and
-Purchases) will show that.
+Both tables in both clusters are now populated with the same data. 1 million rows in **Customers** table and 80 million rows in the **Purchases** table. Performing the following command for each of the tables (namely, Customers and Purchases) will show that.
 
 ```SQL
 SELECT COUNT (*) FROM <table-name>

@@ -54,7 +54,6 @@
                 "group": "Creating the Demo Environment",
                 "pages": [
                   "getting-started/linear-scaling/creating-demo-environment/creating-demo-environment",
-                  "getting-started/linear-scaling/creating-demo-environment/table-schema",
                   "getting-started/linear-scaling/creating-demo-environment/creating-demo-clusters"
                 ]
               },

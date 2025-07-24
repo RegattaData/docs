@@ -1,6 +1,26 @@
 ---
-title: Creating the Demo Environment
+title: "Creating the Demo Environment"
 ---
 
-As stated above, we will have 2 clusters with 2 tables. Each table will be populated with data 
+As stated above, we will have 2 clusters with 2 tables. Each table will be populated with data\
 where the number of rows is denoted next to the table’s name.
+
+### **Table's Schemas - Sport's Store**
+
+The schemas for the 2 tables are:
+
+`Customers (1M rows)`
+
+- `CustomerID INT`
+- `Name VARCHAR (100)`
+- `Item VARCHAR (100)`
+- `Phone VARCHAR (15)`
+
+`Purchases (80M rows)`
+
+- `PurchaseID INT`
+- `CustomerID INT`
+- `PurchaseDate DATE`
+- `AreaCode VARCHAR (3)`
+- `Item VARCHAR (100)`
+- `Price DECIMAL(10, 2)`
