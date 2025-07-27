@@ -8,31 +8,164 @@ The `cluster.config` file includes 2 sections - the main configuration and the m
 
 Starting at the very top is the description of the entire system.
 
-Following are triplets of NODE parameters, followed by the MODULES’ parameters in that NODE
-followed by the DEVICES’ parameters in that node dedicated to the Regatta Cluster.
+``` expandable
+# system parameters 
+# =================
+system_cluster_id = 521
+system_num_cpus = 8
+system_num_messages_in_queue = 8
+system_root_dir = /opt/regatta/1.0
+system_trace_prefix = logs
+system_genesis_mode = Genesis
+system_cluster_join_timeout_sec = 0
+```
 
-If there are 3 NODES in the cluster, as can be seen in the example configuration file, then this
-trio repeats itself 3 times with the appropriate parameters. If you have more nodes, you will
-need to add more trios like that.
+Let's breakdown the parameters in this section:
 
-For these trios, you will need to apply the following changes:
+- `system_cluster_id` - This is a unique 32 bit identifier used to differentiate Regatta clusters.
+- `system_num_cpus` - This defines the number of CPU threads that will be utilized by the specific module. **The maximum value of this parameter is 64**
+- ...
 
-- system_cluster_id
-  a customer unique 32 bit identifier.
-  - Each system should have its own unique value.
-  - Starting from 1
-  - It’s recommended to make it a running number starting at 1.
-- system_num_cpus
-  - The number of CPUs that in the server that a software module may utilize.
-  - This can be set up to the total number of CPUs.
+## Node section
 
-For the rest of the parameters note that the IDs and names are unique across all members of
-the clusters. The device LOCAL ID is unique for the server it resides on.
+Following he system section are the NODE parameters, followed by the MODULES’ parameters. 
 
-Many parameters can stay as in the example. The server specific parameters should be updated
-accordingly. These would be:
+``` expandable
+# Node 1 parameters
+# =================
+node_1_id = 1
+node_1_name = node-1
+node_1_ip = 172.19.226.3
+node_1_port = 22
+```
 
-- IPs of the server
+In the example config file there are 3 nodes defined. Nodes parameter include:
+
+- Node ID
+- Node Name
+- Node IP
+- Node Port
+
+<Note>
+  A valid cluster.config file must include a node with ID set as 1. 
+
+  Every parameter in a node section must follow the naming rule of `node_<node id>_<parameter>` 
+
+  In case of the first node in the cluster, every parameter name will begin with `node_1_` 
+</Note>
+
+### Modules definition
+
+Following the node section are the modules definition. 
+
+``` expandable
+module_1_id = 1
+module_1_parent_node_id = 1
+module_1_name = sequencer_1
+module_1_role = sequencer
+module_1_ip = 172.19.226.3
+module_1_port = 8841
+
+module_2_id = 2
+module_2_parent_node_id = 1
+module_2_name = gdd_2
+module_2_role = gdd
+module_2_ip = 172.19.226.3
+module_2_port = 8842
+
+module_3_id = 3
+module_3_parent_node_id = 1
+module_3_name = dcm_3
+module_3_role = dcm
+module_3_ip = 172.19.226.3
+module_3_port = 8843
+
+module_10_id = 10
+module_10_parent_node_id = 1
+module_10_name = rdb_10
+module_10_role = rdb
+module_10_ip = 172.19.226.3
+module_10_port = 8850
+
+dev_1_module_id = 10
+dev_1_name = m10d1
+dev_1_type = SCRATCH
+dev_1_local_number = 1
+dev_1_atomic_page_size = 4096
+dev_1_block_size = 4096
+dev_1_capacity = 3145727984
+dev_1_path = /dev/nvme0n1
+```
+
+Let's breakdown the modules parameters:
+
+- `module_X_id` - This is a unique number used to identify the module.
+- `module_X_parent_node_id` - This is a number matching the parent node ID. This parameter links this specific module to its parent node it belongs to in the config. 
+- `module_X_name` - This is the module name which can be any string.
+- `module_X_role` - This parameter defines the behaviour of the module. All modules share the same binary and requires this parameter to function as the intended role of either RDB, GDD, DCM or Sequencer.
+- `module_X_ip` - This is the IP address with which the module will listen for TCP communication.
+- `module_X_port` - This is the port on which the module will listen for TCP communication.
+
+<Note>
+  Similarly to Node parameters, Module parameters must also follow the naming rule of `module_<module id>_<parameter>` 
+
+  The module ID numbering should start at **1**
+</Note>
+
+### Devices Definision
+
+Each RDB module defined in the cluster configuration file requires at least one NVMe storage device (simply refered to as "device" in this document).
+
+Just as a module is linked to a parent node, a device is linked to a parent RDB module.
+
+In the example cluster configuration file, a single device is defined for each RDB like so:
+
+``` expandable
+module_10_id = 10
+module_10_parent_node_id = 1
+module_10_name = rdb_10
+module_10_role = rdb
+module_10_ip = 172.19.226.3
+module_10_port = 8850
+
+dev_1_module_id = 10
+dev_1_name = m10d1
+dev_1_type = SCRATCH
+dev_1_local_number = 1
+dev_1_atomic_page_size = 4096
+dev_1_block_size = 4096
+dev_1_capacity = 3145727984
+dev_1_path = /dev/nvme0n1
+```
+
+A breakdown of the device configuration parameters:
+
+- `dev_X_module_id` - This links the device to an RDB module. The value here should match the ID set on the RDB module's `_id` parameter.
+- `dev_X_name` - The name of the device. Should be defined following a pattern of `m<parent rdb module id>d<number of the device>` - See further details below 
+- `dev_X_type` - This represents the type of the device as one of the options: `SCRATCH`, ...
+- `dev_X_local_number`  - This number is used to identify of the device by its parent RDB module. Starting at 1 and incrementing. This number should be unique only within the scope of the node.
+- `dev_X_atomic_page_size` - Defined in bytes. This sets the page size that the RDB module will use on this device. 
+- `dev_X_block_size` - Defined in bytes. This sets the block size that the RDB module will use on this device. 
+- `dev_X_capacity` - Defined in bytes. This value represent the storage capacity of the device. 
+- `dev_X_path` - The absolute path to the device on the node. Should be under `/dev/` system path.
+
+<Note>
+  As with nodes and modules parameter, the naming rule for the device's parameter should start with `dev_<id of the device>` . ID of a device should be unique across the cluster configuration file.
+</Note>
+
+<Info>
+  Device's `local_number` parameter should represent a numbering of the device as part of list of devices available to a certain RDB module. It should always start as 1 and increment with each added device belonging to the same RDB module.
+</Info>
+
+A device name parameter should combine the following: `m` \+ `<parent rdb module id>` (which together represent the RDB module this device belongs to) \+ `d` \+ `<device number>` as defined in the `local_number` parameter. The end result names looks like `m10d1` `m10d2` and so on...
+
+Looking at the example cluster configuration file, notice that the 2 additional nodes in the cluster after node 1 are defined with RDB module only with a single device. 
+
+## Recommended approach
+
+Many parameters can stay as in the example. The node-specific parameters should be updated accordingly. These would be:
+
+- IPs of the node and its belonging modules
 - Dedicated ports for the modules
 - Device parameters
   - Page size
@@ -40,37 +173,9 @@ accordingly. These would be:
   - Capacity
   - Path
 
-For the modules’ ports, you may select any number you wish that is not in use. Regatta uses the
-following defaults, and we highly recommend keeping them:
+For the modules’ ports, you may select any number you wish that is not in use. Regatta uses the following recommended defaults:
 
 - RDB: 8850
 - Sequencer: 8841
 - GDD: 8842
 - DCM: 8843
-
-For the device section:
-Each device gets a cluster wide unique number X. All the parameters pertaining to a device in
-the configuration file should contain the X in the name (as can be seen below) for ease of use.
-
-- dev_X_module_id
-
-  Same as the rdb module ID it belongs to
-- dev_X_name
-
-  There is a recommended nomenclature to follow: Name format mXdY where X is the
-  module ID and Y is the device local number
-- dev_X_capacity
-
-  The capacity of the device in bytes
-
-See the example below taken from the example in Configuration File.
-
-```java
-dev_1_module_id = 10
-dev_1_name = m10d1
-dev_1_type = SCRATCH
-dev_1_local_number = 1
-```
-
-If there are more servers, just add additional lines describing that server and modules deployed
-on it accordingly in a unique manner.
