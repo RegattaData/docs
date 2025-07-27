@@ -2,11 +2,11 @@
 title: "Config.json"
 ---
 
-Downloading the Regatta tar archive can be done directly on one of the cluster nodes (via `wget` or similar tool) OR downloaded on external host and copied to one of the cluster nodes. 
+Downloading the Regatta tar archive can be done directly on one of the cluster nodes (via `wget` or similar tool) OR downloaded on external host and copied to one of the cluster nodes.
 
 The tar archive includes the RPM packages and deployment script.
 
-Extract the tar: 
+Extract the tar:
 
 ```shellscript
  tar -zxf Regatta-X.X.X.X.tar.gz
@@ -14,7 +14,7 @@ Extract the tar:
 
 After extracting the tar, you will find a directory named **Regatta-deploy** in the filesystem path where the `tar` command was executed.
 
-In the **Regatta-deploy **folder, you will find a JSON file named **config.json**. The content of the file is as follows:
+In the \*\*Regatta-deploy \*\*folder, you will find a JSON file named **config.json**. The content of the file is as follows:
 
 ```json expandable
 {
@@ -58,3 +58,5 @@ Each object in the nodes list includes 2 key-value pairs of the node's IP addres
 <Note>
   Note that each NVMe device is defined as a single JSON object inside the list of `diskPaths`
 </Note>
+
+After editing the `config.json` file, move on to executing the deployment script in the next page
