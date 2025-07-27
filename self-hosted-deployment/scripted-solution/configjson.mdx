@@ -1,45 +1,60 @@
 ---
-title: Config.json
+title: "Config.json"
 ---
 
-In the scripted solution folder you will see a JSON file, namely **config.json**, which can be seen 
-below.
+Downloading the Regatta tar archive can be done directly on one of the cluster nodes (via `wget` or similar tool) OR downloaded on external host and copied to one of the cluster nodes. 
 
-```json
+The tar archive includes the RPM packages and deployment script.
+
+Extract the tar: 
+
+```shellscript
+ tar -zxf Regatta-X.X.X.X.tar.gz
+```
+
+After extracting the tar, you will find a directory named **Regatta-deploy** in the filesystem path where the `tar` command was executed.
+
+In the **Regatta-deploy **folder, you will find a JSON file named **config.json**. The content of the file is as follows:
+
+```json expandable
 {
-    "regatta": {
-    "nodes": [
-    {
-    "internalIp": "10.208.0.8",
-    "diskPaths": [
-    {
-    "path": "/dev/sdb"
-       }
-      ] 
-  },
-  {
-    "internalIp": "10.208.0.9",
-    "diskPaths": [
-    {
-    "path": "/dev/sdb"
-       }
-     ]  
-   },
-  {
-    "internalIp": "10.208.0.10",
-    "diskPaths": [
-    {
-    "path": "/dev/sdb"
-          }
-        ]
-       }
-      ]
-     }
+	"regatta": {
+		"nodes": [
+			{
+				"internalIp": "10.208.0.8",
+				"diskPaths": [
+					{"path": "/dev/nvme0n1"},
+					{"path": "/dev/nvme1n1"}
+      			]
+  			},
+			{
+				"internalIp": "10.208.0.9",
+				"diskPaths": [
+					{"path": "/dev/nvme0n1"},
+					{"path": "/dev/nvme1n1"}
+				]
+			},
+			{
+				"internalIp": "10.208.0.10",
+				"diskPaths": [
+					{"path": "/dev/nvme0n1"},
+					{"path": "/dev/nvme1n1"}
+				]
+			}
+		]
+	}
 }
 ```
 
-You will need to edit it according to the cluster on which Regatta will be deployed. For each 
-server, add a record holding the IP of that server followed by all the devices on that server that 
-will be dedicated to Regatta.
+## JSON breakdown
 
-Add more entries if you have more nodes.
+The regatta object contains a `nodes` key which value is a list of JSON objects.
+
+Each object in the nodes list includes 2 key-value pairs of the node's IP address and dedicated NVMe devices list present on that node.
+
+- "`internalIp`" - The value is the host's internal IP used for inter-node communication
+- "`diskPaths`" - The value is a list of key-values, which each item key is `path` and value is the absolute path of the NVMe device on that node.
+
+<Note>
+  Note that each NVMe device is defined as a single JSON object inside the list of `diskPaths`
+</Note>
