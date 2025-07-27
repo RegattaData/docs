@@ -1,27 +1,30 @@
 ---
-title: Starting the System
+title: "Starting the System"
 ---
 
-Now you will need to start all the services. 
+One the cluster configuration file is defined, and every module across the cluster have a copy of the `cluster.config` with its module-specific configuration, proceed to start the cluster services.
 
-Start with all the non-RDB modules, namely Sequencer, GDD, DCM, followed by the RDBs.
+A `systemd` service is installed with each module RPM package. The services names follows the pattern of `regatta-1.0-<module name>` , for example: `regatta-1.0-rdb`
 
-For the RDBs, when deploying a Regatta database on more than a single node, the user is 
-required to create a **module configuration file** named **rdb.config** on each of the nodes that the 
-RDB module will be installed on. This file should reside in the same location of the 
-**cluster.config**, namely:
+For a single-node deployment, start all the services with a simple command:
 
-```sql
-/opt/regatta/1.0/<module>/conf/rdb.config
+```shellscript
+systemctl start regatta-*
 ```
 
-The file should contain the id that was given to the module in the configuration file:
+For multi-node deployment, an additional file should be created for each RDB module named **rdb.config** along side the `cluster.config` file:
 
 ```sql
-rdb=<module id
+/opt/regatta/1.0/rdb/conf/rdb.config
 ```
 
-For example, if in the configuration file, the module id was defined as follows:
+The file should contain the ID that was given to the RDB module on the current node, as defined in the configuration file:
+
+```sql
+rdb=<module id>
+```
+
+For example, if in the configuration file, the module ID was defined as follows:
 
 ```sql
 module_4_id=3
@@ -33,16 +36,8 @@ Then the rdb.config file should contain the following line:
 rdb=3
 ```
 
-To start the services, execute the following command: 
+Once the `rdb.config` file is also present with each RDB module across the cluster nodes, proceed to start the services on each of the cluster nodes:
 
-```sql
-sudo systemctl start regatta-1.0-<module_name>.service
-```
-
-where module is one of the Regatta software modules.
-
-For example:
-
-```sql
-sudo systemctl start regatta-1.0-rdb.service
+```shellscript
+systemctl start regatta-*
 ```
