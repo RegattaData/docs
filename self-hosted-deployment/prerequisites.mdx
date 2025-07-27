@@ -2,20 +2,19 @@
 title: "Prerequisites"
 ---
 
-The following should be available
+In order to deploy Regatta on a self-managed cloud cluster or on-prem servers, the following should be available:
 
 - Servers to deploy Regatta Cluster on
   - OS: Red-Hat 8 Based such as Oracle 8 or RHEL 8.10
-  - Required dependencies:
+  - Required system dependencies:
     - shadow-utils
     - glibc
     - openssl-libs
     - libaio
   - Memory: At least 32 GB
-  - Disk space for deployment: 500 MB per software module
+  - Disk space for Regatta's installation: 500 MB
   - CPUs: At least 4 CPUs
-  - Operational storage devices: At least one 350 GB NVMe or SSD, which is not the
-    system device, which can be dedicated to the Regatta cluster
+  - Operational storage devices: At least one 350 GB NVMe or SSD, which is not the system boot device, which can be dedicated to the Regatta cluster
 - Connectivity
   - At least 10GB network between all Regatta servers
   - Internet access (for downloads – optional)
