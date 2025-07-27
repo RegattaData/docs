@@ -16,11 +16,31 @@ Continue by running:
 - `rpm` flag - installs the RPM packages on each node/server
 - `config` flag - Generates a **cluster.config** file, copy it to each node/server, and append the module-specific section for each module on the cluster
 
-Once done, it is possible to connect to each and any of the cluster nodes/servers via SSH and edit the cluster config file for any module.\
+## Editing common cluster parameters
+
+At this stage, It is also possible to edit the **common** section of the **cluster.config** file. 
+
+To do so, edit the **cluster.config** file in the Ansible directory located in the same folder as the deployment script
+
+```
+./ansible/cluster.config
+```
+
+Make any changes to the config and save them to the same file.
+
+To update the entire cluster with the changes made to the config file, execute the script with the `update_config` flag:
+
+```
+./setup_cluster.sh update_config
+```
+
+This script run will copy th  **cluster.config** file to each node/server on the cluster and append the module-specific section for each module.
+
+## Editing module-specific parameters
+
+Once the script execution with either `config` or `update_config` flag is done, it is possible to connect to each and any of the cluster nodes/servers via SSH and edit the cluster config file for any module.\
 For further detail- follow the steps in the [Configuration File](https://docs.regatta.dev/self-hosted-deployment/manual-deployment/configuration-file/configuration-file) section and apply the desired changes. 
 
 <Note>
-   Note that the script opened the ports that appear in the configuration files for all Regatta
-  modules, prior to this stage. So, if you decide to change ports, you also will need to update the
-  firewall prior to executing the next step. 
+   Note that the script opened the ports that appear in the configuration files for all Regatta modules, prior to this stage. So, if you decide to change ports, you also will need to update the firewall prior to executing the next step. 
 </Note>
