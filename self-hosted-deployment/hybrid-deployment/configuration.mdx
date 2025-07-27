@@ -1,10 +1,10 @@
 ---
-title: Configuration
+title: "Configuration"
 ---
 
-The second step creates all the configuration files. In this step we will be able to edit the files for 
-each Regatta module and change the module specific parameters such as dedicated RAM 
-capacity etc.
+The second step creates all the Regatta configuration files. 
+
+During this step it is possible to edit the `cluster.config` file for any Regatta module and change the module specific parameters such as dedicated RAM capacity etc.
 
 Continue by running:
 
@@ -12,10 +12,15 @@ Continue by running:
 ./setup_cluster.sh distribute rpm config
 ```
 
-Once stopped, follow the steps in the Configuration File section and apply changes as you 
-desire. For example, you can change the RAM allocated for each Regatta software module.
+- `distribute` flag - copies the RPM packages from the host where the script is executed to each of the cluster nodes/servers
+- `rpm` flag - installs the RPM packages on each node/server
+- `config` flag - Generates a **cluster.config** file, copy it to each node/server, and append the module-specific section for each module on the cluster
 
+Once done, it is possible to connect to each and any of the cluster nodes/servers via SSH and edit the cluster config file for any module.\
+For further detail- follow the steps in the [Configuration File](https://docs.regatta.dev/self-hosted-deployment/manual-deployment/configuration-file/configuration-file) section and apply the desired changes. 
 
-<Note> Note that the script opened the ports that appear in the configuration files for all Regatta 
-modules, prior to this stage. So, if you decide to change ports, you also will need to update the 
-firewall prior to executing the next step. </Note>
+<Note>
+   Note that the script opened the ports that appear in the configuration files for all Regatta
+  modules, prior to this stage. So, if you decide to change ports, you also will need to update the
+  firewall prior to executing the next step. 
+</Note>
