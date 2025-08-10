@@ -34,7 +34,7 @@ A substitute alias name for `table_name`. The alias name should match the [Ident
 
 A list of columns in the table. The columns can be listed in any order, as long as the expressions in the VALUES clause are listed in the same order. Each missing column is set to `NULL` or to its default value specified in the `CREATE TABLE` statement. In case of a missing column that has no default value and the column has a `NOT NULL` constraint, the command fails.
 
-This parameter is optional. If no column names were specified, the values are assigned to the columns in the order of columns defined in the table’s creation. If the number of values is less than the number of columns, the values are assigned to the first columns and the rest are assigned default values, or `NULL` for columns with no default value. If such columns for which there is no specified value doesn’t have a default value and also has the `NOT NULL` constraint, the command fails with an error.
+This parameter is optional. If no column names were specified, the values are assigned to the columns in the order of columns defined in the table’s creation. If the number of values is less than the number of columns, the values are assigned to the first columns and the rest are assigned default values, or `NULL` for columns with no default value.
 
 **`VALUES`**
 
