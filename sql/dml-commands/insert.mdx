@@ -12,7 +12,8 @@ INSERT INTO table_name [ AS alias ] [ ( column_name [, ...] ) ]
   [ WITH devices = ( device_list ) IN MODULES ( module_list ) ]
   [ RETURNING output_expression [[ AS ] output_name ] [, ...] ]
 
-where device_list is a comman-separated list of device identifiers and module_list is a comma-separated list of the module identifiers of the modules to which the devices belong.
+where device_list is a comma-separated list of device numbers and module_list is a comma-separated list of the module identifiers of the modules to which the devices belong.
+Note that the device number is the number of the device within the pertinent module, not the system-wide unique device-id.
 ```
 
 ## Description
@@ -33,8 +34,7 @@ A substitute alias name for `table_name`. The alias name should match the [Ident
 
 A list of columns in the table. The columns can be listed in any order, as long as the expressions in the VALUES clause are listed in the same order. Each missing column is set to `NULL` or to its default value specified in the `CREATE TABLE` statement. In case of a missing column that has no default value and the column has a `NOT NULL` constraint, the command fails.
 
-This parameter is optional. If no column names were specified, the values are assigned to the columns in the order of columns defined in the table’s creation. If the number of values is less than the number of columns, the values are assigned to the first columns and the rest are assigned default values, or
-`NULL` for columns with no default value. If such columns for which there is no specified value doesn’t have a default value and also has the `NOT NULL` constraint, the command fails with an error.
+This parameter is optional. If no column names were specified, the values are assigned to the columns in the order of columns defined in the table’s creation. If the number of values is less than the number of columns, the values are assigned to the first columns and the rest are assigned default values, or `NULL` for columns with no default value. If such columns for which there is no specified value doesn’t have a default value and also has the `NOT NULL` constraint, the command fails with an error.
 
 **`VALUES`**
 
@@ -61,7 +61,7 @@ A SELECT statement that supplies the rows to be inserted. See [SELECT](/sql/dql/
 
 `WITH devices = ( device_list ) IN MODULES ( module_list )`
 
-Regatta uses an internal algorithm to distribute the rows of a table across the table storage devices optimally. You can override it by specifying one or more device into which the rows will be inserted. The modules containing the devices should also be specified.
+Regatta uses an internal algorithm to distribute the rows of a table across the table storage devices optimally. You can override it by specifying one or more device into which the rows will be inserted. The devices are identified by their internal device number within the pertinent modules, and modules containing the devices should also be specified.
 
 Use of this clause is generally discouraged as it could interfere with Regatta's internal data distribution algorithms and degrade performance and/or cause a storage device to fill up unintentionally. It should be used with care in very specific use cases.
 
