@@ -339,6 +339,10 @@
             ]
           },
           {
+            "group": "PreFlight",
+            "pages": ["self-hosted-deployment/pre-flight/pre-flight"]
+          },
+          {
             "group": "Scripted Solution",
             "pages": [
               "self-hosted-deployment/scripted-solution/scripted-solution",
