@@ -17,10 +17,7 @@ If multiple tables are required, create one sink connector per table.
 | **regatta.username**               | string  | –           | Username for Regatta cluster. |
 | **regatta.password**               | string  | –           | Password for Regatta cluster. |
 | **regatta.topic.name**             | string  | –           | Kafka topic to consume records from. |
-| **regatta.mode**                   | string  | `INSERT`    | Sink connector mode:
-  • `CDC`: Handle Debezium-style change events (insert/update/delete)
-  • `INSERT`: Only insert new rows
-  • `UPDATE`: Only update existing rows |
+| **regatta.mode**                   | string  | `INSERT`     | Sink connector mode: `CDC` — Debezium-style change events (insert/update/delete); `INSERT` — insert new rows only; `UPDATE` — update existing rows only. |
 | **regatta.primary.key.name**       | string  | null        | Name of the primary key column in the target table. |
 | **regatta.delete.enabled**         | boolean | `false`     | Enable support for DELETE operations (ignored if mode is `CDC`). |
 | **regatta.threads.per.partition**  | int     | `1`         | Number of threads allocated per Kafka partition. |
