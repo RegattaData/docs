@@ -11,26 +11,29 @@ If multiple tables are required, create one sink connector per table.
 
 ## Configuration Options
 
-| Key                                | Type    | Default     | Description                                                                                                                                                                 |
-| ---------------------------------- | ------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **regatta.url**                    | string  | `localhost` | Regatta cluster address in the format `IP:PORT`.                                                                                                                            |
-| **regatta.username**               | string  | –           | Username for Regatta cluster.                                                                                                                                               |
-| **regatta.password**               | string  | –           | Password for Regatta cluster.                                                                                                                                               |
-| **regatta.topic.name**             | string  | –           | Kafka topic to consume records from.                                                                                                                                        |
-| **regatta.mode**                   | string  | `INSERT`    | Sink connector mode:<br>• `CDC`: Handle Debezium-style change events (insert/update/delete).<br>• `INSERT`: Only insert new rows.<br>• `UPDATE`: Only update existing rows. |
-| **regatta.primary.key.name**       | string  | null        | Name of the primary key column in the target table.                                                                                                                         |
-| **regatta.delete.enabled**         | boolean | `false`     | Enable support for DELETE operations (ignored if mode is `CDC`).                                                                                                            |
-| **regatta.threads.per.partition**  | int     | `1`         | Number of threads allocated per Kafka partition.                                                                                                                            |
-| **regatta.metadata.devices**       | string  | null        | Comma-separated list of Regatta devices (e.g., `m10d0,m10d1`) to use for table creation. If unset, the table is created across all devices.                                 |
-| **regatta.exec.timeout.ms**        | long    | –           | Execution timeout in ms before buffered records are flushed.                                                                                                                |
-| **regatta.stmt.size.chars**        | int     | `1000000`   | Maximum number of characters allowed in a single SQL query.                                                                                                                 |
-| **regatta.max.batch.size**         | int     | –           | Maximum number of statements to execute in a single batch.                                                                                                                  |
-| **regatta.table.name**             | string  | –           | Target table name in Regatta. Defaults to the topic name if not specified.                                                                                                  |
-| **regatta.auto.create**            | boolean | `false`     | Automatically create the target table if it does not exist.                                                                                                                 |
-| **regatta.max.records.in.process** | int     | `1000`      | Maximum number of in-flight records when throttling is enabled.                                                                                                             |
-| **regatta.throttling.enabled**     | boolean | `true`      | Enable or disable throttling in the `put()` operation.                                                                                                                      |
-| **regatta.throttle.timeout.ms**    | int     | `100`       | Milliseconds to wait before retrying a throttled `put()` operation.                                                                                                         |
-| **regatta.metrics.enabled**        | boolean | `false`     | Enable or disable connector metrics.                                                                                                                                        |
+| Key                                | Type    | Default     | Description |
+| ---------------------------------- | ------- | ----------- | ----------- |
+| **regatta.url**                    | string  | `localhost` | Regatta cluster address in the format `IP:PORT`. |
+| **regatta.username**               | string  | –           | Username for Regatta cluster. |
+| **regatta.password**               | string  | –           | Password for Regatta cluster. |
+| **regatta.topic.name**             | string  | –           | Kafka topic to consume records from. |
+| **regatta.mode**                   | string  | `INSERT`    | Sink connector mode:
+  • `CDC`: Handle Debezium-style change events (insert/update/delete)
+  • `INSERT`: Only insert new rows
+  • `UPDATE`: Only update existing rows |
+| **regatta.primary.key.name**       | string  | null        | Name of the primary key column in the target table. |
+| **regatta.delete.enabled**         | boolean | `false`     | Enable support for DELETE operations (ignored if mode is `CDC`). |
+| **regatta.threads.per.partition**  | int     | `1`         | Number of threads allocated per Kafka partition. |
+| **regatta.metadata.devices**       | string  | null        | Comma-separated list of Regatta devices (e.g., `m10d0,m10d1`) to use for table creation. If unset, the table is created across all devices. |
+| **regatta.exec.timeout.ms**        | long    | –           | Execution timeout in ms before buffered records are flushed. |
+| **regatta.stmt.size.chars**        | int     | `1000000`   | Maximum number of characters allowed in a single SQL query. |
+| **regatta.max.batch.size**         | int     | –           | Maximum number of statements to execute in a single batch. |
+| **regatta.table.name**             | string  | –           | Target table name in Regatta. Defaults to the topic name if not specified. |
+| **regatta.auto.create**            | boolean | `false`     | Automatically create the target table if it does not exist. The connector generates a simple table based on the topic schema, without constraints (no primary keys, unique, or foreign keys). Tables requiring constraints must be created manually. |
+| **regatta.max.records.in.process** | int     | `1000`      | Maximum number of in-flight records when throttling is enabled. |
+| **regatta.throttling.enabled**     | boolean | `true`      | Enable or disable throttling in the `put()` operation. |
+| **regatta.throttle.timeout.ms**    | int     | `100`       | Milliseconds to wait before retrying a throttled `put()` operation. |
+| **regatta.metrics.enabled**        | boolean | `false`     | Enable or disable connector metrics. |
 
 ---
 
