@@ -35,7 +35,7 @@ This includes **insert, update, and delete** operations.
 }
 ```
 
-## Key Notes for CDC Mode
+## Configuration Notes for CDC Mode
 
 - **`mode = "CDC"`** → Enables handling of Debezium-style change events (insert, update, delete).
 - **One table per connector** → Each sink connector instance writes to a single Regatta table. To capture multiple tables, a separate sink connector must be created for each table.
