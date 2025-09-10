@@ -449,7 +449,7 @@
                 "group": "Kafka Sink Connector",
                 "pages": [
                   "drivers-and-clients/kafka/set-up-sink-connector",
-                  "drivers-and-clients/kafka/change-data-capture"
+                  "drivers-and-clients/kafka/cdc"
                 ]
               }
             ]
