@@ -2,14 +2,15 @@
 title: "Configuration File"
 ---
 
-As stated, the configuration file template will be deployed for each module as part of the RPM
-installation. This file can be found at:
+The Regatta modules are expecting to find a cluster configuration file named `cluster.config` under each module's conf directory. You can create a `cluster.config` file from scratch, following a convetion explained in the coming section of this document, or use the `cluster.template` file as a base template.
+
+The cluster configuration file template will be deployed with each module as part of the RPM installation and can be found under the module's conf directory at:
 
 ```code
 /opt/regatta/1.0/<module name>/conf/cluster.template
 ```
 
-### Configuration File Example
+## Configuration File Example
 
 Below is an example of a configuration file for a 3-node Regatta cluster. The proceeding documentation will be based on this configuration as an actual example.
 
@@ -109,21 +110,34 @@ ranger_dev_num=1
 core_pdbg_port=5004
 ```
 
-You will need to update this configurations template file to reflect the desired configuration of the Regatta Cluster. The cluster.template shows how the cluster configuration file should look once updated. Once you are done editing and updating it, save it in the same directory under the name cluster.config.
-
 This file is the same for all modules on all servers but for:
 
-- System Number of CPUs (system_num_cpus) and
-- 3 bottom lines
+- System Number of CPUs (system_num_cpus)
+- "Module specific parameters" section
 
-These are module specific parameters.
+Those parameters are module-specific, and should be configured for each module individually.
 
-The `cluster.template` file can be seen below in the Configuration Template File section.
+The recommended way to handle this is to:
 
-The recommended way to handle this is to create the basic configuration file WITHOUT updating the 4 module-specific lines. Copy it to all modules on all servers and then go one-by-one and update them accordingly.
+1. Create a common configuration file WITHOUT including the module-specific parameters at the end of the file and save it as `cluster.config`
+2. Copy the common `cluster.config` to all the cluster's servers and put a copy of it in each module's `conf` directory.
+3. Edit the `cluster.config` under each module conf folder to include the module specific parameters for that module.
 
-Once completed, don’t forget to save it in the same directory under the name `cluster.config` for all Regatta modules:
+Once completed, you should have a `cluster.config` file for all Regatta modules in the following path:
 
-```java
+```
 /opt/regatta/1.0/<module>/conf/cluster.config
 ```
+
+## Configuration Convention
+
+The `cluster.config` file must be written following these convention rules:
+
+- The config file must have a single "system" section.
+- The config file must have at least 1 node section.
+- The config file must have at lease one RDB module as well as one of each GDD, Sequencer and DCM.
+- The config file must have at least one NVMe device for each RDB module.
+- Each module must be linked to a node via the `parent_node_id` parameter
+- Each NVMe device must be linked to its controlling RDB module via the `module_id` parameter
+- The device `capacity` parameter is written in KB.
+- Every node, module and device must have a unique id parameter, starting at **1**.

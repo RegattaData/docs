@@ -1,56 +1,59 @@
 ---
-title: Inventory
+title: "Inventory"
 ---
 
-The first step will create the inventory and assign the different Regatta modules to different 
-servers. After this step, we will be able to relocate the modules as we prefer.
+The deployment script works by expanding the `config.json` file to a complete `cluster.config` file by following the recommended approach. The first step will create an inventory and assign the different Regatta modules to the nodes described in the `config.json`.
 
-Start from the initial steps of the script deploy as described in the Scripted Solution section.
-When reaching the `setup_cluster.sh` command, replace it with the following: 
+<Note>
+  The script can be executed with `--help` flag to view the available sub-steps that can be executed.
+</Note>
+
+Start from configuring the JSON file as described in the Scripted Solution's [config](https://docs.regatta.dev/self-hosted-deployment/scripted-solution/configjson) page.
+
+Continue to the Setup cluster page and when reaching the `setup_cluster.sh` command, run it with the following:
 
 ```
 ./setup_cluster.sh os devices
 ```
 
-At this point, an inventory file will be created. The file can be found in:
+These parameters will execute the deployment steps responsible for configuring the firewall and NVMe devices only. During the execution, an inventory file will be generated under the **ansible** directory where the script resides.
 
 ```
-/home/regatta/deploy/ansible/inventory
+./ansible/inventory
 ```
 
 The file will look something like the example below:
 
 ```
 [rdb_nodes]
-node-1 cluster_index=1 node_index=1 ansible_host=10.0.0.11 modules='{"sequencer": 1,"gdd": 2,"dcm":3, "rdb": 10}'
-node-2 cluster_index=1 node_index=4 ansible_host=10.0.0.12 modules='{"rdb": 11}'
-node-3 cluster_index=1 node_index=3 ansible_host=10.0.0.13 modules='{"rdb": 12}'
+node-1 cluster_index=1 node_index=1 modules='{"sequencer": 1,"gdd": 2,"dcm":3, "rdb": 10}' ansible_host=10.0.0.11
+node-2 cluster_index=1 node_index=2 modules='{"rdb": 11}' ansible_host=10.0.0.12
+node-3 cluster_index=1 node_index=3 modules='{"rdb": 12}' ansible_host=10.0.0.13
 ```
 
-You can now change the distribution of the different modules (obviously, you don’t have to). In 
+You can now change the distribution of the different modules (obviously, you don’t have to). In
 the example below we will locate a non-RDB module with each of the RDBs:
-
 
 ```
 [rdb_nodes]
-node-1 cluster_index=1 node_index=1 ansible_host=10.0.0.11 modules='{"sequencer": 1,"rdb": 10}'
-node-2 cluster_index=1 node_index=4 ansible_host=10.0.0.12 modules='{"gdd": 2, "rdb": 11}'
-node-3 cluster_index=1 node_index=3 ansible_host=10.0.0.13 modules='{"dcm":3, "rdb": 12}'
+node-1 cluster_index=1 node_index=1 modules='{"sequencer": 1,"rdb": 10}' ansible_host=10.0.0.11 
+node-2 cluster_index=1 node_index=2 modules='{"gdd": 2, "rdb": 11}' ansible_host=10.0.0.12 
+node-3 cluster_index=1 node_index=3 modules='{"dcm":3, "rdb": 12}' ansible_host=10.0.0.13 
 ```
 
-To install the Regatta client and the available drivers, it is possible to add ‘clients’ to the nodes’
+To install the Regatta client and the available drivers, it is possible to add ‘**clients**’ to the nodes’
 modules map:
 
 ```
 [rdb_nodes]
-node-1 cluster_index=1 node_index=1 ansible_host=10.0.0.11 modules='{"sequencer": 1,"gdd": 2,"dcm":3, "rdb": 10, 
-“clients”: 0}'
-node-2 cluster_index=1 node_index=4 ansible_host=10.0.0.12 modules='{"rdb": 11}'
-node-3 cluster_index=1 node_index=3 ansible_host=10.0.0.13 modules='{"rdb": 12}'
+node-1 cluster_index=1 node_index=1 modules='{"sequencer": 1,"gdd": 2,"dcm":3, "rdb": 10, 
+“clients”: 0}' ansible_host=10.0.0.11 
+node-2 cluster_index=1 node_index=2 modules='{"rdb": 11}'  ansible_host=10.0.0.12
+node-3 cluster_index=1 node_index=3 modules='{"rdb": 12}'  ansible_host=10.0.0.13
 ```
 
-Notice that the ‘clients’ key in the modules map must be defined with a number. This number 
-does not have a special purpose for the deployment process, it is there only to keep the map 
-object structure. 
+<Warning>
+  Notice that the **clients** key in the modules map <u>must be defined with a number</u>. This number does not have a special purpose for the deployment process, it is there only to keep the map object structure.
+</Warning>
 
 Continue to the next step.

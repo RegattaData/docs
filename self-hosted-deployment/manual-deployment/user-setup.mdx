@@ -1,24 +1,18 @@
 ---
-title: User Setup
+title: "User Setup"
 ---
 
-Regatta Cluster will require a dedicated user on each of the servers participating in the cluster. 
+Regatta Cluster will require a dedicated user on each of the servers participating in the cluster.
 The Regatta user must be defined as follows:
 
-1. Username: regatta 
-2. Permissions: device access permissions on the server 
+1. Username: regatta
+2. Permissions: block storage devices ownership on the server
 
-The RPMs supplied will create the Regatta user upon deployment. You will be required to 
-perform the chown command to grant the regatta user access permission to the nodes hard 
-drives.
+The RPMs supplied will create the Regatta user upon deployment. Deciding which storage devices will be designated for the database do require a manual action by the system administrator. 
 
-For example:
+## User creation
 
-```javascript
-sudo chown regatta:regatta /dev/<device> # for example: /dev/nvme0n1
-```
-
-Should you like to create these users on all servers prior to the installation manually, you may do 
+Should you like to create these users on all servers prior to the installation manually, you may do
 so. In this case, the Regatta RPM would use the Regatta user created by you.
 
 To create a Regatta user with device access, please do as described below:
@@ -27,5 +21,16 @@ For example:
 
 ```javascript
 sudo useradd -m -d /home/regatta -s /bin/bash regatta
+```
+
+## Storage permission
+
+A system admin (or any user with `sudo` permission) will be required to perform the `chown` command on the storage devices dedicated for the Regatta database, to grant the regatta user access permission to read and write to these hard drives.
+
+For example:
+
+```javascript
 sudo chown regatta:regatta /dev/<device> # for example: /dev/nvme0n1
 ```
+
+<u>The devices dedicated to the Regatta database do not require any filesystem in place. Regatta implements its own optimized filesystem solution.</u>

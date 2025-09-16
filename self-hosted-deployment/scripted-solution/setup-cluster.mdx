@@ -1,20 +1,16 @@
 ---
-title: Setup Cluster
+title: "Setup Cluster"
 ---
 
-Move to the deploy directory, relative to the location where the tar file was extracted:
+In the directory where the `config.json` file resides, you will find a script named `setup_cluster.sh` which is the script that performs the automatic deployment of Regatta (as described in the [scripted-solution](https://docs.regatta.dev/self-hosted-deployment/scripted-solution/scripted-solution) page)
 
-```
-cd deploy
-```
-
-Run `setup_cluster.sh` to continue with the automatic deployment.
+Switch user to the `deployment_user` mentioned in the previous pages and run the `setup_cluster.sh` to continue with the automatic deployment.
 
 ```
 ./setup_cluster.sh
 ```
 
-You will be asked to accept the Regatta End-User-License-Agreement (EULA) located in our 
+You will be asked to accept the Regatta End-User-License-Agreement (EULA) located in our
 website at https://regatta.dev/eula/. This will appear as follows:
 
 ```
@@ -24,7 +20,7 @@ Please read the EULA and accept the terms.
 Do you accept the terms of the EULA? [Y/n]
 ```
 
-In case you need time to read or for any other reason, entering n will abort the script with the 
+In case you need time to read or for any other reason, entering `n` will abort the script with the
 message:
 
 ```
@@ -33,47 +29,34 @@ EULA not accepted - deployment aborted...
 
 You can always restart the deployment using the script.
 
-By entering Y you confirm that you read and accepted the EULA. The deployment will continue.
+By entering `Y` you confirm that you read and accepted the EULA. The deployment will continue.
 
-Next step is the deployment of the Regatta database on all servers. To do so, we will use the 
-`deployment_user` supplied initially. You will be asked to enter its credentials so the script can 
-connect over SSH to all servers. You will see the following message:
-
-For the purpose of deployment, we need access to a `deployment_user` which resides on all servers 
-using the same ssh key. The `deployment_user` will be used to access the other servers listed in 
-the config.json file and therefore requires sudo permission.
-Please enter the credentials of the deployment_user:
+Next, the script will prompt the user for inputing the path to the SSH key and the username that can be used to connect to the cluster nodes.
 
 ```
 Enter path to SSH key: /<path>/<ssh_key_file>
 ```
 
-Enter the SSH key, in response you will be prompted to enter the username:
-
 ```
 Enter username to use with ssh key: deployment_user
 ```
 
-Enter the username. If the credentials are correct the script will continue until the deployment is 
-completed.
-
-The next step will enquire whether the `deployment_user` needs password for sudo 
-operations:
+The script will validate that SSH connection is working on each node defined in the `config.json` file. Once all connections validated, the script will  enquire whether the `deployment_user` needs password for sudo operations:
 
 ```
 Does the <deployment_user> requires a password to run sudo commands? [Y/n]: 
 ```
 
-If the reply is yes, you will need to enter the password when asked as follows:
+If the reply is yes, you will need to enter the password when asked later with the following prompt:
 
 ```
 BECOME PASS:
 ```
 
-The password will stay in volatile memory and is never stored. Please note that during the 
-deployment, the script will install the packages described in the Prerequisites section if they are 
-not already installed. If the packages are missing and there is no internet access to download 
-them, the deployment will fail.
+<Note>
+  **The password will stay in volatile memory and is never stored**.
+</Note>
 
-In addition, the script will also configure the firewall for the Regatta database cluster to properly 
-communicate between the different software modules.
+<Warning>
+  Please note that during the script execution, the script will install the RPM packages provided in the same download link. These RPM packages will check for the Regatta dependencies described in the [Prerequisites](https://docs.regatta.dev/self-hosted-deployment/prerequisites) section. If the packages are missing on the cluster nodes and there is no internet access to download them, the deployment will stop at this stage.
+</Warning>
