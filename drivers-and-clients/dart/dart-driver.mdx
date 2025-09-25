@@ -1,0 +1,15 @@
+---
+title: Dart Driver
+---
+
+The Regatta Dart driver functions similarly to Postgres Dart driver. If your application previously worked with Postgres Dart driver, you should be able to replace your existing Dart driver with the Regatta driver, allowing your application 
+to work almost seamlessly with the Regatta database.
+However, please note that some minor modifications to certain SQL commands may be necessary, as Regatta implements them slightly differently.
+
+---
+title: Driver Limitations:
+---
+
+- Prepared statements are not currently supported.
+- Fetching huge result sets might block the main isolate.
+- For each Regatta cluster, the driver must be used from one isolate only.
