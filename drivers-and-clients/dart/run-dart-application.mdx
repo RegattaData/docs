@@ -2,6 +2,9 @@
 title: Running a Dart Application
 ---
 
+In the following example, you'll find code that performs operations similar to those described in 
+the Regatta Platform section. 
+
 After installing the driver, you will need an IP of the cluster and user credentials. These will be used in the same way as with other databases.
 
 In the following example, you'll find code that performs operations similar to those described in the Regatta Platform section. 
@@ -22,66 +25,82 @@ final dbUrl = "aaa.bbb.ccc.ddd:pppp"; // <host>:<port>
 
 Any code that performs SQL commands should be updated accordingly.
 
-To help you get acquainted with the Regatta API for Dart, we’ve provided a simple code 
-example below.
+To help you get acquainted with the Regatta API for Dart, we’ve provided a simple code example below. Additionally, a more comprehensive example is included in the driver package under **examples/dart_regatta_example.dart**. This documented example demonstrates common tasks such as creating connections, executing queries, and accessing the result set.
+
+Below is an example of some of the code.
+
+Note that a more robust example is also available as part of the downloaded driver.
 
 
-```javascript
-const {getConnection} = require("node-regatta");
-async function main() {
- const dbUser = "MyUserName";
- const dbPassword = "SomeSophisticatedPassword";
- const dbUrl = "aaa:bbb:ccc:ddd:pppp";
- 
- try {
- // Get a database connection
- let connection = await getConnection(dbUser, dbPassword, dbUrl);
- console.log("Connected to the database");
-// Create the employees table
-const createQuery = `
- CREATE TABLE employees (
-key INT PRIMARY KEY INDEX WITH (devices = (m10d1)),
-name VARCHAR(40) NOT NULL,
-salary INT,
-department VARCHAR(50) NOT NULL
-) WITH (devices = (m10d1))
-`;
-await connection.execute(createQuery);
- console.log("Employees table created");
- // Insert values into table 
- const insertQuery = ` 
- INSERT INTO employees (key, name, salary, department) VALUES
- (1, 'John Doe', 10932, 'DevOps'),
- (2, 'Richard Roe', 18324, 'Legal'),
- (3, 'Jane Roe', 20411, 'Sale'),
- (4, 'Rachel Roe', 19555, 'Support')
- `;
- 
- await connection.execute(insertQuery);
- console.log("Data inserted into employees table");
- // Select all values
- const selectQuery = "SELECT * FROM employees";
- let cursor = await connection.execute(selectQuery);
- // Fetch the results
- let result = await cursor.fetchAll();
- // Print the results
- console.log(result.rows);
- // Closing the connection will also close all open cursors.
- await connection.close();
- console.log("Connection closed");
-} catch (error) {
- console.error("Error: ", error.message);
-}
-}
- 
-main();
+```dart
+import 'package:regatta_dart_driver/regatta_dart_driver.dart';
+
+Future<void> main() async {
+  final dbUser = 'Username';
+  final dbPassword = 'Password';
+  final dbUrl = '11.22.33.44:5555';
+
+  try {
+    final ClientOptions clientOptions = ClientOptions();
+    clientOptions.logsPath = '/path/to/logs/dir/';
+    ConnectionsMgr.initConnectionsMgr(clientOptions);
+
+    final connection = await Connection.open(
+      dbUrl,
+      dbUser,
+      dbPassword,
+    );
+
+    await connection.runTx((conn) async {
+      await conn.execute(
+        "CREATE TABLE users("
+        "id INT PRIMARY KEY INDEX, "
+        "name VARCHAR(128))",
+        ignoreRows: true,
+      );
+      
+      final resultSet = await conn.execute(
+        "INSERT INTO users (id, name) "
+        "VALUES (100, 'Mario'), "
+        "(200, 'Barbara'), "
+        "(300, 'Marcelo'), "
+        "(400, 'Henry')",
+      );
+
+      print(
+        'Total number of affected rows in the result set: '
+        '${resultSet.affectedRows}',
+      );
+    });
+
+    await connection.runTx((conn) async {
+      await conn.execute(
+        "INSERT INTO users (id, name) "
+        "VALUES (500, 'Bella')",
+      );
+
+      await conn.rollback();
+    }, settings: settings);
+
+    final resultSet = await connection.execute('SELECT * FROM users');
+    print("Executed select all on table 'users'");
+    print('Result set metadata: ${resultSet.schema.columns}');
+    print("Rows retrieved from 'users' table: $resultSet");
+    print(
+      "Map of first row in 'users' table: "
+      "${resultSet[0].toColumnMap()}",
+    );
+
+    await connection.execute('DROP TABLE users');
+    await connection.close();
+    ConnectionsMgr.dispose();
+  } catch (error) {
+    /// Handle any errors that occur during the database operations.
+    print('Error: $error');
+  }
 ```
-*Figure 51 Node.js example of application using driver*
+*Dart example of application using driver*
 
 Following is the output of the application:
-
-<Frame caption="Figure 52 Node.js example output">
-  <img src="/images/48.png" />
-</Frame>
 
 Note that all commands performed in the Regatta Platform section can be performed in the same manner using the Dart driver.
