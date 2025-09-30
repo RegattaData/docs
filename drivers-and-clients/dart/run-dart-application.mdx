@@ -1,13 +1,12 @@
 ---
-title: Running a Dart Application
+title: "Running a Dart Application"
 ---
 
-In the following example, you'll find code that performs operations similar to those described in 
-the Regatta Platform section. 
+In the following example, you'll find code that performs operations similar to those described in the Regatta Platform section.
 
 After installing the driver, you will need an IP of the cluster and user credentials. These will be used in the same way as with other databases.
 
-In the following example, you'll find code that performs operations similar to those described in the Regatta Platform section. 
+In the following example, you'll find code that performs operations similar to those described in the Regatta Platform section.
 
 To begin, import the `package:regatta_dart_driver/regatta_dart_driver.dart` file:
 
@@ -30,7 +29,6 @@ To help you get acquainted with the Regatta API for Dart, we’ve provided a sim
 Below is an example of some of the code.
 
 Note that a more robust example is also available as part of the downloaded driver.
-
 
 ```dart
 import 'package:regatta_dart_driver/regatta_dart_driver.dart';
@@ -83,7 +81,6 @@ Future<void> main() async {
     }, settings: settings);
 
     final resultSet = await connection.execute('SELECT * FROM users');
-    print("Executed select all on table 'users'");
     print('Result set metadata: ${resultSet.schema.columns}');
     print("Rows retrieved from 'users' table: $resultSet");
     print(
@@ -95,12 +92,14 @@ Future<void> main() async {
     await connection.close();
     ConnectionsMgr.dispose();
   } catch (error) {
-    /// Handle any errors that occur during the database operations.
     print('Error: $error');
   }
 ```
-*Dart example of application using driver*
+
+_Dart example of application using driver_
 
 Following is the output of the application:
+
+![Screenshot 2025-09-30 121753.png](/images/Screenshot2025-09-30121753.png)
 
 Note that all commands performed in the Regatta Platform section can be performed in the same manner using the Dart driver.
