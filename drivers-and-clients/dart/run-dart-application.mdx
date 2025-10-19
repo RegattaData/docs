@@ -87,7 +87,7 @@ Future<void> main() async {
 
   await connection.execute('DROP TABLE users');
   await connection.close();
-  ConnectionsMgr.dispose();
+  await ConnectionsMgr.dispose();
 }
 ```
 
