@@ -36,10 +36,6 @@ Future<void> main() async {
   final dbPassword = 'Password';
   final dbUrl = '11.22.33.44:5555';
 
-  final ClientOptions clientOptions = ClientOptions();
-  clientOptions.logsPath = '/path/to/logs/dir/';
-  ConnectionsMgr.initConnectionsMgr(clientOptions);
-
   final connection = await Connection.open(
     dbUrl,
     dbUser,
@@ -87,7 +83,6 @@ Future<void> main() async {
 
   await connection.execute('DROP TABLE users');
   await connection.close();
-  await ConnectionsMgr.dispose();
 }
 ```
 
