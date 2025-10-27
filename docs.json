@@ -440,6 +440,18 @@
                 ]
               }
             ]
+          },
+          {
+            "group": "Kafka",
+            "pages": [
+              {
+                "group": "Kafka Sink Connector",
+                "pages": [
+                  "drivers-and-clients/kafka/set-up-sink-connector",
+                  "drivers-and-clients/kafka/cdc"
+                ]
+              }
+            ]
           }
         ]
       },
