@@ -2,14 +2,22 @@
 title: "MEDIUM Cluster"
 ---
 
-Let’s connect to our **demo-medium** cluster. Now perform the same query on the larger cluster.
-This cluster has 10 nodes and should be around 10 times faster. Let’s run the query again
-through the CLI.
+Let’s connect to our **demo-medium** cluster. Now perform the same query on the larger cluster. This cluster has 10 nodes and should be around 3⅓ times faster. Let’s run the query again through the CLI.
 
-<Frame caption="Query for demo-medium.">
-  ![image.png](/Screenshot2025-07-23182007.png)
-</Frame>
+We get the same result:
 
-As can be seen above, in the larger cluster it took about 2.8 seconds. When comparing with the previous duration of demo-small of roughly 9.4 seconds we can see that the ratio between the two durations is 3⅓ (=3.35) which is 10:3, the ratio between the cluster sizes. The larger cluster executed that same query 3⅓ times faster.
+```SQL
+| Name         | Item           | Number of Items |
+|--------------|----------------|------------------|
+| Daisy Clark  | Inline Skates  | 2                |
+| Jack Walker  | Soccer Ball    | 3                |
+| Kyle Lewis   | Sports Apparel | 1                |
+| Ethan Garcia | Track Suit     | 1                |
+| Grace Clark  | Snorkel Gear   | 3                |
+|--------------|----------------|------------------|
+5 row(s) returned
+```
+
+For the larger cluster it took about 2.8 seconds. When comparing with the previous duration of demo-small of roughly 9.4 seconds we can see that the ratio between the two durations is 3⅓ (=3.35) which is 10:3, the ratio between the cluster sizes. The larger cluster executed that same query 3⅓ times faster.
 
 Please note that this is a complex JOIN requires processing a large amount of data. The database must hold a very large amount of intermediate data comprised from all tables to accomplish this task.
