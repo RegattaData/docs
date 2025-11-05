@@ -337,14 +337,11 @@
               {
                 "group": "Configuration File",
                 "pages": [
-                  "self-hosted-deployment/manual-deployment/configuration-file/configuration-file",
-                  "self-hosted-deployment/manual-deployment/configuration-file/main-configuration-top-part",
-                  "self-hosted-deployment/manual-deployment/configuration-file/unique-module-configuration"
+                  "self-hosted-deployment/manual-deployment/configuration-file/configuration-file"
                 ]
               },
               "self-hosted-deployment/manual-deployment/filewall",
-              "self-hosted-deployment/manual-deployment/starting-the-system",
-              "self-hosted-deployment/manual-deployment/configuration-template-file"
+              "self-hosted-deployment/manual-deployment/starting-the-system"
             ]
           },
           {
