@@ -1,0 +1,51 @@
+---
+title: "Regatta Software Modules"
+---
+
+Regatta has four software modules which are required to run the Regatta Database. The
+modules are:
+
+### RDB
+
+The RDB module allows optimal usage of the server resources (CPU, Network and IO). To increase Regatta’s performance and capacity, simply add servers with the RDB module deployed on them.
+
+### Sequencer
+
+The Sequencer module coordinates distributed events between all Regatta components.
+
+### DCM
+
+The Database Catalog Manager (DCM) module manages the database catalog which contains all the schema definitions including tables, materialized views and data types, as well as hierarchical schema structures.
+
+### GDD
+
+The Global Deadlock Detector (GDD) module is responsible for detecting circular distributed dependencies between transactions in the system and resolving them.
+
+## Modules distribution
+
+When setting up the Regatta Cluster you will need to determine what modules will reside where. The RDB module is required on each of the servers with dedicated storage. The other modules - DCM, GDD, Sequencer - should be deployed only once.
+
+The recommended configuration is:
+
+- RDB – on all server
+- GDD, DCM, Sequencer – all on the same server alongside one of the RDBs
+
+Once decided on the distribution of the modules across the servers, install the matching RPM of each module on the servers according to selected configurations.
+
+The RPMs are located in the package you received from Regatta support. Save it in a desired directory and extract it. The RPMs will be located under
+
+```
+./deploy/ansible/roles/regatta.rdb/files
+```
+
+Install the RPMs using the following command:
+
+```javascript
+sudo yum install <path/to/regatta_rpm>
+```
+
+Where `<path/to/>` is the full or relative path to where the rpm was saved on.
+
+The recommended way to distribute the RPMs to each server is to upload all RPMs to one of the cluster dedicated servers, and `SCP` the RPMs from that server to the others according to the distibution plan.
+
+Once completed, the installation of the RPM will also include an example configuration file called cluster.template for each module.

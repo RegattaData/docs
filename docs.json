@@ -327,19 +327,8 @@
             "pages": [
               "self-hosted-deployment/manual-deployment/manual-deployment",
               "self-hosted-deployment/manual-deployment/user-setup",
-              {
-                "group": "Regatta Configuration",
-                "pages": [
-                  "self-hosted-deployment/manual-deployment/regatta-configuration/regatta-software-modules",
-                  "self-hosted-deployment/manual-deployment/regatta-configuration/configurating-regatta"
-                ]
-              },
-              {
-                "group": "Configuration File",
-                "pages": [
-                  "self-hosted-deployment/manual-deployment/configuration-file/configuration-file"
-                ]
-              },
+              "self-hosted-deployment/manual-deployment/regatta-software-modules",
+              "self-hosted-deployment/manual-deployment/configuration-file",
               "self-hosted-deployment/manual-deployment/filewall",
               "self-hosted-deployment/manual-deployment/starting-the-system"
             ]
