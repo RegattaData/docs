@@ -12,7 +12,7 @@ The cluster configuration file template will be deployed with each module as par
 
 The `cluster.config` file is the same for all modules on all servers except for:
 
-- System Number of CPUs (system_num_cpus)
+- `system_num_cpus` - Which represents the number of CPUs that can be utilized on the server
 - "Module-specific parameters" section
 
 These parameters are module-specific and should be configured for each module individually.
@@ -39,7 +39,7 @@ The `cluster.config` file must be written following these convention rules:
 - The config file must have at least one block storage device for each RDB module.
 - Each module must be linked to a node via the `parent_node_id` parameter.
 - Each block device must be linked to its controlling RDB module via the `module_id` parameter.
-- The device `capacity` parameter is written in KB.
+- The `capacity` parameter of the device is specified in kilobytes (KB).
 - Every node, module, and device must have a unique ID parameter, starting at **1**.
 
 # Configuration Sections Breakdown
@@ -65,7 +65,7 @@ system_cluster_join_timeout_sec = 0
 Let's break down the parameters in this section:
 
 - `system_cluster_id` - This is a unique 32-bit identifier used to differentiate Regatta clusters.
-- `system_num_cpus` - This defines the number of CPU threads that will be utilized by the specific module. **The maximum value of this parameter is 64.**
+- `system_num_cpus` - This defines the number of CPU threads that will be utilized by the specific module.
 - ...
 
 ### Node Section
@@ -244,7 +244,7 @@ In order to calculate the best value to define in this parameter, we suggest the
 
 ### core_pdbg_port
 
-This port number should be unique for each module in the same server/node.
+This port number is used to internal metrics aggregations and should be unique for each module in the same server/node.
 
 # Complete Configuration File Example
 

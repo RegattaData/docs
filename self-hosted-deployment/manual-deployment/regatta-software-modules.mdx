@@ -2,8 +2,7 @@
 title: "Regatta Software Modules"
 ---
 
-Regatta has four software modules which are required to run the Regatta Database. The
-modules are:
+Regatta has four software modules which are required to run the Regatta Database. The modules are:
 
 ### RDB
 
@@ -23,7 +22,7 @@ The Global Deadlock Detector (GDD) module is responsible for detecting circular 
 
 ## Modules distribution
 
-When setting up the Regatta Cluster you will need to determine what modules will reside where. The RDB module is required on each of the servers with dedicated storage. The other modules - DCM, GDD, Sequencer - should be deployed only once.
+When setting up the Regatta Cluster you will need to determine what modules will reside where. Servers that host the RDB module must also assign a storage device for that RDB. Multiple RDB modules can be deployed, while the other modules - DCM, GDD, Sequencer - should be deployed only once.
 
 The recommended configuration is:
 
@@ -32,7 +31,7 @@ The recommended configuration is:
 
 Once decided on the distribution of the modules across the servers, install the matching RPM of each module on the servers according to selected configurations.
 
-The RPMs are located in the package you received from Regatta support. Save it in a desired directory and extract it. The RPMs will be located under
+The RPMs are located in the deployment package. Save it in a desired directory and extract it. The RPMs will be located under
 
 ```
 ./deploy/ansible/roles/regatta.rdb/files
@@ -40,11 +39,15 @@ The RPMs are located in the package you received from Regatta support. Save it i
 
 Install the RPMs using the following command:
 
-```javascript
-sudo yum install <path/to/regatta_rpm>
+```bash
+sudo rpm -i <path/to/regatta_rpm>
 ```
 
-Where `<path/to/>` is the full or relative path to where the rpm was saved on.
+Where `<path/to/>` is the full or relative path to where the RPM was saved to.
+
+<Tip>
+  It is possible to use`dnf` or `yum` package managers to install the RPMs. Using package managers will ensure the required dependencies of Regatta are also installed if missing.
+</Tip>
 
 The recommended way to distribute the RPMs to each server is to upload all RPMs to one of the cluster dedicated servers, and `SCP` the RPMs from that server to the others according to the distibution plan.
 
