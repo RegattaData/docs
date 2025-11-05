@@ -16,13 +16,14 @@
         "groups": [
           {
             "group": " ",
-            "pages": ["home"]
+            "pages": [
+              "home"
+            ]
           }
         ]
       },
       {
         "anchor": "Quickstart",
-
         "groups": [
           {
             "group": "Getting Started",
@@ -76,7 +77,9 @@
         "groups": [
           {
             "group": "SQL Specification",
-            "pages": ["/sql/introduction"]
+            "pages": [
+              "/sql/introduction"
+            ]
           },
           {
             "group": "Data Types",
@@ -104,7 +107,9 @@
           },
           {
             "group": "SQL Syntax Conventions",
-            "pages": ["sql/sql-syntax-convention"]
+            "pages": [
+              "sql/sql-syntax-convention"
+            ]
           },
           {
             "group": "Data Definition Language (DDL) Commands",
@@ -131,7 +136,10 @@
           },
           {
             "group": "Data Query Language",
-            "pages": ["sql/dql/select", "sql/dql/explain"]
+            "pages": [
+              "sql/dql/select",
+              "sql/dql/explain"
+            ]
           },
           {
             "group": "Hints",
@@ -310,7 +318,9 @@
         "groups": [
           {
             "group": "Self-Hosted Deployment",
-            "pages": ["self-hosted-deployment/prerequisites"]
+            "pages": [
+              "self-hosted-deployment/prerequisites"
+            ]
           },
           {
             "group": "Manual Deployment",
@@ -334,7 +344,6 @@
               },
               "self-hosted-deployment/manual-deployment/filewall",
               "self-hosted-deployment/manual-deployment/starting-the-system",
-              "self-hosted-deployment/manual-deployment/cli-and-drivers",
               "self-hosted-deployment/manual-deployment/configuration-template-file"
             ]
           },
