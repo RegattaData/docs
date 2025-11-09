@@ -2,41 +2,41 @@
 title: "Starting the System"
 ---
 
-One the cluster configuration file is defined, and every module across the cluster have a copy of the `cluster.config` with its module-specific configuration, proceed to start the cluster services.
+Once the cluster configuration file is defined, and every module across the cluster has a copy of the `cluster.config` with its module-specific configuration, proceed to start the cluster services.
 
-A `systemd` service is installed with each module RPM package. The services names follows the pattern of `regatta-1.0-<module name>` , for example: `regatta-1.0-rdb`
+A `systemd` service is installed with each module RPM package. The service names follow the pattern `regatta-1.0-<module name>`, for example: `regatta-1.0-rdb`.
 
-For a single-node deployment, start all the services with a simple command:
+For a single-node deployment, start all services with the following command:
 
 ```shellscript
 systemctl start regatta-*
 ```
 
-For multi-node deployment, an additional file should be created for each RDB module named **rdb.config** along side the `cluster.config` file:
+For a multi-node deployment, an additional file should be created for each RDB module named **rdb.config**, alongside the `cluster.config` file:
 
 ```sql
 /opt/regatta/1.0/rdb/conf/rdb.config
 ```
 
-The file should contain the ID that was given to the RDB module on the current node, as defined in the configuration file:
+The file should contain the ID assigned to the RDB module on the current node, as defined in the configuration file:
 
 ```sql
 rdb=<module id>
 ```
 
-For example, if in the configuration file, the module ID was defined as follows:
+For example, if in the configuration file the module ID was defined as follows:
 
 ```sql
 module_4_id=3
 ```
 
-Then the rdb.config file should contain the following line:
+Then the `rdb.config` file should contain the following line:
 
 ```sql
 rdb=3
 ```
 
-Once the `rdb.config` file is also present with each RDB module across the cluster nodes, proceed to start the services on each of the cluster nodes:
+Once the `rdb.config` file is present for each RDB module across the cluster nodes, proceed to start the services on each of the cluster nodes:
 
 ```shellscript
 systemctl start regatta-*
