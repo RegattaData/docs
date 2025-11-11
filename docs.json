@@ -440,6 +440,19 @@
                 ]
               }
             ]
+          },
+          {
+            "group": "Dart",
+            "pages": [
+              {
+                "group": "Dart Driver",
+                "pages": [
+                  "drivers-and-clients/dart/dart-driver",
+                  "drivers-and-clients/dart/install-the-driver",
+                  "drivers-and-clients/dart/run-dart-application"
+                ]
+              }
+            ]
           }
         ]
       },
