@@ -2,16 +2,18 @@
 title: "Setup Cluster"
 ---
 
-In the directory where the `config.json` file resides, you will find a script named `setup_cluster.sh` which is the script that performs the automatic deployment of Regatta (as described in the [scripted-solution](https://docs.regatta.dev/self-hosted-deployment/scripted-solution/scripted-solution) page)
+In the directory where the `config.json` file resides, you will find a script named `setup_cluster.sh`, which performs the automatic deployment of Regatta (as described in the [scripted-solution](https://docs.regatta.dev/self-hosted-deployment/scripted-solution/scripted-solution) page). This script is referred to as the RDT (Regatta Deployment Tool).
 
-Switch user to the `deployment_user` mentioned in the previous pages and run the `setup_cluster.sh` to continue with the automatic deployment.
+Switch to the `deployment_user` mentioned in previous pages and run `setup_cluster.sh` to begin the automated deployment:
 
 ```
 ./setup_cluster.sh
 ```
 
-You will be asked to accept the Regatta End-User-License-Agreement (EULA) located in our
-website at https://regatta.dev/eula/. This will appear as follows:
+You will be asked to accept the Regatta End-User License Agreement (EULA), located at:
+[https://regatta.dev/eula/](https://regatta.dev/eula/)
+
+The prompt will appear as follows:
 
 ```
 By using this script and deploying the Regatta Cluster you agree to the EULA located at:
@@ -20,18 +22,17 @@ Please read the EULA and accept the terms.
 Do you accept the terms of the EULA? [Y/n]
 ```
 
-In case you need time to read or for any other reason, entering `n` will abort the script with the
-message:
+If you need time to review the EULA or choose not to continue, entering `n` will abort the script:
 
 ```
 EULA not accepted - deployment aborted...
 ```
 
-You can always restart the deployment using the script.
+You may restart the deployment at any time using the same script.
 
-By entering `Y` you confirm that you read and accepted the EULA. The deployment will continue.
+By entering `Y`, you confirm that you have read and accepted the EULA and the deployment will continue.
 
-Next, the script will prompt the user for inputing the path to the SSH key and the username that can be used to connect to the cluster nodes.
+Next, the script will prompt you to provide the path to the SSH key and the username used to connect to the cluster nodes:
 
 ```
 Enter path to SSH key: /<path>/<ssh_key_file>
@@ -41,22 +42,43 @@ Enter path to SSH key: /<path>/<ssh_key_file>
 Enter username to use with ssh key: deployment_user
 ```
 
-The script will validate that SSH connection is working on each node defined in the `config.json` file. Once all connections validated, the script will  enquire whether the `deployment_user` needs password for sudo operations:
+The script will then validate SSH connectivity to every node defined in `config.json`. After successful validation, it will ask whether the `deployment_user` requires a password for sudo operations:
 
 ```
-Does the <deployment_user> requires a password to run sudo commands? [Y/n]: 
+Does the <deployment_user> require a password to run sudo commands? [Y/n]:
 ```
 
-If the reply is yes, you will need to enter the password when asked later with the following prompt:
+If the answer is yes, you will be prompted to enter the password later:
 
 ```
 BECOME PASS:
 ```
 
 <Note>
-  **The password will stay in volatile memory and is never stored**.
+  **The password remains only in volatile memory and is never stored.**
 </Note>
 
 <Warning>
-  Please note that during the script execution, the script will install the RPM packages provided in the same download link. These RPM packages will check for the Regatta dependencies described in the [Prerequisites](https://docs.regatta.dev/self-hosted-deployment/prerequisites) section. If the packages are missing on the cluster nodes and there is no internet access to download them, the deployment will stop at this stage.
+  During execution, the script installs the supplied RPM packages. These packages check for the Regatta dependencies listed in the [Prerequisites](https://docs.regatta.dev/self-hosted-deployment/prerequisites) section. If dependencies are missing and no internet connection is available to download them, the deployment will stop at this stage.
 </Warning>
+
+The script will then run the deployment sequence, performing the following tasks:
+
+1. Read the `config.json` file and parse the list of IP addresses and storage device paths
+2. Connect to each node using the configured `deployment_user`
+3. Copy and install the Regatta RPMs on each node
+4. Change ownership of the block storage device(s) to the `regatta` user
+5. Generate the Regatta `cluster.config` file and distribute it to all nodes
+6. Start the Regatta services, which in turn start all Regatta modules
+
+Once the RDT completes its execution, the Regatta cluster will be fully operational and ready to accept connections via the CLI or client drivers.
+
+You can verify that the cluster is running by checking the Regatta services on any node:
+
+```
+sudo systemctl status regatta-1.0-*
+```
+
+Each Regatta module runs under its own service, such as `regatta-1.0-rdb.service`.
+
+Proceed to connect to your Regatta cluster using your preferred method.

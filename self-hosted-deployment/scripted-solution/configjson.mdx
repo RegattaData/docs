@@ -2,19 +2,19 @@
 title: "Config.json"
 ---
 
-Downloading the Regatta tar archive can be done directly on one of the cluster nodes (via `wget` or similar tool) OR downloaded on external host and copied to one of the cluster nodes.
+Downloading the Regatta tar archive can be done directly on one of the cluster nodes (using `wget` or a similar tool) or on an external host and then copied to one of the cluster nodes.
 
-The tar archive includes the RPM packages and deployment script.
+The tar archive includes the RPM packages and the Regatta deployment tool.
 
-Extract the tar:
+Extract the archive:
 
 ```shellscript
- tar -zxf Regatta-X.X.X.X.tar.gz
+tar -zxf Regatta-X.X.X.X.tar.gz
 ```
 
-After extracting the tar, you will find a directory named **Regatta-deploy** in the filesystem path where the `tar` command was executed.
+After extracting the archive, a directory named **Regatta-deploy** will be created in the location where the `tar` command was executed.
 
-In the \*\*Regatta-deploy \*\*folder, you will find a JSON file named **config.json**. The content of the file is as follows:
+Inside the **Regatta-deploy** directory, you will find a JSON file named **config.json**. The content of the file is as follows:
 
 ```json expandable
 {
@@ -46,17 +46,19 @@ In the \*\*Regatta-deploy \*\*folder, you will find a JSON file named **config.j
 }
 ```
 
-## JSON breakdown
+## JSON Breakdown
 
-The regatta object contains a `nodes` key which value is a list of JSON objects.
+The `regatta` object contains a `nodes` key whose value is a list of JSON objects.
 
-Each object in the nodes list includes 2 key-value pairs of the node's IP address and dedicated NVMe devices list present on that node.
+Each object in the `nodes` list includes two key-value pairs: the node’s internal IP address and a list of dedicated NVMe devices present on that node.
 
-- "`internalIp`" - The value is the host's internal IP used for inter-node communication
-- "`diskPaths`" - The value is a list of key-values, which each item key is `path` and value is the absolute path of the NVMe device on that node.
+- **`internalIp`** – The host’s internal IP address used for inter-node communication.
+- **`diskPaths`** – A list of objects, each containing a `path` key paired with the absolute path of a storage device on that node.
 
 <Note>
-  Note that each NVMe device is defined as a single JSON object inside the list of `diskPaths`
+  Each block storage device is defined as a separate JSON object within the `diskPaths` list.
+
+  The devices can be of any type, not necessarily NVMe.
 </Note>
 
-After editing the `config.json` file, move on to executing the deployment script in the next page
+After editing the `config.json` file, proceed to the next page to execute the deployment tool.

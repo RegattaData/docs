@@ -337,7 +337,6 @@
             "group": "Scripted Solution",
             "pages": [
               "self-hosted-deployment/scripted-solution/scripted-solution",
-              "self-hosted-deployment/scripted-solution/setup",
               "self-hosted-deployment/scripted-solution/configjson",
               "self-hosted-deployment/scripted-solution/setup-cluster"
             ]
@@ -354,11 +353,10 @@
           {
             "group": "Support",
             "pages": [
-              "self-hosted-deployment/support/support",
               {
                 "group": "Collecting Data",
                 "pages": [
-                  "self-hosted-deployment/support/collect-data-script/collect-data-script",
+                  "self-hosted-deployment/support/collect-data-script/collect-data",
                   "self-hosted-deployment/support/collect-data-script/prerequisites",
                   "self-hosted-deployment/support/collect-data-script/setup",
                   "self-hosted-deployment/support/collect-data-script/execution"
