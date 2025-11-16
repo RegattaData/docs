@@ -38,6 +38,15 @@ rdb=3
 
 Once the `rdb.config` file is present for each RDB module across the cluster nodes, proceed to start the services on each of the cluster nodes:
 
+
 ```shellscript
-systemctl start regatta-*
+sudo systemctl start regatta-1.0-<module_name>.service
+```
+
+where module is one of the Regatta software modules.
+
+For example:
+
+```shellscript
+sudo systemctl start regatta-1.0-rdb.service
 ```

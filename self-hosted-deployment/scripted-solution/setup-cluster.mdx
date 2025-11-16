@@ -4,14 +4,13 @@ title: "Setup Cluster"
 
 In the directory where the `config.json` file resides, you will find a script named `setup_cluster.sh`, which performs the automatic deployment of Regatta (as described in the [scripted-solution](https://docs.regatta.dev/self-hosted-deployment/scripted-solution/scripted-solution) page). This script is referred to as the RDT (Regatta Deployment Tool).
 
-Switch to the `deployment_user` mentioned in previous pages and run `setup_cluster.sh` to begin the automated deployment:
+Switch to the `deployment_user` mentioned in previous pages and run `setup_cluster.sh` (RDT) to begin the automated deployment:
 
 ```
 ./setup_cluster.sh
 ```
 
-You will be asked to accept the Regatta End-User License Agreement (EULA), located at:
-[https://regatta.dev/eula/](https://regatta.dev/eula/)
+You will be asked to accept the Regatta End-User License Agreement (EULA), located at: https://regatta.dev/eula/
 
 The prompt will appear as follows:
 
@@ -42,7 +41,7 @@ Enter path to SSH key: /<path>/<ssh_key_file>
 Enter username to use with ssh key: deployment_user
 ```
 
-The script will then validate SSH connectivity to every node defined in `config.json`. After successful validation, it will ask whether the `deployment_user` requires a password for sudo operations:
+The RDT will then validate SSH connectivity to every node defined in [config.json](https://docs.regatta.dev/self-hosted-deployment/scripted-solution/configjson). After successful validation, it will ask whether the `deployment_user` requires a password for sudo operations:
 
 ```
 Does the <deployment_user> require a password to run sudo commands? [Y/n]:
@@ -59,10 +58,10 @@ BECOME PASS:
 </Note>
 
 <Warning>
-  During execution, the script installs the supplied RPM packages. These packages check for the Regatta dependencies listed in the [Prerequisites](https://docs.regatta.dev/self-hosted-deployment/prerequisites) section. If dependencies are missing and no internet connection is available to download them, the deployment will stop at this stage.
+  During execution, the RDT installs the supplied RPM packages. These packages check for the Regatta dependencies listed in the [Prerequisites](https://docs.regatta.dev/self-hosted-deployment/prerequisites) section. If dependencies are missing and no internet connection is available to download them, the deployment will stop at this stage.
 </Warning>
 
-The script will then run the deployment sequence, performing the following tasks:
+The RDT will then run the deployment sequence, performing the following tasks:
 
 1. Read the `config.json` file and parse the list of IP addresses and storage device paths
 2. Connect to each node using the configured `deployment_user`
