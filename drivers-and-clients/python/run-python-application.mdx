@@ -8,7 +8,7 @@ Let's create a simple Python application that queries the Regatta database. Star
 from pyregatta import connect
 ```
 
-Note that you should import all relevant classes based on the functionality of your application and its requirements.
+Note that you should import all relevant classes based on the functionality of your applicationand its requirements.
 
 In the next step you will need to add the cluster IP and the user’s credentials.
 
@@ -72,8 +72,24 @@ with connect(user, password, host) as conn:
             print(row)
 
             # Example: access a specific column
-            # print(row.employee_name)
-            # print(row[0])  # employee_key
+            print(row.employee_name)
+            print(row[0])  # employee_key
 ```
 
 Run the application:
+
+```bash
+[18:49:43] | ~/drivers/python/examples$ python3 database_example.py
+(1, 'John Doe', 10932, 'DevOps')
+John Doe
+1
+(2, 'Richard Roe', 18324, 'Legal')
+Richard Roe
+2
+(3, 'Jane Roe', 20411, 'Engineering')
+Jane Roe
+3
+(4, 'Rachel Roe', 19555, 'Support')
+Rachel Roe
+4
+```

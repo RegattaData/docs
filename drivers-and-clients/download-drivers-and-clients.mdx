@@ -9,7 +9,7 @@ Regatta makes it simple to obtain the latest drivers, client libraries, and inte
 1. [Log in to your Regatta Cloud account](https://docs.regatta.dev/regatta-cloud/regatta-cloud/access-the-cloud).
 2. In the left-hand navigation bar, click **Clients & Tools**.
 3. Select the language or tool you wish to download.
-4. Choose the appropriate tab for that client or tool—for example, click **JavaScript** to view NodeJS and TypeORM packages.
+4. Choose the appropriate tab for that client or tool. For example, click **JavaScript** to view NodeJS and TypeORM packages.
 
 ## Understanding the Version Matrix Table
 
@@ -17,8 +17,8 @@ Once you select a particular client or tool (e.g., **JavaScript → NodeJS**), y
 
 | OS    | Architecture | Version | Type       | Supported DB Versions   |            |
 | ----- | ------------ | ------- | ---------- | ----------------------- | ---------- |
-| Linux | Intel        | 1.3.0   | Full       | 1.0.0.1297 \+           | [Download] |
-| Linux | Intel        | 1.3.0   | Standalone | 1.0.0.1297 \+           | [Download] |
+| Linux | Intel        | 1.3.0   | Full       | 1.0.0.1297 +            | [Download] |
+| Linux | Intel        | 1.3.0   | Standalone | 1.0.0.1297 +            | [Download] |
 | Linux | Intel        | 1.1.0   | Full       | 1.0.0.1034 – 1.0.0.1296 | [Download] |
 | Linux | Intel        | 1.1.0   | Standalone | 1.0.0.1034 – 1.0.0.1296 | [Download] |
 
@@ -27,7 +27,7 @@ Once you select a particular client or tool (e.g., **JavaScript → NodeJS**), y
 1. **OS** - Indicates the operating system for which this package was built (e.g., Linux).
 2. **Architecture** - The CPU architecture supported by this package (e.g., Intel/x86-64).
 3. **Version** - The specific release number of the driver or tool. Follows Semantic Versioning `(Major.Minor.Patch)`.
-4. **Type** 
+4. **Type**
    - **Full**: Includes the Regatta client library bundled together with the driver. Ideal for a “zero-prep” installation—just copy, extract, and run with no additional dependencies.
    - **Standalone**: Contains only the driver (no embedded client library). Requires you to install the [**Regatta Client Library**](https://docs.regatta.dev/drivers-and-clients/client-lib) separately. Useful if you want to manage client library upgrades independently of the driver.
 5. **Supported DB Versions** - Specifies which Regatta Database cluster versions are compatible with this driver/tool.\
