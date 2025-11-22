@@ -10,13 +10,17 @@ from pyregatta import connect
 
 Note that you should import all relevant classes based on the functionality of your applicationand its requirements.
 
-In the next step you will need to add the cluster IP and the user’s credentials.
+## Connection Details
+
+Connection parameters will be defined as follows:
 
 ```Python
 host = "aaa.bbb.ccc.ddd:ppp"
 user = "MyUserName"
 password = "SomeSophisticatedPassword"
 ```
+
+## Example Appliaction
 
 Below is an example of a sample application that creates an `employees` table, adds four rows and then selects them:
 
@@ -76,7 +80,9 @@ with connect(user, password, host) as conn:
             print(row[0])  # employee_key
 ```
 
-Run the application:
+## Running the Appliaction
+
+Run the application by using your Python interpreter:
 
 ```bash
 [18:49:43] | ~/drivers/python/examples$ python3 database_example.py

@@ -52,6 +52,11 @@ title: "Install Your Java Client"
     - **Java 8** or newer is required to use the Regatta JDBC driver.
     - If you are using the **Full** driver package, the Regatta client library is included automatically. If you are using the **Standalone** version, ensure that the [client library is installed](/drivers-and-clients/client-lib).
     - The Regatta JDBC driver implements the **JDBC 4.2 API**. Refer to the [official JDBC documentation](https://docs.oracle.com/javase/8/docs/api/java/sql/package-summary.html) for full API details
+    - Regatta supports most of the common JDBC functionality. If you do use a JDBC command which is not supported, you will receive the following exception:
+
+      ```java
+      class RegFeatureNotSupportedException extends SQLFeatureNotSupportedException
+      ```
   </Tab>
 </Tabs>
 

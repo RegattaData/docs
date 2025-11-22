@@ -416,7 +416,8 @@
           {
             "group": "Java",
             "pages": [
-              "drivers-and-clients/java/install-your-java-client"
+              "drivers-and-clients/java/install-your-java-client",
+              "drivers-and-clients/java/run-java-application"
             ]
           },
           {
