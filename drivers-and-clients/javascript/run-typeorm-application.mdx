@@ -1,118 +1,231 @@
 ---
-title: Running a TypeORM based Application
+title: "Running a TypeORM Application"
 ---
 
-After installation, we can now run a simply TypeORM example. Create the relevant 
-tsconfig.json file for your application:
+Let's create a simple TypeORM application that queries the Regatta database. Start by importing the relevant classes from the `typeorm-regatta` package:
 
-```typescript
-{
- "compilerOptions": {
- "target": "ES2020",
- "module": "commonjs",
- "strict": true,
- "esModuleInterop": true,
- "experimentalDecorators": true,
- "strictPropertyInitialization": false,
- "emitDecoratorMetadata": true,
- "outDir": "./dist",
- "lib": ["ES2020", "DOM"],
- "typeRoots": ["./node_modules/@types"]
- },
- "include": ["typeorm_example.ts"]
-}
+```javascript
+import { Column, DataSource, Entity, PrimaryColumn } from "typeorm-regatta"
 ```
 
-Below is a simple code example, namely, `typeorm_example.ts`, accessing a Regatta Database. 
+Note that you should import all relevant classes based on the functionality of your application and its requirements.
 
-<Note> Note that this example is also available as part of the downloaded driver.</Note>
+## Connection Details
 
-Following is the output of the application:
+Connection parameters will be defined as follows:
 
-<Frame caption="Figure 54 TypeORM example of an application using the tool">
-  <img src="/images/49.png" />
-</Frame>
+```
+const DB_HOST = "aaa.bbb.ccc.ddd:pppp";
+const DB_USER = "MyUserName";
+const DB_PASSWORD = "SomeSophisticatedPassword";
+```
+
+## Example Appliaction
+
+To help you get acquainted with TypeORM on Regatta, we’ve provided a simple code example below.\
+This application demonstrates common tasks such as defining entities, initializing a `DataSource`, inserting data, querying, updating, deleting, and cleaning up schema.
+
+### Project Structure
+
+Create the following folder structure:
+
+```bash
+typeorm-example/
+├── package.json
+├── tsconfig.json
+└── src/
+    └── typeorm_example.ts
+```
+
+### Example Code
+
+Create the main program and save it as: `src/typeorm_example.ts`
 
 ```typescript
-import { DataSource, Entity, PrimaryColumn, Column } from 'typeorm-regatta';
-import { v4 as uuidv4 } from 'uuid'; // Use uuid to generate unique ids
-// Define an entity
+import { Column, DataSource, Entity, PrimaryColumn } from "typeorm-regatta";
+import { v4 as uuidv4 } from "uuid";
+import type { QueryRunner } from "typeorm-regatta";
+
+/**
+ * Entity definition.
+ * TypeORM will map this class to a "user" table by default.
+ */
 @Entity()
 class User {
- @PrimaryColumn()
- id: string;
- @Column()
- firstName: string;
- @Column()
- lastName: string;
- @Column()
- age: number;
+  @PrimaryColumn()
+  id!: string;
+
+  @Column()
+  firstName!: string;
+
+  @Column()
+  lastName!: string;
+
+  @Column()
+  age!: number;
 }
-// Create a new DataSource instance
+
+/**
+ * Connection details (replace with your own).
+ * Note: In TypeORM-Regatta, host includes "<ip>:<port>".
+ */
+const DB_HOST = "aaa.bbb.ccc.ddd:pppp";
+const DB_USER = "MyUserName";
+const DB_PASSWORD = "SomeSophisticatedPassword";
+
+/**
+ * Create the TypeORM DataSource.
+ * - `type: "regatta"` selects the Regatta driver inside typeorm-regatta.
+ * - `synchronize: true` auto-creates schema from entities (good for examples).
+ * - `extra.deviceNames` is Regatta-specific. Keep it if your environment
+ *   requires devices for automatic table placement.
+ */
 const dataSource = new DataSource({
- type: 'regatta',
- host: 'aaa.bbb.ccc.ddd:9999',
- username: 'MyUsername',
- password: 'SomeSophisticatedPassword',
- entities: [User],
- synchronize: true,
- logging: true,
- extra: {
- deviceNames: ['m10d1']
- }
+  type: "regatta",
+  host: DB_HOST,
+  username: DB_USER,
+  password: DB_PASSWORD,
+  entities: [User],
+  synchronize: true,
+  logging: true,
+  extra: {
+    deviceNames: ["m10d1"],
+  },
 });
+
 async function run() {
- try {
- // Initialize the DataSource
- await dataSource.initialize();
- console.log('Data Source has been initialized!');
- // Create a new User
- const user = new User();
- user.id = uuidv4(); // Use UUID for the ID
- user.firstName = 'John';
- user.lastName = 'Doe';
- user.age = 25;
- // Save the User
- const userRepository = dataSource.getRepository(User);
- await userRepository.save(user);
- console.log('User has been saved!');
- // Query the User table
- const users = await userRepository.find();
- console.log('Users:', users);
- // Update the user
- user.age = 26;
- await userRepository.save(user);
- console.log('User has been updated:', user);
- // Delete the user
- await userRepository.remove(user);
- console.log('User has been removed:', user);
- } catch (error) {
- console.error('Error:', error);
- } finally {
- // Drop the User table
- await dropUserTable();
- // Close the DataSource connection
- await dataSource.destroy();
- }
+  try {
+    // Initialize the DataSource
+    await dataSource.initialize();
+    console.log("Data Source has been initialized!");
+
+    const userRepository = dataSource.getRepository(User);
+
+    // Create a new User
+    const user = new User();
+    user.id = uuidv4();
+    user.firstName = "John";
+    user.lastName = "Doe";
+    user.age = 25;
+
+    // Insert
+    await userRepository.save(user);
+    console.log("User has been saved!");
+
+    // Query
+    const users = await userRepository.find();
+    console.log("Users:", users);
+
+    // Update
+    user.age = 26;
+    await userRepository.save(user);
+    console.log("User has been updated:", user);
+
+    // Delete
+    await userRepository.remove(user);
+    console.log("User has been removed:", user);
+  } catch (error) {
+    console.error("Error:", error);
+  } finally {
+    // Drop the User table
+    await dropUserTable();
+
+    // Close the connection
+    await dataSource.destroy();
+  }
 }
+
 async function dropUserTable() {
- let queryRunner;
- try {
- // Create a query runner from a new manager
- queryRunner = dataSource.createQueryRunner();
- await queryRunner.connect();
- await queryRunner.startTransaction();
- // Run the query to drop the table
- await queryRunner.query('DROP TABLE "user"');
- console.log('User table has been dropped!');
- await queryRunner.commitTransaction();
- } catch (error) {
- console.error('Error dropping table:', error);
- } finally {
- // Release the query runner if it was created
- if (queryRunner) await queryRunner.release();
- }
+  let queryRunner: QueryRunner | null = null;
+
+  try {
+    queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    // Drop the table created by @Entity() -> default table name is "user"
+    await queryRunner.query('DROP TABLE "user"');
+    console.log("User table has been dropped!");
+
+    await queryRunner.commitTransaction();
+  } catch (error) {
+    console.error("Error dropping table:", error);
+    if (queryRunner) {
+      await queryRunner.rollbackTransaction();
+    }
+  } finally {
+    if (queryRunner) {
+      await queryRunner.release();
+    }
+  }
 }
-// Run the main function
+
+// Run the example
 run();
 ```
+
+### TypeScript Configuration
+
+Create `tsconfig.json` in the project root:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "emitDecoratorMetadata": true,
+    "outDir": "./dist",
+    "lib": ["ES2020", "DOM"],
+    "typeRoots": ["./node_modules/@types"]
+  },
+  "include": ["src/typeorm_example.ts"]
+}
+```
+
+### Package Setup
+
+Create a `package.json` in the project root:
+
+```json
+{
+  "name": "typeorm-regatta-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/typeorm_example.js"
+  },
+  "dependencies": {
+    "typeorm-regatta": "file:path/to/typeorm-regatta-<version>.tgz",
+    "node-regatta": "file:path/to/node-regatta-<version>_<type>.tgz",
+    "uuid": "^9.0.0",
+    "reflect-metadata": "^0.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "@types/node": "^18.13.0",
+    "@types/uuid": "^9.0.0"
+  }
+}
+```
+
+<Note>
+  This example assumes you already downloaded and installed the [**Regatta TypeORM package**](/drivers-and-clients/java/install-your-javascript-client) (`typeorm-regatta`) and the [**Node.js driver**](/drivers-and-clients/java/install-your-javascript-client) (`node-regatta`) locally. If you installed them with `npm install path/to/*.tgz`, update the dependency versions accordingly instead of using `file:`.
+</Note>
+
+## Running the Application
+
+From the project root run:
+
+```bash
+npm install
+npm run build
+npm start
+```
+
+Expected output:
