@@ -103,7 +103,7 @@ public class Employee {
 
 ### Hibernate Main Program
 
-Save the main program as: `src/main/java/dev/regatta/hibernate_example/HibernateExample.java`
+Create the main program and save it as: `src/main/java/dev/regatta/hibernate_example/HibernateExample.java` 
 
 ```java
 package dev.regatta.hibernate_example;
@@ -231,6 +231,7 @@ Save the Hibernate configuration as:`src/main/resources/hibernate.cfg.xml`
 
 <Note>
   The property `hbm2ddl.auto` controls whether Hibernate automatically manages your database schema. When set to `none`, Hibernate will not attempt to create, update, validate, or drop tables. If you prefer Hibernate to manage the schema for you during development, you may change this property:
+
   - create — Drops the existing schema (if any) and creates all tables on startup.
   - create-drop — Creates the schema on startup and drops it on shutdown.
   - update — Tries to update the schema to match your entities without dropping tables.
