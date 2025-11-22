@@ -1,101 +1,252 @@
 ---
-title: Running a Node.js Application
+title: "Run a Node.js Application"
 ---
 
-After installing the driver, you will need an IP of the cluster and user credentials. These will be 
-used in the same way as with other databases.
-
-In the following example, you'll find code that performs operations similar to those described in 
-the Regatta Platform section. 
-
-To begin, import the relevant methods using the ‘node-regatta’require statement:
+Let's create a simple Node.js application that queries the Regatta database. Start by adding the reference to the regatta driver:
 
 ```javascript
 const {getConnection} = require("node-regatta");
 ```
 
-Please ensure that you import all relevant classes and methods based on your application's 
-functionality and requirements. Next, add the IP address and credentials obtained earlier (see
-External Access to the Regatta Database):
+Note that you should import all relevant classes based on the functionality of your application and its requirements.
+
+## Connection Details
+
+Connection parameters will be defined as follows:
 
 ```javascript
+const dbUrl = "aaa:bbb:ccc:ddd:pppp";
 const dbUser = "MyUserName ";
 const dbPassword = "SomeSophisticatedPassword";
-const dbUrl = "aaa:bbb:ccc:ddd:pppp";
 ```
 
-Any code that performs SQL commands should be updated accordingly.
+## Example Appliaction
 
-To help you get acquainted with the Regatta API for Node.js, we’ve provided a simple code 
-example below. Additionally, a more comprehensive example is included in the driver package 
-under **examples/node_regatta_examples.js.** These documented examples demonstrate 
-common tasks such as creating connections, executing queries, and working with cursors. The 
-Regatta API supports both promise-based and callback-based semantics.
+To help you get acquainted with the Regatta API for Node.js, we’ve provided a simple code example below. This application demonstrate common tasks such as creating connections, executing queries, and working with cursors. The Regatta API supports both **async/await** and **callback-based** patterns.
 
-Unlike the Regatta Platform, in the commands used by the driver we need to specify the device 
-mapping when creating a table. In the example below we will use a single device.
-
-Below is an example of some of the code. 
-
-Note that a more robust example is also available as part of the downloaded driver.
+Create the main program and save it as: `node_regatta_example.js`
 
 ```javascript
-const {getConnection} = require("node-regatta");
+const { getConnection, ErrorVerbosityLevel } = require('node-regatta');
+
 async function main() {
- const dbUser = "MyUserName";
- const dbPassword = "SomeSophisticatedPassword";
- const dbUrl = "aaa:bbb:ccc:ddd:pppp";
- 
- try {
- // Get a database connection
- let connection = await getConnection(dbUser, dbPassword, dbUrl);
- console.log("Connected to the database");
-// Create the employees table
-const createQuery = `
- CREATE TABLE employees (
-key INT PRIMARY KEY INDEX WITH (devices = (m10d1)),
-name VARCHAR(40) NOT NULL,
-salary INT,
-department VARCHAR(50) NOT NULL
-) WITH (devices = (m10d1))
-`;
-await connection.execute(createQuery);
- console.log("Employees table created");
- // Insert values into table 
- const insertQuery = ` 
- INSERT INTO employees (key, name, salary, department) VALUES
- (1, 'John Doe', 10932, 'DevOps'),
- (2, 'Richard Roe', 18324, 'Legal'),
- (3, 'Jane Roe', 20411, 'Sale'),
- (4, 'Rachel Roe', 19555, 'Support')
- `;
- 
- await connection.execute(insertQuery);
- console.log("Data inserted into employees table");
- // Select all values
- const selectQuery = "SELECT * FROM employees";
- let cursor = await connection.execute(selectQuery);
- // Fetch the results
- let result = await cursor.fetchAll();
- // Print the results
- console.log(result.rows);
- // Closing the connection will also close all open cursors.
- await connection.close();
- console.log("Connection closed");
-} catch (error) {
- console.error("Error: ", error.message);
+  /* Enter the Regatta connection URL */
+  const dbUrl = 'aaa.bbb.ccc.ddd:pppp';
+  /* Enter your Regatta username */
+  const dbUser = 'MyUserName';
+  /* Enter your Regatta password */
+  const dbPassword = 'SomeSophisticatedPassword';
+
+  try {
+    /*
+     * Establish a connection to the database using the provided credentials
+     * and URL.
+     * To pass client options or set a timeout for all requests to the database,
+     * use custom getConnection:
+     * connectCustom(user, password, host, connectionOptions, timeoutMs)
+     */
+    let connection = await getConnection(dbUser, dbPassword, dbUrl);
+    console.log('Connected to the database');
+
+    /*
+     * Auto-commit is enabled by default. To use manual commit mode, set
+     * auto-commit to false.
+     */
+    connection.setCommitMode(false);
+
+    /*
+     * The transaction isolation level can be set. The default is the Regatta
+     * transaction isolation level.
+     * const { TransIsoLevel } = require("node-regatta");
+     * connection.setTransactionIsolation(TransIsoLevel.READ_COMMITTED);
+     */
+
+    /*
+     * The default connection timeout to execute each query is set to infinity.
+     * A custom timeout can be set using the setTimeout(timeoutMs) method.
+     */
+    connection.setTimeout(3000);
+
+    /*
+     * Optionally, the level of detail for error messages generated by
+     * operations using the connection can be set.
+     */
+    connection.setErrorVerbosity(ErrorVerbosityLevel.HIGH);
+
+    /*
+     * Create a new table 'users' with columns for 'id' and 'name'.
+     * The 'id' column is the primary key and is indexed.
+     */
+    await connection.execute(`
+      CREATE TABLE users (
+         id   INT PRIMARY KEY INDEX,
+         name VARCHAR(128)
+      )
+    `);
+
+    /*
+     * When working in manual commit mode, commit the transaction manually
+     * using the commit method. This finalizes the transaction and makes the
+     * changes permanent.
+     */
+    await connection.commit();
+    console.log("Created table 'users'");
+
+    /*
+     * Insert multiple rows of data into the 'users' table using promise style.
+     */
+    await connection.execute(`
+            INSERT INTO users (id, name)
+            VALUES (100, 'Mario'),
+                   (200, 'Barbara'),
+                   (300, 'Marcelo'),
+                   (400, 'Henry')
+        `);
+
+    /*
+     * Commit the transaction manually to finalize the insertion of rows into
+     * the 'users' table and make the changes permanent.
+     */
+    await connection.commit();
+    console.log("Inserted data into 'users' table using promise");
+
+    /*
+     * Insert multiple rows of data into the 'users' table using callback style.
+     */
+    await new Promise((resolve, reject) => {
+      connection.execute(
+        `INSERT INTO users (id, name)
+                 VALUES (500, 'Mike'),
+                        (600, 'Johnny')`,
+        function (err) {
+          if (err) {
+            console.error('Error inserting data:', err.message);
+            return reject(err);
+          }
+
+          /* Manually commit the transaction. */
+          connection.commit(function (err) {
+            if (err) {
+              console.error('Error committing transaction:', err.message);
+              return reject(err);
+            }
+
+            console.log("Inserted data into 'users' table using callback");
+            resolve();
+          });
+        }
+      );
+    });
+
+    /*
+     * Insert multiple rows of data into the 'users' table using batch API.
+     */
+    connection.addBatch("INSERT INTO users (id, name) VALUES (700, 'Logan')");
+    connection.addBatch("INSERT INTO users (id, name) VALUES (800, 'Nick')");
+
+    await connection.executeBatch();
+
+    /* Manually commit the transaction. */
+    await connection.commit();
+    console.log("Inserted data into 'users' table using batch API");
+
+    /* Retrieve all data from the 'users' table. */
+    let cursor = await connection.execute('SELECT * FROM users');
+
+    /* Manually commit the transaction. */
+    await connection.commit();
+
+    /*
+     * Get cursor description - An array containing objects for each column in
+     * the result set, with each object having a name and a SQLTypeCode
+     * property.
+     */
+    console.log('Cursor description:', cursor.description);
+
+    /*
+     * Get the total number of rows in the result set for DQL queries (SELECT)
+     * or the number of affected rows for DML queries (INSERT, UPDATE, and
+     * DELETE).
+     */
+    console.log('Total number of rows in the result:', cursor.rowCount);
+
+    /* Fetch the first 2 rows from the cursor. */
+    let result = await cursor.fetch(2);
+    console.log("First 2 rows retrieved from 'users' table:", result.rows);
+
+    /* Fetch all remaining rows. */
+    result = await cursor.fetchAll();
+    console.log("Remaining rows retrieved from 'users' table:", result.rows);
+
+    /* Close the cursor after retrieving the data. */
+    await cursor.close();
+
+    /* Insert a new user and then rollback the transaction. */
+    await connection.execute(`
+            INSERT INTO users (id, name)
+            VALUES (900, 'Paul')
+        `);
+
+    /*
+     * Rollback the transaction to undo the insertion.
+     * After the rollback, the user with ID 900 will not exist in the table.
+     * If execution is still running and needs to be stopped,
+     * the abort() method can be used instead.
+     */
+    await connection.rollback();
+    console.log('Rollback: insertion of user with ID 900 has been undone.');
+
+    /* Drop the 'users' table to clean up the database. */
+    await connection.execute('DROP TABLE users');
+
+    /* Manually commit the transaction. */
+    await connection.commit();
+    console.log("Dropped table 'users'");
+
+    /*
+     * Close the database connection.
+     * Closing the connection will also close all open cursors.
+     */
+    await connection.close();
+    console.log('Connection closed');
+  } catch (error) {
+    /* Handle any errors that occur during the database operations. */
+    console.error('Error:', error);
+  }
 }
-}
- 
+
+/* Execute the main function to perform the database operations. */
 main();
 ```
-*Figure 51 Node.js example of application using driver*
 
-Following is the output of the application:
+## Running the Application
 
-<Frame caption="Figure 52 Node.js example output">
-  <img src="/images/48.png" />
-</Frame>
+Run the application from the directory containing your example:
 
-Note that all commands performed in the Regatta Platform section can be performed in the 
-same manner using a Node.js driver.
+```bash
+node node_regatta_example.js
+```
+
+Expected output:
+
+```bash
+Connected to the database
+Created table 'users'
+Inserted data into 'users' table using promise
+Inserted data into 'users' table using callback
+Inserted data into 'users' table using batch API
+Cursor description: [ { name: 'id', sqlTypeCode: 1 }, { name: 'name', sqlTypeCode: 7 } ]
+Total number of rows in the result: 8
+First 2 rows retrieved from 'users' table: [ { id: 700, name: 'Logan' }, { id: 500, name: 'Mike' } ]
+Remaining rows retrieved from 'users' table: [
+  { id: 600, name: 'Johnny' },
+  { id: 100, name: 'Mario' },
+  { id: 200, name: 'Barbara' },
+  { id: 300, name: 'Marcelo' },
+  { id: 400, name: 'Henry' },
+  { id: 800, name: 'Nick' }
+]
+Rollback: insertion of user with ID 900 has been undone.
+Dropped table 'users'
+Connection closed
+```
