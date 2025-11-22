@@ -13,28 +13,36 @@ title: "Install Your Java Client"
     </Note>
     2. Add the Regatta JDBC driver to your Maven project:
 
-       **Option A — Using system scope (local JAR path):**
+       **Option A — Install locally (recommended):**
+
+       Install the driver locally in your environment:
+
+       ```bash
+       mvn install:install-file \
+         -Dfile=regatta-jdbc-1.8.0-shaded_full.jar \
+         -DgroupId=dev.regatta \
+         -DartifactId=regatta-jdbc \
+         -Dversion=1.8.0 \
+         -Dpackaging=jar
+       ```
+
+       Then add the JDBC driver as a dependency to your project:
 
        ```xml
        <dependency>
          <groupId>dev.regatta</groupId>
          <artifactId>regatta-jdbc</artifactId>
-         <version>1.9.0</version>
-         <scope>system</scope>
-         <systemPath>${project.basedir}/my_drivers/regatta-jdbc-1.8.0-shaded_full.jar</systemPath>
+         <version>1.8.0</version>
        </dependency>
        ```
 
-       <Note>
-         When using system scope, ensure that the driver exists at the path specified by `systemPath`. If you are using build tools such as Gradle or deploying to application servers, choose the option that best matches your environment.
-       </Note>
        **Option B — Provided scope (when included by your runtime environment):**
 
        ```xml
        <dependency>
          <groupId>dev.regatta</groupId>
          <artifactId>regatta-jdbc</artifactId>
-         <version>1.9.0</version>
+         <version>1.8.0</version>
          <scope>provided</scope>
        </dependency>
        ```
@@ -56,21 +64,29 @@ title: "Install Your Java Client"
     1. [Download the Regatta Hibernate dialect](/drivers-and-clients/download-drivers-and-clients). The dialect is distributed as a single JAR file.
     2. Add the Regatta Hibernate dialect to your Maven project:
 
-       **Option A — Using system scope (local JAR path):**
+       **Option A — Install locally (recommended):**
+
+       Install the dialect locally in your environment:
+
+       ```bash
+       mvn install:install-file \
+         -Dfile=regatta-hibernate-1.1.0.jar \
+         -DgroupId=dev.regatta \
+         -DartifactId=regatta-hibernate \
+         -Dversion=1.1.0 \
+         -Dpackaging=jar
+       ```
+
+       Then add the Hibernate dialect as a dependency to your project:
 
        ```xml
        <dependency>
-           <groupId>dev.regatta</groupId>
-           <artifactId>regatta-hibernate</artifactId>
-           <version>1.1.0</version>
-           <scope>system</scope>
-           <systemPath>path/to/regatta_hibernate_dialect.jar</systemPath>
+         <groupId>dev.regatta</groupId>
+         <artifactId>regatta-hibernate</artifactId>
+         <version>1.1.0</version>
        </dependency>
        ```
 
-       <Note>
-         When using system scope, ensure that the dialect JAR exists at the path specified by `systemPath`. If you are using build tools such as Gradle or deploying to application servers, choose the option that best matches your environment.
-       </Note>
        **Option B — Provided scope (when included by your runtime environment):**
 
        ```xml
