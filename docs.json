@@ -424,22 +424,7 @@
           {
             "group": "JavaScript",
             "pages": [
-              {
-                "group": "Nodejs Driver",
-                "pages": [
-                  "drivers-and-clients/javascript/nodejs",
-                  "drivers-and-clients/javascript/install-the-driver",
-                  "drivers-and-clients/javascript/run-nodejs-application"
-                ]
-              },
-              {
-                "group": "TypeORM",
-                "pages": [
-                  "drivers-and-clients/javascript/type-orm",
-                  "drivers-and-clients/javascript/install-orm-tools",
-                  "drivers-and-clients/javascript/run-typeorm-application"
-                ]
-              }
+              "drivers-and-clients/javascript/install-your-javascript-client"
             ]
           }
         ]

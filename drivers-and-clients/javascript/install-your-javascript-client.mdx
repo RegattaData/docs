@@ -1,0 +1,55 @@
+---
+title: "Install Your Javascript Client"
+---
+
+## Drivers
+
+<Tabs>
+  <Tab title="Node.js">
+    1. [Download the Node.js driver](/drivers-and-clients/download-drivers-and-clients), and save the `.tgz` file locally (typically next to your `package.json`).
+    2. Install the driver:
+
+       **Option A — Direct install:**
+
+       Install the driver locally in your environment:
+
+       ```bash
+       npm install path/to/node-regatta-<version>_<type>.tgz
+       ```
+
+       This will install the driver, pull in required dependencies, and update your `package-lock.json`.
+
+       **Option B — Add as a local package dependency:**\
+       Add the driver to your project’s `package.json`:
+
+       ```json
+       "dependencies": {
+        "node-regatta": "file: path/to/node-regatta.tgz"
+       }
+       ```
+
+    ### Notes
+
+    - **Node.js 16** or newer is required to use the Regatta Node.js driver.
+    - If you are using the **Full** driver package, the Regatta client library is included automatically. If you are using the **Standalone** version, ensure that the [client library is installed](/drivers-and-clients/client-lib).
+  </Tab>
+</Tabs>
+
+---
+
+## ORM frameworks
+
+<Tabs>
+  <Tab title="TypeORM">
+    1. [Download the Regatta TypeORM package](/drivers-and-clients/download-drivers-and-clients).
+    2. Install the Regatta TypeORM package:
+
+       ```bash
+       npm install typeorm-regatta-<version>.tgz
+       ```
+
+    <Note>
+      Regatta provides a dedicated fork of TypeORM that includes the Regatta dialect inside the TypeORM core. The Regatta TypeORM package (`typeorm-regatta`) is based on [**TypeORM 0.3.20**](https://github.com/typeorm/typeorm/releases/tag/0.3.20) and is distributed as a separate `.tgz` package. Because it is a fork, it should be used instead of the standard `typeorm` dependency, and compatibility is aligned to that upstream version. 
+    </Note>
+  </Tab>
+</Tabs>
