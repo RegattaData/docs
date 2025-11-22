@@ -2,7 +2,7 @@
 title: "Run a Hibernate Application"
 ---
 
-Let's create a simple Hibernate application that connects to Regatta using the Regatta JDBC driver and Hibernate dialect:
+Let's create a simple Hibernate application that connects to Regatta using the Regatta JDBC driver and Hibernate dialect.
 
 ## Connection Details
 
@@ -103,7 +103,7 @@ public class Employee {
 
 ### Hibernate Main Program
 
-Create the main program and save it as: `src/main/java/dev/regatta/hibernate_example/HibernateExample.java` 
+Create the main program and save it as: `src/main/java/dev/regatta/hibernate_example/HibernateExample.java`
 
 ```java
 package dev.regatta.hibernate_example;
@@ -293,7 +293,7 @@ Create a `pom.xml` in the project root:
       <version>5.1.0</version>
     </dependency>
 
-    <!-- Optional: adds a simple SLF4J runtime provider so SLF4J does not print a warning -->
+    <!-- Optional: SLF4J -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
@@ -318,7 +318,7 @@ Create a `pom.xml` in the project root:
 ```
 
 <Note>
-  This `pom.xml` assumes you already [installed the Regatta JDBC driver locally](/drivers-and-clients/java/install-your-java-client).
+  This `pom.xml` assumes you already [installed the Regatta JDBC driver and Hibernate dialect locally](/drivers-and-clients/java/install-your-java-client).
 </Note>
 
 ## Running the Application
