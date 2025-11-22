@@ -1,0 +1,52 @@
+---
+title: "Install Your Java Client"
+---
+
+## Drivers
+
+<Tabs>
+  <Tab title="JDBC">
+    1. [Download the JDBC driver](/drivers-and-clients/download-drivers-and-clients).\
+       The driver is distributed as a **single JAR file**.
+
+    <Note>
+      Regatta provides a shaded JDBC driver which includes all required dependencies. A non-shaded driver can be provided upon request.
+    </Note>
+    2. Add the Regatta JDBC driver to your Maven project:
+
+       **Option A — Using system scope (local JAR path):**
+
+       ```xml
+       <dependency>
+         <groupId>dev.regatta</groupId>
+         <artifactId>regatta-jdbc</artifactId>
+         <version>1.9.0</version>
+         <scope>system</scope>
+         <systemPath>${project.basedir}/my_drivers/regatta-jdbc-1.8.0-shaded_full.jar</systemPath>
+       </dependency>
+       ```
+
+       <Note>
+         When using system scope\*\*, \*\*ensure that the driver exists at the path specified by `systemPath`. If you are using build tools such as Gradle or deploying to application servers, choose the option that best matches your environment.
+       </Note>
+       **Option B — Provided scope (when included by your runtime environment):**
+
+       ```xml
+       <dependency>
+         <groupId>dev.regatta</groupId>
+         <artifactId>regatta-jdbc</artifactId>
+         <version>1.9.0</version>
+         <scope>provided</scope>
+       </dependency>
+       ```
+
+    ### Notes
+
+    - **Java 8** or newer is required to use the Regatta JDBC driver.
+    - If you are using the **Full** driver package, the Regatta client library is included automatically.\
+      If you are using the **Standalone** version, ensure that the [client library is installed](/drivers-and-clients/client-lib).
+    - The Regatta JDBC driver implements the **JDBC 4.2 API**. Refer to the [official JDBC documentation](https://docs.oracle.com/javase/8/docs/api/java/sql/package-summary.html) for full API details
+  </Tab>
+</Tabs>
+
+---
