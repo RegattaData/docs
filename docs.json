@@ -425,7 +425,8 @@
             "group": "JavaScript",
             "pages": [
               "drivers-and-clients/javascript/install-your-javascript-client",
-              "drivers-and-clients/javascript/run-nodejs-application"
+              "drivers-and-clients/javascript/run-nodejs-application",
+              "drivers-and-clients/javascript/run-typeorm-application"
             ]
           }
         ]
