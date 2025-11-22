@@ -6,8 +6,7 @@ title: "Install Your Java Client"
 
 <Tabs>
   <Tab title="JDBC">
-    1. [Download the JDBC driver](/drivers-and-clients/download-drivers-and-clients).\
-       The driver is distributed as a **single JAR file**.
+    1. [Download the JDBC driver](/drivers-and-clients/download-drivers-and-clients). The driver is distributed as a single JAR file.
 
     <Note>
       Regatta provides a shaded JDBC driver which includes all required dependencies. A non-shaded driver can be provided upon request.
@@ -27,7 +26,7 @@ title: "Install Your Java Client"
        ```
 
        <Note>
-         When using system scope\*\*, \*\*ensure that the driver exists at the path specified by `systemPath`. If you are using build tools such as Gradle or deploying to application servers, choose the option that best matches your environment.
+         When using system scope, ensure that the driver exists at the path specified by `systemPath`. If you are using build tools such as Gradle or deploying to application servers, choose the option that best matches your environment.
        </Note>
        **Option B — Provided scope (when included by your runtime environment):**
 
@@ -43,10 +42,48 @@ title: "Install Your Java Client"
     ### Notes
 
     - **Java 8** or newer is required to use the Regatta JDBC driver.
-    - If you are using the **Full** driver package, the Regatta client library is included automatically.\
-      If you are using the **Standalone** version, ensure that the [client library is installed](/drivers-and-clients/client-lib).
+    - If you are using the **Full** driver package, the Regatta client library is included automatically. If you are using the **Standalone** version, ensure that the [client library is installed](/drivers-and-clients/client-lib).
     - The Regatta JDBC driver implements the **JDBC 4.2 API**. Refer to the [official JDBC documentation](https://docs.oracle.com/javase/8/docs/api/java/sql/package-summary.html) for full API details
   </Tab>
 </Tabs>
 
 ---
+
+## ORM frameworks
+
+<Tabs>
+  <Tab title="Hibernate">
+    1. [Download the Regatta Hibernate dialect](/drivers-and-clients/download-drivers-and-clients). The dialect is distributed as a single JAR file.
+    2. Add the Regatta Hibernate dialect to your Maven project:
+
+       **Option A — Using system scope (local JAR path):**
+
+       ```xml
+       <dependency>
+           <groupId>dev.regatta</groupId>
+           <artifactId>regatta-hibernate</artifactId>
+           <version>1.1.0</version>
+           <scope>system</scope>
+           <systemPath>path/to/regatta_hibernate_dialect.jar</systemPath>
+       </dependency>
+       ```
+
+       <Note>
+         When using system scope, ensure that the dialect JAR exists at the path specified by `systemPath`. If you are using build tools such as Gradle or deploying to application servers, choose the option that best matches your environment.
+       </Note>
+       **Option B — Provided scope (when included by your runtime environment):**
+
+       ```xml
+       <dependency>
+         <groupId>dev.regatta</groupId>
+         <artifactId>regatta-hibernate</artifactId>
+         <version>1.1.0</version>
+         <scope>provided</scope>
+       </dependency>
+       ```
+
+       <Note>
+         The Regatta Hibernate dialect is compatible with Hibernate 6.x (built and tested with Hibernate 6.4.4.Final) and requires Java 17 or newer. Refer to the [official Hibernate documentation](https://hibernate.org/orm/documentation/6.4/) for installation instructions and API details.
+       </Note>
+  </Tab>
+</Tabs>
