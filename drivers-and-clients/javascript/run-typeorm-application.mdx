@@ -229,3 +229,43 @@ npm start
 ```
 
 Expected output:
+
+```bash
+query: SHOW TABLES LIKE 'users'
+query: CREATE TABLE SET NOT READY "users" ("id" varchar PRIMARY KEY INDEX WITH (devices = (m10d1)), "firstName" varchar NOT NULL, "lastName" varchar NOT NULL, "age" int8 NOT NULL) WITH (devices = (m10d1))
+query: ALTER TABLE "users" SET READY
+Data Source has been initialized!
+query: SELECT "User"."id" AS "User_id", "User"."firstName" AS "User_firstName", "User"."lastName" AS "User_lastName", "User"."age" AS "User_age" FROM "users" "User" WHERE "User"."id" IN ($1) -- PARAMETERS: ["acaf5ed5-223d-40ae-8080-9196717cd54f"]
+query: START TRANSACTION
+query: INSERT INTO "users"("id", "firstName", "lastName", "age") VALUES ($1, $2, $3, $4) -- PARAMETERS: ["acaf5ed5-223d-40ae-8080-9196717cd54f","John","Doe",25]
+query: COMMIT
+User has been saved!
+query: SELECT "User"."id" AS "User_id", "User"."firstName" AS "User_firstName", "User"."lastName" AS "User_lastName", "User"."age" AS "User_age" FROM "users" "User"
+Users: [
+  User {
+    id: 'acaf5ed5-223d-40ae-8080-9196717cd54f',
+    firstName: 'John',
+    lastName: 'Doe',
+    age: 25
+  }
+]
+query: SELECT "User"."id" AS "User_id", "User"."firstName" AS "User_firstName", "User"."lastName" AS "User_lastName", "User"."age" AS "User_age" FROM "users" "User" WHERE "User"."id" IN ($1) -- PARAMETERS: ["acaf5ed5-223d-40ae-8080-9196717cd54f"]
+query: START TRANSACTION
+query: UPDATE "users" SET "age" = $1 WHERE "id" IN ($2) -- PARAMETERS: [26,"acaf5ed5-223d-40ae-8080-9196717cd54f"]
+query: COMMIT
+User has been updated: User {
+  id: 'acaf5ed5-223d-40ae-8080-9196717cd54f',
+  firstName: 'John',
+  lastName: 'Doe',
+  age: 26
+}
+query: SELECT "User"."id" AS "User_id", "User"."firstName" AS "User_firstName", "User"."lastName" AS "User_lastName", "User"."age" AS "User_age" FROM "users" "User" WHERE "User"."id" IN ($1) -- PARAMETERS: ["acaf5ed5-223d-40ae-8080-9196717cd54f"]
+query: START TRANSACTION
+query: DELETE FROM "users" WHERE "id" = $1 -- PARAMETERS: ["acaf5ed5-223d-40ae-8080-9196717cd54f"]
+query: COMMIT
+User has been removed: User { id: undefined, firstName: 'John', lastName: 'Doe', age: 26 }
+query: START TRANSACTION
+query: DROP TABLE "users"
+User table has been dropped!
+query: COMMIT
+```
