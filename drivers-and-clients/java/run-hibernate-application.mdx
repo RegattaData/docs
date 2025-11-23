@@ -1,0 +1,372 @@
+---
+title: "Run a Hibernate Application"
+---
+
+Let's create a simple Hibernate application that connects to Regatta using the Regatta JDBC driver and Hibernate dialect.
+
+## Connection Details
+
+Regatta connection parameters are configured in `hibernate.cfg.xml`:
+
+```xml
+<property name="connection.driver_class">dev.regatta.jdbc1.RegDriver</property>
+<property name="connection.url">jdbc:regatta:aaa.bbb.ccc.ddd:ppp</property>
+<property name="connection.username">MyUserName</property>
+<property name="connection.password">SomeSophisticatedPassword</property>
+```
+
+## Example Appliaction
+
+This example application will:
+
+1. Create an `employees` table.
+2. Insert four employees using Hibernate ORM.
+3. Query and print the results.
+4. Delete the rows and drop the table.
+
+### Project Structure
+
+Create a new Maven project folder, for example `regatta-hibernate-example/`, with the following layout:
+
+```bash
+regatta-hibernate-example/
+├── pom.xml
+└── src/
+    └── main/
+        ├── java/
+        │   └── dev/
+        │       └── regatta/
+        │           └── hibernate_example/
+        │               ├── Employee.java
+        │               └── HibernateExample.java
+        └── resources/
+            └── hibernate.cfg.xml
+```
+
+Start your Java sources with the Regatta example package:
+
+```java
+package dev.regatta.hibernate_example;
+```
+
+Note that you should import all relevant classes based on the functionality of your application and its requirements.
+
+### Employee Entity
+
+Create the `Employee` entity and save it as: `src/main/java/dev/regatta/hibernate_example/Employee.java`
+
+```java
+package dev.regatta.hibernate_example;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "employees")
+public class Employee {
+
+    @Id
+    @Column(name = "employee_key")
+    private int id;
+
+    @Column(name = "employee_name", nullable = false, length = 40)
+    private String name;
+
+    @Column(name = "employee_salary")
+    private int salary;
+
+    @Column(name = "employee_department", nullable = false, length = 50)
+    private String department;
+
+    // Required by Hibernate
+    public Employee() {}
+
+    public Employee(int id, String name, int salary, String department) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+        this.department = department;
+    }
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public int getSalary() { return salary; }
+    public void setSalary(int salary) { this.salary = salary; }
+
+    public String getDepartment() { return department; }
+    public void setDepartment(String department) { this.department = department; }
+}
+```
+
+### Hibernate Main Program
+
+Create the main program and save it as: `src/main/java/dev/regatta/hibernate_example/HibernateExample.java`
+
+```java
+package dev.regatta.hibernate_example;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class HibernateExample {
+
+    public static void main(String[] args) {
+
+        SessionFactory sessionFactory = new Configuration()
+                .configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Employee.class)
+                .buildSessionFactory();
+
+        try (Session session = sessionFactory.openSession()) {
+
+            // Create table employees
+            Transaction transaction = session.beginTransaction();
+            session.createNativeQuery(
+                    "CREATE TABLE employees (" +
+                    "employee_key INT PRIMARY KEY INDEX, " +
+                    "employee_name VARCHAR(40) NOT NULL, " +
+                    "employee_salary INT, " +
+                    "employee_department VARCHAR(50) NOT NULL" +
+                    ")"
+            ).executeUpdate();
+            transaction.commit();
+
+            // Insert data
+            transaction = session.beginTransaction();
+
+            List<Employee> employeesInserted =
+                    Arrays.asList(
+                            new Employee(1, "John Doe", 10932, "DevOps"),
+                            new Employee(2, "Richard Roe", 18324, "Legal"),
+                            new Employee(3, "Jane Roe", 20411, "SoftwareDev"),
+                            new Employee(4, "Rachel Roe", 19555, "Support")
+                    );
+
+            for (Employee employee : employeesInserted) {
+                session.persist(employee);
+            }
+
+            transaction.commit();
+
+            // Query data
+            List<Employee> employeesSelected =
+                    session.createQuery("from Employee", Employee.class).list();
+
+            for (Employee emp : employeesSelected) {
+                System.out.println("Employee Key: " + emp.getId());
+                System.out.println("Employee Name: " + emp.getName());
+                System.out.println("Employee Salary: " + emp.getSalary());
+                System.out.println("Employee Department: " + emp.getDepartment());
+                System.out.println();
+            }
+
+            // Cleanup: delete rows
+            transaction = session.beginTransaction();
+            for (Employee emp : employeesInserted) {
+                session.remove(emp);
+            }
+            transaction.commit();
+
+            // Cleanup: drop table
+            transaction = session.beginTransaction();
+            session.createNativeQuery("DROP TABLE employees").executeUpdate();
+            transaction.commit();
+
+        } finally {
+            sessionFactory.close();
+        }
+    }
+}
+```
+
+### Hiberante Configuration
+
+Save the Hibernate configuration as:`src/main/resources/hibernate.cfg.xml`
+
+```xml
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- JDBC Database connection settings -->
+        <property name="connection.driver_class">dev.regatta.jdbc1.RegDriver</property>
+        <property name="connection.url">jdbc:regatta:aaa.bbb.ccc.ddd:ppp</property>
+        <property name="connection.username">MyUserName</property>
+        <property name="connection.password">SomeSophisticatedPassword</property>
+
+        <!-- Regatta Hibernate dialect -->
+        <property name="dialect">dev.regatta.hibernate.RegattaDialect</property>
+
+        <!-- Echo SQL to stdout -->
+        <property name="show_sql">true</property>
+
+        <!-- Do not auto-manage schema; the example creates/drops explicitly -->
+        <property name="hbm2ddl.auto">none</property>
+
+        <!-- Set the current session context -->
+        <property name="current_session_context_class">thread</property>
+
+        <!-- Use HikariCP (recommended for production) -->
+        <property name="hibernate.connection.provider_class">
+            org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+        </property>
+
+        <property name="hibernate.hikari.maximumPoolSize">10</property>
+        <property name="hibernate.hikari.minimumIdle">1</property>
+        <property name="hibernate.hikari.idleTimeout">30000</property>
+
+    </session-factory>
+</hibernate-configuration>
+```
+
+<Note>
+  The property `hbm2ddl.auto` controls whether Hibernate automatically manages your database schema. When set to `none`, Hibernate will not attempt to create, update, validate, or drop tables. If you prefer Hibernate to manage the schema for you during development, you may change this property:
+
+  - create — Drops the existing schema (if any) and creates all tables on startup.
+  - create-drop — Creates the schema on startup and drops it on shutdown.
+  - update — Tries to update the schema to match your entities without dropping tables.
+  - validate — Validates that the schema matches your entities without modifying anything.
+</Note>
+
+### Maven Project Setup
+
+Create a `pom.xml` in the project root:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>dev.regatta.example</groupId>
+  <artifactId>regatta-hibernate-example</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <!-- Regatta JDBC driver -->
+    <dependency>
+      <groupId>dev.regatta</groupId>
+      <artifactId>regatta-jdbc</artifactId>
+      <version>1.8.0</version>
+    </dependency>
+
+    <!-- Regatta Hibernate dialect -->
+    <dependency>
+      <groupId>dev.regatta</groupId>
+      <artifactId>regatta-hibernate</artifactId>
+      <version>1.1.0</version>
+    </dependency>
+
+    <!-- Hibernate ORM -->
+    <dependency>
+      <groupId>org.hibernate.orm</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>6.4.4.Final</version>
+    </dependency>
+
+    <!-- HikariCP integration for Hibernate -->
+    <dependency>
+      <groupId>org.hibernate.orm</groupId>
+      <artifactId>hibernate-hikaricp</artifactId>
+      <version>6.4.4.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
+      <version>5.1.0</version>
+    </dependency>
+
+    <!-- Optional: SLF4J -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>2.0.16</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <mainClass>dev.regatta.hibernate_example.HibernateExample</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+```
+
+<Note>
+  This `pom.xml` assumes you already [installed the Regatta JDBC driver and Hibernate dialect locally](/drivers-and-clients/java/install-your-java-client).
+</Note>
+
+## Running the Application
+
+Compile and run the application:
+
+```bash
+mvn -q compile exec:java
+```
+
+Expected output:
+
+```bash
+Nov 22, 2025 9:50:30 PM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.4.4.Final
+Nov 22, 2025 9:50:30 PM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+Nov 22, 2025 9:50:30 PM org.hibernate.engine.jdbc.connections.internal.ConnectionProviderInitiator initiateService
+INFO: HHH000130: Instantiating explicit connection provider: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+Hibernate: CREATE TABLE employees (employee_key INT PRIMARY KEY INDEX, employee_name VARCHAR(40) NOT NULL, employee_salary INT, employee_department VARCHAR(50) NOT NULL)
+Hibernate: insert into employees (employee_department,employee_name,employee_salary,employee_key) values (?,?,?,?)
+Hibernate: insert into employees (employee_department,employee_name,employee_salary,employee_key) values (?,?,?,?)
+Hibernate: insert into employees (employee_department,employee_name,employee_salary,employee_key) values (?,?,?,?)
+Hibernate: insert into employees (employee_department,employee_name,employee_salary,employee_key) values (?,?,?,?)
+Hibernate: select e1_0.employee_key,e1_0.employee_department,e1_0.employee_name,e1_0.employee_salary from employees e1_0
+Employee Key: 3
+Employee Name: Jane Roe
+Employee Salary: 20411
+Employee Department: SoftwareDev
+
+Employee Key: 1
+Employee Name: John Doe
+Employee Salary: 10932
+Employee Department: DevOps
+
+Employee Key: 4
+Employee Name: Rachel Roe
+Employee Salary: 19555
+Employee Department: Support
+
+Employee Key: 2
+Employee Name: Richard Roe
+Employee Salary: 18324
+Employee Department: Legal
+
+Hibernate: delete from employees where employee_key=?
+Hibernate: delete from employees where employee_key=?
+Hibernate: delete from employees where employee_key=?
+Hibernate: delete from employees where employee_key=?
+Hibernate: DROP TABLE employees
+```

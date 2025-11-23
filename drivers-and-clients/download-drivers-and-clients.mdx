@@ -1,0 +1,42 @@
+---
+title: "Download Drivers & Clients"
+---
+
+Regatta makes it simple to obtain the latest drivers, client libraries, and integration tools directly from your Regatta Cloud account.
+
+## Accessing the Download Portal
+
+1. [Log in to your Regatta Cloud account](/regatta-cloud/regatta-cloud/access-the-cloud).
+2. In the left-hand navigation bar, click **Clients & Tools**.
+3. Select the language or tool you wish to download.
+4. Choose the appropriate tab for that client or tool. For example, click **JavaScript** to view NodeJS and TypeORM packages.
+
+## Understanding the Version Matrix Table
+
+Once you select a particular client or tool (e.g., **JavaScript → NodeJS**), you will see a table like this:
+
+| OS    | Architecture | Version | Type       | Supported DB Versions   |            |
+| ----- | ------------ | ------- | ---------- | ----------------------- | ---------- |
+| Linux | Intel        | 1.3.0   | Full       | 1.0.0.1297 +            | [Download] |
+| Linux | Intel        | 1.3.0   | Standalone | 1.0.0.1297 +            | [Download] |
+| Linux | Intel        | 1.1.0   | Full       | 1.0.0.1034 – 1.0.0.1296 | [Download] |
+| Linux | Intel        | 1.1.0   | Standalone | 1.0.0.1034 – 1.0.0.1296 | [Download] |
+
+### Column Descriptions
+
+1. **OS** - Indicates the operating system for which this package was built (e.g., Linux).
+2. **Architecture** - The CPU architecture supported by this package (e.g., Intel/x86-64).
+3. **Version** - The specific release number of the driver or tool. Follows Semantic Versioning `(Major.Minor.Patch)`.
+4. **Type**
+   - **Full**: Includes the Regatta client library bundled together with the driver. Ideal for a “zero-prep” installation—just copy, extract, and run with no additional dependencies.
+   - **Standalone**: Contains only the driver (no embedded client library). Requires you to install the [**Regatta Client Library**](/drivers-and-clients/client-lib) separately. Useful if you want to manage client library upgrades independently of the driver.
+5. **Supported DB Versions** - Specifies which Regatta Database cluster versions are compatible with this driver/tool.\
+   For example:
+   - `1.0.0.1034 – 1.0.0.1296` means “This release works with any Regatta cluster running versions `1.0.0.1034` through `1.0.0.1296`.”
+   - `1.0.0.1297 +` means “This release requires Regatta `1.0.0.1297` or later.”
+6. **Download Button** - Click **Download** to retrieve the RPM, TAR.GZ, or ZIP package for that row.
+
+## After Download
+
+1. Place the downloaded package in your local workspace.
+2. Navigate to the relevant section for [installation instructions](/drivers-and-clients/connecting-applications-to-regatta) and usage examples.

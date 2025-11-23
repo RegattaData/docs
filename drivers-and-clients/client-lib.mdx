@@ -5,9 +5,9 @@ description: "The shared library that powers all Regatta drivers, providing the 
 
 The Regatta client library is a core component required by all Regatta drivers. It provides the underlying communication layer that enables your applications to interact with the Regatta database. Before installing any language-specific driver or tool, the client library must be installed on your system.
 
-Regatta Drivers are available in two modes:
+Regatta Drivers & Clients are available in two modes:
 
-- **Bundled** with the Regatta client library for a simplified all-in-one setup.
+- **Bundled** with the Regatta client library for a simplified all-in-one setup. Bundled packages will contain the "full" suffix.
 - **Standalone**, allowing dynamic linking to the Regatta client at runtime for greater flexibility.
 
 ## Installation
@@ -17,7 +17,7 @@ Regatta Drivers are available in two modes:
     Copy the client RPM package to your target Linux machine and install it:
 
     ```bash
-    yum install ./regatta-client-<version>.el7.x86_64.rpm
+    sudo rpm -i regatta-client-<version>.el8.x86_64.rpm
     ```
 
     Once installed, the shared library will be placed in the system library path, typically:

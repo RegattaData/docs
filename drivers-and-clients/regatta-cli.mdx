@@ -12,22 +12,16 @@ The Regatta Command-Line Interface (CLI) provides a quick and convenient way to 
 
 <Tabs>
   <Tab title="Linux">
-    Copy the Regatta Connect RPM package to your target Linux machine and install it:
+    Copy the Regatta CLI RPM package to your target Linux machine and install it:
 
     ```bash
-    yum install ./regatta-connect-<version>.el7.x86_64.rpm
+    sudo rpm -i regatta-cli-<version>.el8.x86_64.rpm
     ```
 
     Verify the CLI binary is installed:
 
     ```
-    ls /opt/regatta/1.0/connect/cli/bin/client_cli
-    ```
-
-    You should see:
-
-    ```
-    /opt/regatta/<version>/connect/cli/bin/client_cli
+    ls /opt/regatta/1.0/clients/cli/bin/client_cli
     ```
   </Tab>
 </Tabs>
@@ -37,7 +31,7 @@ The Regatta Command-Line Interface (CLI) provides a quick and convenient way to 
 Start the client:
 
 ```bash
-/opt/regatta/1.0/connect/cli/bin/client_cli
+/opt/regatta/1.0/clients/cli/bin/client_cli
 ```
 
 You’ll see the prompt:
