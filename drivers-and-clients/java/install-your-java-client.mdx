@@ -19,10 +19,10 @@ title: "Install Your Java Client"
 
        ```bash
        mvn install:install-file \
-         -Dfile=regatta-jdbc-1.8.0-shaded_full.jar \
+         -Dfile=regatta-jdbc-<version>-shaded_full.jar \
          -DgroupId=dev.regatta \
          -DartifactId=regatta-jdbc \
-         -Dversion=1.8.0 \
+         -Dversion=<version> \
          -Dpackaging=jar
        ```
 
@@ -75,10 +75,10 @@ title: "Install Your Java Client"
 
        ```bash
        mvn install:install-file \
-         -Dfile=regatta-hibernate-1.1.0.jar \
+         -Dfile=regatta-hibernate-<version>.jar \
          -DgroupId=dev.regatta \
          -DartifactId=regatta-hibernate \
-         -Dversion=1.1.0 \
+         -Dversion=<version> \
          -Dpackaging=jar
        ```
 
