@@ -26,12 +26,12 @@ When setting up the Regatta cluster, you will need to determine where each modul
 
 The recommended configuration is:
 
-* RDB – on all servers
-* GDD, DCM, Sequencer – all on the same server alongside one of the RDBs
+- RDB – on all servers
+- GDD, DCM, Sequencer – all on the same server alongside one of the RDBs
 
 Once the distribution of the modules across the servers is decided, install the matching RPM for each module on the servers according to the selected configuration.
 
-The RPMs are located in the deployment package. Save it in a desired directory and extract it. The RPMs will be located under:
+The RPMs are located in the deployment package. Save it in a desired directory and extract it. If you received standard Regatta package, the RPMs will be located under:
 
 ```
 ./deploy/ansible/roles/regatta.rdb/files
@@ -48,7 +48,3 @@ Where `<path/to/>` is the full or relative path to where the RPM was saved.
 <Tip>
   It is possible to use `dnf` or `yum` package managers to install the RPMs. Using package managers will ensure the required dependencies of Regatta are also installed if missing.
 </Tip>
-
-The recommended way to distribute the RPMs to each server is to upload all RPMs to one of the dedicated cluster servers, and `scp` the RPMs from that server to the others according to the distribution plan.
-
-Once completed, the installation of the RPM will also include an example configuration file called `cluster.template` for each module.

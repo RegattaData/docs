@@ -325,7 +325,6 @@
           {
             "group": "Manual Deployment",
             "pages": [
-              "self-hosted-deployment/manual-deployment/manual-deployment",
               "self-hosted-deployment/manual-deployment/user-setup",
               "self-hosted-deployment/manual-deployment/regatta-software-modules",
               "self-hosted-deployment/manual-deployment/configuration-file",
@@ -351,17 +350,11 @@
             ]
           },
           {
-            "group": "Support",
+            "group": "Collecting Data",
             "pages": [
-              {
-                "group": "Collecting Data",
-                "pages": [
-                  "self-hosted-deployment/support/collect-data-script/collect-data",
-                  "self-hosted-deployment/support/collect-data-script/prerequisites",
-                  "self-hosted-deployment/support/collect-data-script/setup",
-                  "self-hosted-deployment/support/collect-data-script/execution"
-                ]
-              }
+              "self-hosted-deployment/collect-data/collect-data",
+              "self-hosted-deployment/collect-data/setup",
+              "self-hosted-deployment/collect-data/execution"
             ]
           }
         ]

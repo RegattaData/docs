@@ -2,13 +2,13 @@
 title: "Inventory"
 ---
 
-The deployment script works by expanding the `config.json` file into a complete `cluster.config` file by following the recommended approach. The first step creates an inventory and assigns the different Regatta modules to the nodes described in the `config.json`.
+The Regatta Deployment Tool works by expanding the `config.json` file into a complete `cluster.config` file by following the recommended approach. The first step creates an inventory and assigns the different Regatta modules to the nodes described in the `config.json`.
 
 <Note>
-  The script can be executed with the `--help` flag to view the available sub-steps that can be executed.
+  The RDT can be executed with the `--help` flag to view the available sub-commands that can be executed.
 </Note>
 
-Start by configuring the JSON file as described in the Scripted Solution's [config](https://docs.regatta.dev/self-hosted-deployment/scripted-solution/configjson) page.
+Start by configuring the JSON file as described in the [config](https://docs.regatta.dev/self-hosted-deployment/scripted-solution/configjson) page.
 
 Continue to the Setup Cluster page, and when you reach the point of executing`setup_cluster.sh` script, run it with the following parameters:
 
@@ -53,5 +53,3 @@ node-3 cluster_index=1 node_index=3 modules='{"rdb": 12}' ansible_host=10.0.0.13
 <Warning>
   Notice that the **clients** key in the modules map <u>must be defined with a number</u>. This number does not have a special purpose for the deployment process; it is there only to maintain the map object structure.
 </Warning>
-
-Continue to the next step.

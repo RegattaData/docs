@@ -2,7 +2,7 @@
 title: "Configuration File"
 ---
 
-The Regatta modules expect to find a cluster configuration file named `cluster.config` under each module's `conf` directory. You can create a `cluster.config` file from scratch, following a convention explained in the upcoming sections of this document, or use the `cluster.template` file as a base template.
+The Regatta modules expect to find a cluster configuration file named `cluster.config` under each module's `conf` directory. You can create a `cluster.config` file from scratch, following a convention explained in the upcoming sections of this page, or use the `cluster.template` file as a base template.
 
 The cluster configuration file template will be deployed with each module as part of the RPM installation and can be found under the module's `conf` directory at:
 
@@ -20,7 +20,7 @@ These parameters are module-specific and should be configured for each module in
 The recommended way to handle this is to:
 
 1. Create a common configuration file WITHOUT including the module-specific parameters and save it as `cluster.config`.
-2. Copy the common `cluster.config` to all the cluster's servers and place a copy of it in each module's `conf` directory.
+2. Copy the common `cluster.config` to all the cluster's servers and place a copy of it in each module's `conf` directory (using tools like `scp` or `rsync`).
 3. Edit the `cluster.config` under each module's conf folder to include the module-specific parameters for that module at the end of the file.
 
 Once completed, you should have a `cluster.config` file for all Regatta modules in the following path:
@@ -223,7 +223,7 @@ Many parameters can stay as in the example. The node-specific parameters should 
 
 The second part of the `cluster.config` file is the module-specific section. This section is usually defined at the bottom of the config file.
 
-The section is comprised of 2 parameters: `core_total_ram_budget_for_module_mb` , ,`core_pdbg_port`
+The section is comprised of 2 parameters: `core_total_ram_budget_for_module_mb` and `core_pdbg_port`
 
 ### core_total_ram_budget_for_module_mb
 
@@ -342,5 +342,5 @@ dev_3_path = /dev/nvme0n1
 # Module specific parameters
 # ==========================
 core_total_ram_budget_for_module_mb = 29908
-core_pdbg_port=5004
+core_pdbg_port = 5004
 ```
