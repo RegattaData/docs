@@ -1,14 +1,12 @@
 ---
-title: "Config.json"
+title: "RDT Configuration"
 ---
 
-Downloading the Regatta tar archive can be done directly on one of the cluster nodes (using `wget` or a similar tool) or on an external host and then copied to one of the cluster nodes.
-
-The tar archive includes the RPM packages and the Regatta deployment tool.
+Downloading the Regatta tar archive can be done directly on one of the cluster nodes (using `wget` or a similar tool) or on an external host and then copied to one of the cluster nodes. The tar archive includes the RPM packages and the Regatta deployment tool.
 
 Extract the archive:
 
-```shellscript
+```shell
 tar -zxf Regatta-X.X.X.X.tar.gz
 ```
 
@@ -52,13 +50,11 @@ The `regatta` object contains a `nodes` key whose value is a list of JSON object
 
 Each object in the `nodes` list includes two key-value pairs: the node’s internal IP address and a list of dedicated NVMe devices present on that node.
 
-- **`internalIp`** – The host’s internal IP address used for inter-node communication.
+- `internalIp` – The host’s internal IP address used for inter-node communication. This assumes you have an internal netwrok for all nodes in the cluster. If that is not the case, you can put an external IP here instead. 
 - **`diskPaths`** – A list of objects, each containing a `path` key paired with the absolute path of a storage device on that node.
 
 <Note>
-  Each block storage device is defined as a separate JSON object within the `diskPaths` list.
-
-  The devices can be of any type, not necessarily NVMe.
+  Each block storage device is defined as a separate JSON object within the `diskPaths` list. The devices can be of any type, not necessarily NVMe.
 </Note>
 
 After editing the `config.json` file, proceed to the next page to execute the deployment tool.

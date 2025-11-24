@@ -333,11 +333,11 @@
             ]
           },
           {
-            "group": "Scripted Solution",
+            "group": "Regatta Deployment Tool",
             "pages": [
-              "self-hosted-deployment/scripted-solution/scripted-solution",
-              "self-hosted-deployment/scripted-solution/configjson",
-              "self-hosted-deployment/scripted-solution/setup-cluster"
+              "self-hosted-deployment/deployment-tool/deployment-tool",
+              "self-hosted-deployment/deployment-tool/rdt-configuration",
+              "self-hosted-deployment/deployment-tool/setup-cluster"
             ]
           },
           {

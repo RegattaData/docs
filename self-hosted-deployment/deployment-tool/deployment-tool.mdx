@@ -2,9 +2,9 @@
 title: "Regatta Deployment Tool (RDT)"
 ---
 
-Regatta offers a scripted solution that sets up the Regatta cluster with minimal user input. This tool, formally named the Regatta Deployment Tool (RDT), follows the same procedure described in the manual installation process using the recommended configuration.
+Regatta offers a deployment tool that sets up the Regatta cluster with minimal user input. This tool, formally named the Regatta Deployment Tool (RDT), follows the same procedure described in the manual installation process using the recommended configuration.
 
-The RDT can be downloaded from a link provided by Regatta Support. The download will include a tar archive containing:
+The RDT can be downloaded from a link provided by Regatta Support. The download will include a `tar` archive containing:
 
 1. The RPM packages
 2. A directory containing the RDT and all its components
@@ -31,17 +31,20 @@ When the RDT is executed by the **deployment_user** it will perform the followin
 
 ## RDT dependencies
 
-As mentioned, as part of the setup, the RDT will require the following packages on the deployment server (where the RDT is executed):
+The RDT will require the following packages on the deployment server (where the RDT is executed):
 
-- **python3** - prerequisite for Ansible
-- **sshpass** - allows for scripted ssh connection with password
-- **jq** – for parsing json files
-- **ansible** - provisioning automation tool used for the cluster setup itself
+Linux packages:
+
+- **sshpass** 
+- **jq** 
+
+Python requirements:
+
+- **Python 3.6 or above**
+- **ansible** 
 
 These dependencies can be pre-installed manually by the user or left to be installed automatically by the RDT.
 
 <Warning>
   Please note that installing the script dependencies requires an internet connection or having the packages readily available on the server.
 </Warning>
-
-In the next page we will go over extracting the deployment tool on one of the cluster nodes/servers and configuring the basic input required by it.
