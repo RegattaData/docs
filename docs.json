@@ -328,7 +328,7 @@
               "self-hosted-deployment/manual-deployment/user-setup",
               "self-hosted-deployment/manual-deployment/regatta-software-modules",
               "self-hosted-deployment/manual-deployment/configuration-file",
-              "self-hosted-deployment/manual-deployment/filewall",
+              "self-hosted-deployment/manual-deployment/firewall",
               "self-hosted-deployment/manual-deployment/starting-the-system"
             ]
           },
