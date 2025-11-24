@@ -10,14 +10,9 @@ The cluster configuration file template will be deployed with each module as par
 /opt/regatta/1.0/<module name>/conf/cluster.template
 ```
 
-The `cluster.config` file is the same for all modules on all servers except for:
+The `cluster.config` file is the same for all modules on all servers except for a subset of module-specific parameters that will be expalined later on.
 
-- `system_num_cpus` - Which represents the number of CPUs that can be utilized on the server
-- "Module-specific parameters" section
-
-These parameters are module-specific and should be configured for each module individually.
-
-The recommended way to handle this is to:
+The recommended way to handle the config creation is to:
 
 1. Create a common configuration file WITHOUT including the module-specific parameters and save it as `cluster.config`.
 2. Copy the common `cluster.config` to all the cluster's servers and place a copy of it in each module's `conf` directory (using tools like `scp` or `rsync`).
@@ -48,14 +43,13 @@ The `cluster.config` file must be written following these convention rules:
 
 ### System Section
 
-Starting at the very top is the description of the entire system.
+Starting at the very top of the configuration file is the description of the entire system.
 
 ```expandable
 # system parameters 
 # =================
 system_cluster_id = 521
 system_num_cpus = 8
-system_num_messages_in_queue = 8
 system_root_dir = /opt/regatta/1.0
 system_trace_prefix = logs
 system_genesis_mode = Genesis
@@ -66,11 +60,14 @@ Let's break down the parameters in this section:
 
 - `system_cluster_id` - This is a unique 32-bit identifier used to differentiate Regatta clusters.
 - `system_num_cpus` - This defines the number of CPU threads that will be utilized by the specific module.
-- ...
+- `system_root_dir` - Path in which you installed the Regatta software modules.
+- `system_trace_prefix` - Prefix for internal trace files.
+- `system_genesis_mode`- Genesis means fresh start. NonGenesis for starting after shutdown.
+- `system_cluster_join_timeout_sec `- Number of seconds for modules to wait for connection to the cluster. 0 means unlimited.
 
 ### Node Section
 
-Following the system section are the NODE parameters, followed by the MODULES’ parameters.
+Following the system section are the "Node" parameters, followed by the "Module" parameters.
 
 ```expandable
 # Node 1 parameters
@@ -81,7 +78,7 @@ node_1_ip = 172.19.226.3
 node_1_port = 22
 ```
 
-In the example config file, there are three nodes defined. Node parameters include:
+Node parameters include:
 
 - Node ID
 - Node Name
@@ -156,11 +153,7 @@ Let's break down the module parameters:
 
 ### Devices Definition
 
-Each RDB module defined in the cluster configuration file requires at least one block storage device (simply referred to as "device" in this document).
-
-Just as a module is linked to a parent node, a device is linked to a parent RDB module.
-
-In the example cluster configuration file, a single device is defined for each RDB like so:
+Each RDB module defined in the cluster configuration file requires at least one block storage device (simply referred to as "device" in this document). Just as a module is linked to a parent node, a device is linked to a parent RDB module. Let's look at an example for how to set a single device and  link it to an RDB module:
 
 ```expandable
 module_10_id = 10
@@ -184,12 +177,12 @@ A breakdown of the device configuration parameters:
 
 - `dev_X_module_id` - This links the device to an RDB module. The value here should match the ID set on the RDB module's `_id` parameter.
 - `dev_X_name` - The name of the device. Should be defined following a pattern of `m<parent rdb module id>d<number of the device>`.
-- `dev_X_type` - This represents the type of the device as one of the options: `SCRATCH`, ...
+- `dev_X_type` - This represents the type of the device as one of the options: `SCRATCH`, `fast_devices` .
 - `dev_X_local_number` - This number is used to identify the device by its parent RDB module, starting at 1 and incrementing. This number should be unique only within the scope of the node.
 - `dev_X_atomic_page_size` - Defined in bytes. This sets the page size that the RDB module will use on this device.
 - `dev_X_block_size` - Defined in bytes. This sets the block size that the RDB module will use on this device.
 - `dev_X_capacity` - Defined in bytes. This value represents the storage capacity of the device.
-- `dev_X_path` - The absolute path to the device on the node. Should be under the \`/dev/
+- `dev_X_path` - The absolute path to the device on the node. Should be under`/dev/`.
 
 <Note>
   As with node and module parameters, the naming rule for the device's parameters should start with `dev_<id of the device>`. The ID of a device should be unique across the cluster configuration file.
@@ -210,14 +203,14 @@ Many parameters can stay as in the example. The node-specific parameters should 
 - IPs of the node and its belonging modules
 - Dedicated ports for the modules
 - Device parameters
-  - Page size
-  - Block size
-  - Capacity
-  - Path For the modules’ ports, you may select any number you wish that is not in use. Regatta uses the following recommended defaults:
-- RDB: 8850
-- Sequencer: 8841
-- GDD: 8842
-- DCM: 8843
+  1. Page size
+  2. Block size
+  3. Capacity
+- Path For the modules’ ports, you may select any number you wish that is not in use. Regatta uses the following recommended defaults:
+  1. RDB: 8850
+  2. Sequencer: 8841
+  3. GDD: 8842
+  4. DCM: 8843
 
 ## Unique Module Configuration (Bottom Part)
 
@@ -246,7 +239,7 @@ In order to calculate the best value to define in this parameter, we suggest the
 
 This port number is used to internal metrics aggregations and should be unique for each module in the same server/node.
 
-# Complete Configuration File Example
+## Complete Configuration File Example
 
 Below is an example of a configuration file for a 3-node Regatta cluster. The proceeding documentation will be based on this configuration as an actual example.
 
@@ -255,7 +248,6 @@ Below is an example of a configuration file for a 3-node Regatta cluster. The pr
 # =================
 system_cluster_id = 521
 system_num_cpus = 8
-system_num_messages_in_queue = 8
 system_root_dir = /opt/regatta/1.0
 system_trace_prefix = logs
 system_genesis_mode = Genesis
