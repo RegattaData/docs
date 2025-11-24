@@ -1,21 +1,9 @@
 ---
 title: "Pre-Flight Tool"
-description: "Run on your self-hosted machines to get info about regatta-ready stats."
+description: "Environment performance, info and readiness checks"
 ---
-
-# PreFlight
 
 **PreFlight** is a system utility tool developed by **Regatta** to assist with system diagnostics, benchmarking, and network analysis. It integrates a variety of open-source components to provide a comprehensive suite of tools for system administrators and developers.
-
----
-
-## Features
-
-- System performance benchmarking
-- Network throughput and latency testing
-- Disk I/O stress testing
-- System information and diagnostics
-- Lightweight and scriptable
 
 ---
 
@@ -27,428 +15,15 @@ See the [LICENSE](./LICENSE) file for full details.
 
 ---
 
-## Quick Start (Orchestrator)
-
-```bash
-# 1) Generate inventory with devices (replace user and hosts)
-./util/detect_devices.sh -u $REMOTE_USER 192.168.1.10 192.168.1.11 > hosts.json
-
-# 2) Run orchestrator (requires SSH to all hosts)
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/cluster_ready -k $SSH_KEY -u $REMOTE_USER \
-  --interconnectivity 
-
-# 3) Inspect results
-ls -1 cluster_results_*/
-```
-
-Notes:
-
-- All hosts must be reachable via SSH or the run will stop early with details.
-- Use `--preset` for fast setup: `basic`, `performance`, `comprehensive`, `fast`, `debug`.
-
-## What These Tools Do
-
-### Execution Model
-
-The system uses a **distributed execution model**:
-
-#### **Orchestrator Machine**
-
-- **Script**: `cluster_readiness_orchestrator.sh`
-- **Purpose**: Coordinates, manages, and analyzes results from remote hosts
-- **Libraries**: All `/lib/*.sh` files for orchestration logic
-- **Dependencies**: Lightweight - mainly SSH tools, JSON processing, and basic utilities
-
-#### **Remote Hosts (Target Machines)**
-
-- **Scripts**: Files in `/host_files/` directory
-  - `system_readiness_check.sh` - Main remote diagnostic script
-  - `fio_benchmark_only.sh` - FIO testing script
-  - `remote_fio_wrapper.sh` - FIO wrapper for remote execution
-  - `install_dependencies.sh` - Dependency installation script
-- **Purpose**: Execute actual system tests and diagnostics
-- **Libraries**: Only `lib/common.sh` (copied to remote hosts)
-- **Dependencies**: Comprehensive - performance testing tools, system analysis utilities
-
-### System Readiness Check (`host_files/system_readiness_check.sh`)
-
-- Intended to run under the orchestrator. It expects parameters and supporting files prepared by the orchestrator.
-- Performs system diagnostics, CPU/memory benchmarks, and disk tests when invoked remotely by the orchestrator.
-- Outputs structured JSON used by the orchestrator for aggregation.
-
-### Cluster Orchestrator (`cluster_readiness_orchestrator.sh`)
-
-- **Multi-machine coordination** - Test entire clusters at once
-- **Interconnectivity testing** - Verify all nodes can communicate
-- **Parallel FIO testing** - Performance testing across all nodes simultaneously
-- **Sequential FIO testing** - Individual node performance analysis
-- **Network throughput** - iperf3 testing between nodes (all-to-all or one-to-many)
-- **Dependency management** - Auto-install missing packages via `--auto-install-deps`
-
-### FIO Benchmark Tool (`host_files/fio_benchmark_only.sh`)
-
-- **Disk performance testing** - Comprehensive I/O benchmarks
-- **Multiple test modes** - Basic (4 tests) or extensive (141 tests)
-- **Device detection** - Automatic discovery of storage devices
-- **Individual test control** - Run specific test configurations
-
-## Installation & Dependencies
-
-### Dependency Management Architecture
-
-The system uses a **two-tier dependency model**:
-
-1. **Orchestrator Dependencies** - Installed on the machine running the orchestrator
-2. **Remote Host Dependencies** - Installed on **target hosts** via the orchestrator's `--auto-install-deps` flag
-
-### Orchestrator Dependencies
-
-**These must be installed manually on the machine running the orchestrator:**
-
-#### Core Tools (Always Required)
-
-```bash
-# RHEL/CentOS/Fedora
-sudo dnf install -y jq bc tar gzip coreutils openssh-clients
-
-# Ubuntu/Debian  
-sudo apt-get install -y jq bc tar gzip coreutils openssh-client
-
-# SUSE
-sudo zypper install -y jq bc tar gzip coreutils openssh
-```
-
-#### What the Orchestrator Needs
-
-- **jq** - JSON processing for parsing results
-- **bc** - Mathematical calculations (compression ratios, analysis)
-- **tar/gzip** - Archive creation (for --compress option)
-- **ssh/scp** - Remote host communication
-- **coreutils** - Basic utilities (find, grep, awk, sed, etc.)
-
-### Remote Host Dependencies (Managed by Orchestrator)
-
-**`These are automatically installed on remote hosts when using --auto-install-deps:`**
-
-#### Core System Tools
-
-- **jq** - JSON processing for output formatting
-- **bc** - Mathematical calculations in remote scripts
-- **gzip** - Log compression
-- **util-linux** - System information tools (lscpu, lsblk, etc.)
-- **procps-ng** - Process utilities (ps, free, etc.)
-- **systemd** - Service management (systemctl, journalctl)
-
-#### Performance Testing Tools
-
-- **fio** - Disk I/O performance testing
-- **sysbench** - CPU and memory benchmarking
-- **iperf3** - Network throughput testing
-
-#### System Analysis Tools
-
-- **ethtool** - Network interface analysis
-- **cpupower** - CPU frequency information
-- **numactl** - NUMA topology analysis
-- **psmisc** - Process utilities (fuser, pkill)
-- **lvm2** - LVM tools (pvs, vgs)
-
-#### Network Tools
-
-- **iproute2** - Network utilities (ip, ss)
-- **iputils** - Network testing (ping)
-- **bind-utils** - DNS tools (nslookup, dig)
-
-### Installation Commands by Operating System
-
-#### For Remote Hosts (Auto-installed via --auto-install-deps)
-
-**RHEL/CentOS/Oracle Linux/Fedora:**
-
-```bash
-# Core packages
-sudo yum install -y jq bc gzip util-linux procps-ng systemd iproute2 iputils bind-utils
-
-# Performance testing tools
-sudo yum install -y fio sysbench iperf3
-
-# System analysis tools
-sudo yum install -y ethtool cpupower numactl psmisc lvm2 policycoreutils-python
-
-# For newer versions (RHEL 8+, CentOS 8+)
-sudo dnf install -y jq bc gzip util-linux procps-ng systemd iproute2 iputils bind-utils
-sudo dnf install -y fio sysbench iperf3 ethtool cpupower numactl psmisc lvm2 policycoreutils-python
-```
-
-**Ubuntu/Debian:**
-
-```bash
-# Core packages
-sudo apt-get update
-sudo apt-get install -y jq bc gzip util-linux procps systemd iproute2 iputils-ping dnsutils
-
-# Performance testing tools
-sudo apt-get install -y fio sysbench iperf3
-
-# System analysis tools
-sudo apt-get install -y ethtool linux-tools-common numactl psmisc lvm2 apparmor-utils
-```
-
-**SUSE/openSUSE:**
-
-```bash
-# Core packages
-sudo zypper install -y jq bc gzip util-linux procps systemd iproute2 iputils bind-utils
-
-# Performance testing tools
-sudo zypper install -y fio sysbench iperf3
-
-# System analysis tools
-sudo zypper install -y ethtool cpupower numactl psmisc lvm2 apparmor-utils
-```
-
-**Arch Linux:**
-
-```bash
-# Core packages
-sudo pacman -S jq bc gzip util-linux procps-ng systemd iproute2 iputils bind-tools
-
-# Performance testing tools
-sudo pacman -S fio sysbench iperf3
-
-# System analysis tools
-sudo pacman -S ethtool cpupower numactl psmisc lvm2 apparmor
-```
-
-### Dependency Management Strategy
-
-#### Manual Installation (Recommended for Production)
-
-```bash
-# Install orchestrator dependencies on your local machine
-sudo dnf install -y jq bc tar gzip coreutils openssh-clients
-
-# Install remote host dependencies manually on each target
-sudo dnf install -y jq bc gzip util-linux procps-ng systemd iproute2 iputils bind-utils fio sysbench iperf3 ethtool cpupower numactl psmisc lvm2
-```
-
-#### Automatic Installation (Convenient for Testing)
-
-```bash
-# Let the orchestrator handle remote host dependencies
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/test --auto-install-deps --preset comprehensive
-```
-
-#### Hybrid Approach (Best of Both Worlds)
-
-```bash
-# Install core dependencies manually for reliability
-# Let orchestrator install performance testing tools
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/test --auto-install-deps --keep-host-deps
-```
-
-### Key Insights
-
-#### **Orchestrator is Lightweight**
-
-- Only needs **5-6 core packages** (jq, bc, tar, gzip, ssh, coreutils)
-- Very portable - can run from any machine with basic Linux tools
-- No heavy performance testing tools required locally
-
-#### **Remote Hosts Do the Heavy Lifting**
-
-- Need **15-20 packages** for comprehensive testing
-- Include performance testing tools (fio, sysbench, iperf3)
-- System analysis tools (ethtool, cpupower, numactl)
-- Network and storage utilities
-
-#### **Automatic Dependency Management**
-
-- Use `--auto-install-deps` to let orchestrator handle remote dependencies
-- Use `--keep-host-deps` to preserve installed packages for faster re-runs
-- Manual installation recommended for production environments
-
-#### **Library Distribution**
-
-- Only `lib/common.sh` is copied to remote hosts
-- All other libraries (`lib/ssh.sh`, `lib/fio.sh`, etc.) stay on orchestrator
-- Remote scripts are self-contained with minimal dependencies
-
-#### Inventory File Format
-
-**JSON Format (with target devices to test specified):**
-
-```json
-{
-  "hosts": {
-    "192.168.1.10": {
-      "devices": [
-        {"path": "/dev/sda", "type": "hdd", "size_bytes": 1000000000000},
-        {"path": "/dev/nvme0n1", "type": "nvme", "size_bytes": 500000000000}
-      ]
-    },
-    "192.168.1.11": {
-      "devices": [
-        {"path": "/dev/sdb", "type": "ssd", "size_bytes": 2000000000000}
-      ]
-    }
-  }
-}
-```
-
-#### Basic Cluster Commands
-
-```bash
-# Simple connectivity test
-./cluster_readiness_orchestrator.sh -i hosts.json -k ~/.ssh/cluster_key -r /tmp/test
-
-# Full cluster analysis
-./cluster_readiness_orchestrator.sh -i hosts.json -k ~/.ssh/cluster_key -r /tmp/test --auto-install-deps --interconnectivity --parallel-fio --sequential-fio --network-throughput
-```
-
-Notes:
-
-- All hosts must be reachable via SSH or the run will stop early with details.
-- Use `--preset` for fast setup: `basic`, `performance`, `comprehensive`, `fast`, `debug`.
-
-Tip: The orchestrator will use FIO configs from the `fio_testing/` directory by default. You can override with `--fio-files "/path/a.fio,/path/b.fio"` or force defaults with `--use-default-fio`. For a very quick run use `--quick-fio-debug` (only `seq_reads.fio`).
-
-## Advanced Features
-
-### Dependency Management
-
-The cluster orchestrator includes intelligent dependency management:
-
-```bash
-# Auto-install missing dependencies
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/test --auto-install-deps
-
-# Keep dependencies for faster debug iterations
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/test --auto-install-deps --keep-host-deps
-
-# Keep all files for debugging
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/test --keep-host-files --keep-host-deps
-```
-
-### FIO Testing Modes
-
-#### Parallel FIO Testing
-
-- All nodes run FIO simultaneously
-- Tests cluster-wide concurrent load
-- Faster execution but higher resource contention
-
-#### Sequential FIO Testing
-
-- Nodes run FIO one by one
-- Measures individual host performance
-- Lower resource contention
-
-```bash
-# Parallel testing across all nodes
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/test --parallel-fio
-
-# Sequential testing on each node
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/test --sequential-fio
-
-# Both modes for comparison
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/test --parallel-fio --sequential-fio
-```
-
-### Network Testing
-
-```bash
-# Basic interconnectivity (ping tests)
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/test --interconnectivity
-
-# Network throughput testing
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/test --network-throughput
-
-# All-to-all throughput testing
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/test --throughput-all-hosts-as-servers
-
-# Specific server for throughput testing
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/test --throughput-server-host 192.168.1.10
-```
-
-### GCP Mode
-
-For Google Cloud Platform environments with internal/external IPs:
-
-```bash
-# Enable GCP mode for internal IP usage
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/test --gcp --interconnectivity
-```
-
-- Note the hosts' inventory file should list the insternal addresses as well:
-
-```json
-{
-  "hosts": {
-    "192.168.1.10": {
-      "internal_address": "172.22.21.2",
-      "devices": [
-        {"path": "/dev/sda", "type": "hdd", "size_bytes": 1000000000000},
-        {"path": "/dev/nvme0n1", "type": "nvme", "size_bytes": 500000000000}
-      ]
-    },
-    "192.168.1.11": {
-      "internal_address": "172.22.21.3",
-      "devices": [
-        {"path": "/dev/sdb", "type": "ssd", "size_bytes": 2000000000000}
-      ]
-    }
-  }
-}
-```
-
-### RDB Ready Checks
-
-The orchestrator can verify readiness to start an RDB process safely:
-
-```bash
-# Enable RDB process-ready checks
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/test --rdb-ready-checks
-```
-
-What it does:
-
-- Detects if `rdb.bin` is already running (and skips further checks on those hosts)
-- Checks port availability 8840–8900
-- Verifies required file structure (e.g., `/usr/lib64/libssl.so` symlink)
-- Confirms required services (systemd state)
-- Notes NUMA domains for potential performance impact
-
-## Output & Results
-
-### File Structure
-
-All results are saved with timestamps:
-
-```
-cluster_results_20240115_103045/
-├── orchestrator.log                       # Main execution log
-├── cluster_summary.json                   # Aggregated report references
-├── file_listing.json                      # Flat listing of files in results dir
-├── fio_config_analysis_results.json       # FIO configuration analysis (write/safety)
-├── interconnectivity_matrix.json          # Host-to-host connectivity (ping/ssh/port)
-├── interconnectivity_logs/                # Detailed per-connection logs
-├── network_throughput_matrix.json         # iperf3 results (matrix)
-├── network_throughput_summary.json        # Stats (min/max/avg, success rate)
-├── rdb_process_ready_results.json         # RDB ready checks (if enabled)
-├── dependency_versions_<host>.json        # Copied from hosts (if available)
-├── static_gather_<host>.json              # Per-host static info (system_readiness subset)
-├── cpu_benchmark_<host>.json              # Per-host CPU benchmark
-├── memory_benchmark_<host>.json           # Per-host memory benchmark
-├── parallel_fio_<host>.json               # Per-host consolidated parallel FIO results
-├── sequential_fio_<host>.json             # Per-host consolidated sequential FIO results
-├── dmesg_<host>_*.log                     # Per-host kernel logs copied back when present
-└── journalctl_<host>_*.log[.gz]           # Per-host journal logs copied back when present
-```
-
-## System Diagnostics
-
-### What Gets Checked
+## Features
+
+- System performance benchmarking
+- Network throughput and latency testing
+- Disk I/O stress testing
+- System information and diagnostics
+- Lightweight with minimal dependecies
+
+## What Gets Checked
 
 #### Operating System & Kernel
 
@@ -482,6 +57,7 @@ cluster_results_20240115_103045/
 - IP address configuration
 - DNS resolution testing
 - Interconnectivity validation
+- Throughput testing (iperf3)
 
 #### Security Analysis
 
@@ -497,24 +73,213 @@ cluster_results_20240115_103045/
 - Important sysctl parameters
 - Process limits and system constraints
 
-## Safety Features
-
-### RDB Process Protection
-
-- Automatically detects running `rdb.bin` processes
-- Skips RDB ready checks if RDB already running; otherwise verifies ports, files, services, NUMA
-- Logs RDB readiness status in `rdb_process_ready_results.json`
-
-### Process Isolation
-
-- Comprehensive write-safe device checks (device in-use, LVM physical volume, or partitioned device)
-- Write tests are automatically skipped for devices that are not deemed write-safe
-- Interference prevention mechanisms for safe operation around production systems
-
 ### Kernel & Journal Log Capture
 
 - Copies `dmesg` and `journalctl` logs from hosts when present for troubleshooting
 - Hardware-related message extraction and categorization are available within host scripts
+
+---
+
+## Installation & Dependencies
+
+### Dependency Management
+
+There are 2 sets of dependecies needed:
+
+1. **Orchestrator Dependencies** - Installed on the machine running the orchestrator
+2. **Remote Host Dependencies** - Installed on **target hosts** 
+   - Can be auto installed by the Orchestrator via `--auto-install-deps` flag)
+   - If not using the auto-install, all host dependencies should be pre installed on all hosts before running.
+
+### Orchestrator Dependencies
+
+These must be installed manually on the machine running the orchestrator:
+
+- **jq** - JSON processing for parsing results
+- **bc** - Mathematical calculations (compression ratios, analysis)
+- **tar/gzip** - Archive creation (for --compress option)
+- **ssh/scp** - Remote host communication
+- **coreutils** - Basic utilities (find, grep, awk, sed, etc.)
+
+### Remote Host Dependencies
+
+These can be automatically installed on remote hosts if using `--auto-install-deps`, given the hosts have access to the internet.
+
+- **curl**
+- **bc**
+- **tar**
+- **findutils**
+- **net-tools**
+- **bind-utils**
+- **iperf3 **- benchmark network throughput.
+- **fio** - benchmark the disk
+- **sysbench **- benchmark cpu & memory
+
+---
+
+## Quick Start (Orchestrator)
+
+```bash
+# 1) Generate inventory with devices (replace user and hosts)
+./util/detect_devices.sh -u <user_name> 192.168.1.10 192.168.1.11 > hosts.json
+
+# 2) Run orchestrator (requires SSH to all hosts)
+./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/cluster_ready -k <path_to_ssh_key> -u <user_name> 
+
+# 3) Inspect results
+ls -1 cluster_results_*/
+```
+
+## **Execution Flow**
+
+The system uses a manager-hosts flow: an orchestrator will commence tests on target hosts listed in the inventory file, gather results and finally overlook the cleanup.
+
+We can split
+
+#### Orchestrator Machine
+
+- **Script**: `cluster_readiness_orchestrator.sh`
+- **Purpose**: Coordinates, manages, and analyzes results from remote hosts
+- **Libraries**: All `/lib/*.sh` files for orchestration logic
+- **Dependencies**: Lightweight - mainly SSH tools, JSON processing, and basic utilities
+
+#### Remote Hosts (Target Machines)
+
+- **Scripts**: Files in `/host_files/` directory
+  - `system_readiness_check.sh` - Main remote diagnostic script
+  - `fio_benchmark_only.sh` - FIO testing script
+  - `remote_fio_wrapper.sh` - FIO wrapper for remote execution
+  - `install_dependencies.sh` - Dependency installation script
+- **Purpose**: Execute actual system tests and diagnostics
+- **Libraries**: Only `lib/common.sh` (copied to remote hosts)
+- **Dependencies**: Comprehensive - performance testing tools, system analysis utilities
+
+## Responsibilities of Different Scripts
+
+### System Readiness Check (`host_files/system_readiness_check.sh`)
+
+- Intended to run under the orchestrator. It expects parameters and supporting files prepared by the orchestrator.
+- Performs system diagnostics, CPU/memory benchmarks, and disk tests when invoked remotely by the orchestrator.
+- Outputs structured JSON used by the orchestrator for aggregation.
+
+### Cluster Orchestrator (`cluster_readiness_orchestrator.sh`)
+
+- **Multi-machine coordination** - Test entire clusters at once
+- **Interconnectivity testing** - Verify all nodes can communicate
+- **Parallel FIO testing** - Performance testing across all nodes simultaneously
+- **Sequential FIO testing** - Individual node performance analysis
+- **Network throughput** - iperf3 testing between nodes (all-to-all or one-to-many)
+- **Dependency management** - Auto-install missing packages via `--auto-install-deps`
+
+## Parameters
+
+### Configuration Parameters
+
+| Parameter             | Description                                                                                   |
+| --------------------- | --------------------------------------------------------------------------------------------- |
+| -h, --help            | Show help message                                                                             |
+| -i, --inventory       | Inventory file with host list (text format) or JSON format with hosts and devices             |
+| -k, --ssh-key         | SSH private key file                                                                          |
+| -u, --user            | SSH user (default: root)                                                                      |
+| -o, --output-dir      | Output directory (default: cluster_results_TIMESTAMP)                                         |
+| -r, --remote-work-dir | Remote work directory on target hosts (required)                                              |
+| --timeout SECONDS     | SSH timeout (default: 300)                                                                    |
+| -v, --verbose         | Enable verbose output                                                                         |
+| --gcp                 | Use internal IPs for interconnectivity.<br />Usec for hosts in VPC and external orchestrator. |
+| --auto-install-deps   | Automatically install missing dependencies on hosts                                           |
+| --keep-host-files     | Keep scripts and results on remote hosts (default: cleanup)                                   |
+| --keep-host-deps      | Keep dependencies installed on hosts after completion                                         |
+| --compress            | Create compressed archive of results directory after completion                               |
+
+### Test Parameters
+
+| --interconnectivity               | Test interconnectivity between nodes                                                                                                                                                                                                                                                                                                                               |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| --network-throughput              | Test network throughput using iperf3                                                                                                                                                                                                                                                                                                                               |
+| --throughput-server-host          | Choose the host to be server in server-to-all throughput iperf3 test<br />Default: First in inventory file                                                                                                                                                                                                                                                         |
+| --throughput-all-hosts-as-servers | Test network throughput using iperf3 (all-to-all)<br /><br />**Note**: This option is mutually exclusive with --throughput-server-host<br />Default: false                                                                                                                                                                                                         |
+| --cpu-benchmark                   | Run CPU performance benchmarks                                                                                                                                                                                                                                                                                                                                     |
+| --memory-benchmark                | Run memory performance benchmarks                                                                                                                                                                                                                                                                                                                                  |
+| --gather-static-info              | Gather static system information                                                                                                                                                                                                                                                                                                                                   |
+| --rdb-ready-checks                | Run RDB process-ready checks:<br /><br />- Detects if `rdb.bin` is already running (and skips further checks on those hosts)<br />- Checks port availability 8840–8900<br />- Verifies required file structure (e.g., `/usr/lib64/libssl.so` symlink)<br />- Confirms required services (systemd state)<br />- Notes NUMA domains for potential performance impact |
+| --parallel-fio                    | Run FIO tests in parallel across all nodes                                                                                                                                                                                                                                                                                                                         |
+| --sequential-fio                  | Run FIO tests sequentially on each node                                                                                                                                                                                                                                                                                                                            |
+| --use-default-fio                 | Use default FIO files from fio_testing directory<br />**Note**: If neither option is specified, default behavior uses fio_testing directory<br />**Note**: This option is mutually exclusive with --fio-files                                                                                                                                                      |
+| --fio-files "file1,file2"         | fio files to be used for testing (comma-separated paths)                                                                                                                                                                                                                                                                                                           |
+| --fio-fill-device                 | Include fill_device.fio in testing (optional, for device preparation)<br />This will override some of the disk space so that later tests run on a non-empty disk.                                                                                                                                                                                                  |
+| -p, --preset                      | Use preset configuration (basic, performance, comprehensive, fast, debug) to specify multipule flags together. Read the help page to choose a relvant preset.                                                                                                                                                                                                      |
+
+### Examples:
+
+```bash
+# Simple connectivity test
+./cluster_readiness_orchestrator.sh -i hosts.json -k ~/.ssh/cluster_key -r /tmp/test
+
+# Using multipule options
+./cluster_readiness_orchestrator.sh -i hosts.json -k ~/.ssh/cluster_key -r /tmp/test --auto-install-deps --interconnectivity --parallel-fio --sequential-fio --network-throughput
+```
+
+### FIO Benchmark Tool (`host_files/fio_benchmark_only.sh`)
+
+- **Disk performance testing** - Comprehensive I/O benchmarks
+- **Multiple test modes** - Basic (4 tests) or extensive (141 tests)
+- **Device detection** - Automatic discovery of storage devices
+- **Individual test control** - Run specific test configurations
+
+#### Inventory File Format
+
+**JSON Format (with target devices to test specified):**
+
+```json
+{
+  "hosts": {
+    "192.168.1.10": {
+      "devices": [
+        {"path": "/dev/sda", "type": "hdd", "size_bytes": 1000000000000},
+        {"path": "/dev/nvme0n1", "type": "nvme", "size_bytes": 500000000000}
+      ]
+    },
+    "192.168.1.11": {
+      "devices": [
+        {"path": "/dev/sdb", "type": "ssd", "size_bytes": 2000000000000}
+      ]
+    }
+  }
+}
+```
+
+## Output & Results
+
+### File Structure
+
+All results are saved with timestamps:
+
+```
+├── orchestrator.log                       # Main execution log
+├── cluster_summary.json                   # Aggregated report (per-host + references)
+├── file_listing.json                      # Flat listing of files in results dir
+├── fio_config_analysis_results.json       # FIO configuration analysis (write/safety)
+├── interconnectivity_matrix.json          # Host-to-host connectivity (ping/ssh/port)
+├── interconnectivity_logs/                # Detailed per-connection logs
+├── network_throughput_matrix.json         # iperf3 results (matrix)
+├── network_throughput_summary.json        # Stats (min/max/avg, success rate)
+├── rdb_process_ready_results.json         # RDB ready checks (if enabled)
+├── fio_files/                             # FIO job files used for tests (if any)
+├── <host_ip_1>/                           # Per-host data (one directory per host)
+│   ├── logs/                              # Per-host logs (readiness, dependencies, FIO, etc.)
+│   ├── results/                           # Per-host JSON results
+│   │   ├── static_gather.json             # Static system info (system_readiness subset)
+│   │   ├── cpu_benchmark.json             # CPU benchmark results
+│   │   ├── memory_benchmark.json          # Memory benchmark results
+│   │   ├── device_check.json              # Device verification results from inventory
+│   │   └── fio/
+│   │       ├── merged_parallel_fio.json   # Consolidated parallel FIO results for this host
+│   │       └── merged_sequential_fio.json # Consolidated sequential FIO results for this host
+│   ├── dmesg_*.log                        # Per-host kernel logs copied back when present
+│   └── journalctl_*.log[.gz]              # Per-host journal logs copied back when present
+└── <host_ip_2>/                           # Same structure per host
+    └── ...
+```
 
 ## Troubleshooting
 
@@ -546,59 +311,3 @@ ssh user@192.168.1.10 "sudo -l"
 - **Parallel Execution**: Cluster operations run in parallel where possible
 - **Resource Usage**: Minimal impact on system resources
 - **Cleanup**: Temporary files are automatically cleaned up
-
-### Debug Mode
-
-For troubleshooting complex issues:
-
-```bash
-# Enable debug mode with file retention
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/test --preset debug
-
-# Quick FIO debug (single test only)
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/test --quick-fio-debug
-```
-
----
-
-## Third-Party Components
-
-PreFlight includes the following open-source tools:
-
-| Component  | License                | Repository                               |
-| ---------- | ---------------------- | ---------------------------------------- |
-| jq         | MIT                    | https://github.com/stedolan/jq           |
-| bc         | BSD 2-Clause           | https://github.com/gavinhoward/bc        |
-| curl       | MIT-like               | https://github.com/curl/curl             |
-| util-linux | Mixed (GPL, MIT, etc.) | https://github.com/util-linux/util-linux |
-| procps     | GPL-2.0                | https://gitlab.com/procps-ng/procps      |
-| net-tools  | GPL-2.0                | https://github.com/ecki/net-tools        |
-| sysbench   | GPL-2.0                | https://github.com/akopytov/sysbench     |
-| fio        | GPL-2.0                | https://github.com/axboe/fio             |
-| bind-utils | MPL-2.0                | https://github.com/isc-projects/bind9    |
-| iputils    | BSD-3-Clause / GPL-2.0 | https://github.com/iputils/iputils       |
-| iperf3     | BSD                    | https://github.com/esnet/iperf           |
-
-For full license details, see [NOTICE](./NOTICE).
-
----
-
-## Getting Started
-
-1. Clone the repository
-2. Run the setup script or binary
-3. Use the CLI to run diagnostics or benchmarks
-
----
-
-## Support
-
-This software is provided "as is", without warranty of any kind. For issues or contributions, please refer to the LICENSE and NOTICE files.
-
----
-
-## Acknowledgments
-
-Thanks to the open-source community for the tools and libraries that power PreFlight.
-
----
