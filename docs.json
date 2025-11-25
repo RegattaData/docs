@@ -323,6 +323,15 @@
             ]
           },
           {
+            "group": "Regatta Deployment Tool",
+            "pages": [
+              "self-hosted-deployment/deployment-tool/deployment-tool",
+              "self-hosted-deployment/deployment-tool/rdt-configuration",
+              "self-hosted-deployment/deployment-tool/setup-cluster",
+              "self-hosted-deployment/deployment-tool/hybrid-deployment"
+            ]
+          },
+          {
             "group": "Manual Deployment",
             "pages": [
               "self-hosted-deployment/manual-deployment/user-setup",
@@ -330,20 +339,6 @@
               "self-hosted-deployment/manual-deployment/configuration-file",
               "self-hosted-deployment/manual-deployment/firewall",
               "self-hosted-deployment/manual-deployment/starting-the-system"
-            ]
-          },
-          {
-            "group": "Regatta Deployment Tool",
-            "pages": [
-              "self-hosted-deployment/deployment-tool/deployment-tool",
-              "self-hosted-deployment/deployment-tool/rdt-configuration",
-              "self-hosted-deployment/deployment-tool/setup-cluster"
-            ]
-          },
-          {
-            "group": "Hybrid Deployment",
-            "pages": [
-              "self-hosted-deployment/hybrid-deployment/hybrid-deployment"
             ]
           },
           {
