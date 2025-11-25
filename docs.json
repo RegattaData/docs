@@ -343,10 +343,7 @@
           {
             "group": "Hybrid Deployment",
             "pages": [
-              "self-hosted-deployment/hybrid-deployment/hybrid-deployment",
-              "self-hosted-deployment/hybrid-deployment/inventory",
-              "self-hosted-deployment/hybrid-deployment/configuration",
-              "self-hosted-deployment/hybrid-deployment/start"
+              "self-hosted-deployment/hybrid-deployment/hybrid-deployment"
             ]
           },
           {
