@@ -39,30 +39,29 @@ with connect(user, password, host) as conn:
         # Create an employees table
         cursor.execute(
             """
-            CREATE TABLE employees (
+            CREATE TABLE employees
+            (
                 employee_key        INT PRIMARY KEY INDEX,
                 employee_name       VARCHAR(40) NOT NULL,
                 employee_salary     INT,
                 employee_department VARCHAR(50) NOT NULL
             )
-        """
+            """
         )
         conn.commit()
 
         # Insert some sample rows
         cursor.execute(
             """
-            INSERT INTO employees (
-                employee_key,
-                employee_name,
-                employee_salary,
-                employee_department
-            ) VALUES
-                (1, 'John Doe',      10932, 'DevOps'),
-                (2, 'Richard Roe',   18324, 'Legal'),
-                (3, 'Jane Roe',      20411, 'Engineering'),
-                (4, 'Rachel Roe',    19555, 'Support')
-        """
+            INSERT INTO employees (employee_key,
+                                   employee_name,
+                                   employee_salary,
+                                   employee_department)
+            VALUES (1, 'John Doe', 10932, 'DevOps'),
+                   (2, 'Richard Roe', 18324, 'Legal'),
+                   (3, 'Jane Roe', 20411, 'Engineering'),
+                   (4, 'Rachel Roe', 19555, 'Support')
+            """
         )
         conn.commit()
 
@@ -78,8 +77,12 @@ with connect(user, password, host) as conn:
             print(row)
 
             # Example: access a specific column
-            print(row.employee_name)
-            print(row[0])  # employee_key
+            # print(row.employee_name)
+            # print(row[0])  # employee_key
+
+        conn.commit()
+        # Drop the table
+        cursor.execute("DROP TABLE employees")
 ```
 
 ## Running the Appliaction
