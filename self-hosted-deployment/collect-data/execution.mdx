@@ -46,13 +46,10 @@ An example of the compressed archive file:
 
 As we can see in this example, the file name is constructed of the 4 parameters mentioned:
 
-a. Server Name: `regatta-host05`
-
-b. Internal IP: `172_27_12_2`
-
-c. Date: `2024_11_14`
-
-d. Time: `15_52_56`
+- Server Name: `regatta-host05`
+- Internal IP: `172_27_12_2`
+- Date: `2024_11_14`
+- Time: `15_52_56`
 
 ### Uploading Data
 
@@ -65,17 +62,12 @@ If we would like to upload the data collected from the previous command, we woul
 
 This will cause the `data_collect` script to do as follows:
 
-1. **Avoid collecting data:**\
-   When tar_path is not null, the data will not be collected from the `deploy_dir` and `logs_dir`paths but rather read from the path in `tar_path`.
-2. **Apply the filter:**\
-   The data collected from the directory will be filtered according to the templates in `file_ignore_list`.
-3. **Upload**\
-   The data will be uploaded to the Regatta cloud storage bucket
+1. **Avoid collecting data **- When tar_path is not null, the data will not be collected from the `deploy_dir` and `logs_dir`paths but rather read from the path in `tar_path`.
+2. **Apply the filter **- The data collected from the directory will be filtered according to the templates in `file_ignore_list`.
+3. **Upload **- The data will be uploaded to the Regatta cloud storage bucket
 
 Once the data is uploaded, Regatta Support will be able to review and analyze the data.
 
 <Tip>
-  If you have internet access when collecting the data, you may set upload to `true` and leave the `tar_path` as `null`. 
-
-  In this case the data will be collected and uploaded to the Regatta cloud bucket in a single run.
+  If you have internet access when collecting the data, you may set upload to `true` and leave the `tar_path` as `null`. In this case the data will be collected and uploaded to the Regatta cloud bucket in a single run.
 </Tip>
