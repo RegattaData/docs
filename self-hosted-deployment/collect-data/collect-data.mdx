@@ -4,7 +4,7 @@ title: "Collecting Data"
 
 Regatta can provide a script called`collect_data` which can be used to collect the relevant data from the Regatta cluster for analysis by the support team. The script needs to run on each cluster node individually. Once it is executed, it will collect the data on that server, pack it in a tar file, compress it and make it available for uploading to our cloud storage bucket. The script may also perform the upload for you if configured accordingly.
 
-## prerequisites
+## Prerequisites
 
 To use the script, you will need the following:
 
@@ -13,7 +13,7 @@ To use the script, you will need the following:
    - Storage bucket details for data upload
    - A `service_account_json_file` with authorization to access the bucket
 2. **Python dependencies (can be installed using pip):**
-   - **python3 **- Version 3.6.8 or later
+   - \*\*python3 \*\*- Version 3.6.8 or later
    - **google-cloud-storage** - Version 2.0.0 or later
    - **zstandard** - Version 0.20.0 or later
 3. **Network Requirements:**
