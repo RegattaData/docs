@@ -6,9 +6,9 @@ The following section describes a method to combine both manual and scripted app
 
 This section breaks the deployment process into three steps:
 
-- **Inventory **- Creating the Regatta Cluster Module distribution
-- **Configuration **- Deploying the Regatta Cluster and creating the distribution
-- **Start **- Starting the system
+- \*\*Inventory \*\*- Creating the Regatta Cluster Module distribution
+- \*\*Configuration \*\*- Deploying the Regatta Cluster and creating the distribution
+- \*\*Start \*\*- Starting the system
 
 Between each deployment step, you may stop to make modifications to the cluster configuration file if needed and start the cluster when ready.
 
@@ -22,19 +22,19 @@ The Regatta Deployment Tool works by expanding the `config.json` file into a com
 
 Start by configuring the JSON file as described in the [rdt-config](/self-hosted-deployment/deployment-tool/rdt-configuration) page.
 
-Continue to the Setup Cluster page, and when you reach the point of executing`setup_cluster.sh` script, run it with the following parameters:
+Continue to the Setup Cluster page, and when you reach the point of executing`setup_cluster.sh`, run it with the following sub-commands:
 
 ```
 ./setup_cluster.sh os devices
 ```
 
-These parameters will execute the deployment steps responsible for configuring the firewall and NVMe devices only. During the execution, an inventory file will be generated under the **ansible** directory where the script resides:
+These commnds will execute the deployment steps responsible for configuring the firewall and storage devices only. During the execution, an inventory file will be generated under the **ansible** directory where the script resides:
 
 ```
 ./ansible/inventory
 ```
 
-The file will look something like the example below:
+The file will look something like this:
 
 ```
 [rdb_nodes]
@@ -104,7 +104,7 @@ This script will copy the **cluster.config** file to each node/server in the clu
 
 ## Editing Module-Specific Parameters
 
-Once the script execution with either the `config` or `update_config` commands is done, you can connect to any of the cluster nodes/servers via SSH to edit the cluster config file for any module. For further details, follow the steps in the [Configuration File](https://docs.regatta.dev/self-hosted-deployment/manual-deployment/configuration-file) section and apply the desired changes.
+Once the script execution with either the `config` or `update_config` commands is done, you can connect to any of the cluster nodes/servers via SSH to edit the cluster config file for any module. For further details, follow the steps in the [Configuration File](/self-hosted-deployment/manual-deployment/configuration-file) section and apply the desired changes.
 
 <Note>
   Note that the script has opened the ports that appear in the configuration files for all Regatta modules prior to this stage. If you decide to change ports, you will also need to update the firewall before executing the next step.
@@ -122,9 +122,19 @@ This will execute the steps to start the Regatta services across the cluster.
 
 At this stage, the cluster is up and ready.
 
-It is also possible to stop and start the cluster as individual steps by using the `stop_cluster` and `start_cluster` flags:
+It is also possible to stop and start the cluster as individual steps by using the `stop_cluster` and `start_cluster` commands:
 
 ```
 ./setup_cluster.sh stop_cluster
 ./setup_cluster.sh start_cluster
 ```
+
+You can also use the `clean_install` command to run a full deployment including removing any previous installations of Regatta on the cluster:
+
+```
+./setup_cluster.sh clean_install
+```
+
+<Note>
+  `clean_install` command is useful when switching between Regatta distributions, and can also resolve installation errors during the execution of the RDT.
+</Note>
