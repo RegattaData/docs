@@ -1,0 +1,332 @@
+---
+title: "Configuration File"
+---
+
+The Regatta modules expect to find a cluster configuration file named `cluster.config` under each module's `conf` directory. You can create a `cluster.config` file from scratch, following a convention explained in the upcoming sections of this page, or use the `cluster.template` file as a base template.
+
+The cluster configuration file template will be deployed with each module as part of the RPM installation and can be found under the module's `conf` directory at:
+
+```bash
+/opt/regatta/1.0/<module name>/conf/cluster.template
+```
+
+The `cluster.config` file is the same for all modules on all servers except for a subset of module-specific parameters that will be expalined later on.
+
+The recommended way to handle the config creation is to:
+
+1. Create a common configuration file WITHOUT including the module-specific parameters and save it as `cluster.config`.
+2. Copy the common `cluster.config` to all the cluster's servers and place a copy of it in each module's `conf` directory (using tools like `scp` or `rsync`).
+3. Edit the `cluster.config` under each module's conf folder to include the module-specific parameters for that module at the end of the file.
+
+Once completed, you should have a `cluster.config` file for all Regatta modules in the following path:
+
+```bash
+/opt/regatta/1.0/<module>/conf/cluster.config
+```
+
+## Configuration Convention
+
+The `cluster.config` file must be written following these convention rules:
+
+- The config file must have a single "system" section.
+- The config file must have at least one node section.
+- The config file must have at least one RDB module, as well as one of each GDD, Sequencer, and DCM.
+- The config file must have at least one block storage device for each RDB module.
+- Each module must be linked to a node via the `parent_node_id` parameter.
+- Each block device must be linked to its controlling RDB module via the `module_id` parameter.
+- The `capacity` parameter of the device is specified in kilobytes (KB).
+- Every node, module, and device must have a unique ID parameter, starting at **1**.
+
+# Configuration Sections Breakdown
+
+## Main Configuration (Top Part)
+
+### System Section
+
+Starting at the very top of the configuration file is the description of the entire system.
+
+```expandable
+# system parameters 
+# =================
+system_cluster_id = 521
+system_num_cpus = 8
+system_root_dir = /opt/regatta/1.0
+system_trace_prefix = logs
+system_genesis_mode = Genesis
+system_cluster_join_timeout_sec = 0
+```
+
+Let's break down the parameters in this section:
+
+- `system_cluster_id` - This is a unique 32-bit identifier used to differentiate Regatta clusters.
+- `system_num_cpus` - This defines the number of CPU threads that will be utilized by the specific module.
+- `system_root_dir` - Path in which you installed the Regatta software modules.
+- `system_trace_prefix` - Prefix for internal trace files.
+- `system_genesis_mode`- Genesis means fresh start. NonGenesis for starting after shutdown.
+- `system_cluster_join_timeout_sec `- Number of seconds for modules to wait for connection to the cluster. 0 means unlimited.
+
+### Node Section
+
+Following the system section are the "Node" parameters, followed by the "Module" parameters.
+
+```expandable
+# Node 1 parameters
+# =================
+node_1_id = 1
+node_1_name = node-1
+node_1_ip = 172.19.226.3
+node_1_port = 22
+```
+
+Node parameters include:
+
+- Node ID
+- Node Name
+- Node IP
+- Node Port
+
+<Note>
+  A valid `cluster.config` file must include a node with ID set as 1. Every parameter in a node section must follow the naming rule of `node_<node id>_<parameter>`. In the case of the first node in the cluster, every parameter name will begin with `node_1_`.
+</Note>
+
+### Modules Definition
+
+Following the node section are the modules' definitions.
+
+```expandable
+module_1_id = 1
+module_1_parent_node_id = 1
+module_1_name = sequencer_1
+module_1_role = sequencer
+module_1_ip = 172.19.226.3
+module_1_port = 8841
+
+module_2_id = 2
+module_2_parent_node_id = 1
+module_2_name = gdd_2
+module_2_role = gdd
+module_2_ip = 172.19.226.3
+module_2_port = 8842
+
+module_3_id = 3
+module_3_parent_node_id = 1
+module_3_name = dcm_3
+module_3_role = dcm
+module_3_ip = 172.19.226.3
+module_3_port = 8843
+
+module_10_id = 10
+module_10_parent_node_id = 1
+module_10_name = rdb_10
+module_10_role = rdb
+module_10_ip = 172.19.226.3
+module_10_port = 8850
+
+dev_1_module_id = 10
+dev_1_name = m10d1
+dev_1_type = SCRATCH
+dev_1_local_number = 1
+dev_1_atomic_page_size = 4096
+dev_1_block_size = 4096
+dev_1_capacity = 3145727984
+dev_1_path = /dev/nvme0n1
+```
+
+Let's break down the module parameters:
+
+- `module_X_id` - This is a unique number used to identify the module.
+- `module_X_parent_node_id` - This is a number matching the parent node ID. This parameter links this specific module to its parent node in the config.
+- `module_X_name` - This is the module name, which can be any string.
+- `module_X_role` - This parameter defines the behavior of the module. All modules share the same binary and require this parameter to function as the intended role of either RDB, GDD, DCM, or Sequencer.
+- `module_X_ip` - This is the IP address with which the module will listen for TCP communication.
+- `module_X_port` - This is the port on which the module will listen for TCP communication.
+
+<Note>
+  Similarly to node parameters, module parameters must also follow the naming rule of `module_<module id>_<parameter>`. The module ID numbering should start at **1**.
+</Note>
+
+### Devices Definition
+
+Each RDB module defined in the cluster configuration file requires at least one block storage device (simply referred to as "device" in this document). Just as a module is linked to a parent node, a device is linked to a parent RDB module. Let's look at an example for how to set a single device and  link it to an RDB module:
+
+```expandable
+module_10_id = 10
+module_10_parent_node_id = 1
+module_10_name = rdb_10
+module_10_role = rdb
+module_10_ip = 172.19.226.3
+module_10_port = 8850
+
+dev_1_module_id = 10
+dev_1_name = m10d1
+dev_1_type = SCRATCH
+dev_1_local_number = 1
+dev_1_atomic_page_size = 4096
+dev_1_block_size = 4096
+dev_1_capacity = 3145727984
+dev_1_path = /dev/nvme0n1
+```
+
+A breakdown of the device configuration parameters:
+
+- `dev_X_module_id` - This links the device to an RDB module. The value here should match the ID set on the RDB module's `_id` parameter.
+- `dev_X_name` - The name of the device. Should be defined following a pattern of `m<parent rdb module id>d<number of the device>`.
+- `dev_X_type` - This represents the type of the device as one of the options: `SCRATCH`, `fast_devices` .
+- `dev_X_local_number` - This number is used to identify the device by its parent RDB module, starting at 1 and incrementing. This number should be unique only within the scope of the node.
+- `dev_X_atomic_page_size` - Defined in bytes. This sets the page size that the RDB module will use on this device.
+- `dev_X_block_size` - Defined in bytes. This sets the block size that the RDB module will use on this device.
+- `dev_X_capacity` - Defined in bytes. This value represents the storage capacity of the device.
+- `dev_X_path` - The absolute path to the device on the node. Should be under`/dev/`.
+
+<Note>
+  As with node and module parameters, the naming rule for the device's parameters should start with `dev_<id of the device>`. The ID of a device should be unique across the cluster configuration file.
+</Note>
+
+<Info>
+  The device's `local_number` parameter should represent a numbering of the device as part of the list of devices available to a certain RDB module. It should always start at 1 and increment with each added device belonging to the same RDB module.
+</Info>
+
+A device name parameter should combine the following: `m` + `<parent rdb module id>` (which together represent the RDB module this device belongs to) + `d` + `<device number>` as defined in the `local_number` parameter. The end result names look like `m10d1`, `m10d2`, and so on...
+
+Looking at the example cluster configuration file at the end of this page, notice that the two additional nodes in the cluster after node 1 are defined with the RDB module only with a single device.
+
+## Recommended Approach
+
+Many parameters can stay as in the example. The node-specific parameters should be updated accordingly. These would be:
+
+- IPs of the node and its belonging modules
+- Dedicated ports for the modules
+- Device parameters
+  1. Page size
+  2. Block size
+  3. Capacity
+- Path For the modules’ ports, you may select any number you wish that is not in use. Regatta uses the following recommended defaults:
+  1. RDB: 8850
+  2. Sequencer: 8841
+  3. GDD: 8842
+  4. DCM: 8843
+
+## Unique Module Configuration (Bottom Part)
+
+The second part of the `cluster.config` file is the module-specific section. This section is usually defined at the bottom of the config file.
+
+The section is comprised of 2 parameters: `core_total_ram_budget_for_module_mb` and `core_pdbg_port`
+
+### core_total_ram_budget_for_module_mb
+
+This is the RAM capacity which is dedicated to the module in MB.
+
+In order to calculate the best value to define in this parameter, we suggest the following recommended guidelines:
+
+1. Get the total RAM available on the server host
+2. Subtract 1 GB for the OS usage from the total RAM
+3. For the GDD, DCM, Sequencer dedicate at least 500MB each
+4. For the RDB dedicate whatever is left on the server.
+
+<Tip>
+  For example:\
+  In a server/node with 20GB RAM, if there’s only an RDB installed – the RAM budget will be set to 19GB for the RDB module. \
+  In a server/node with GDD, Sequencer and DCM, the RAM budget for each is 500MB, and the 17.5GB left will be dedicated to the RDB on that host.
+</Tip>
+
+### core_pdbg_port
+
+This port number is used to internal metrics aggregations and should be unique for each module in the same server/node.
+
+## Complete Configuration File Example
+
+Below is an example of a configuration file for a 3-node Regatta cluster. The proceeding documentation will be based on this configuration as an actual example.
+
+```java
+# system parameters 
+# =================
+system_cluster_id = 521
+system_num_cpus = 8
+system_root_dir = /opt/regatta/1.0
+system_trace_prefix = logs
+system_genesis_mode = Genesis
+system_cluster_join_timeout_sec = 0
+# Node 1 parameters
+# =================
+node_1_id = 1
+node_1_name = node-1
+node_1_ip = 172.19.226.3
+node_1_port = 22
+module_1_id = 1
+module_1_parent_node_id = 1
+module_1_name = sequencer_1
+module_1_role = sequencer
+module_1_ip = 172.19.226.3
+module_1_port = 8841
+module_2_id = 2
+module_2_parent_node_id = 1
+module_2_name = gdd_2
+module_2_role = gdd
+module_2_ip = 172.19.226.3
+module_2_port = 8842
+module_3_id = 3
+module_3_parent_node_id = 1
+module_3_name = dcm_3
+module_3_role = dcm
+module_3_ip = 172.19.226.3
+module_3_port = 8843
+module_10_id = 10
+module_10_parent_node_id = 1
+module_10_name = rdb_10
+module_10_role = rdb
+module_10_ip = 172.19.226.3
+module_10_port = 8850
+dev_1_module_id = 10
+dev_1_name = m10d1
+dev_1_type = SCRATCH
+dev_1_local_number = 1
+dev_1_atomic_page_size = 4096
+dev_1_block_size = 4096
+dev_1_capacity = 3145727984
+dev_1_path = /dev/nvme0n1
+# Node 2 parameters
+# =================
+node_2_id = 2
+node_2_name = node-2
+node_2_ip = 172.19.226.2
+node_2_port = 22
+module_11_id = 11
+module_11_parent_node_id = 2
+module_11_name = rdb_11
+module_11_role = rdb
+module_11_ip = 172.19.226.2
+module_11_port = 8850
+dev_2_module_id = 11
+dev_2_name = m11d1
+dev_2_type = SCRATCH
+dev_2_local_number = 1
+dev_2_atomic_page_size = 4096
+dev_2_block_size = 4096
+dev_2_capacity = 3145727984
+dev_2_path = /dev/nvme0n1
+# Node 3 parameters
+# =================
+node_3_id = 3
+node_3_name = node-3
+node_3_ip = 172.19.226.4
+node_3_port = 22
+module_12_id = 12
+module_12_parent_node_id = 3
+module_12_name = rdb_12
+module_12_role = rdb
+module_12_ip = 172.19.226.4
+module_12_port = 8850
+dev_3_module_id = 12
+dev_3_name = m12d1
+dev_3_type = SCRATCH
+dev_3_local_number = 1
+dev_3_atomic_page_size = 4096
+dev_3_block_size = 4096
+dev_3_capacity = 3145727984
+dev_3_path = /dev/nvme0n1
+ 
+# Module specific parameters
+# ==========================
+core_total_ram_budget_for_module_mb = 29908
+core_pdbg_port = 5004
+```

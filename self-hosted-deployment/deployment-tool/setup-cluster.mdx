@@ -1,0 +1,179 @@
+---
+title: "Setup Cluster"
+---
+
+In the directory where the `config.json` file resides, you will find a script named `setup_cluster.sh`, which performs the automatic deployment of Regatta.
+
+Switch to the `deployment_user` and run `setup_cluster.sh` (RDT) to begin the automated deployment:
+
+```shell
+./setup_cluster.sh
+```
+
+You will be asked to accept the Regatta End-User License Agreement (EULA), located at: https://regatta.dev/eula/
+
+The prompt will appear as follows:
+
+```shell
+By using this script and deploying the Regatta Cluster you agree to the EULA located at:
+https://regatta.dev/eula/
+Please read the EULA and accept the terms.
+Do you accept the terms of the EULA? [Y/n]
+```
+
+If you need time to review the EULA or choose not to continue, entering `n` will abort the script:
+
+```shell
+EULA not accepted - deployment aborted...
+```
+
+You may restart the deployment at any time using the same script.
+
+By entering `Y`, you confirm that you have read and accepted the EULA and the deployment will continue.
+
+Next, the script will prompt you to provide the path to the SSH key and the username used to connect to the cluster nodes:
+
+```shell
+Enter path to SSH key: /<path>/<ssh_key_file>
+```
+
+```shell
+Enter username to use with ssh key: deployment_user
+```
+
+<Info>
+  SSH key is required by Ansible for connecting to the cluster nodes and perform the deployment.
+
+  In case of a single-node deployment in which the RDT runs on the same node used for Regatta DB, you can create an SSH key-pair using the following command:
+
+  ```bash
+  ssh-keygen -t ed25519 -f ~/.ssh/id_rdt -N "" && cat ~/.ssh/id_rdt.pub >> ~/.ssh/authorized_keys
+  ```
+</Info>
+
+The RDT will then validate SSH connectivity to every node defined in its configuration file. After successful validation, it will ask whether the `deployment_user` requires a password for sudo operations:
+
+```shell
+Does the <deployment_user> require a password to run sudo commands? [Y/n]:
+```
+
+If the answer is yes, you will be prompted to enter the password later:
+
+```shell
+BECOME PASS:
+```
+
+<Note>
+  **The password remains only in volatile memory and is never stored.**
+</Note>
+
+<Warning>
+  During execution, the RDT installs the supplied RPM packages. These packages check for the Regatta dependencies listed in the [prerequisites](/self-hosted-deployment/prerequisites) section. If dependencies are missing and no internet connection is available to download them, the deployment will stop at this stage.
+</Warning>
+
+The RDT will then run the deployment sequence, performing the following tasks:
+
+1. Read the `config.json` file and parse the list of IP addresses and storage device paths
+2. Connect to each node using the configured `deployment_user`
+3. Copy and install the Regatta RPMs on each node
+4. Change ownership of the block storage device(s) to the `regatta` user
+5. Generate the Regatta `cluster.config` file and distribute it to all nodes
+6. Start the Regatta services, which in turn start all Regatta modules
+
+Once the RDT completes its execution, the Regatta cluster will be fully operational and ready to accept connections via the CLI or client drivers.
+
+You can verify that the cluster is running by checking the Regatta services on any node:
+
+```shell
+sudo systemctl status regatta-1.0-*
+```
+
+Example outuput (each Regatta module runs under its own service, such as `regatta-1.0-rdb.service`):
+
+```shell
+● regatta-1.0-gdd.service - The Regatta gdd service
+   Loaded: loaded (/usr/lib/systemd/system/regatta-1.0-gdd.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sun 2025-11-23 18:00:16 IST; 22h ago
+ Main PID: 3331 (start.sh)
+    Tasks: 18 (limit: 203820)
+   Memory: 143.6M
+   CGroup: /system.slice/regatta-1.0-gdd.service
+           ├─3331 /bin/sh /opt/regatta/1.0/gdd/bin/start.sh gdd
+           └─3384 /opt/regatta/1.0/gdd/bin/rdb.bin --node 2 --role gdd --sys_conf /opt/regatta/1.0/gdd/conf/cluster.config --core_conf /opt/regatta/1.0/gdd/conf/cluster.config --logs_dir /var/log/regatta/g>
+
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3331]: Starting module gdd with number '2' and using path /opt/regatta/1.0/gdd
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Setting module ID to 2
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Module PID is 3384
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Setting node role to gdd
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Setting non-default configuration file /opt/regatta/1.0/gdd/conf/cluster.config
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Setting core configuration file /opt/regatta/1.0/gdd/conf/cluster.config
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Setting logs directory path /var/log/regatta/gdd
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Setting node boot mode to NonGenesis
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Starting the database module
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Core loaded
+
+● regatta-1.0-dcm.service - The Regatta dcm service
+   Loaded: loaded (/usr/lib/systemd/system/regatta-1.0-dcm.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sun 2025-11-23 18:00:17 IST; 22h ago
+ Main PID: 3417 (start.sh)
+    Tasks: 18 (limit: 203820)
+   Memory: 202.5M
+   CGroup: /system.slice/regatta-1.0-dcm.service
+           ├─3417 /bin/sh /opt/regatta/1.0/dcm/bin/start.sh dcm
+           └─3429 /opt/regatta/1.0/dcm/bin/rdb.bin --node 3 --role dcm --sys_conf /opt/regatta/1.0/dcm/conf/cluster.config --core_conf /opt/regatta/1.0/dcm/conf/cluster.config --logs_dir /var/log/regatta/d>
+
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3417]: Starting module dcm with number '3' and using path /opt/regatta/1.0/dcm
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Setting module ID to 3
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Module PID is 3429
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Setting node role to dcm
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Setting non-default configuration file /opt/regatta/1.0/dcm/conf/cluster.config
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Setting core configuration file /opt/regatta/1.0/dcm/conf/cluster.config
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Setting logs directory path /var/log/regatta/dcm
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Setting node boot mode to Genesis
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Starting the database module
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Core loaded
+
+● regatta-1.0-rdb.service - The Regatta rdb service
+   Loaded: loaded (/usr/lib/systemd/system/regatta-1.0-rdb.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sun 2025-11-23 18:00:19 IST; 22h ago
+ Main PID: 3497 (start.sh)
+    Tasks: 22 (limit: 203820)
+   Memory: 1.9G
+   CGroup: /system.slice/regatta-1.0-rdb.service
+           ├─3497 /bin/sh /opt/regatta/1.0/rdb/bin/start.sh rdb
+           └─3509 /opt/regatta/1.0/rdb/bin/rdb.bin --node 10 --role rdb --sys_conf /opt/regatta/1.0/rdb/conf/cluster.config --core_conf /opt/regatta/1.0/rdb/conf/cluster.config --logs_dir /var/log/regatta/>
+
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3497]: Starting module rdb with number '10' and using path /opt/regatta/1.0/rdb
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Setting module ID to 10
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Module PID is 3509
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Setting node role to rdb
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Setting non-default configuration file /opt/regatta/1.0/rdb/conf/cluster.config
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Setting core configuration file /opt/regatta/1.0/rdb/conf/cluster.config
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Setting logs directory path /var/log/regatta/rdb
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Setting node boot mode to Genesis
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Starting the database module
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Core loaded
+
+● regatta-1.0-sequencer.service - The Regatta sequencer service
+   Loaded: loaded (/usr/lib/systemd/system/regatta-1.0-sequencer.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sun 2025-11-23 18:00:16 IST; 22h ago
+ Main PID: 3369 (start.sh)
+    Tasks: 18 (limit: 203820)
+   Memory: 123.8M
+   CGroup: /system.slice/regatta-1.0-sequencer.service
+           ├─3369 /bin/sh /opt/regatta/1.0/sequencer/bin/start.sh sequencer
+           └─3385 /opt/regatta/1.0/sequencer/bin/rdb.bin --node 1 --role sequencer --sys_conf /opt/regatta/1.0/sequencer/conf/cluster.config --core_conf /opt/regatta/1.0/sequencer/conf/cluster.config --log>
+
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3369]: Starting module sequencer with number '1' and using path /opt/regatta/1.0/sequencer
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Setting module ID to 1
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Module PID is 3385
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Setting node role to sequencer
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Setting non-default configuration file /opt/regatta/1.0/sequencer/conf/cluster.config
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Setting core configuration file /opt/regatta/1.0/sequencer/conf/cluster.config
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Setting logs directory path /var/log/regatta/sequencer
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Setting node boot mode to Genesis
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Starting the database module
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Core loaded
+```
+
+Congratulations! Your Regatta cluster is up and running. Now you can connect your application using your preferred [client](/drivers-and-clients/connecting-applications-to-regatta).
