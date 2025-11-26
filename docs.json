@@ -55,7 +55,6 @@
                 "group": "Creating the Demo Environment",
                 "pages": [
                   "getting-started/linear-scaling/creating-demo-environment/creating-demo-environment",
-                  "getting-started/linear-scaling/creating-demo-environment/table-schema",
                   "getting-started/linear-scaling/creating-demo-environment/creating-demo-clusters"
                 ]
               },
@@ -359,6 +358,7 @@
             "group": "Drivers & Clients",
             "pages": [
               "drivers-and-clients/connecting-applications-to-regatta",
+              "drivers-and-clients/download-drivers-and-clients",
               "drivers-and-clients/client-lib",
               "drivers-and-clients/regatta-cli"
             ]
@@ -366,58 +366,24 @@
           {
             "group": "Python",
             "pages": [
-              {
-                "group": "Python Driver",
-                "pages": [
-                  "drivers-and-clients/python/python-drivers",
-                  "drivers-and-clients/python/install-the-driver",
-                  "drivers-and-clients/python/run-python-application"
-                ]
-              }
+              "drivers-and-clients/python/install-your-python-client",
+              "drivers-and-clients/python/run-python-application"
             ]
           },
           {
             "group": "Java",
             "pages": [
-              {
-                "group": "JBDC Driver",
-                "pages": [
-                  "drivers-and-clients/java/jbdc-driver",
-                  "drivers-and-clients/java/install-the-driver",
-                  "drivers-and-clients/java/set-up-dependency",
-                  "drivers-and-clients/java/run-java-application"
-                ]
-              },
-              {
-                "group": "Hibernate",
-                "pages": [
-                  "drivers-and-clients/java/hibernate",
-                  "drivers-and-clients/java/set-hibernate-dependency",
-                  "drivers-and-clients/java/set-up-configuration",
-                  "drivers-and-clients/java/run-a-hibernate"
-                ]
-              }
+              "drivers-and-clients/java/install-your-java-client",
+              "drivers-and-clients/java/run-jdbc-application",
+              "drivers-and-clients/java/run-hibernate-application"
             ]
           },
           {
             "group": "JavaScript",
             "pages": [
-              {
-                "group": "Nodejs Driver",
-                "pages": [
-                  "drivers-and-clients/javascript/nodejs",
-                  "drivers-and-clients/javascript/install-the-driver",
-                  "drivers-and-clients/javascript/run-nodejs-application"
-                ]
-              },
-              {
-                "group": "TypeORM",
-                "pages": [
-                  "drivers-and-clients/javascript/type-orm",
-                  "drivers-and-clients/javascript/install-orm-tools",
-                  "drivers-and-clients/javascript/run-typeorm-application"
-                ]
-              }
+              "drivers-and-clients/javascript/install-your-javascript-client",
+              "drivers-and-clients/javascript/run-nodejs-application",
+              "drivers-and-clients/javascript/run-typeorm-application"
             ]
           }
         ]
