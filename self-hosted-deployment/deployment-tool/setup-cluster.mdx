@@ -41,6 +41,16 @@ Enter path to SSH key: /<path>/<ssh_key_file>
 Enter username to use with ssh key: deployment_user
 ```
 
+<Info>
+  SSH key is required by Ansible for connecting to the cluster nodes and perform the deployment.
+
+  In case of a single-node deployment in which the RDT runs on the same node used for Regatta DB, you can create an SSH key-pair using the following command:
+
+  ```bash
+  ssh-keygen -t ed25519 -f ~/.ssh/id_rdt -N "" && cat ~/.ssh/id_rdt.pub >> ~/.ssh/authorized_keys
+  ```
+</Info>
+
 The RDT will then validate SSH connectivity to every node defined in its configuration file. After successful validation, it will ask whether the `deployment_user` requires a password for sudo operations:
 
 ```shell
