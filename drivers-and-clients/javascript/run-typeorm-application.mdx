@@ -42,126 +42,125 @@ typeorm-example/
 Create the main program and save it as: `src/typeorm_example.ts`
 
 ```typescript
-import { Column, DataSource, Entity, PrimaryColumn } from "typeorm-regatta";
-import { v4 as uuidv4 } from "uuid";
-import type { QueryRunner } from "typeorm-regatta";
+import { Column, DataSource, Entity, PrimaryColumn } from "typeorm-regatta"
+import { v4 as uuidv4 } from "uuid" // Use uuid to generate unique ids
+import type { QueryRunner } from "typeorm-regatta"
 
 /**
  * Entity definition.
- * TypeORM will map this class to a "user" table by default.
+ * TypeORM will map this class to a "users" table.
  */
-@Entity()
+@Entity({ name: "users" })
 class User {
-  @PrimaryColumn()
-  id!: string;
+    @PrimaryColumn()
+    id!: string
 
-  @Column()
-  firstName!: string;
+    @Column()
+    firstName!: string
 
-  @Column()
-  lastName!: string;
+    @Column()
+    lastName!: string
 
-  @Column()
-  age!: number;
+    @Column()
+    age!: number
 }
 
 /**
  * Connection details (replace with your own).
  * Note: In TypeORM-Regatta, host includes "<ip>:<port>".
  */
-const DB_HOST = "aaa.bbb.ccc.ddd:pppp";
-const DB_USER = "MyUserName";
-const DB_PASSWORD = "SomeSophisticatedPassword";
+const DB_HOST = "aaa.bbb.ccc.ddd:pppp"
+const DB_USER = "MyUserName"
+const DB_PASSWORD = "SomeSophisticatedPassword"
 
 /**
- * Create the TypeORM DataSource.
- * - `type: "regatta"` selects the Regatta driver inside typeorm-regatta.
- * - `synchronize: true` auto-creates schema from entities (good for examples).
- * - `extra.deviceNames` is Regatta-specific. Keep it if your environment
- *   requires devices for automatic table placement.
+ * Create a new DataSource instance.
+ * - `type: "regatta"` is provided by the typeorm-regatta package.
+ * - `synchronize: true` tells TypeORM to create the schema automatically.
+ * - `extra.deviceNames` is a Regatta-specific device mapping definition.
  */
 const dataSource = new DataSource({
-  type: "regatta",
-  host: DB_HOST,
-  username: DB_USER,
-  password: DB_PASSWORD,
-  entities: [User],
-  synchronize: true,
-  logging: true,
-  extra: {
-    deviceNames: ["m10d1"],
-  },
-});
+    type: "regatta",
+    host: DB_HOST,
+    username: DB_USER,
+    password: DB_PASSWORD,
+    entities: [User],
+    synchronize: true,
+    logging: true,
+    extra: {
+        deviceNames: ["m10d1"],
+    },
+})
 
 async function run() {
-  try {
-    // Initialize the DataSource
-    await dataSource.initialize();
-    console.log("Data Source has been initialized!");
+    try {
+        // Initialize the DataSource
+        await dataSource.initialize()
+        console.log("Data Source has been initialized!")
 
-    const userRepository = dataSource.getRepository(User);
+        const userRepository = dataSource.getRepository(User)
 
-    // Create a new User
-    const user = new User();
-    user.id = uuidv4();
-    user.firstName = "John";
-    user.lastName = "Doe";
-    user.age = 25;
+        // Create a new User
+        const user = new User()
+        user.id = uuidv4()
+        user.firstName = "John"
+        user.lastName = "Doe"
+        user.age = 25
 
-    // Insert
-    await userRepository.save(user);
-    console.log("User has been saved!");
+        // Insert
+        await userRepository.save(user)
+        console.log("User has been saved!")
 
-    // Query
-    const users = await userRepository.find();
-    console.log("Users:", users);
+        // Query
+        const users = await userRepository.find()
+        console.log("Users:", users)
 
-    // Update
-    user.age = 26;
-    await userRepository.save(user);
-    console.log("User has been updated:", user);
+        // Update
+        user.age = 26
+        await userRepository.save(user)
+        console.log("User has been updated:", user)
 
-    // Delete
-    await userRepository.remove(user);
-    console.log("User has been removed:", user);
-  } catch (error) {
-    console.error("Error:", error);
-  } finally {
-    // Drop the User table
-    await dropUserTable();
+        // Delete
+        await userRepository.remove(user)
+        console.log("User has been removed:", user)
+    } catch (error) {
+        console.error("Error:", error)
+    } finally {
+        // Drop the User table
+        await dropUserTable()
 
-    // Close the connection
-    await dataSource.destroy();
-  }
+        // Close the connection
+        await dataSource.destroy()
+    }
 }
 
 async function dropUserTable() {
-  let queryRunner: QueryRunner | null = null;
+    let queryRunner: QueryRunner | null = null
 
-  try {
-    queryRunner = dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+    try {
+        queryRunner = dataSource.createQueryRunner()
+        await queryRunner.connect()
+        await queryRunner.startTransaction()
 
-    // Drop the table created by @Entity() -> default table name is "user"
-    await queryRunner.query('DROP TABLE "user"');
-    console.log("User table has been dropped!");
+        // Drop the table created by @Entity() -> default table name is "user"
+        await queryRunner.query('DROP TABLE "users"')
+        console.log("User table has been dropped!")
 
-    await queryRunner.commitTransaction();
-  } catch (error) {
-    console.error("Error dropping table:", error);
-    if (queryRunner) {
-      await queryRunner.rollbackTransaction();
+        await queryRunner.commitTransaction()
+    } catch (error) {
+        console.error("Error dropping table:", error)
+        if (queryRunner) {
+            await queryRunner.rollbackTransaction()
+        }
+    } finally {
+        if (queryRunner) {
+            await queryRunner.release()
+        }
     }
-  } finally {
-    if (queryRunner) {
-      await queryRunner.release();
-    }
-  }
 }
 
-// Run the example
-run();
+// Run the example app
+run()
 ```
 
 ### TypeScript Configuration
@@ -215,7 +214,7 @@ Create a `package.json` in the project root:
 ```
 
 <Note>
-  This `package.json` assumes you already downloaded the [**Regatta TypeORM package and the Node.js driver**](/drivers-and-clients/javascript/install-your-javascript-client), and have them available on your local environment. 
+  This `package.json` assumes you already downloaded the [**Regatta TypeORM package and the Node.js driver**](/drivers-and-clients/javascript/install-your-javascript-client), and have them available on your local environment.
 
   Please ensure that you update the `package.json` file with the correct paths to the downloaded `.tgz` files before proceeding.
 </Note>
