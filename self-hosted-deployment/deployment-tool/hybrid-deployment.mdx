@@ -6,9 +6,9 @@ The following section describes a method to combine both manual and scripted app
 
 This section breaks the deployment process into three steps:
 
-- \*\*Inventory \*\*- Creating the Regatta Cluster Module distribution
-- \*\*Configuration \*\*- Deploying the Regatta Cluster and creating the distribution
-- \*\*Start \*\*- Starting the system
+- **Inventory** - Creating the Regatta Cluster Module distribution
+- **Configuration** - Deploying the Regatta Cluster and creating the distribution
+- **Start** - Starting the system
 
 Between each deployment step, you may stop to make modifications to the cluster configuration file if needed and start the cluster when ready.
 
@@ -24,19 +24,19 @@ Start by configuring the JSON file as described in the [rdt-config](/self-hosted
 
 Continue to the Setup Cluster page, and when you reach the point of executing`setup_cluster.sh`, run it with the following sub-commands:
 
-```
+```bash
 ./setup_cluster.sh os devices
 ```
 
 These commnds will execute the deployment steps responsible for configuring the firewall and storage devices only. During the execution, an inventory file will be generated under the **ansible** directory where the script resides:
 
-```
+```bash
 ./ansible/inventory
 ```
 
 The file will look something like this:
 
-```
+```bash
 [rdb_nodes]
 node-1 cluster_index=1 node_index=1 modules='{"sequencer": 1,"gdd": 2,"dcm":3, "rdb": 10}' ansible_host=10.0.0.11
 node-2 cluster_index=1 node_index=2 modules='{"rdb": 11}' ansible_host=10.0.0.12
@@ -45,7 +45,7 @@ node-3 cluster_index=1 node_index=3 modules='{"rdb": 12}' ansible_host=10.0.0.13
 
 You can now change the distribution of the different modules (though this is optional). In the example below, we will locate a non-RDB module with each of the RDBs:
 
-```
+```bash
 [rdb_nodes]
 node-1 cluster_index=1 node_index=1 modules='{"sequencer": 1,"rdb": 10}' ansible_host=10.0.0.11 
 node-2 cluster_index=1 node_index=2 modules='{"gdd": 2, "rdb": 11}' ansible_host=10.0.0.12 
@@ -54,7 +54,7 @@ node-3 cluster_index=1 node_index=3 modules='{"dcm":3, "rdb": 12}' ansible_host=
 
 To install the Regatta client and the available drivers, you can add ‘**clients**’ to the nodes’ modules map:
 
-```
+```bash
 [rdb_nodes]
 node-1 cluster_index=1 node_index=1 modules='{"sequencer": 1,"gdd": 2,"dcm":3, "rdb": 10, 
 "clients": 0}' ansible_host=10.0.0.11 
@@ -74,7 +74,7 @@ During this step, it is possible to edit the `cluster.config` file for any Regat
 
 Continue by running:
 
-```
+```bash
 ./setup_cluster.sh distribute rpm config
 ```
 
@@ -88,7 +88,7 @@ At this stage, it is also possible to edit the **common** section of the **clust
 
 To do so, edit the **cluster.config** file in the Ansible directory located in the same folder as the deployment script:
 
-```
+```bash
 ./ansible/cluster.config
 ```
 
@@ -96,7 +96,7 @@ Make any changes to the config and save them to the same file.
 
 To update the entire cluster with the changes made to the config file, execute the script with the `update_config` command:
 
-```
+```bash
 ./setup_cluster.sh update_config
 ```
 
@@ -114,7 +114,7 @@ Once the script execution with either the `config` or `update_config` commands i
 
 Lastly, starting the cluster using the script can be done by running:
 
-```
+```bash
 ./setup_cluster.sh service
 ```
 
@@ -124,14 +124,14 @@ At this stage, the cluster is up and ready.
 
 It is also possible to stop and start the cluster as individual steps by using the `stop_cluster` and `start_cluster` commands:
 
-```
+```bash
 ./setup_cluster.sh stop_cluster
 ./setup_cluster.sh start_cluster
 ```
 
 You can also use the `clean_install` command to run a full deployment including removing any previous installations of Regatta on the cluster:
 
-```
+```bash
 ./setup_cluster.sh clean_install
 ```
 

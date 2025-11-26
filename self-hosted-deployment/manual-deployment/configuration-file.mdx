@@ -6,7 +6,7 @@ The Regatta modules expect to find a cluster configuration file named `cluster.c
 
 The cluster configuration file template will be deployed with each module as part of the RPM installation and can be found under the module's `conf` directory at:
 
-```code
+```bash
 /opt/regatta/1.0/<module name>/conf/cluster.template
 ```
 
@@ -20,7 +20,7 @@ The recommended way to handle the config creation is to:
 
 Once completed, you should have a `cluster.config` file for all Regatta modules in the following path:
 
-```
+```bash
 /opt/regatta/1.0/<module>/conf/cluster.config
 ```
 
@@ -86,11 +86,7 @@ Node parameters include:
 - Node Port
 
 <Note>
-  A valid `cluster.config` file must include a node with ID set as 1.
-
-  Every parameter in a node section must follow the naming rule of `node_<node id>_<parameter>`.
-
-  In the case of the first node in the cluster, every parameter name will begin with `node_1_`.
+  A valid `cluster.config` file must include a node with ID set as 1. Every parameter in a node section must follow the naming rule of `node_<node id>_<parameter>`. In the case of the first node in the cluster, every parameter name will begin with `node_1_`.
 </Note>
 
 ### Modules Definition
@@ -146,9 +142,7 @@ Let's break down the module parameters:
 - `module_X_port` - This is the port on which the module will listen for TCP communication.
 
 <Note>
-  Similarly to node parameters, module parameters must also follow the naming rule of `module_<module id>_<parameter>`.
-
-  The module ID numbering should start at **1**.
+  Similarly to node parameters, module parameters must also follow the naming rule of `module_<module id>_<parameter>`. The module ID numbering should start at **1**.
 </Note>
 
 ### Devices Definition

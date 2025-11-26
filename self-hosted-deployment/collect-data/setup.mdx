@@ -40,8 +40,8 @@ The rest may be configured by you when needed as we describe later. It’s recom
 
 This is the location where the Regatta software was deployed in. In this example the default is:
 
-```json
-/opt/regatta/1.0. 
+```bash
+/opt/regatta/1.0
 ```
 
 As you can see, it is based on the current version **(1.0)**. This is the location where data related to the configuration of the regatta cluster will be collected from.
@@ -50,7 +50,7 @@ As you can see, it is based on the current version **(1.0)**. This is the locati
 
 This is the location where the Regatta cluster stores its logs. The default is:
 
-```json
+```bash
 /var/log/regatta
 ```
 
@@ -60,7 +60,7 @@ All available log files will be collected from there.
 
 This list parameter allows you to filter out files that you wish would not be collected by the script. It’s basically a list of patterns that are applied to remove any file that matches it. The default value is:
 
-```json
+```bash
 cluster.template
 ```
 
@@ -72,7 +72,7 @@ cluster.template
 
 This is the Regatta bucket where we hold the uploaded data. The default is:
 
-```json
+```bash
 regatta-customers-uploads
 ```
 
@@ -82,7 +82,7 @@ This should not be changed unless coordinated with Regatta Support.
 
 This is your dedicated personal folder in the Regatta bucket. The default value is:
 
-```json
+```bash
 my-company
 ```
 
@@ -92,7 +92,7 @@ You should replace it with the folder name you received from Regatta Support.
 
 This is the location where the script will create an archive of all the data collected on the server. The default here is:
 
-```JSON
+```bash
 /tmp
 ```
 
@@ -102,7 +102,7 @@ You can change that default to any preferred directory. Whether changed or left 
 
 The service account file is the authentication file to the folder. The default is:
 
-```json
+```bash
 my-company-sa.json
 ```
 
@@ -126,7 +126,7 @@ This flag indicates whether to delete the data after a successful upload. The de
 
 This parameter allows you to upload a tar that was generated but not uploaded as a result of the flag upload being set to FALSE. The default of this flag is NULL. If it is set to a path, for example:
 
-```
+```bash
 /tmp/my-tar
 ```
 
