@@ -1,17 +1,9 @@
 ---
-title: "Pre-Flight Tool"
+title: "PreFlight Tool"
 description: "Environment performance, info and readiness checks"
 ---
 
 **PreFlight** is a system utility tool developed by **Regatta** to assist with system diagnostics, benchmarking, and network analysis. It integrates a variety of open-source components to provide a comprehensive suite of tools for system administrators and developers.
-
----
-
-## License
-
-PreFlight is licensed under the **GNU General Public License v2.0 (GPL-2.0)**.
-
-See the [LICENSE](./LICENSE) file for full details.
 
 ---
 
@@ -86,12 +78,12 @@ See the [LICENSE](./LICENSE) file for full details.
 
 There are 2 sets of dependecies needed:
 
-1. **Orchestrator Dependencies** - Installed on the machine running the orchestrator
-2. **Remote Host Dependencies** - Installed on **target hosts** 
+1. **Orchestrator (preFlight.sh) Dependencies** - Installed on the machine running the orchestrator
+2. **Remote Host Dependencies** - Installed on **target hosts**
    - Can be auto installed by the Orchestrator via `--auto-install-deps` flag)
    - If not using the auto-install, all host dependencies should be pre installed on all hosts before running.
 
-### Orchestrator Dependencies
+### Orchestrator (preFlight.sh) Dependencies
 
 These must be installed manually on the machine running the orchestrator:
 
@@ -111,85 +103,55 @@ These can be automatically installed on remote hosts if using `--auto-install-de
 - **findutils**
 - **net-tools**
 - **bind-utils**
-- **iperf3 **- benchmark network throughput.
+- **iperf3** - benchmark network throughput.
 - **fio** - benchmark the disk
-- **sysbench **- benchmark cpu & memory
+- **sysbench** - benchmark cpu & memory
 
 ---
 
-## Quick Start (Orchestrator)
+## SSH
+
+SSH key is required by the preFlight for connecting to the host nodes.\
+In case of a single-node deployment in which the preFlight runs on the same node used as a target host, you can create an SSH key-pair using the following command:
+
+```
+ssh-keygen -t ed25519 -f ~/.ssh/id_rdt -N "" && cat ~/.ssh/id_rdt.pub >> ~/.ssh/authorized_keys
+```
+
+---
+
+## Quick Start (preFlight.sh)
 
 ```bash
 # 1) Generate inventory with devices (replace user and hosts)
 ./util/detect_devices.sh -u <user_name> 192.168.1.10 192.168.1.11 > hosts.json
 
 # 2) Run orchestrator (requires SSH to all hosts)
-./cluster_readiness_orchestrator.sh -i hosts.json -r /tmp/cluster_ready -k <path_to_ssh_key> -u <user_name> 
+./preFlight.sh -i hosts.json -r /tmp/cluster_ready -k <path_to_ssh_key> -u <user_name> 
 
 # 3) Inspect results
 ls -1 cluster_results_*/
 ```
 
-## **Execution Flow**
-
-The system uses a manager-hosts flow: an orchestrator will commence tests on target hosts listed in the inventory file, gather results and finally overlook the cleanup.
-
-We can split
-
-#### Orchestrator Machine
-
-- **Script**: `cluster_readiness_orchestrator.sh`
-- **Purpose**: Coordinates, manages, and analyzes results from remote hosts
-- **Libraries**: All `/lib/*.sh` files for orchestration logic
-- **Dependencies**: Lightweight - mainly SSH tools, JSON processing, and basic utilities
-
-#### Remote Hosts (Target Machines)
-
-- **Scripts**: Files in `/host_files/` directory
-  - `system_readiness_check.sh` - Main remote diagnostic script
-  - `fio_benchmark_only.sh` - FIO testing script
-  - `remote_fio_wrapper.sh` - FIO wrapper for remote execution
-  - `install_dependencies.sh` - Dependency installation script
-- **Purpose**: Execute actual system tests and diagnostics
-- **Libraries**: Only `lib/common.sh` (copied to remote hosts)
-- **Dependencies**: Comprehensive - performance testing tools, system analysis utilities
-
-## Responsibilities of Different Scripts
-
-### System Readiness Check (`host_files/system_readiness_check.sh`)
-
-- Intended to run under the orchestrator. It expects parameters and supporting files prepared by the orchestrator.
-- Performs system diagnostics, CPU/memory benchmarks, and disk tests when invoked remotely by the orchestrator.
-- Outputs structured JSON used by the orchestrator for aggregation.
-
-### Cluster Orchestrator (`cluster_readiness_orchestrator.sh`)
-
-- **Multi-machine coordination** - Test entire clusters at once
-- **Interconnectivity testing** - Verify all nodes can communicate
-- **Parallel FIO testing** - Performance testing across all nodes simultaneously
-- **Sequential FIO testing** - Individual node performance analysis
-- **Network throughput** - iperf3 testing between nodes (all-to-all or one-to-many)
-- **Dependency management** - Auto-install missing packages via `--auto-install-deps`
-
-## Parameters
+## All Options (Parameters) for the `preFlight.sh`
 
 ### Configuration Parameters
 
-| Parameter             | Description                                                                                   |
-| --------------------- | --------------------------------------------------------------------------------------------- |
-| -h, --help            | Show help message                                                                             |
-| -i, --inventory       | Inventory file with host list (text format) or JSON format with hosts and devices             |
-| -k, --ssh-key         | SSH private key file                                                                          |
-| -u, --user            | SSH user (default: root)                                                                      |
-| -o, --output-dir      | Output directory (default: cluster_results_TIMESTAMP)                                         |
-| -r, --remote-work-dir | Remote work directory on target hosts (required)                                              |
-| --timeout SECONDS     | SSH timeout (default: 300)                                                                    |
-| -v, --verbose         | Enable verbose output                                                                         |
-| --vpc                 | Use internal IPs for interconnectivity.<br />Used for hosts in VPC and external orchestrator. |
-| --auto-install-deps   | Automatically install missing dependencies on hosts                                           |
-| --keep-host-files     | Keep scripts and results on remote hosts (default: cleanup)                                   |
-| --keep-host-deps      | Keep dependencies installed on hosts after completion                                         |
-| --compress            | Create compressed archive of results directory after completion                               |
+| Parameter             | Description                                                                                                                                                                                                                     |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| -h, --help            | Show help message                                                                                                                                                                                                               |
+| -i, --inventory       | Inventory file with host list (text format) or JSON format with hosts and devices<br />**Note** The foramt of this file is explained later.<br />**Note **that the file can be generated via the `util/detect_devices.sh` tool. |
+| -k, --ssh-key         | SSH private key file                                                                                                                                                                                                            |
+| -u, --user            | SSH user (default: root)                                                                                                                                                                                                        |
+| -o, --output-dir      | Output directory (default: cluster_results_TIMESTAMP)                                                                                                                                                                           |
+| -r, --remote-work-dir | Remote work directory on target hosts (required)                                                                                                                                                                                |
+| --timeout SECONDS     | SSH timeout (default: 300)                                                                                                                                                                                                      |
+| -v, --verbose         | Enable verbose output                                                                                                                                                                                                           |
+| --vpc                 | Use internal IPs for interconnectivity.<br />Used for hosts in VPC and external orchestrator.                                                                                                                                   |
+| --auto-install-deps   | Automatically install missing dependencies on hosts                                                                                                                                                                             |
+| --keep-host-files     | Keep scripts and results on remote hosts (default: cleanup)                                                                                                                                                                     |
+| --keep-host-deps      | Keep dependencies installed on hosts after completion                                                                                                                                                                           |
+| --compress            | Create compressed archive of results directory after completion                                                                                                                                                                 |
 
 ### Test Parameters
 
@@ -213,22 +175,18 @@ We can split
 
 ```bash
 # Simple connectivity test
-./cluster_readiness_orchestrator.sh -i hosts.json -k ~/.ssh/cluster_key -r /tmp/test
+./preFlight.sh -i hosts.json -k ~/.ssh/cluster_key -r /tmp/test
 
 # Using multipule options
-./cluster_readiness_orchestrator.sh -i hosts.json -k ~/.ssh/cluster_key -r /tmp/test --auto-install-deps --interconnectivity --parallel-fio --sequential-fio --network-throughput
+./preFlight.sh -i hosts.json -k ~/.ssh/cluster_key -r /tmp/test --auto-install-deps --interconnectivity --parallel-fio --sequential-fio --network-throughput
 ```
 
-### FIO Benchmark Tool (`host_files/fio_benchmark_only.sh`)
+### Inventory File Format
 
-- **Disk performance testing** - Comprehensive I/O benchmarks
-- **Multiple test modes** - Basic (4 tests) or extensive (141 tests)
-- **Device detection** - Automatic discovery of storage devices
-- **Individual test control** - Run specific test configurations
+JSON Format (with target devices to test specified)\
+This is the users' way of informing the preFlight tool of who are the target hosts, and for each, which storage devices should be inspected. 
 
-#### Inventory File Format
-
-**JSON Format (with target devices to test specified):**
+Example: (note the file can be generated via the `util/detect_devices.sh` tool)
 
 ```json
 {
@@ -246,6 +204,33 @@ We can split
     }
   }
 }
+```
+
+### FIO Files
+
+If you wish to use custom fio tests, you can use the `--fio-files` parameter.\
+The files must conform to fio input structure. Example below:
+
+```
+# here are shared properties for all following tests in the file
+[global]
+filename=/dev/nvme0n2 # will be overriten during preFlight run
+kb_base=1024
+ioengine=libaio
+direct=1
+# runtime of each job in seconds. Can be overriden in the section of the job.
+runtime=5
+stonewall
+group_reporting
+
+# this is the first test of the file
+[rand_read_4k_1]
+readwrite=randread
+blocksize=4k
+numjobs=1
+iodepth=1
+
+# ... more tests here
 ```
 
 ## Output & Results
@@ -305,9 +290,62 @@ sudo ./host_files/system_readiness_check.sh
 ssh user@192.168.1.10 "sudo -l"
 ```
 
-### Performance Considerations
+---
 
-- **Benchmark Duration**: FIO tests run for 10 seconds each by default
-- **Parallel Execution**: Cluster operations run in parallel where possible
-- **Resource Usage**: Minimal impact on system resources
-- **Cleanup**: Temporary files are automatically cleaned up
+# Advanced
+
+## **Execution Flow**
+
+The system uses a manager-hosts flow: an orchestrator will commence tests on target hosts listed in the inventory file, gather results and finally overlook the cleanup.
+
+We can split the files into groups - needed by the orchestrator or needed by the hosts (common.sh is shared):
+
+#### Orchestrator Machine
+
+- **Script**: `preFlight.sh`
+- **Purpose**: Coordinates, manages, and analyzes results from remote hosts
+- **Libraries**: All `/lib/*.sh` files for orchestration logic
+- **Dependencies**: Lightweight - mainly SSH tools, JSON processing, and basic utilities
+
+#### Remote Hosts (Target Machines)
+
+- **Scripts**: Files in `/host_files/` directory
+  - `system_readiness_check.sh` - Main remote diagnostic script
+  - `fio_benchmark_only.sh` - FIO testing script
+  - `remote_fio_wrapper.sh` - FIO wrapper for remote execution
+  - `install_dependencies.sh` - Dependency installation script
+- **Purpose**: Execute actual system tests and diagnostics
+- **Libraries**: Only `lib/common.sh` (copied to remote hosts)
+- **Dependencies**: Comprehensive - performance testing tools, system analysis utilities
+
+## Responsibilities of Different Scripts
+
+### System Readiness Check (`host_files/system_readiness_check.sh`)
+
+- Intended to run under the orchestrator. It expects parameters and supporting files prepared by the orchestrator.
+- Performs system diagnostics, CPU/memory benchmarks, and disk tests when invoked remotely by the orchestrator.
+- Outputs structured JSON used by the orchestrator for aggregation.
+
+### Cluster Orchestrator (`preFlight.sh`)
+
+- **Multi-machine coordination** - Test entire clusters at once
+- **Interconnectivity testing** - Verify all nodes can communicate
+- **Parallel FIO testing** - Performance testing across all nodes simultaneously
+- **Sequential FIO testing** - Individual node performance analysis
+- **Network throughput** - iperf3 testing between nodes (all-to-all or one-to-many)
+- **Dependency management** - Auto-install missing packages via `--auto-install-deps`
+
+### FIO Benchmark Tool (`host_files/fio_benchmark_only.sh`)
+
+- **Disk performance testing** - Comprehensive I/O benchmarks
+- **Multiple test modes** - Basic (4 tests) or extensive (141 tests)
+- **Device detection** - Automatic discovery of storage devices
+- **Individual test control** - Run specific test configurations
+
+---
+
+## License
+
+PreFlight is licensed under the **GNU General Public License v2.0 (GPL-2.0)**.
+
+See the [LICENSE](./LICENSE) file for full details.
