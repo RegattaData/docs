@@ -1,9 +1,9 @@
 ---
 title: "PreFlight Tool"
-description: "Environment performance, info and readiness checks"
+description: "System readiness and performance validation for Regatta deployments"
 ---
 
-**PreFlight** is a system utility tool developed by **Regatta** to assist with system diagnostics, benchmarking, and network analysis. It integrates a variety of open-source components to provide a comprehensive suite of tools for system administrators and developers.
+**PreFlight** is a system and hardware validation tool developed by **Regatta** to evaluate whether an environment is ready for a Regatta installation. Because Regatta is a high-performance, distributed OLxP database, its runtime depends on stable and bottleneck-free CPU, memory, storage, and networking components. The PreFlight tool performs a comprehensive set of diagnostics and benchmarks to ensure that every host in the environment meets the performance, configuration, and connectivity requirements needed for a successful and reliable Regatta deployment..
 
 ---
 
@@ -72,30 +72,37 @@ description: "Environment performance, info and readiness checks"
 
 ---
 
-## Installation & Dependencies
+## Prerequisites & Dependencies
+
+### Operating System Prerequisites
+
+PreFlight currently supports:
+
+- **Linux-based distributions** (RHEL, CentOS, Rocky, Alma, Ubuntu, Debian, Oracle Linux, etc.)
+- **x86-64 architecture** (minimum required)
 
 ### Dependency Management
 
 There are 2 sets of dependecies needed:
 
-1. **Orchestrator (preFlight.sh) Dependencies** - Installed on the machine running the orchestrator
-2. **Remote Host Dependencies** - Installed on **target hosts**
-   - Can be auto installed by the Orchestrator via `--auto-install-deps` flag)
-   - If not using the auto-install, all host dependencies should be pre installed on all hosts before running.
+1. **Orchestrator (**`preFlight.sh`**) Dependencies** - Installed on the machine running the orchestrator script.
+2. **Remote Host Dependencies** - Installed on target hosts that PreFlight will test.
+   - These can be automatically installed using `--auto-install-deps` (internet required).
+   - If not using automatic installation, all dependencies must be manually installed beforehand.
 
 ### Orchestrator (preFlight.sh) Dependencies
 
-These must be installed manually on the machine running the orchestrator:
+These must be installed manually on the orchestrator machine:
 
 - **jq** - JSON processing for parsing results
-- **bc** - Mathematical calculations (compression ratios, analysis)
-- **tar/gzip** - Archive creation (for --compress option)
-- **ssh/scp** - Remote host communication
-- **coreutils** - Basic utilities (find, grep, awk, sed, etc.)
+- **bc** - mathematical calculations (compression ratios, analysis)
+- **tar/gzip** - archive creation (for --compress option)
+- **ssh/scp** - remote host communication
+- **coreutils** - common utilities (find, grep, awk, sed, etc.)
 
 ### Remote Host Dependencies
 
-These can be automatically installed on remote hosts if using `--auto-install-deps`, given the hosts have access to the internet.
+These can be installed automatically using `--auto-install-deps`, provided the hosts have internet access:
 
 - **curl**
 - **bc**
@@ -103,16 +110,15 @@ These can be automatically installed on remote hosts if using `--auto-install-de
 - **findutils**
 - **net-tools**
 - **bind-utils**
-- **iperf3** - benchmark network throughput.
-- **fio** - benchmark the disk
-- **sysbench** - benchmark cpu & memory
+- **iperf3** - network throughput benchmarking
+- **fio** - disk I/O benchmarking
+- **sysbench** - CPU and memory benchmarking
 
 ---
 
 ## SSH
 
-SSH key is required by the preFlight for connecting to the host nodes.\
-In case of a single-node deployment in which the preFlight runs on the same node used as a target host, you can create an SSH key-pair using the following command:
+SSH key-based access is required for PreFlight to connect to target hosts. For single-For single-node deployments where PreFlight runs on the same machine it evaluates, you can enable local SSH access with:
 
 ```
 ssh-keygen -t ed25519 -f ~/.ssh/id_rdt -N "" && cat ~/.ssh/id_rdt.pub >> ~/.ssh/authorized_keys
@@ -120,13 +126,13 @@ ssh-keygen -t ed25519 -f ~/.ssh/id_rdt -N "" && cat ~/.ssh/id_rdt.pub >> ~/.ssh/
 
 ---
 
-## Quick Start (preFlight.sh)
+## Quick Start 
 
 ```bash
-# 1) Generate inventory with devices (replace user and hosts)
+# 1) Generate an inventory file with detected devices (replace user and hosts)
 ./util/detect_devices.sh -u <user_name> 192.168.1.10 192.168.1.11 > hosts.json
 
-# 2) Run orchestrator (requires SSH to all hosts)
+# 2) Run the orchestrator (requires SSH access to all hosts)
 ./preFlight.sh -i hosts.json -r /tmp/cluster_ready -k <path_to_ssh_key> -u <user_name> 
 
 # 3) Inspect results
@@ -137,41 +143,42 @@ ls -1 cluster_results_*/
 
 ### Configuration Parameters
 
-| Parameter             | Description                                                                                                                                                                                                                     |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| -h, --help            | Show help message                                                                                                                                                                                                               |
-| -i, --inventory       | Inventory file with host list (text format) or JSON format with hosts and devices<br />**Note** The foramt of this file is explained later.<br />**Note **that the file can be generated via the `util/detect_devices.sh` tool. |
-| -k, --ssh-key         | SSH private key file                                                                                                                                                                                                            |
-| -u, --user            | SSH user (default: root)                                                                                                                                                                                                        |
-| -o, --output-dir      | Output directory (default: cluster_results_TIMESTAMP)                                                                                                                                                                           |
-| -r, --remote-work-dir | Remote work directory on target hosts (required)                                                                                                                                                                                |
-| --timeout SECONDS     | SSH timeout (default: 300)                                                                                                                                                                                                      |
-| -v, --verbose         | Enable verbose output                                                                                                                                                                                                           |
-| --vpc                 | Use internal IPs for interconnectivity.<br />Used for hosts in VPC and external orchestrator.                                                                                                                                   |
-| --auto-install-deps   | Automatically install missing dependencies on hosts                                                                                                                                                                             |
-| --keep-host-files     | Keep scripts and results on remote hosts (default: cleanup)                                                                                                                                                                     |
-| --keep-host-deps      | Keep dependencies installed on hosts after completion                                                                                                                                                                           |
-| --compress            | Create compressed archive of results directory after completion                                                                                                                                                                 |
+| Parameter               | Description                                                                                                                                                                                                                  |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `-h, --help`            | Show help message                                                                                                                                                                                                            |
+| `-i, --inventory`       | Inventory file with host list (text format) or JSON format with hosts and devices<br />**Note:** The format of this file is explained later.<br />**Note:** The file can be generated via the `util/detect_devices.sh` tool. |
+| `-k, --ssh-key`         | SSH private key file                                                                                                                                                                                                         |
+| `-u, --user`            | SSH user (Default: root)                                                                                                                                                                                                     |
+| `-o, --output-dir`      | Output directory (Default: `cluster_results_TIMESTAMP`)                                                                                                                                                                      |
+| `-r, --remote-work-dir` | Remote work directory on target hosts (required)                                                                                                                                                                             |
+| `--timeout SECONDS`     | SSH timeout (Default: 300)                                                                                                                                                                                                   |
+| `-v, --verbose`         | Enable verbose output                                                                                                                                                                                                        |
+| `--vpc`                 | Use internal IPs for interconnectivity.<br />Used for hosts in VPC and external orchestrator.                                                                                                                                |
+| `--auto-install-deps`   | Automatically install missing dependencies on hosts                                                                                                                                                                          |
+| `--keep-host-files`     | Keep scripts and results on remote hosts (Default: cleanup)                                                                                                                                                                  |
+| `--keep-host-deps`      | Keep dependencies installed on hosts after completion                                                                                                                                                                        |
+| `--compress`            | Create compressed archive of results directory after completion                                                                                                                                                              |
 
 ### Test Parameters
 
-| --interconnectivity               | Test interconnectivity between nodes                                                                                                                                                                                                                                                                                                                               |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| --network-throughput              | Test network throughput using iperf3                                                                                                                                                                                                                                                                                                                               |
-| --throughput-server-host          | Choose the host to be server in server-to-all throughput iperf3 test<br />Default: First in inventory file                                                                                                                                                                                                                                                         |
-| --throughput-all-hosts-as-servers | Test network throughput using iperf3 (all-to-all)<br /><br />**Note**: This option is mutually exclusive with --throughput-server-host<br />Default: false                                                                                                                                                                                                         |
-| --cpu-benchmark                   | Run CPU performance benchmarks                                                                                                                                                                                                                                                                                                                                     |
-| --memory-benchmark                | Run memory performance benchmarks                                                                                                                                                                                                                                                                                                                                  |
-| --gather-static-info              | Gather static system information                                                                                                                                                                                                                                                                                                                                   |
-| --rdb-ready-checks                | Run RDB process-ready checks:<br /><br />- Detects if `rdb.bin` is already running (and skips further checks on those hosts)<br />- Checks port availability 8840–8900<br />- Verifies required file structure (e.g., `/usr/lib64/libssl.so` symlink)<br />- Confirms required services (systemd state)<br />- Notes NUMA domains for potential performance impact |
-| --parallel-fio                    | Run FIO tests in parallel across all nodes                                                                                                                                                                                                                                                                                                                         |
-| --sequential-fio                  | Run FIO tests sequentially on each node                                                                                                                                                                                                                                                                                                                            |
-| --use-default-fio                 | Use default FIO files from fio_testing directory<br />**Note**: If neither option is specified, default behavior uses fio_testing directory<br />**Note**: This option is mutually exclusive with --fio-files                                                                                                                                                      |
-| --fio-files "file1,file2"         | fio files to be used for testing (comma-separated paths)                                                                                                                                                                                                                                                                                                           |
-| --fio-fill-device                 | Include fill_device.fio in testing (optional, for device preparation)<br />This will override some of the disk space so that later tests run on a non-empty disk.                                                                                                                                                                                                  |
-| -p, --preset                      | Use preset configuration (basic, performance, comprehensive, fast, debug) to specify multipule flags together. Read the help page to choose a relvant preset.                                                                                                                                                                                                      |
+| Parameter                           | Description                                                                                                                                                                                                                                                                                                                                                                  |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--interconnectivity`               | Test interconnectivity between nodes                                                                                                                                                                                                                                                                                                                                         |
+| `--network-throughput`              | Test network throughput using `iperf3`                                                                                                                                                                                                                                                                                                                                       |
+| `--throughput-server-host`          | Choose the host that acts as the server in server-to-all throughput `iperf3` test<br />Default: First in inventory file                                                                                                                                                                                                                                                      |
+| `--throughput-all-hosts-as-servers` | Test network throughput using `iperf3` (all-to-all)<br /><br />**Note**: This option is mutually exclusive with `--throughput-server-host`<br />Default: False                                                                                                                                                                                                               |
+| `--cpu-benchmark`                   | Run CPU performance benchmarks                                                                                                                                                                                                                                                                                                                                               |
+| `--memory-benchmark`                | Run memory performance benchmarks                                                                                                                                                                                                                                                                                                                                            |
+| `--gather-static-info`              | Gather static system information                                                                                                                                                                                                                                                                                                                                             |
+| `--rdb-ready-checks`                | Run RDB process-ready checks:<br /><br />- Detects if Regatta binaries are already running (and skips further checks on those hosts)<br />- Checks port availability 8840–8900<br />- Verifies required file structure (e.g., `/usr/lib64/libssl.so` symlink)<br />- Confirms required services (`systemd` state)<br />- Notes NUMA domains for potential performance impact |
+| `--parallel-fio`                    | Run `FIO` tests in parallel across all nodes                                                                                                                                                                                                                                                                                                                                 |
+| `--sequential-fio`                  | Run `FIO` tests sequentially on each node                                                                                                                                                                                                                                                                                                                                    |
+| `--use-default-fio`                 | Use default `FIO` files from fio_testing directory<br />**Note**: If neither option is specified, default behavior uses fio_testing directory<br />**Note**: This option is mutually exclusive with `--fio-files`                                                                                                                                                            |
+| `--fio-files "file1,file2"`         | `FIO` files to be used for testing (comma-separated paths)                                                                                                                                                                                                                                                                                                                   |
+| `--fio-fill-device`                 | Include `fill_device.fio` in testing (optional, for device preparation)<br />This will override some of the disk space so that later tests run on a non-empty disk.                                                                                                                                                                                                          |
+| `-p, --preset`                      | Use preset configuration (basic, performance, comprehensive, fast, debug) to specify multiple flags together. Read the help page to choose a relevant preset.                                                                                                                                                                                                                |
 
-### Examples:
+### Examples
 
 ```bash
 # Simple connectivity test
@@ -183,10 +190,9 @@ ls -1 cluster_results_*/
 
 ### Inventory File Format
 
-JSON Format (with target devices to test specified)\
-This is the users' way of informing the preFlight tool of who are the target hosts, and for each, which storage devices should be inspected. 
+This file specifies the target hosts and which storage devices should be tested on each. It can be generated using `util/detect_devices.sh`.
 
-Example: (note the file can be generated via the `util/detect_devices.sh` tool)
+Example:
 
 ```json
 {
@@ -208,36 +214,30 @@ Example: (note the file can be generated via the `util/detect_devices.sh` tool)
 
 ### FIO Files
 
-If you wish to use custom fio tests, you can use the `--fio-files` parameter.\
-The files must conform to fio input structure. Example below:
+Custom fio test files can be used with `--fio-files`. They must follow the standard fio configuration format:
 
 ```
-# here are shared properties for all following tests in the file
 [global]
-filename=/dev/nvme0n2 # will be overriten during preFlight run
+filename=/dev/nvme0n2   # will be overridden during the PreFlight run
 kb_base=1024
 ioengine=libaio
 direct=1
-# runtime of each job in seconds. Can be overriden in the section of the job.
 runtime=5
 stonewall
 group_reporting
 
-# this is the first test of the file
 [rand_read_4k_1]
 readwrite=randread
 blocksize=4k
 numjobs=1
 iodepth=1
 
-# ... more tests here
+# ... more tests ...
 ```
 
 ## Output & Results
 
-### File Structure
-
-All results are saved with timestamps:
+### File Structure Overview
 
 ```
 ├── orchestrator.log                       # Main execution log
@@ -260,15 +260,15 @@ All results are saved with timestamps:
 │   │   └── fio/
 │   │       ├── merged_parallel_fio.json   # Consolidated parallel FIO results for this host
 │   │       └── merged_sequential_fio.json # Consolidated sequential FIO results for this host
-│   ├── dmesg_*.log                        # Per-host kernel logs copied back when present
-│   └── journalctl_*.log[.gz]              # Per-host journal logs copied back when present
+│   ├── dmesg_*.log                        # Kernel logs collected from each host
+│   └── journalctl_*.log[.gz]              # System journal logs collected from each host
 └── <host_ip_2>/                           # Same structure per host
     └── ...
 ```
 
-## Troubleshooting
+Note: All results are saved with timestamps.
 
-### Common Issues
+## Troubleshooting
 
 #### SSH Connectivity Issues
 
@@ -296,56 +296,52 @@ ssh user@192.168.1.10 "sudo -l"
 
 ## **Execution Flow**
 
-The system uses a manager-hosts flow: an orchestrator will commence tests on target hosts listed in the inventory file, gather results and finally overlook the cleanup.
-
-We can split the files into groups - needed by the orchestrator or needed by the hosts (common.sh is shared):
+The system uses an orchestrator → hosts model:\
+The orchestrator triggers tests on all target hosts from the inventory file, collects results, and performs cleanup.
 
 #### Orchestrator Machine
 
 - **Script**: `preFlight.sh`
-- **Purpose**: Coordinates, manages, and analyzes results from remote hosts
-- **Libraries**: All `/lib/*.sh` files for orchestration logic
-- **Dependencies**: Lightweight - mainly SSH tools, JSON processing, and basic utilities
+- **Purpose**: Coordinates all remote tests and aggregates results
+- **Libraries**: All files in `/lib/*.sh`
+- **Dependencies**: Primarily SSH utilities, JSON tools, and core utilities
 
 #### Remote Hosts (Target Machines)
 
 - **Scripts**: Files in `/host_files/` directory
   - `system_readiness_check.sh` - Main remote diagnostic script
-  - `fio_benchmark_only.sh` - FIO testing script
-  - `remote_fio_wrapper.sh` - FIO wrapper for remote execution
+  - `fio_benchmark_only.sh` - `FIO` testing script
+  - `remote_fio_wrapper.sh` - `FIO` wrapper for remote execution
   - `install_dependencies.sh` - Dependency installation script
-- **Purpose**: Execute actual system tests and diagnostics
-- **Libraries**: Only `lib/common.sh` (copied to remote hosts)
-- **Dependencies**: Comprehensive - performance testing tools, system analysis utilities
+- **Purpose**: Execute system tests and diagnostics
+- **Libraries**: `lib/common.sh` (copied to hosts)
+- **Dependencies**: Performance and system analysis tools
 
-## Responsibilities of Different Scripts
+## Responsibilities of Individual Scripts
 
 ### System Readiness Check (`host_files/system_readiness_check.sh`)
 
-- Intended to run under the orchestrator. It expects parameters and supporting files prepared by the orchestrator.
-- Performs system diagnostics, CPU/memory benchmarks, and disk tests when invoked remotely by the orchestrator.
-- Outputs structured JSON used by the orchestrator for aggregation.
+- Invoked by the orchestrator with prepared parameters.
+- Performs system diagnostics, CPU/memory benchmarks, and optional disk tests
+- Outputs structured JSON consumed by the orchestrator
 
 ### Cluster Orchestrator (`preFlight.sh`)
 
-- **Multi-machine coordination** - Test entire clusters at once
-- **Interconnectivity testing** - Verify all nodes can communicate
-- **Parallel FIO testing** - Performance testing across all nodes simultaneously
-- **Sequential FIO testing** - Individual node performance analysis
-- **Network throughput** - iperf3 testing between nodes (all-to-all or one-to-many)
-- **Dependency management** - Auto-install missing packages via `--auto-install-deps`
+- Multi-machine coordination
+- Interconnectivity tests
+- Parallel and sequential FIO testing
+- Network throughput benchmarks (all-to-all or server-to-all)
+- Automatic dependency installation (`--auto-install-deps`)
 
 ### FIO Benchmark Tool (`host_files/fio_benchmark_only.sh`)
 
-- **Disk performance testing** - Comprehensive I/O benchmarks
-- **Multiple test modes** - Basic (4 tests) or extensive (141 tests)
-- **Device detection** - Automatic discovery of storage devices
-- **Individual test control** - Run specific test configurations
+- Disk I/O performance testing
+- Supports basic and extensive test modes
+- Automatic device detection
+- Supports custom test configurations
 
 ---
 
 ## License
 
 PreFlight is licensed under the **GNU General Public License v2.0 (GPL-2.0)**.
-
-See the [LICENSE](./LICENSE) file for full details.
