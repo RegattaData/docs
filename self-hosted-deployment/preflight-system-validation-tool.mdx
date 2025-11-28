@@ -1,0 +1,347 @@
+---
+title: "PreFlight System Validation Tool"
+description: "System readiness and performance validation for Regatta deployments"
+---
+
+**PreFlight** is a system and hardware validation tool developed by **Regatta** to evaluate whether an environment is ready for a Regatta installation. Because Regatta is a high-performance, distributed OLxP database, its runtime depends on stable and bottleneck-free CPU, memory, storage, and networking components. The PreFlight tool performs a comprehensive set of diagnostics and benchmarks to ensure that every host in the environment meets the performance, configuration, and connectivity requirements needed for a successful and reliable Regatta deployment..
+
+---
+
+## Features
+
+- System performance benchmarking
+- Network throughput and latency testing
+- Disk I/O stress testing
+- System information and diagnostics
+- Lightweight with minimal dependecies
+
+## What Gets Checked
+
+#### Operating System & Kernel
+
+- OS name and version detection
+- Kernel version and architecture
+- System uptime and boot information
+
+#### CPU Analysis
+
+- Physical cores and logical threads
+- CPU model and frequency information
+- NUMA configuration
+- Performance benchmarking (`sysbench`)
+
+#### Memory Analysis
+
+- Total, available, and used memory
+- Swap usage and configuration
+- Memory throughput benchmarking
+
+#### Storage & Filesystem
+
+- Disk type detection (SSD/HDD/NVMe)
+- Filesystem information and mount options
+- Disk usage and available space
+- I/O performance testing (FIO)
+
+#### Network Configuration
+
+- Network interface enumeration
+- IP address configuration
+- DNS resolution testing
+- Interconnectivity validation
+- Throughput testing (iperf3)
+
+#### Security Analysis
+
+- **SELinux**: Status, mode, policy, boolean settings
+- **AppArmor**: Profile statistics and enforcement status
+- **Firewall**: UFW, firewalld, or iptables analysis
+- **SSH Configuration**: Port, authentication methods, security settings
+- **Security Services**: Status of critical security services
+
+#### System Configuration
+
+- ulimit values (open files, stack size)
+- Important sysctl parameters
+- Process limits and system constraints
+
+### Kernel & Journal Log Capture
+
+- Copies `dmesg` and `journalctl` logs from hosts when present for troubleshooting
+- Hardware-related message extraction and categorization are available within host scripts
+
+---
+
+## Prerequisites & Dependencies
+
+### Operating System Prerequisites
+
+PreFlight currently supports:
+
+- **Linux-based distributions** (RHEL, CentOS, Rocky, Alma, Ubuntu, Debian, Oracle Linux, etc.)
+- **x86-64 architecture** (minimum required)
+
+### Dependency Management
+
+There are two dependency groups required for running PreFlight:
+
+1. **Orchestrator (**`preFlight.sh`**) Dependencies** - Installed on the machine running the orchestrator script.
+2. **Remote Host Dependencies** - Installed on target hosts that PreFlight will test.
+   - These can be automatically installed using `--auto-install-deps` (internet required).
+   - If not using automatic installation, all dependencies must be manually installed beforehand.
+
+### Orchestrator (`preFlight.sh`) Dependencies
+
+These must be installed manually on the orchestrator machine:
+
+- `jq` - JSON processing for parsing results
+- `bc` - mathematical calculations (compression ratios, analysis)
+- `tar/gzip` - archive creation (for --compress option)
+- `ssh/scp` - remote host communication
+- `coreutils` - common utilities (find, grep, awk, sed, etc.)
+
+### Remote Host Dependencies
+
+These can be installed automatically using `--auto-install-deps`, provided the hosts have internet access:
+
+- `curl`
+- `bc`
+- `tar`
+- `findutils`
+- `net-tools`
+- `bind-utils`
+- `iperf3` - network throughput benchmarking
+- `fio` - disk I/O benchmarking
+- `sysbench` - CPU and memory benchmarking
+
+---
+
+## SSH
+
+SSH key-based access is required for PreFlight to connect to target hosts. For single-For single-node deployments where PreFlight runs on the same machine it evaluates, you can enable local SSH access with:
+
+```
+ssh-keygen -t ed25519 -f ~/.ssh/id_rdt -N "" && cat ~/.ssh/id_rdt.pub >> ~/.ssh/authorized_keys
+```
+
+---
+
+## Quick Start
+
+```bash
+# 1) Generate an inventory file with detected devices (replace user and hosts)
+./util/detect_devices.sh -u <user_name> 192.168.1.10 192.168.1.11 > hosts.json
+
+# 2) Run the orchestrator (requires SSH access to all hosts)
+./preFlight.sh -i hosts.json -r /tmp/cluster_ready -k <path_to_ssh_key> -u <user_name> 
+
+# 3) Inspect results
+ls -1 cluster_results_*/
+```
+
+## All Options (Parameters) for the `preFlight.sh`
+
+### Configuration Parameters
+
+| Parameter               | Description                                                                                                                                                                                                                  |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `-h, --help`            | Show help message                                                                                                                                                                                                            |
+| `-i, --inventory`       | Inventory file with host list (text format) or JSON format with hosts and devices<br />**Note:** The format of this file is explained later.<br />**Note:** The file can be generated via the `util/detect_devices.sh` tool. |
+| `-k, --ssh-key`         | SSH private key file                                                                                                                                                                                                         |
+| `-u, --user`            | SSH user (Default: root)                                                                                                                                                                                                     |
+| `-o, --output-dir`      | Output directory (Default: `cluster_results_TIMESTAMP`)                                                                                                                                                                      |
+| `-r, --remote-work-dir` | Remote work directory on target hosts (required)                                                                                                                                                                             |
+| `--timeout SECONDS`     | SSH timeout (Default: 300)                                                                                                                                                                                                   |
+| `-v, --verbose`         | Enable verbose output                                                                                                                                                                                                        |
+| `--vpc`                 | Use internal IPs for interconnectivity.<br />Used for hosts in VPC and external orchestrator.                                                                                                                                |
+| `--auto-install-deps`   | Automatically install missing dependencies on hosts                                                                                                                                                                          |
+| `--keep-host-files`     | Keep scripts and results on remote hosts (Default: cleanup)                                                                                                                                                                  |
+| `--keep-host-deps`      | Keep dependencies installed on hosts after completion                                                                                                                                                                        |
+| `--compress`            | Create compressed archive of results directory after completion                                                                                                                                                              |
+
+### Test Parameters
+
+| Parameter                           | Description                                                                                                                                                                                                                                                                                                                                                                  |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--interconnectivity`               | Test interconnectivity between nodes                                                                                                                                                                                                                                                                                                                                         |
+| `--network-throughput`              | Test network throughput using `iperf3`                                                                                                                                                                                                                                                                                                                                       |
+| `--throughput-server-host`          | Choose the host that acts as the server in server-to-all throughput `iperf3` test<br />Default: First in inventory file                                                                                                                                                                                                                                                      |
+| `--throughput-all-hosts-as-servers` | Test network throughput using `iperf3` (all-to-all)<br /><br />**Note**: This option is mutually exclusive with `--throughput-server-host`<br />Default: False                                                                                                                                                                                                               |
+| `--cpu-benchmark`                   | Run CPU performance benchmarks                                                                                                                                                                                                                                                                                                                                               |
+| `--memory-benchmark`                | Run memory performance benchmarks                                                                                                                                                                                                                                                                                                                                            |
+| `--gather-static-info`              | Gather static system information                                                                                                                                                                                                                                                                                                                                             |
+| `--rdb-ready-checks`                | Run RDB process-ready checks:<br /><br />- Detects if Regatta binaries are already running (and skips further checks on those hosts)<br />- Checks port availability 8840–8900<br />- Verifies required file structure (e.g., `/usr/lib64/libssl.so` symlink)<br />- Confirms required services (`systemd` state)<br />- Notes NUMA domains for potential performance impact |
+| `--parallel-fio`                    | Run `FIO` tests in parallel across all nodes                                                                                                                                                                                                                                                                                                                                 |
+| `--sequential-fio`                  | Run `FIO` tests sequentially on each node                                                                                                                                                                                                                                                                                                                                    |
+| `--use-default-fio`                 | Use default `FIO` files from fio_testing directory<br />**Note**: If neither option is specified, default behavior uses fio_testing directory<br />**Note**: This option is mutually exclusive with `--fio-files`                                                                                                                                                            |
+| `--fio-files "file1,file2"`         | `FIO` files to be used for testing (comma-separated paths)                                                                                                                                                                                                                                                                                                                   |
+| `--fio-fill-device`                 | Include `fill_device.fio` in testing (optional, for device preparation)<br />This will override some of the disk space so that later tests run on a non-empty disk.                                                                                                                                                                                                          |
+| `-p, --preset`                      | Use preset configuration (basic, performance, comprehensive, fast, debug) to specify multiple flags together. Read the help page to choose a relevant preset.                                                                                                                                                                                                                |
+
+### Examples
+
+```bash
+# Simple connectivity test
+./preFlight.sh -i hosts.json -k ~/.ssh/cluster_key -r /tmp/test
+
+# Using multipule options
+./preFlight.sh -i hosts.json -k ~/.ssh/cluster_key -r /tmp/test --auto-install-deps --interconnectivity --parallel-fio --sequential-fio --network-throughput
+```
+
+### Inventory File Format
+
+This file specifies the target hosts and which storage devices should be tested on each. It can be generated using `util/detect_devices.sh`.
+
+Example:
+
+```json
+{
+  "hosts": {
+    "192.168.1.10": {
+      "devices": [
+        {"path": "/dev/sda", "type": "hdd", "size_bytes": 1000000000000},
+        {"path": "/dev/nvme0n1", "type": "nvme", "size_bytes": 500000000000}
+      ]
+    },
+    "192.168.1.11": {
+      "devices": [
+        {"path": "/dev/sdb", "type": "ssd", "size_bytes": 2000000000000}
+      ]
+    }
+  }
+}
+```
+
+### FIO Files
+
+Custom fio test files can be used with `--fio-files`. They must follow the standard fio configuration format:
+
+```
+[global]
+filename=/dev/nvme0n2   # will be overridden during the PreFlight run
+kb_base=1024
+ioengine=libaio
+direct=1
+runtime=5
+stonewall
+group_reporting
+
+[rand_read_4k_1]
+readwrite=randread
+blocksize=4k
+numjobs=1
+iodepth=1
+
+# ... more tests ...
+```
+
+## Output & Results
+
+### File Structure Overview
+
+```
+├── orchestrator.log                       # Main execution log
+├── cluster_summary.json                   # Aggregated report (per-host + references)
+├── file_listing.json                      # Flat listing of files in results dir
+├── fio_config_analysis_results.json       # FIO configuration analysis (write/safety)
+├── interconnectivity_matrix.json          # Host-to-host connectivity (ping/ssh/port)
+├── interconnectivity_logs/                # Detailed per-connection logs
+├── network_throughput_matrix.json         # iperf3 results (matrix)
+├── network_throughput_summary.json        # Stats (min/max/avg, success rate)
+├── rdb_process_ready_results.json         # RDB ready checks (if enabled)
+├── fio_files/                             # FIO job files used for tests (if any)
+├── <host_ip_1>/                           # Per-host data (one directory per host)
+│   ├── logs/                              # Per-host logs (readiness, dependencies, FIO, etc.)
+│   ├── results/                           # Per-host JSON results
+│   │   ├── static_gather.json             # Static system info (system_readiness subset)
+│   │   ├── cpu_benchmark.json             # CPU benchmark results
+│   │   ├── memory_benchmark.json          # Memory benchmark results
+│   │   ├── device_check.json              # Device verification results from inventory
+│   │   └── fio/
+│   │       ├── merged_parallel_fio.json   # Consolidated parallel FIO results for this host
+│   │       └── merged_sequential_fio.json # Consolidated sequential FIO results for this host
+│   ├── dmesg_*.log                        # Kernel logs collected from each host
+│   └── journalctl_*.log[.gz]              # System journal logs collected from each host
+└── <host_ip_2>/                           # Same structure per host
+    └── ...
+```
+
+Note: All results are saved with timestamps.
+
+## Troubleshooting
+
+#### SSH Connectivity Issues
+
+```bash
+# Test SSH connectivity manually
+ssh -i ~/.ssh/key user@192.168.1.10
+
+# Check SSH service on target
+ssh user@192.168.1.10 "systemctl status sshd"
+```
+
+#### Permission Issues
+
+```bash
+# Run with sudo if needed
+sudo ./host_files/system_readiness_check.sh
+
+# Check SSH user permissions
+ssh user@192.168.1.10 "sudo -l"
+```
+
+---
+
+# Advanced
+
+## **Execution Flow**
+
+The system uses an orchestrator → hosts model:\
+The orchestrator triggers tests on all target hosts from the inventory file, collects results, and performs cleanup.
+
+#### Orchestrator Machine
+
+- **Script**: `preFlight.sh`
+- **Purpose**: Coordinates all remote tests and aggregates results
+- **Libraries**: All files in `/lib/*.sh`
+- **Dependencies**: Primarily SSH utilities, JSON tools, and core utilities
+
+#### Remote Hosts (Target Machines)
+
+- **Scripts**: Files in `/host_files/` directory
+  - `system_readiness_check.sh` - Main remote diagnostic script
+  - `fio_benchmark_only.sh` - `FIO` testing script
+  - `remote_fio_wrapper.sh` - `FIO` wrapper for remote execution
+  - `install_dependencies.sh` - Dependency installation script
+- **Purpose**: Execute system tests and diagnostics
+- **Libraries**: `lib/common.sh` (copied to hosts)
+- **Dependencies**: Performance and system analysis tools
+
+## Responsibilities of Individual Scripts
+
+### System Readiness Check (`host_files/system_readiness_check.sh`)
+
+- Invoked by the orchestrator with prepared parameters.
+- Performs system diagnostics, CPU/memory benchmarks, and optional disk tests
+- Outputs structured JSON consumed by the orchestrator
+
+### Cluster Orchestrator (`preFlight.sh`)
+
+- Multi-machine coordination
+- Interconnectivity tests
+- Parallel and sequential FIO testing
+- Network throughput benchmarks (all-to-all or server-to-all)
+- Automatic dependency installation (`--auto-install-deps`)
+
+### FIO Benchmark Tool (`host_files/fio_benchmark_only.sh`)
+
+- Disk I/O performance testing
+- Supports basic and extensive test modes
+- Automatic device detection
+- Supports custom test configurations
+
+---
+
+## License
+
+PreFlight is licensed under the **GNU General Public License v2.0 (GPL-2.0)**.
