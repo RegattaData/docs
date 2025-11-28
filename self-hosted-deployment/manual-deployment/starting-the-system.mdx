@@ -8,37 +8,37 @@ A `systemd` service is installed with each module RPM package. The service names
 
 For a single-node deployment, start all services with the following command:
 
-```shellscript
+```bash
 systemctl start regatta-*
 ```
 
-For a multi-node deployment, an additional file should be created for each RDB module named **rdb.config**, alongside the `cluster.config` file:
+For a multi-node deployment, an additional file should be created for each RDB module named `rdb.config`, alongside the `cluster.config` file:
 
-```sql
+```bash
 /opt/regatta/1.0/rdb/conf/rdb.config
 ```
 
 The file should contain the ID assigned to the RDB module on the current node, as defined in the configuration file:
 
-```sql
+```bash
 rdb=<module id>
 ```
 
 For example, if in the configuration file the module ID was defined as follows:
 
-```sql
+```bash
 module_4_id=3
 ```
 
 Then the `rdb.config` file should contain the following line:
 
-```sql
+```bash
 rdb=3
 ```
 
 Once the `rdb.config` file is present for each RDB module across the cluster nodes, proceed to start the services on each of the cluster nodes:
 
-```shellscript
+```bash
 sudo systemctl start regatta-1.0-<module_name>.service
 ```
 
@@ -46,6 +46,6 @@ Where module is one of the Regatta software modules.
 
 For example:
 
-```shellscript
+```bash
 sudo systemctl start regatta-1.0-rdb.service
 ```

@@ -328,7 +328,7 @@
               "self-hosted-deployment/regatta-deployment-tool/installation",
               "self-hosted-deployment/regatta-deployment-tool/configuration",
               "self-hosted-deployment/regatta-deployment-tool/cluster-setup",
-              "self-hosted-deployment/regatta-deployment-tool/hybrid-deployment"
+              "self-hosted-deployment/regatta-deployment-tool/advanced-deployment-options"
             ]
           },
           {

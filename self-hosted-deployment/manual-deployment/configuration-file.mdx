@@ -212,7 +212,7 @@ The second part of the `cluster.config` file is the module-specific section. Thi
 
 The section is comprised of 2 parameters: `core_total_ram_budget_for_module_mb` and `core_pdbg_port`
 
-### core_total_ram_budget_for_module_mb
+### `core_total_ram_budget_for_module_mb`
 
 This is the RAM capacity which is dedicated to the module in MB.
 
@@ -229,7 +229,7 @@ In order to calculate the best value to define in this parameter, we suggest the
   In a server/node with GDD, Sequencer and DCM, the RAM budget for each is 500MB, and the 17.5GB left will be dedicated to the RDB on that host.
 </Tip>
 
-### core_pdbg_port
+### `core_pdbg_port`
 
 This port number is used to internal metrics aggregations and should be unique for each module in the same server/node.
 
