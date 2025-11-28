@@ -4,22 +4,21 @@ title: "Prerequisites"
 
 In order to deploy a RegattaDB cluster, ensure the following requirements are met on all nodes that are designated for the cluster deployment:
 
-1. **Operating system** Red Hat 8–based distribution such as Oracle Linux 8 or RHEL 8.10
+1. **Operating system:** Red Hat 8–based distribution such as Oracle Linux 8 or RHEL 8.10
+1. **Architecture: **x86-64
 2. **Required system dependencies**:
-   - shadow-utils
-   - glibc
-   - openssl-libs
-   - libaio
-3. **Hardware Requirements**
+   - `shadow-utils`
+   - `glibc`
+   - `openssl-libs`
+   - `libaio`
+3. **Hardware Requirements:**
    - Memory: Minimum 32 GB
    - Disk space for Regatta installation: Minimum 500 MB
    - CPU: Minimum 4 CPUs
-   - Storage: At least one dedicated 350-GB NVMe or SSD device that is not the system boot device
-4. **Connectivity**
-
-   Minimum 10-Gb network connection between all Regatta servers
-
-   Internet access for package downloads (optional)
-5. **Regatta Software Requirements**
+   - Storage: At least one dedicated 350-GB block storage device (preferably NVMe or SSD) that is not the system boot device.
+4. **Connectivity:**
+   - Minimum 10-Gb network connection between all Regatta servers
+   - Internet access for package downloads (optional)
+5. **Regatta Software Requirements:**
 
    Download all RPMs from Regatta and make them available for distribution to the servers.
