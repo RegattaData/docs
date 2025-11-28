@@ -41,7 +41,7 @@ description: "System readiness and performance validation for Regatta deployment
 - Disk type detection (SSD/HDD/NVMe)
 - Filesystem information and mount options
 - Disk usage and available space
-- I/O performance testing (`FIO`)
+- I/O performance testing (FIO)
 
 #### Network Configuration
 
@@ -49,20 +49,20 @@ description: "System readiness and performance validation for Regatta deployment
 - IP address configuration
 - DNS resolution testing
 - Interconnectivity validation
-- Throughput testing (`iperf3`)
+- Throughput testing (iperf3)
 
 #### Security Analysis
 
-- SELinux: Status, mode, policy, boolean settings
-- AppArmor: Profile statistics and enforcement status
-- Firewall: UFW, firewalld, or iptables analysis
-- SSH Configuration: Port, authentication methods, security settings
-- Security Services: Status of critical security services
+- **SELinux**: Status, mode, policy, boolean settings
+- **AppArmor**: Profile statistics and enforcement status
+- **Firewall**: UFW, firewalld, or iptables analysis
+- **SSH Configuration**: Port, authentication methods, security settings
+- **Security Services**: Status of critical security services
 
 #### System Configuration
 
-- `ulimit` values (open files, stack size)
-- Important `sysctl` parameters
+- ulimit values (open files, stack size)
+- Important sysctl parameters
 - Process limits and system constraints
 
 ### Kernel & Journal Log Capture
@@ -83,14 +83,14 @@ PreFlight currently supports:
 
 ### Dependency Management
 
-There are 2 sets of dependecies needed:
+There are two dependency groups required for running PreFlight:
 
 1. **Orchestrator (**`preFlight.sh`**) Dependencies** - Installed on the machine running the orchestrator script.
 2. **Remote Host Dependencies** - Installed on target hosts that PreFlight will test.
    - These can be automatically installed using `--auto-install-deps` (internet required).
    - If not using automatic installation, all dependencies must be manually installed beforehand.
 
-### Orchestrator (preFlight.sh) Dependencies
+### Orchestrator (`preFlight.sh`) Dependencies
 
 These must be installed manually on the orchestrator machine:
 
