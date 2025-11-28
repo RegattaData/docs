@@ -6,7 +6,7 @@ Regatta requires some TCP ports for inter-module communication, as well as datab
 
 The ports defined within each module section in the cluster configuration file are required to be open between the nodes in the cluster.
 
-On a single-node deployment, all communication between the modules is handled internally. In order to be able to connect to the Regatta database from outside the cluster network, as in the case of remote cluster running in the cloud, the only port should be open for external connections from outside the node/server is one of the RDB module's port as defined in the `cluster.config` file..
+On a single-node deployment, all communication between the modules is handled internally. In order to be able to connect to the Regatta database from outside the cluster network, as in the case of remote cluster running in the cloud, the only port should be open for external connections from outside the node/server is one of the RDB module's port as defined in the `cluster.config` file.
 
 <Tip>
   Following the recommended ports configuration, the ports that should be open in the internal network used between the cluster nodes are: `8841-8844, 8850`
