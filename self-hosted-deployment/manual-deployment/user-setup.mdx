@@ -1,31 +1,42 @@
 ---
-title: User Setup
+title: "User Setup"
 ---
 
-Regatta Cluster will require a dedicated user on each of the servers participating in the cluster. 
-The Regatta user must be defined as follows:
+The Regatta cluster requires a dedicated user on each of the servers participating in the cluster. The Regatta user must be defined as follows:
 
-1. Username: regatta 
-2. Permissions: device access permissions on the server 
+1. Username: `regatta`
+2. Permissions: ownership of the block storage devices on the server
 
-The RPMs supplied will create the Regatta user upon deployment. You will be required to 
-perform the chown command to grant the regatta user access permission to the nodes hard 
-drives.
+The Regatta installation (RPMs) will create a user named `regatta` upon deployment. Deciding which storage devices will be designated for the database does require manual action by the system administrator.
 
-For example:
+## User creation
 
-```javascript
-sudo chown regatta:regatta /dev/<device> # for example: /dev/nvme0n1
-```
+If you would like to create the `regatta` user on all servers manually prior to installation, you may do so. In this case, the Regatta RPM will use the Regatta user created by you.
 
-Should you like to create these users on all servers prior to the installation manually, you may do 
-so. In this case, the Regatta RPM would use the Regatta user created by you.
-
-To create a Regatta user with device access, please do as described below:
+To create a Regatta user with device access, run the following command:
 
 For example:
 
-```javascript
+```shellscript
 sudo useradd -m -d /home/regatta -s /bin/bash regatta
+```
+
+Verify that the user was created successfully:
+
+```shellscript
+getent passwd regatta
+```
+
+## Storage permission
+
+A system administrator (or any user with `sudo` permission) will be required to perform the `chown` command on the storage devices dedicated to the Regatta database to grant the `regatta` user read and write access to these drives.
+
+For example:
+
+```shellscript
 sudo chown regatta:regatta /dev/<device> # for example: /dev/nvme0n1
 ```
+
+<Note>
+  <u>The devices dedicated to the Regatta database </u>**<u>do not require any filesystem</u>**. Regatta works optimally by utilizing raw devices.
+</Note>

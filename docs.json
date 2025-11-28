@@ -16,13 +16,14 @@
         "groups": [
           {
             "group": " ",
-            "pages": ["home"]
+            "pages": [
+              "home"
+            ]
           }
         ]
       },
       {
         "anchor": "Quickstart",
-
         "groups": [
           {
             "group": "Getting Started",
@@ -54,7 +55,6 @@
                 "group": "Creating the Demo Environment",
                 "pages": [
                   "getting-started/linear-scaling/creating-demo-environment/creating-demo-environment",
-                  "getting-started/linear-scaling/creating-demo-environment/table-schema",
                   "getting-started/linear-scaling/creating-demo-environment/creating-demo-clusters"
                 ]
               },
@@ -76,7 +76,9 @@
         "groups": [
           {
             "group": "SQL Specification",
-            "pages": ["/sql/introduction"]
+            "pages": [
+              "/sql/introduction"
+            ]
           },
           {
             "group": "Data Types",
@@ -104,7 +106,9 @@
           },
           {
             "group": "SQL Syntax Conventions",
-            "pages": ["sql/sql-syntax-convention"]
+            "pages": [
+              "sql/sql-syntax-convention"
+            ]
           },
           {
             "group": "Data Definition Language (DDL) Commands",
@@ -131,7 +135,10 @@
           },
           {
             "group": "Data Query Language",
-            "pages": ["sql/dql/select", "sql/dql/explain"]
+            "pages": [
+              "sql/dql/select",
+              "sql/dql/explain"
+            ]
           },
           {
             "group": "Hints",
@@ -310,69 +317,36 @@
         "groups": [
           {
             "group": "Self-Hosted Deployment",
-            "pages": ["self-hosted-deployment/prerequisites"]
+            "pages": [
+              "self-hosted-deployment/prerequisites"
+              "self-hosted-deployment/preflight,
+            ]
+          },
+          {
+            "group": "Regatta Deployment Tool",
+            "pages": [
+              "self-hosted-deployment/deployment-tool/deployment-tool",
+              "self-hosted-deployment/deployment-tool/rdt-configuration",
+              "self-hosted-deployment/deployment-tool/setup-cluster",
+              "self-hosted-deployment/deployment-tool/hybrid-deployment"
+            ]
           },
           {
             "group": "Manual Deployment",
             "pages": [
-              "self-hosted-deployment/manual-deployment/manual-deployment",
               "self-hosted-deployment/manual-deployment/user-setup",
-              {
-                "group": "Regatta Configuration",
-                "pages": [
-                  "self-hosted-deployment/manual-deployment/regatta-configuration/regatta-software-modules",
-                  "self-hosted-deployment/manual-deployment/regatta-configuration/configurating-regatta"
-                ]
-              },
-              {
-                "group": "Configuration File",
-                "pages": [
-                  "self-hosted-deployment/manual-deployment/configuration-file/configuration-file",
-                  "self-hosted-deployment/manual-deployment/configuration-file/main-configuration-top-part",
-                  "self-hosted-deployment/manual-deployment/configuration-file/unique-module-configuration"
-                ]
-              },
-              "self-hosted-deployment/manual-deployment/filewall",
-              "self-hosted-deployment/manual-deployment/starting-the-system",
-              "self-hosted-deployment/manual-deployment/cli-and-drivers",
-              "self-hosted-deployment/manual-deployment/configuration-template-file"
+              "self-hosted-deployment/manual-deployment/regatta-software-modules",
+              "self-hosted-deployment/manual-deployment/configuration-file",
+              "self-hosted-deployment/manual-deployment/firewall",
+              "self-hosted-deployment/manual-deployment/starting-the-system"
             ]
           },
           {
-            "group": "PreFlight",
-            "pages": ["self-hosted-deployment/pre-flight/pre-flight"]
-          },
-          {
-            "group": "Scripted Solution",
+            "group": "Collecting Data",
             "pages": [
-              "self-hosted-deployment/scripted-solution/scripted-solution",
-              "self-hosted-deployment/scripted-solution/setup",
-              "self-hosted-deployment/scripted-solution/configjson",
-              "self-hosted-deployment/scripted-solution/setup-cluster"
-            ]
-          },
-          {
-            "group": "Hybrid Deployment",
-            "pages": [
-              "self-hosted-deployment/hybrid-deployment/hybrid-deployment",
-              "self-hosted-deployment/hybrid-deployment/inventory",
-              "self-hosted-deployment/hybrid-deployment/configuration",
-              "self-hosted-deployment/hybrid-deployment/start"
-            ]
-          },
-          {
-            "group": "Support",
-            "pages": [
-              "self-hosted-deployment/support/support",
-              {
-                "group": "Collecting Data",
-                "pages": [
-                  "self-hosted-deployment/support/collect-data-script/collect-data-script",
-                  "self-hosted-deployment/support/collect-data-script/prerequisites",
-                  "self-hosted-deployment/support/collect-data-script/setup",
-                  "self-hosted-deployment/support/collect-data-script/execution"
-                ]
-              }
+              "self-hosted-deployment/collect-data/collect-data",
+              "self-hosted-deployment/collect-data/setup",
+              "self-hosted-deployment/collect-data/execution"
             ]
           }
         ]
@@ -385,6 +359,7 @@
             "group": "Drivers & Clients",
             "pages": [
               "drivers-and-clients/connecting-applications-to-regatta",
+              "drivers-and-clients/download-drivers-and-clients",
               "drivers-and-clients/client-lib",
               "drivers-and-clients/regatta-cli"
             ]
@@ -392,58 +367,24 @@
           {
             "group": "Python",
             "pages": [
-              {
-                "group": "Python Driver",
-                "pages": [
-                  "drivers-and-clients/python/python-drivers",
-                  "drivers-and-clients/python/install-the-driver",
-                  "drivers-and-clients/python/run-python-application"
-                ]
-              }
+              "drivers-and-clients/python/install-your-python-client",
+              "drivers-and-clients/python/run-python-application"
             ]
           },
           {
             "group": "Java",
             "pages": [
-              {
-                "group": "JBDC Driver",
-                "pages": [
-                  "drivers-and-clients/java/jbdc-driver",
-                  "drivers-and-clients/java/install-the-driver",
-                  "drivers-and-clients/java/set-up-dependency",
-                  "drivers-and-clients/java/run-java-application"
-                ]
-              },
-              {
-                "group": "Hibernate",
-                "pages": [
-                  "drivers-and-clients/java/hibernate",
-                  "drivers-and-clients/java/set-hibernate-dependency",
-                  "drivers-and-clients/java/set-up-configuration",
-                  "drivers-and-clients/java/run-a-hibernate"
-                ]
-              }
+              "drivers-and-clients/java/install-your-java-client",
+              "drivers-and-clients/java/run-jdbc-application",
+              "drivers-and-clients/java/run-hibernate-application"
             ]
           },
           {
             "group": "JavaScript",
             "pages": [
-              {
-                "group": "Nodejs Driver",
-                "pages": [
-                  "drivers-and-clients/javascript/nodejs",
-                  "drivers-and-clients/javascript/install-the-driver",
-                  "drivers-and-clients/javascript/run-nodejs-application"
-                ]
-              },
-              {
-                "group": "TypeORM",
-                "pages": [
-                  "drivers-and-clients/javascript/type-orm",
-                  "drivers-and-clients/javascript/install-orm-tools",
-                  "drivers-and-clients/javascript/run-typeorm-application"
-                ]
-              }
+              "drivers-and-clients/javascript/install-your-javascript-client",
+              "drivers-and-clients/javascript/run-nodejs-application",
+              "drivers-and-clients/javascript/run-typeorm-application"
             ]
           }
         ]

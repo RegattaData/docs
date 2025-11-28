@@ -1,24 +1,18 @@
 ---
-title: Run a Python Application
+title: "Run a Python Application"
 ---
 
-Once you installed the driver, you will need an IP of the cluster and a user’s credentials. You will 
-use them in the same manner as done with other databases.
-
-In the following example, there’s a code that performs some of the operations similar to the 
-ones done in the Regatta Platform section. 
-
-You will need to add the reference to the regatta driver:
+Let's create a simple Python application that queries the Regatta database. Start by adding the reference to the regatta driver:
 
 ```Python
 from pyregatta import connect
 ```
 
-Note that you should import all relevant classes based on the functionality of your application 
-and its requirements.
+Note that you should import all relevant classes based on the functionality of your applicationand its requirements.
 
-In the next step you will need to add the cluster IP and the user’s credentials. These can be 
-attained by following the described in the External Access to the Regatta Database chapter. 
+## Connection Details
+
+Connection parameters will be defined as follows:
 
 ```Python
 host = "aaa.bbb.ccc.ddd:ppp"
@@ -26,69 +20,92 @@ user = "MyUserName"
 password = "SomeSophisticatedPassword"
 ```
 
-Then all the code that performs the different SQL commands should be changed accordingly.
+## Example Appliaction
 
-Below is an example of some of the code. Note that this example is also available as part of the 
-downloaded driver.
+Below is an example of a sample application that creates an `employees` table, adds four rows and then selects and prints the rows.
 
-Unlike the Platform, in the commands used by the driver we need to specify the device mapping
-when creating a table. In the example below we will use a single device.
-
-
+Create the main program and save it as: `database_example.py`
 
 ```Python
-from pyregatta import connect 
-host = "aaa.bbb.ccc.ddd:ppp"
+from pyregatta import connect
+
+host = "aaa.bbb.ccc.ddd:pppp"
 user = "MyUserName"
 password = "SomeSophisticatedPassword"
-# The connection is automatically closed when the block is exited
+
+# The connection and cursor are automatically closed when their blocks are exited
 with connect(user, password, host) as conn:
- 
- # Now you can perform database operations using the cursor
- with conn.cursor() as cursor:
- 
- # Create table
- cursor.execute("""CREATE TABLE employees (
-employee_key INT PRIMARY KEY INDEX WITH (devices = (m10d1)),
-employee_name VARCHAR(40) NOT NULL,
-employee_salary INT,
-employee_department VARCHAR(50) NOT NULL
-) WITH (devices = (m10d1)) """)
- 
- # Insert values
- cursor.execute("""INSERT INTO employees (
-employee_key, 
-employee_name, 
-employee_salary, 
-employee_department)
-VALUES 
-(1,'John Doe', 10932, 'DevOps'), 
-(2,'Richard Roe', 18324, 'Legal'),
-(3,'Jane Roe', 20411, 'SoftwareDev'),
-(4,'Rachel Roe', 19555, 'Support') """)
- 
- # Select all
- cursor.execute("SELECT * FROM employees")
- rows = cursor.fetchall()
- 
- # Print the results
- for row in rows:
- # Print the entire row
- print(row)
- """
- You can use this syntax to print a specific column:
- print(row.id)
- """
+    with conn.cursor() as cursor:
+        # Create an employees table
+        cursor.execute(
+            """
+            CREATE TABLE employees
+            (
+                employee_key        INT PRIMARY KEY INDEX,
+                employee_name       VARCHAR(40) NOT NULL,
+                employee_salary     INT,
+                employee_department VARCHAR(50) NOT NULL
+            )
+            """
+        )
+        conn.commit()
+
+        # Insert some sample rows
+        cursor.execute(
+            """
+            INSERT INTO employees (employee_key,
+                                   employee_name,
+                                   employee_salary,
+                                   employee_department)
+            VALUES (1, 'John Doe', 10932, 'DevOps'),
+                   (2, 'Richard Roe', 18324, 'Legal'),
+                   (3, 'Jane Roe', 20411, 'Engineering'),
+                   (4, 'Rachel Roe', 19555, 'Support')
+            """
+        )
+        conn.commit()
+
+        # Query data
+        cursor.execute("SELECT * FROM employees")
+
+        # Fetch all rows
+        rows = cursor.fetchall()
+
+        # Print the results
+        for row in rows:
+            # Whole row (supports index and attribute access)
+            print(row)
+
+            # Example: access a specific column
+            # print(row.employee_name)
+            # print(row[0])  # employee_key
+
+        conn.commit()
+        # Drop the table
+        cursor.execute("DROP TABLE employees")
 ```
-*Figure 46 Python example of application using driver*
 
+## Running the Appliaction
 
-The following is the output of the driver (Figure 47):
+Run the application from the directory containing your example:
 
-<Frame caption="Figure 47 Python example output">
-  <img src="/images/45.png" />
-</Frame>
+```bash
+python3 database_example.py
+```
 
-And so on. All commands performed in the Regatta Platform section can be performed in the 
-same manner using a Python application.
+Expected output:
 
+```bash
+(1, 'John Doe', 10932, 'DevOps')
+John Doe
+1
+(2, 'Richard Roe', 18324, 'Legal')
+Richard Roe
+2
+(3, 'Jane Roe', 20411, 'Engineering')
+Jane Roe
+3
+(4, 'Rachel Roe', 19555, 'Support')
+Rachel Roe
+4
+```

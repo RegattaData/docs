@@ -1,0 +1,175 @@
+---
+title: "Run a JDBC Application"
+---
+
+Let's create a simple JDBC application that queries the Regatta database. Start by adding the reference to the regatta driver:
+
+```java
+package dev.regatta.jdbc1;
+```
+
+Note that you should import all relevant classes based on the functionality of your application and its requirements.
+
+## Connection Details
+
+Connection parameters will be defined as follows:
+
+```java
+String url = "jdbc:regatta:aaa.bbb.ccc.ddd:ppp";
+String user = "MyUserName";
+String password = "SomeSophisticatedPassword";
+```
+
+## Example Appliaction
+
+Below is an example of a sample application that creates an `employees` table, adds four rows and then selects them.
+
+Create the main program and save it as: `src/main/java/dev/regatta/jdbc1/DatabaseExample.java`
+
+```Java
+package dev.regatta.jdbc1;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class DatabaseExample {
+    public static void main(String[] args) {
+        // Connection details
+        String url = "jdbc:regatta:aaa.bbb.ccc.ddd:ppp";
+        String user = "MyUserName";
+        String password = "SomeSophisticatedPassword";
+
+        try {
+            try (Connection conn = DriverManager.getConnection(url, user, password)) {
+                try (Statement stmt = conn.createStatement()) {
+
+                    String createTableSQL =
+                        "CREATE TABLE employees (" +
+                        "employee_key INT PRIMARY KEY INDEX, " +
+                        "employee_name VARCHAR(40) NOT NULL, " +
+                        "employee_salary INT, " +
+                        "employee_department VARCHAR(50) NOT NULL" +
+                        ")";
+                    stmt.executeUpdate(createTableSQL);
+
+                    String insertValuesSQL =
+                        "INSERT INTO employees " +
+                        "(employee_key, employee_name, employee_salary, employee_department) " +
+                        "VALUES " +
+                        "(1, 'John Doe', 10932, 'DevOps'), " +
+                        "(2, 'Richard Roe', 18324, 'Legal'), " +
+                        "(3, 'Jane Roe', 20411, 'SoftwareDev'), " +
+                        "(4, 'Rachel Roe', 19555, 'Support')";
+                    stmt.executeUpdate(insertValuesSQL);
+
+                    ResultSet rs = stmt.executeQuery("SELECT * FROM employees");
+
+                    while (rs.next()) {
+                        System.out.println("Employee Key: " + rs.getInt("employee_key"));
+                        System.out.println("Employee Name: " + rs.getString("employee_name"));
+                        System.out.println("Employee Salary: " + rs.getInt("employee_salary"));
+                        System.out.println("Employee Department: " + rs.getString("employee_department"));
+                        System.out.println();
+                    }
+
+                    stmt.executeUpdate("DROP TABLE employees");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Database access error.");
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Maven Project Setup
+
+Create a `pom.xml` alongside your example:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>dev.regatta.example</groupId>
+  <artifactId>regatta-jdbc-example</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>8</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>dev.regatta</groupId>
+      <artifactId>regatta-jdbc</artifactId>
+      <version>1.8.0</version>
+    </dependency>
+
+    <!-- Optional: adds a simple SLF4J runtime provider so SLF4J does not print a warning -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>2.0.16</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <mainClass>dev.regatta.jdbc1.DatabaseExample</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+```
+
+<Note>
+  This `pom.xml` assumes you already [installed the Regatta JDBC driver locally](/drivers-and-clients/java/install-your-java-client).
+</Note>
+
+## Running the Application
+
+Compile and run the application:
+
+```bash
+mvn -q compile exec:java
+```
+
+Expected output:
+
+```bash
+Employee Key: 1
+Employee Name: John Doe
+Employee Salary: 10932
+Employee Department: DevOps
+
+Employee Key: 2
+Employee Name: Richard Roe
+Employee Salary: 18324
+Employee Department: Legal
+
+Employee Key: 3
+Employee Name: Jane Roe
+Employee Salary: 20411
+Employee Department: SoftwareDev
+
+Employee Key: 4
+Employee Name: Rachel Roe
+Employee Salary: 19555
+Employee Department: Support
+```
