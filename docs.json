@@ -325,10 +325,10 @@
           {
             "group": "Regatta Deployment Tool",
             "pages": [
-              "self-hosted-deployment/deployment-tool/regatta-deployment-tool",
-              "self-hosted-deployment/deployment-tool/rdt-configuration",
-              "self-hosted-deployment/deployment-tool/cluster-setup",
-              "self-hosted-deployment/deployment-tool/hybrid-deployment"
+              "self-hosted-deployment/regatta-deployment-tool/installation",
+              "self-hosted-deployment/regatta-deployment-tool/configuration",
+              "self-hosted-deployment/regatta-deployment-tool/cluster-setup",
+              "self-hosted-deployment/regatta-deployment-tool/hybrid-deployment"
             ]
           },
           {
@@ -344,9 +344,9 @@
           {
             "group": "Collecting Data",
             "pages": [
-              "self-hosted-deployment/collect-data/collecting-data",
-              "self-hosted-deployment/collect-data/setup",
-              "self-hosted-deployment/collect-data/execution"
+              "self-hosted-deployment/collecting-data/installation",
+              "self-hosted-deployment/collecting-data/setup",
+              "self-hosted-deployment/collecting-data/execution"
             ]
           }
         ]

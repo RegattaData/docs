@@ -1,0 +1,38 @@
+---
+title: "Installation"
+---
+
+The Regatta Deployment Tool (RDT) helpts you set up the RegattaDB cluster with minimal user input.
+
+The RDT can be downloaded from a link provided by Regatta Support. The download will include a `tar` archive containing:
+
+1. The Regatta RPM packages for installing Regatta modules and tools
+2. A directory containing the RDT and all its components
+
+## Prerequisites & Dependencies
+
+The RDT will require the following packages on the deployment server (where the RDT is executed):
+
+Linux packages:
+
+- `sshpass`
+- `jq`
+
+Python requirements:
+
+- `python3` - version 3.6.8 or above
+- `ansible`
+
+These dependencies can be pre-installed manually by the user or left to be installed automatically by the RDT.
+
+<Warning>
+  Please note that installing the script dependencies requires an internet connection or having the packages readily available on the server.
+</Warning>
+
+### SSH
+
+The RDT utilizes SSH to access all the cluster nodes from the host it is executed on. The SSH connection requires a user with `sudo` permissions to be present on all the cluster nodes. For this document, we will refer to that user as the **deployment_user**.
+
+<Info>
+  The `sudo` permission for the deployment user is required for installing the Regatta RPM packages, configuring the required firewall ports, and ensuring proper storage devices permissions for the `regatta` system-user used by the Regatta modules.
+</Info>
