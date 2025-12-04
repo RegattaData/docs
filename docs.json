@@ -386,6 +386,19 @@
               "drivers-and-clients/javascript/run-nodejs-application",
               "drivers-and-clients/javascript/run-typeorm-application"
             ]
+          },
+          {
+            "group": "Dart",
+            "pages": [
+              {
+                "group": "Dart Driver",
+                "pages": [
+                  "drivers-and-clients/dart/dart-driver",
+                  "drivers-and-clients/dart/install-the-driver",
+                  "drivers-and-clients/dart/run-dart-application"
+                ]
+              }
+            ]
           }
         ]
       },
