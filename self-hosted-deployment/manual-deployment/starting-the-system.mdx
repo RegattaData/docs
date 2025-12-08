@@ -9,7 +9,7 @@ A `systemd` service is installed with each module RPM package. The service names
 For a single-node deployment, start all services with the following command:
 
 ```bash
-systemctl start regatta-*
+sudo systemctl start regatta-*
 ```
 
 For a multi-node deployment, an additional file should be created for each RDB module named `rdb.config`, alongside the `cluster.config` file:
@@ -49,3 +49,99 @@ For example:
 ```bash
 sudo systemctl start regatta-1.0-rdb.service
 ```
+
+You can verify that the cluster is running by checking the Regatta services on any node:
+
+```shell
+sudo systemctl status regatta-1.0-*
+```
+
+Example outuput (each Regatta module runs under its own service, such as `regatta-1.0-rdb.service`):
+
+```shell
+● regatta-1.0-gdd.service - The Regatta gdd service
+   Loaded: loaded (/usr/lib/systemd/system/regatta-1.0-gdd.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sun 2025-11-23 18:00:16 IST; 22h ago
+ Main PID: 3331 (start.sh)
+    Tasks: 18 (limit: 203820)
+   Memory: 143.6M
+   CGroup: /system.slice/regatta-1.0-gdd.service
+           ├─3331 /bin/sh /opt/regatta/1.0/gdd/bin/start.sh gdd
+           └─3384 /opt/regatta/1.0/gdd/bin/rdb.bin --node 2 --role gdd --sys_conf /opt/regatta/1.0/gdd/conf/cluster.config --core_conf /opt/regatta/1.0/gdd/conf/cluster.config --logs_dir /var/log/regatta/g>
+
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3331]: Starting module gdd with number '2' and using path /opt/regatta/1.0/gdd
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Setting module ID to 2
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Module PID is 3384
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Setting node role to gdd
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Setting non-default configuration file /opt/regatta/1.0/gdd/conf/cluster.config
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Setting core configuration file /opt/regatta/1.0/gdd/conf/cluster.config
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Setting logs directory path /var/log/regatta/gdd
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Setting node boot mode to NonGenesis
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Starting the database module
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3384]: Core loaded
+
+● regatta-1.0-dcm.service - The Regatta dcm service
+   Loaded: loaded (/usr/lib/systemd/system/regatta-1.0-dcm.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sun 2025-11-23 18:00:17 IST; 22h ago
+ Main PID: 3417 (start.sh)
+    Tasks: 18 (limit: 203820)
+   Memory: 202.5M
+   CGroup: /system.slice/regatta-1.0-dcm.service
+           ├─3417 /bin/sh /opt/regatta/1.0/dcm/bin/start.sh dcm
+           └─3429 /opt/regatta/1.0/dcm/bin/rdb.bin --node 3 --role dcm --sys_conf /opt/regatta/1.0/dcm/conf/cluster.config --core_conf /opt/regatta/1.0/dcm/conf/cluster.config --logs_dir /var/log/regatta/d>
+
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3417]: Starting module dcm with number '3' and using path /opt/regatta/1.0/dcm
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Setting module ID to 3
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Module PID is 3429
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Setting node role to dcm
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Setting non-default configuration file /opt/regatta/1.0/dcm/conf/cluster.config
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Setting core configuration file /opt/regatta/1.0/dcm/conf/cluster.config
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Setting logs directory path /var/log/regatta/dcm
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Setting node boot mode to Genesis
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Starting the database module
+Nov 23 18:00:17 rgtv-8c257800-000-sgdcpr start.sh[3429]: Core loaded
+
+● regatta-1.0-rdb.service - The Regatta rdb service
+   Loaded: loaded (/usr/lib/systemd/system/regatta-1.0-rdb.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sun 2025-11-23 18:00:19 IST; 22h ago
+ Main PID: 3497 (start.sh)
+    Tasks: 22 (limit: 203820)
+   Memory: 1.9G
+   CGroup: /system.slice/regatta-1.0-rdb.service
+           ├─3497 /bin/sh /opt/regatta/1.0/rdb/bin/start.sh rdb
+           └─3509 /opt/regatta/1.0/rdb/bin/rdb.bin --node 10 --role rdb --sys_conf /opt/regatta/1.0/rdb/conf/cluster.config --core_conf /opt/regatta/1.0/rdb/conf/cluster.config --logs_dir /var/log/regatta/>
+
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3497]: Starting module rdb with number '10' and using path /opt/regatta/1.0/rdb
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Setting module ID to 10
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Module PID is 3509
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Setting node role to rdb
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Setting non-default configuration file /opt/regatta/1.0/rdb/conf/cluster.config
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Setting core configuration file /opt/regatta/1.0/rdb/conf/cluster.config
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Setting logs directory path /var/log/regatta/rdb
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Setting node boot mode to Genesis
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Starting the database module
+Nov 23 18:00:19 rgtv-8c257800-000-sgdcpr start.sh[3509]: Core loaded
+
+● regatta-1.0-sequencer.service - The Regatta sequencer service
+   Loaded: loaded (/usr/lib/systemd/system/regatta-1.0-sequencer.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sun 2025-11-23 18:00:16 IST; 22h ago
+ Main PID: 3369 (start.sh)
+    Tasks: 18 (limit: 203820)
+   Memory: 123.8M
+   CGroup: /system.slice/regatta-1.0-sequencer.service
+           ├─3369 /bin/sh /opt/regatta/1.0/sequencer/bin/start.sh sequencer
+           └─3385 /opt/regatta/1.0/sequencer/bin/rdb.bin --node 1 --role sequencer --sys_conf /opt/regatta/1.0/sequencer/conf/cluster.config --core_conf /opt/regatta/1.0/sequencer/conf/cluster.config --log>
+
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3369]: Starting module sequencer with number '1' and using path /opt/regatta/1.0/sequencer
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Setting module ID to 1
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Module PID is 3385
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Setting node role to sequencer
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Setting non-default configuration file /opt/regatta/1.0/sequencer/conf/cluster.config
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Setting core configuration file /opt/regatta/1.0/sequencer/conf/cluster.config
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Setting logs directory path /var/log/regatta/sequencer
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Setting node boot mode to Genesis
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Starting the database module
+Nov 23 18:00:16 rgtv-8c257800-000-sgdcpr start.sh[3385]: Core loaded
+```
+
+Congratulations! Your Regatta cluster is up and running. Now you can connect your application using your preferred [client](/drivers-and-clients/connecting-applications-to-regatta).
