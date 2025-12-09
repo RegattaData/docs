@@ -9,7 +9,7 @@ A `systemd` service is installed with each module RPM package. The service names
 For a single-node deployment, start all services with the following command:
 
 ```bash
-sudo systemctl start regatta-*
+sudo systemctl start regatta-1.0*
 ```
 
 For a multi-node deployment, an additional file should be created for each RDB module named `rdb.config`, alongside the `cluster.config` file:
