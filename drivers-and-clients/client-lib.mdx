@@ -10,21 +10,25 @@ Regatta Drivers & Clients are available in two modes:
 - **Bundled** with the Regatta client library for a simplified all-in-one setup. Bundled packages will contain the "full" suffix.
 - **Standalone**, allowing dynamic linking to the Regatta client at runtime for greater flexibility.
 
-## Prerequisites
-
-In order to run a Regatta client, ensure the following requirements are met:
-
-1. **Operating system:** Red Hat 8–based distribution such as Oracle Linux 8 or RHEL 8.10
-2. **Architecture:** x86-64
-3. **Required system dependencies**:
-   - `glibc`
-   - `openssl-libs`
-   - `libaio`
-
 ## Installation
 
 <Tabs>
   <Tab title="Linux">
+    ### Prerequisites
+
+    To run a Regatta client, ensure that the following requirements are met:
+
+    1. **Operating system:** Red Hat 8–based distribution such as Oracle Linux 8 or RHEL 8.10
+    2. **Architecture:** x86-64 (64-bit)
+    3. **Required system dependencies**:
+
+       The following system libraries must be installed on the host:
+       - `glibc`
+       - `openssl-libs`
+       - `libaio`
+
+    ### Installation
+
     Copy the client RPM package to your target Linux machine and install it:
 
     ```bash
