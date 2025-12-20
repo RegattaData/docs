@@ -130,7 +130,7 @@ ssh-keygen -t ed25519 -f ~/.ssh/id_rdt -N "" && cat ~/.ssh/id_rdt.pub >> ~/.ssh/
 
 ```bash
 # 1) Generate an inventory file with detected devices (replace user and hosts)
-./util/detect_devices.sh -u <user_name> 192.168.1.10 192.168.1.11 > hosts.json
+./util/detect_devices.sh -u <user_name> -k <path_to_ssh_key> 192.168.1.10 192.168.1.11 > hosts.json
 
 # 2) Run the orchestrator (requires SSH access to all hosts)
 ./preFlight.sh -i hosts.json -r /tmp/cluster_ready -k <path_to_ssh_key> -u <user_name> 
@@ -182,10 +182,10 @@ ls -1 cluster_results_*/
 
 ```bash
 # Simple connectivity test
-./preFlight.sh -i hosts.json -k ~/.ssh/cluster_key -r /tmp/test
+./preFlight.sh -i hosts.json -u <user_name> -k ~/.ssh/cluster_key -r /tmp/test
 
 # Using multipule options
-./preFlight.sh -i hosts.json -k ~/.ssh/cluster_key -r /tmp/test --auto-install-deps --interconnectivity --parallel-fio --sequential-fio --network-throughput
+./preFlight.sh -i hosts.json -u <user_name> -k ~/.ssh/cluster_key -r /tmp/test --auto-install-deps --interconnectivity --parallel-fio --sequential-fio --network-throughput
 ```
 
 ### Inventory File Format
