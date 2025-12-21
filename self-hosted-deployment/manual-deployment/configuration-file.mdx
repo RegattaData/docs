@@ -34,7 +34,7 @@ The `cluster.config` file must be written following these convention rules:
 - The config file must have at least one block storage device for each RDB module.
 - Each module must be linked to a node via the `parent_node_id` parameter.
 - Each block device must be linked to its controlling RDB module via the `module_id` parameter.
-- The `capacity` parameter of the device is specified in kilobytes (KB).
+- The `capacity` parameter of the device is specified in bytes.
 - Every node, module, and device must have a unique ID parameter, starting at **1**.
 
 # Configuration Sections Breakdown
