@@ -84,19 +84,19 @@ Make any changes to the config and save them to the same file. To update the ent
 ./setup_cluster.sh update_config
 ```
 
-This script will copy the `cluster.config` file to each node/server in the cluster and append the module-specific section for each module.
+This RDT will copy the `cluster.config` file to each node/server in the cluster and append the module-specific section for each module.
 
 ### Editing Module-Specific Parameters
 
-Once the script execution with either the `config` or `update_config` commands is done, you can connect to any of the cluster nodes/servers via SSH to edit the cluster config file for any module. For further details, follow the steps in the [configuration](/self-hosted-deployment/regatta-deployment-tool/configuration) section and apply the desired changes.
+Once the RDT execution with either the `config` or `update_config` commands is done, you can connect to any of the cluster nodes/servers via SSH to edit the config file. For more information about module-specific parameters, follow the instructions from the manual deployment [configuration file](/self-hosted-deployment/manual-deployment/configuration-file) section and apply the desired changes.
 
 <Note>
-  Note that the script has opened the ports that appear in the configuration files for all Regatta modules prior to this stage. If you decide to change ports, you will also need to update the firewall before executing the next step.
+  Note that the RDT has opened the ports that appear in the configuration files for all Regatta modules prior to this stage. If you decide to change ports, you will also need to update the firewall before executing the next step.
 </Note>
 
 ## Start
 
-Lastly, starting the cluster using the script can be done by running:
+Lastly, starting the cluster using the RDT can be done by running:
 
 ```bash
 ./setup_cluster.sh service

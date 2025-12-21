@@ -32,19 +32,19 @@ The RDT utilizes SSH to access all the cluster nodes from the host it is execute
   The `sudo` permission for the deployment user is required for installing the Regatta RPM packages, configuring the required firewall ports, and ensuring proper storage devices permissions for the `regatta` system-user used by the Regatta modules.
 </Info>
 
-## Download 
+## Download
 
 The RDT can be downloaded from a link provided by Regatta Support. The download will include a `tar` archive containing:
 
 1. The Regatta RPM packages for installing Regatta modules and tools
 2. A directory containing the RDT and all its components
 
-Downloading the Regatta tar archive can be done directly on one of the cluster nodes (using `wget` or a similar tool) or on an external host and then copied to one of the cluster nodes. 
+Downloading the Regatta tar archive can be done directly on one of the cluster nodes (using `wget` or a similar tool) or on an external host and then copied to one of the cluster nodes.
 
 Extract the archive:
 
 ```shell
-tar -zxf Regatta-X.X.X.X.tar.gz
+tar -zxf regatta-deploy-X.X.X.X.tgz
 ```
 
-After extracting the archive, a directory named `Regatta-deploy` will be created in the location where the `tar` command was executed.
+After extracting the archive, a directory named `regatta-deploy` will be created in the location where the `tar` command was executed.
