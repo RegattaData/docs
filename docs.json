@@ -318,8 +318,7 @@
           {
             "group": "Self-Hosted Deployment",
             "pages": [
-              "self-hosted-deployment/prerequisites",
-              "self-hosted-deployment/preflight-system-validation-tool"
+              "self-hosted-deployment/prerequisites"
             ]
           },
           {
