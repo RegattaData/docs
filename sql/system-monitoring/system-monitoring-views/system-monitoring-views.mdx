@@ -9,7 +9,7 @@ The system monitoring views are exposed by the `SHOW` commands. Those `SHOW` com
 ## Synopsis
 
 ```sql
-SHOW view_name [ { LIKE | ILIKE } 'pattern' ][ IN object_type object_name ] [ ROWS BETWEEN n AND m ]
+SHOW view_name [ LIKE 'pattern' ][ IN object_type object_name ] [ ROWS BETWEEN n AND m ]
 
 where object_type is:
 { TABLE | INDEX | DEVICE }
@@ -27,14 +27,9 @@ Filters the view output by its main object (e.g filter by table name in `SHOW TA
 
 The percent sign (%) stands for sequences of zero or more characters.
 
-`ILIKE '<pattern>'`
-
-Similar to **LIKE** except that the pattern matching is case-insensitive.
-
 **`IN object_type object_name`**
 
-Show only results within the scope of a specific object in the relevant system view data.
-Possible object types and the views to which they apply:
+Show only results within the scope of a specific object in the relevant system view data. Possible object types and the views to which they apply:
 
 | Object type | System view                                                                              |
 | :---------- | :--------------------------------------------------------------------------------------- |
@@ -51,17 +46,13 @@ named employees, while `IN TABLE '“Employees”'` refers to the table named\
 
 **`ROWS BETWEEN n AND m`**
 
-Used to return only part of the output rows. This can be used to retrieve the results in parts and
-avoid exceeding the client's memory limitations.
+Used to return only part of the output rows. This can be used to retrieve the results in parts and avoid exceeding the client's memory limitations.
 
 Note:
 
 - If the size of the output exceeds the client memory, an error is returned.
-- If objects are added and/or removed from the view in between two queries of
-  consequent row ranges, an existing object may be returned in both queries or missing
-  from both queries.
-- If the number of requested rows is larger than the actual number of rows in the view, the
-  command should succeed and return only the existing rows.
+- If objects are added and/or removed from the view in between two queries of consequent row ranges, an existing object may be returned in both queries or missing from both queries.
+- If the number of requested rows is larger than the actual number of rows in the view, the command should succeed and return only the existing rows.
 - The row number is zero-based.
 
 ## Examples
@@ -70,6 +61,6 @@ Note:
 SHOW TABLES;
 SHOW TABLES LIKE 'my%';
 SHOW COLUMNS IN TABLE "my_table";
-SHOW COLUMNS ILIKE '%product%' IN TABLE "my_table";
+SHOW COLUMNS LIKE '%product%' IN TABLE "my_table";
 SHOW TABLES LIKE '%my' ROWS BETWEEN 100 AND 150;
 ```
