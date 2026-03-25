@@ -186,12 +186,7 @@
                 ]
               },
               "sql/sql-functions-and-operators/string-functions-operators",
-              {
-                "group": "Date/Time Functions and Operators",
-                "pages": [
-                  "sql/sql-functions-and-operators/date-time-functions-operators/date-time-functions-operators"
-                ]
-              },
+              "sql/sql-functions-and-operators/date-time-functions-operators/date-time-functions-operators",
               {
                 "group": "Conditional Expressions",
                 "pages": [
