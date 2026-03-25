@@ -189,9 +189,7 @@
               {
                 "group": "Date/Time Functions and Operators",
                 "pages": [
-                  "sql/sql-functions-and-operators/date-time-functions-operators/date-time-functions-operators",
-                  "sql/sql-functions-and-operators/date-time-functions-operators/date-time-operators",
-                  "sql/sql-functions-and-operators/date-time-functions-operators/date-time-functions"
+                  "sql/sql-functions-and-operators/date-time-functions-operators/date-time-functions-operators"
                 ]
               },
               {

@@ -1,9 +1,46 @@
 ---
-title: Date/Time Functions and Operators
+title: "Date/Time Functions and Operators"
 ---
 
-The following tables show the Date/Time operators that are available for the `DATE/TIME/TIMESTAMP` data
-types. See [Date/Time types](/sql/data-types/date-time-types).
+The following tables show the Date/Time operators that are available for the `DATE/TIME/TIMESTAMP` data types. See [Date/Time types](/sql/data-types/date-time-types).
 
 All the following operators and functions return their values without a time zone.
 
+### Date/Time Functions
+
+| Function | Description and Comments | Example |
+| :-- | :-- | :-- |
+| `CURRENT_DATE` | Return the date in which the current transaction started<br />Returns `DATE` | `SELECT CURRENT_DATE;`<br />=\> 2012-03-26 |
+| `CURRENT_TIME` | Return current time (start of current transaction)<br />Returns `TIME` | `SELECT CURRENT_TIME;`<br />=\> 11:31:46.903633 |
+| `CURRENT_TIMESTAMP` | Returns current timestamp (start of current transaction)<br />Returns `TIMESTAMP`<br />See notes | `SELECT CURRENT_TIMESTAMP;`<br />=\> 2012-03-26 11:31:46.903633 |
+| `NOW()` | Returns current date and time (start of current transaction)<br />Returns `TIMESTAMP`<br />See notes | `SELECT NOW();`<br />=\> 2012-03-26 11:31:46.903633 |
+| `EXTRACT(unit FROM TIMESTAMP)` | Extracts the specified unit (date or time part) from a date, time, or timestamp<br />Returns `DECIMAL`<br />See notes | `SELECT EXTRACT(YEAR FROM TIMESTAMP '2012-03-26 11:31:46.903633');`<br />=\> 2012<br /><br />`SELECT EXTRACT('day' FROM DATE '2012-03-26');`<br />=\> 26 |
+| `DATE_PART(unit, TIMESTAMP)` | Similar to `EXTRACT()`<br />Returns `DECIMAL`<br />See notes | `SELECT DATE_PART('day', TIMESTAMP '2012-03-26 11:31:46.903633');`<br />=\> 26<br /><br />`SELECT DATE_PART('minute', TIME '11:31:46.903633');`<br />=\> 31 |
+
+Notes:
+
+1. `NOW()` and `CURRENT_TIMESTAMP`: When using those functions as part of an `INSERT/UPDATE` command, the returned value is converted into the column data type it is writing to. When writing into `TIME` data type, only the time is written, when writing into `DATE` data type, only the date is written, and when writing to `TIMESTAMP` data type, the whole timestamp is written.
+   Note that `NOW()` and `CURRENT_TIMESTAMP` refer to the time the transaction starts, and not to each statement time inside the transaction
+2. `DATE_PART()` and `EXTRACT()` provide similar functionality and accept the same set of units. However, `DATE_PART` requires the unit argument to be passed as a string (e.g. ‘YEAR”, ‘day’), while `EXTRACT()` also accepts these units as keywords. The following units are supported:
+
+| Time Units | Date Units |
+| :-- | :-- |
+| `MICROSECONDS` | `DAY` |
+| `MILLISECONDS` | `WEEK` |
+| `SECOND` | `MONTH` |
+| `MINUTE` | `QUARTER` |
+| `HOUR` | `YEAR` |
+|  | `DECADE` |
+|  | `CENTURY` |
+|  | `MILLENNIUM` |
+
+For a `TIMESTAMP` object, both the Date and Time units are supported.
+
+### Date/Time Operators
+
+| Operator | Description and Comments | Example |
+| :-- | :-- | :-- |
+| `DATE + INT => DATE` | Add a number of days to the given date | `date '2022-12-31' + integer '365'`<br />=\> 2023-12-31 as DATE |
+| `DATE + TIME => TIMESTAMP` | Add the time of the day to a given date | `date '2022-12-31' + time '01:00:00'`<br />=\> 2022-12-31 01:00:00 as TIMESTAMP |
+| `DATE - DATE => INT` | Return the number of days between two dates | `date '2022-12-12' - date '2022-01-31'`<br />=\> 315 as INT |
+| `DATE - INT => DATE` | Subtract days from a given date | `date '2022-12-12' - integer '4'`<br />=\> 2022-12-08 as DATE |
