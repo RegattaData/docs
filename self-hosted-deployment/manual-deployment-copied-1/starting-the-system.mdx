@@ -8,7 +8,7 @@ In this section, we will implement a deployment of the Multi-Node – Common Per
 
 The following resources and configurations must be available before beginning the deployment:
 
-- **Nodes**: 10 Physical or Virtual servers (**Srv01** through **Srv10**).
+- **Nodes**: 10 Physical or Virtual servers (Srv01 through Srv10).
 - **OS**: Oracle 8 or RHEL 8.10.
 - **Memory**: Minimum 32 GB is required for production.
 - **CPUs**: At least 4 CPUs.
@@ -120,7 +120,7 @@ If you prefer to use another user, say **my-user**, please perform the following
 
 #### Directory Ownership Transfer
 
-To ensure my-user has full control over the application files, logs, and shared memory, execute the following commands. The **-R** flag ensures the change is applied recursively to all sub-files and folders.
+To ensure my-user has full control over the application files, logs, and shared memory, execute the following commands. The -R flag ensures the change is applied recursively to all sub-files and folders.
 
 - **Application Files:** sudo chown -R my-user:my-user /opt/regatta
 - **Shared Memory:** sudo chown -R my-user:my-user /dev/shm/Regatta
@@ -137,10 +137,14 @@ Hardware devices located in /dev are typically managed by system groups. To give
 
 To ensure that the RegattaDB modules are tied to my-user, update the following files:
 
-- **Srv01 - SM Module:** \
+- **Srv01 - SM Module:** 
+  ```shellscript
   /usr/lib/systemd/system/regatta-26.0-sm.service
-- **Srv01-Srv10 - SNA Module:** \
+  ```
+- **Srv01-Srv10 - SNA Module:** 
+  ```shellscript
   /usr/lib/systemd/system/regatta-26.0-sna.service
+  ```
 
 In both files, find the \[SERVICE\] following section:
 
@@ -159,8 +163,14 @@ For both, User and Group, replace the value from regatta to my-user. When we sta
 
 Manually start the processes.
 
-- For the SM nn Srv01: sudo systemctl start regatta-1.0-sm@1.service.
-- For the SNAs on All Nodes: sudo systemctl start regatta-1.0-sna@1.service.
+- For the SM nn Srv01: 
+  ```shellscript
+  sudo systemctl start regatta-1.0-sm@1.service
+  ```
+- For the SNAs on All Nodes: 
+  ```shellscript
+  sudo systemctl start regatta-1.0-sna@1.service
+  ```
 
 ### Step 6: Deploy and Start the RegattaDB CLI
 
@@ -224,7 +234,7 @@ For more details on the RegattaDB CLI, please refer to [Regatta CLI - Regatta](h
 
 ### Step 7: Enter SETUP State
 
-Transition the system to **SETUP mode**:
+Transition the system to SETUP mode:
 
 ```sql
 MANAGE SYSTEM ENTER SETUP; 
@@ -359,7 +369,7 @@ As stated previously, the RDB will receive all the server’s available RAM.
 
 ### Step 11: Firewall Setup
 
-Configure the firewall on all servers to allow access to internal ports and external application access. 
+Configure the firewall on all servers to allow access to internal ports and external application access.
 
 ### Step 12: Exit SETUP and System Activation
 
@@ -372,4 +382,4 @@ MANAGE SYSTEM START;
 MANAGE SYSTEM SHOW;
 ```
 
-Your RegattaDB system is ready.
+Your 10-server RegattaDB system is ready.
