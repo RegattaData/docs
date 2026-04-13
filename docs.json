@@ -334,6 +334,16 @@
             ]
           },
           {
+            "group": "Binyamina Manual Deployment",
+            "pages": [
+              "self-hosted-deployment/manual-deployment-copied-1/user-setup",
+              "self-hosted-deployment/manual-deployment-copied-1/regatta-software-modules",
+              "self-hosted-deployment/manual-deployment-copied-1/configuration-file",
+              "self-hosted-deployment/manual-deployment-copied-1/firewall",
+              "self-hosted-deployment/manual-deployment-copied-1/starting-the-system"
+            ]
+          },
+          {
             "group": "Collecting Data",
             "pages": [
               "self-hosted-deployment/collecting-data/installation",

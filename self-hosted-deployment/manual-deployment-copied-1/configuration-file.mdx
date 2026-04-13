@@ -1,0 +1,103 @@
+---
+title: "Deployment Setup"
+---
+
+## Configuration Planning
+
+First we need to do is define the topology of the system. This topology is derived from the workload profile, performance goals and storage requirements from the RegattaDB. Since RegattaDB is a versatile system, we can configure it based on the different needs.
+
+Below are several common configurations.
+
+#### Single Node
+
+<Frame>
+  ![Image](/images/image-1.png)
+</Frame>
+
+#### Multi-Node – Common Performance
+
+<Frame>
+  ![Image](/images/image-2.png)
+</Frame>
+
+#### Multi-node - Distributed
+
+In this case, we distribute the non-RDB modules across different nodes.
+
+<Frame>
+  ![Image](/images/image-3.png)
+</Frame>
+
+Note that in this case we have assigned a dedicated server for the SM. This is a common configuration in a Kubernatis system \<\<\<link\>\>\>. Since there’s only an SM process on the that server, we don’t need an SNA. Also, since we did not deploy an RDB, the resource requirements from this server are minimal.
+
+For guidelines on sizing and configuring the RegattaDB to cater to your needs, please refer to \<\<\<BEST PRACTICES\>\>\> or contact support for assistance.
+
+### Hardware Requirements
+
+You will now need server to accommodate you RegattaDB configuration. These servers may be physical, VMs or even containers. They need to at least meet all the prerequisites defined previously:
+
+- CPUs
+- RAM
+- Storage devices Networking
+
+To understand the exact requirements, you will need to size the system based on your workload needs. You can consult our \<\<\<BEST PRACTICES\>\>\> documentation or contact Regatta support.
+
+### Regatta Software
+
+Next, you will need the RegattaDB software that you received from our support team. That package contains the software for all RegattaDB modules described above plus other useful tools.
+
+Below is an example of the content of the package file.
+
+#### Deployment Software
+
+```shellscript
+regatta-dcm-26.0.0.112-1.el8.x86_64.rpm
+regatta-gdd-26.0.0.112-1.el8.x86_64.rpm
+regatta-rdb-26.0.0.112-1.el8.x86_64.rpm
+regatta-sequencer-26.0.0.112-1.el8.x86_64.rpm
+regatta-sm-26.0.0.112-1.el8.x86_64.rpm
+regatta-sna-26.0.0.112-1.el8.x86_64.rpm
+```
+
+#### Tools
+
+```shellscript
+regatta-bnr-26.0.0.112-1.el8.x86_64.rpm
+regatta-rdt-26.0.0.112-1.el8.x86_64.rpm
+```
+
+#### Clients
+
+```shellscript
+regatta-cli-26.0.0.112-1.el8.x86_64.rpm
+regatta-client-26.0.0.112-1.el8.x86_64.rpm
+regatta-connect-26.0.0.112-1.el8.x86_64.rpm
+```
+
+#### Debugging Tools
+
+```shellscript
+regatta-debug-26.0.0.112-1.el8.x86_64.rpm
+```
+
+For details see \<\<\<links\>\>\>
+
+### EULA Acceptance
+
+To deploy and use **RegattaDB**, you must read and accept the **Regatta End User License Agreement (EULA)**. This acceptance is built directly into the RPM installation process; you will be prompted to agree to the terms before the installation can be completed.
+
+- **Interactive Installs**: yum install will prompt for EULA acceptance.
+- **Automated Installs**: You must include the environment variable ACCEPT\_EULA=1.
+
+Please take a few minutes to read and approve the Regatta End User License Agreement at the Regatta website ([https://regatta.dev/eula/](https://regatta.dev/eula/)) before deployment, especially if you are using the environment variable to bypass interactive prompts.
+
+### Deployment User
+
+As with any software deployment, we require a user which has all the required permissions, deployment and storage access.
+
+In the installation process, the RPM creates a user named **regatta** with required permissions and establishes the directory structure. If you prefer to use another user, say **my-user**, please perform the following steps:
+
+- Make sure **my-user** has the required permissions
+- Transfer ownership of the created directory structure
+- Add **my-user** to the required permissions groups (if missing)
+- Update the System Configuration files for both SM and SNA

@@ -1,0 +1,375 @@
+---
+title: "Deployment Example - 10 Servers"
+---
+
+In this section, we will implement a deployment of the Multi-Node – Common Performance mentioned previously. This will allow the reader to follow step by step to achieve the desired configuration.
+
+## Infrastructure
+
+The following resources and configurations must be available before beginning the deployment:
+
+- **Nodes**: 10 Physical or Virtual servers (**Srv01** through **Srv10**).
+- **OS**: Oracle 8 or RHEL 8.10.
+- **Memory**: Minimum 32 GB is required for production.
+- **CPUs**: At least 4 CPUs.
+- **Storage**: 2 dedicated NVMe/SSD devices per node, each 0.5 TB (500 GB).\
+  For example, in Srv01:
+  - **Name**: Srv01\_Disk1
+  - **Path**: /dev/nvme0n1
+- **Connectivity**: At least 10GB network between all Regatta servers.
+
+## Deployment
+
+Here are the steps one should take to deploy a 10-Server RegattaDB.
+
+### Step 1: Node Identification and IP Assignment
+
+Identify the servers and prepare a list containing Internal IPs for cluster communication and External IPs for application access.
+
+#### Example IPs:
+
+- **Srv01**: Internal 10.0.0.1, External 192.168.1.101 (Management Node).
+- **Srv02-Srv10**: Internal 10.0.0.2-10.0.0.10, External 192.168.1.102-110.
+
+We also need to assign 2 ports to each of the modules, one for communications and the other for support related operations.  While the Regatta system is flexible and allows the use of any available port, we recommend using the following standardized numbers whenever possible to ensure consistency across the deployment.
+
+| Module | Communications | Support |
+| :-- | :-- | :-- |
+| SM | 8840 | 5000 |
+| SNA | 8841 | 5001 |
+| Sequencer | 8842 | 5002 |
+| GDD | 8843 | 5003 |
+| DCM | 8844 | 5004 |
+| RDB | 8850 | 6001 |
+
+### Step 2: EULA
+
+Deploying the RPM requires accepting the Regatta EULA and also creates a deployment agent.
+
+#### EULA Acceptance
+
+Installing Regatta RPMs requires accepting the RegattaDB EULA.
+
+- **Interactive Installs**: yum install will prompt for EULA acceptance.
+- **Automated Installs**: You must include the environment variable ACCEPT\_EULA=1.
+
+Please take a few minutes to read and approve the Regatta End User License Agreement at the Regatta website ([https://regatta.dev/eula/](https://regatta.dev/eula/)) before deployment, especially if you are using the environment variable to bypass interactive prompts.
+
+### Step 3: Software Installation (RPM Deployment)
+
+In this example, we will assign specific roles to the servers as follows:
+
+- **Srv01**: Will host the SM, GDD, DCM, and Sequencer roles, alongside its local SNA and RDB modules.
+- **Srv02 through Srv10**: Will host both, an SNA and an RDB modules.
+
+Follow this specific installation sequence:
+
+#### 3.1 System Manager (SM) - Srv01
+
+Designate Srv01 as the SM node and install the management orchestrator.
+
+```shellscript
+sudo ACCEPT_EULA=1 yum install regatta-sm-26.0.0.112-1.el8.x86_64.rpm
+```
+
+#### 3.2 System Node Agent (SNA) - All Nodes
+
+Deploy the SNA to every node in the cluster. Due to the fact that all servers host RDB modules, all ten servers require an SNA to manage those local components.
+
+```shellscript
+sudo ACCEPT_EULA=1 yum install regatta-sna-26.0.0.112-1.el8.x86_64.rpm
+```
+
+#### 3.3 Global Deadlock Detector (GDD) - Srv01
+
+Install the GDD component on the management node to resolve distributed transaction dependencies.
+
+```shellscript
+sudo ACCEPT_EULA=1 yum install regatta-gdd-26.0.0.112-1.el8.x86_64.rpm
+```
+
+#### 3.4 Database Catalog Manager (DCM) - Srv01
+
+Install the DCM component on the management node to manage schema definitions and the database catalog.
+
+```shellscript
+sudo ACCEPT_EULA=1 yum install regatta-dcm-26.0.0.112-1.el8.x86_64.rpm
+```
+
+#### 3.5 Sequencer - Srv01
+
+Install the Sequencer component on the management node to coordinate distributed transaction consistency.
+
+```shellscript
+sudo ACCEPT_EULA=1 yum install regatta-sequencer-26.0.0.112-1.el8.x86_64.rpm
+```
+
+#### 3.6 Regatta Database (RDB) - All Nodes
+
+Install the RDB module on all servers to utilize the resources of the entire cluster.
+
+```shellscript
+sudo ACCEPT_EULA=1 yum install regatta-rdb-26.0.0.112-1.el8.x86_64.rpm 
+```
+
+## Step 4: Regatta Deployment User
+
+The installation process automatically creates a user named **regatta** with required permissions – deployment and storage access - and establishes the directory structure.
+
+If you prefer to use another user, say **my-user**, please perform the following steps.
+
+#### Directory Ownership Transfer
+
+To ensure my-user has full control over the application files, logs, and shared memory, execute the following commands. The **-R** flag ensures the change is applied recursively to all sub-files and folders.
+
+- **Application Files:** sudo chown -R my-user:my-user /opt/regatta
+- **Shared Memory:** sudo chown -R my-user:my-user /dev/shm/Regatta
+- **Logs:** sudo chown -R my-user:my-user /var/log/regatta
+
+#### Device Access & Group Permissions
+
+Hardware devices located in /dev are typically managed by system groups. To give my-user the same hardware access as regatta, we must sync their group memberships.
+
+- **Identify regatta’s groups:** groups regatta
+- **Add my-user to those groups:** sudo usermod -aG \[group\_names\] my-user
+
+#### System Configuration Updates
+
+To ensure that the RegattaDB modules are tied to my-user, update the following files:
+
+- **Srv01 - SM Module:** \
+  /usr/lib/systemd/system/regatta-26.0-sm.service
+- **Srv01-Srv10 - SNA Module:** \
+  /usr/lib/systemd/system/regatta-26.0-sna.service
+
+In both files, find the \[SERVICE\] following section:
+
+```shellscript
+[Service]
+# The process started by ExecStart is the main service process
+Type=simple
+# Run the service as the configured Regatta OS user/group
+User=regatta
+Group=regatta
+```
+
+For both, User and Group, replace the value from regatta to my-user. When we start the SM and SNA process, the user will be my-user instead of regatta.
+
+### Step 5: Start Management Services
+
+Manually start the processes.
+
+- For the SM nn Srv01: sudo systemctl start regatta-1.0-sm@1.service.
+- For the SNAs on All Nodes: sudo systemctl start regatta-1.0-sna@1.service.
+
+### Step 6: Deploy and Start the RegattaDB CLI
+
+For the next steps we will require the RegattaDB CLI to run the SQL MANAGE commands.
+
+#### Deploy CLI
+
+In this example we will deploy the CLI on the Srv01 server where the SM resides. You may use any server, from the system or not, as long as it has network access to the designated SM server.
+
+Copy the Regatta CLI RPM package to your target Linux machine, Srv01 in our example, and install it:
+
+```shellscript
+sudo ACCEPT_EULA=1 yum install regatta-cli-26.0.0.112-1.el8.x86_64.rpm
+```
+
+#### Run CLI
+
+To run the CLI, we will need a RegattaDB user’s credentials and the URL to that RegattaDB instance. For the credentials we will use the default values installed with any RegattaDB instance. For the URL we need the combination of IP and port (IP:PORT). For the IP we can use one of three options:
+
+- **Internal IP**: 10.0.0.1
+- **External IP**: 192.168.1.101
+- **Local host**: 127.0.0.1
+
+For the port we MUST use the default port that comes with the SM deployment: 8840
+
+To summarize, we will use:
+
+- **Username**: admin
+- **Password**: RegattaDefault1234!
+- **URL**: 10.0.0.1:8840
+
+To run the RegattaDB CLI, perform the following command:
+
+```shellscript
+/opt/regatta/1.0/clients/cli/bin/client_cli
+```
+
+You’ll see the prompt:
+
+```shellscript
+rdb>
+```
+
+Now, connect to the cluster:
+
+```shellscript
+rdb>\connect user=admin pass=RegattaDefault1234! url=10.0.0.1:8840
+```
+
+You will be responded with:
+
+```shellscript
+Successfully connected to cluster 
+```
+
+You are all set!
+
+Going forward, all MANAGE commands below should be performed through the RegattaDB CLI instance.
+
+For more details on the RegattaDB CLI, please refer to [Regatta CLI - Regatta](https://docs.regatta.dev/drivers-and-clients/regatta-cli#regatta-cli).
+
+### Step 7: Enter SETUP State
+
+Transition the system to **SETUP mode**:
+
+```sql
+MANAGE SYSTEM ENTER SETUP; 
+```
+
+### Step 8: Infrastructure Definition (Adding Nodes)
+
+Formally add the identified nodes to the system using unique names and IP lists.
+
+```sql
+MANAGE NODE ADD (
+  NAME "Srv01",
+  NETWORK (
+    (INTERNAL IP "10.0.0.1" PORT 8841)
+    (EXTERNAL IP "192.168.1.101" PORT 8841)
+  )
+);
+
+MANAGE NODE ADD (
+  NAME "Srv02", 
+  NETWORK (
+    (INTERNAL IP "10.0.0.2" PORT 8841)
+    (EXTERNAL IP "192.168.1.102" PORT 8841)
+  )
+); 
+```
+
+Repeat for servers Srv03 through Srv10.
+
+### Step 9: Storage Provisioning
+
+Attach the 2 dedicated storage devices to each node, specifying the local file paths and capacities required for data storage.
+
+```sql
+SQL
+MANAGE STORAGE DEVICE ADD (
+  NODE "Srv01", 
+  NAME "Srv01_Disk1", 
+  PATH "/dev/nvme0n1"
+);
+ 
+MANAGE STORAGE DEVICE ADD (
+  NODE "Srv01", 
+  NAME "Srv01_Disk2", 
+  PATH "/dev/nvme1n1"
+);
+ 
+MANAGE STORAGE DEVICE ADD (
+  NODE "Srv02", 
+  NAME "Srv02_Disk1", 
+  PATH "/dev/nvme0n1"
+);
+ 
+MANAGE STORAGE DEVICE ADD (
+  NODE "Srv02", 
+  NAME "Srv02_Disk2", 
+  PATH "/dev/nvme1n1"
+);
+```
+
+Repeat _for servers **Srv03** through **Srv10**_.
+
+### Step 10: Module Provisioning
+
+Register modules into the system by linking them to designated nodes and storage devices.
+
+**NOTE**: Always assign the RDB module after all the rest of the modules as we always give the RDB as much memory as we can.
+
+#### Management Modules
+
+Run the following set of SQL commands on Srv01 to deploy all non-RDB modules.
+
+```sql
+SQL
+MANAGE MODULE ADD (
+  NODE "Srv01", 
+  NAME "DCM_1", 
+  ROLE DCM, 
+  NETWORK (
+    (INTERNAL IP "10.0.0.1" PORT 8844)
+    (EXTERNAL IP "192.168.1.101" PORT 8844)
+  ),
+  SERVICE_PORT 5004
+);
+ 
+MANAGE MODULE ADD (
+  NODE "Srv01", 
+  NAME "SEQ_1", 
+  ROLE SEQUENCER, 
+  NETWORK (
+    (INTERNAL IP "10.0.0.1" PORT 8842)
+    (EXTERNAL IP "192.168.1.101" PORT 8842)
+  ),
+  SERVICE_PORT 5002
+);
+ 
+MANAGE MODULE ADD (
+  NODE "Srv01", 
+  NAME "GDD_1", 
+  ROLE GDD, 
+  NETWORK (
+    (INTERNAL IP "10.0.0.1" PORT 8843)
+    (EXTERNAL IP "192.168.1.101" PORT 8843),
+  ),
+  SERVICE_PORT 5003
+); 
+```
+
+#### RDB Modules
+
+Run the following command for all nodes, namely Srv01 through Srv10, using NAME "RDB\_1" for each node's local RDB instance.
+
+```sql
+SQL
+MANAGE MODULE ADD (
+  NODE "Srv01", 
+  NAME "RDB_1", 
+  ROLE RDB, 
+  STORAGE_DEVICE (
+    "Srv01_Disk1", 
+    "Srv01_Disk2"
+  ), 
+  NETWORK (
+    (INTERNAL IP "10.0.0.1" PORT 8601)
+    (EXTERNAL IP "192.168.1.101" PORT 8601)
+  ),
+  SERVICE_PORT 6001
+);
+```
+
+As stated previously, the RDB will receive all the server’s available RAM.
+
+### Step 11: Firewall Setup
+
+Configure the firewall on all servers to allow access to internal ports and external application access. 
+
+### Step 12: Exit SETUP and System Activation
+
+Finalize the configuration and move the system from the **DOWN** state to the **ACTIVE** state.
+
+```sql
+SQL
+MANAGE SYSTEM EXIT SETUP;
+MANAGE SYSTEM START;
+MANAGE SYSTEM SHOW;
+```
+
+Your RegattaDB system is ready.

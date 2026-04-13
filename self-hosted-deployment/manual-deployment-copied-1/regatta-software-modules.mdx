@@ -1,0 +1,29 @@
+---
+title: "RegattaDB Software Modules"
+---
+
+RegattaDB consists of six software modules that together form the Regatta database system. Each deployment includes a combination of these modules, distributed across one or more nodes.
+
+### SM – System Manager
+
+System Manager handles the deployment of RegattaDB on all servers. After deployment, it manages both hardware and software resources, executes administrative commands, and coordinates ongoing system operations.
+
+### SNA – System Node Agent
+
+The System Node Agent runs on each node where a Regatta module is deployed and serves as the local execution layer for the System Manager. It is responsible for managing the lifecycle of all RegattaDB modules on that node.
+
+### RDB – Regatta Database
+
+The RDB module is RegattaDB’s distributed compute engine, responsible for query execution and data processing. It leverages CPU, network, and I/O resources efficiently, and scales by adding additional RDB nodes.
+
+### Sequencer
+
+Coordinates consistency of the distributed transaction between all Regatta components.
+
+### DCM – Database Catalog Manager
+
+Manages the database catalog which contains all the schema definitions including tables, materialized views and data types, as well as hierarchical schema structures.
+
+### GDD – Global Deadlock Detector
+
+The Global Deadlock Detector (GDD) component is responsible for detecting circular distributed dependencies between transactions in the system and resolving them.
