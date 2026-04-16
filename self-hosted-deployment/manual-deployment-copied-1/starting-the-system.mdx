@@ -31,16 +31,7 @@ Identify the servers and prepare a list containing Internal IPs for cluster comm
 - **Srv01**: Internal 10.0.0.1, External 192.168.1.101 (Management Node).
 - **Srv02-Srv10**: Internal 10.0.0.2-10.0.0.10, External 192.168.1.102-110.
 
-We also need to assign 2 ports to each of the modules, one for communications and the other for support related operations.  While the Regatta system is flexible and allows the use of any available port, we recommend using the following standardized numbers whenever possible to ensure consistency across the deployment.
-
-| Module | Communications | Support |
-| :-- | :-- | :-- |
-| SM | 8840 | 5000 |
-| SNA | 8841 | 5001 |
-| Sequencer | 8842 | 5002 |
-| GDD | 8843 | 5003 |
-| DCM | 8844 | 5004 |
-| RDB | 8850 | 6001 |
+We will assign 2 ports to each of the modules based on the ports table mentioned previously.
 
 ### Step 2: EULA
 
@@ -137,11 +128,11 @@ Hardware devices located in /dev are typically managed by system groups. To give
 
 To ensure that the RegattaDB modules are tied to my-user, update the following files:
 
-- **Srv01 - SM Module:** 
+- **Srv01 - SM Module:**
   ```shellscript
   /usr/lib/systemd/system/regatta-26.0-sm.service
   ```
-- **Srv01-Srv10 - SNA Module:** 
+- **Srv01-Srv10 - SNA Module:**
   ```shellscript
   /usr/lib/systemd/system/regatta-26.0-sna.service
   ```
@@ -163,11 +154,11 @@ For both, User and Group, replace the value from regatta to my-user. When we sta
 
 Manually start the processes.
 
-- For the SM nn Srv01: 
+- For the SM nn Srv01:
   ```shellscript
   sudo systemctl start regatta-1.0-sm@1.service
   ```
-- For the SNAs on All Nodes: 
+- For the SNAs on All Nodes:
   ```shellscript
   sudo systemctl start regatta-1.0-sna@1.service
   ```

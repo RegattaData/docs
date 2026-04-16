@@ -101,3 +101,22 @@ In the installation process, the RPM creates a user named **regatta** with requi
 - Transfer ownership of the created directory structure
 - Add **my-user** to the required permissions groups (if missing)
 - Update the System Configuration files for both SM and SNA
+
+### IP Assignment
+
+Identify the servers and prepare a list containing Internal IPs for cluster communication and External IPs for application access.
+
+We also need to assign 2 ports to each of the modules, one for communications and the other for support related operations.  While the Regatta system is flexible and allows the use of any available port, we recommend using the following standardized numbers whenever possible to ensure consistency across the deployment.
+
+| Module | Communications | Support |
+| :-- | :-- | :-- |
+| SM | 8840 | 5000 |
+| SNA | 8841 | 5001 |
+| Sequencer | 8842 | 5002 |
+| GDD | 8843 | 5003 |
+| DCM | 8844 | 5004 |
+| RDB | 8850 | 6001 |
+
+### Firewall Setup
+
+Configure the firewall on all servers to allow access to internal ports and external application access.
