@@ -10,25 +10,34 @@ Below are several common configurations.
 
 #### Single Node
 
+In a single node deployment, there is only one option:
+
 <Frame>
   ![Image](/images/image-1.png)
 </Frame>
 
-#### Multi-Node – Common Performance
+#### Multi-Node – Classic
+
+The most common multi-node deployment is:
+
+- One node holds all modules as a Single Node deployment will do.
+- All other nodes have the RDB and the SNA  
 
 <Frame>
   ![Image](/images/image-2.png)
 </Frame>
 
-#### Multi-node - Distributed
+In this case,  RegattaDB gets the resources available and utilizes all the servers.
 
-In this case, we distribute the non-RDB modules across different nodes.
+#### Multi-node - Standalone 
+
+In this case, we dedicate a server to the SM and also distribute the non-RDB Operational Modules across different nodes.
 
 <Frame>
-  ![Image](/images/image-3.png)
+  ![Image](/images/image-5.png)
 </Frame>
 
-Note that in this case we have assigned a dedicated server for the SM. This is a common configuration in a Kubernatis system \<\<\<link\>\>\>. Since there’s only an SM process on the that server, we don’t need an SNA. Also, since we did not deploy an RDB, the resource requirements from this server are minimal.
+Note that since we place the SM module alone on this node, we don’t need an SNA. This topology may be common in some use cases, such as Kubernetes (K8) deployments.
 
 For guidelines on sizing and configuring the RegattaDB to cater to your needs, please refer to \<\<\<BEST PRACTICES\>\>\> or contact support for assistance.
 
@@ -44,11 +53,13 @@ To understand the exact requirements, you will need to size the system based on 
 
 ### Regatta Software
 
-Next, you will need the RegattaDB software that you received from our support team. That package contains the software for all RegattaDB modules described above plus other useful tools.
+Next, download the RegattaDB software package. RegattaDB is distributed as a set of RPM packages, each corresponding to a specific module or tool. These RPMs should be copied to the nodes where they will be installed in later steps based on defined configuration.
 
 Below is an example of the content of the package file.
 
 #### Deployment Software
+
+Each of the RPMs below corresponds with one of the 6 RegattaDB modules
 
 ```shellscript
 regatta-dcm-26.0.0.112-1.el8.x86_64.rpm
@@ -61,12 +72,23 @@ regatta-sna-26.0.0.112-1.el8.x86_64.rpm
 
 #### Tools
 
+The Regatta Support tools:
+
+- Backup & Restore tool (BnR) 
+- Regatta Deployment Tool (RDT)
+
 ```shellscript
 regatta-bnr-26.0.0.112-1.el8.x86_64.rpm
 regatta-rdt-26.0.0.112-1.el8.x86_64.rpm
 ```
 
 #### Clients
+
+Regatta connectivity tools:
+
+- Regatta Client library - required for all connectivity
+- Regatta Command Line Interface (CLI)
+- Regatta Connect – A full suite of drivers and connectors for integrating RegattaDB with external systems and frameworks (drivers, ORMs, etc.).
 
 ```shellscript
 regatta-cli-26.0.0.112-1.el8.x86_64.rpm
@@ -80,8 +102,6 @@ regatta-connect-26.0.0.112-1.el8.x86_64.rpm
 regatta-debug-26.0.0.112-1.el8.x86_64.rpm
 ```
 
-For details see \<\<\<links\>\>\>
-
 ### EULA Acceptance
 
 To deploy and use RegattaDB, you must read and accept the **Regatta End User License Agreement (EULA)**. This acceptance is built directly into the RPM installation process; you will be prompted to agree to the terms before the installation can be completed.
@@ -92,8 +112,6 @@ To deploy and use RegattaDB, you must read and accept the **Regatta End User Lic
 Please take a few minutes to read and approve the Regatta End User License Agreement at the Regatta website ([https://regatta.dev/eula/](https://regatta.dev/eula/)) before deployment, especially if you are using the environment variable to bypass interactive prompts.
 
 ### Deployment User
-
-As with any software deployment, we require a user which has all the required permissions, deployment and storage access.
 
 In the installation process, the RPM creates a user named **regatta** with required permissions and establishes the directory structure. If you prefer to use another user, say **my-user**, please perform the following steps:
 
