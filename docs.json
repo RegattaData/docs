@@ -277,6 +277,16 @@
               "sql/appendices/database-limitations",
               "sql/appendices/reserved-words"
             ]
+          },
+          {
+            "group": "System Management",
+            "pages": [
+              "system-states-and-commands",
+              "nodes",
+              "modules",
+              "storage-devices",
+              "system-manager"
+            ]
           }
         ]
       },

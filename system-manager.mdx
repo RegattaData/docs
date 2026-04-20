@@ -1,0 +1,68 @@
+---
+title: "System Manager"
+---
+
+The System Manager is the entity that manages the hardware and software components of the system, handles management commands and drives management operations.
+
+### Commands
+
+The System Manager commands have the general form: `MANAGE SYSMGR command [ parameters ]`.
+
+#### SYSMGR SHOW
+
+This command show the attributes of the System Manager.
+
+**Synopsis**
+
+```sql
+MANAGE SYSMGR SHOW
+```
+
+**Output**
+
+The output of the command is tabular, with each row representing an attribute of the System Manger. The output has two columns: name and value. The following table lists the attributes that are included in the output:
+
+| Name | Description |
+| --- | --- |
+| EXTERNAL\_NET | A comma-separated list of external network addresses in the form of `<ip_addr>:<port>` |
+| INTERNAL\_NET | A comma-separated list of internal network addresses in the form of `<ip_addr>:<port>` |
+| SERVICE\_PORT | The port number for Regatta support connection |
+| EXTERNAL\_SERVICE\_NET | External network address for Regatta service connection, in the form of `<ip_addr>:<port> `<Icon icon="circle-exclamation" /> |
+| DESCRIPTION | Informative description of the system. |
+
+<Note>
+  The SERVICE\_PORT attribute applies to the internal network. For external network service connection, the port number in the EXTERNAL\_SERVICE\_NET attribute may be different.
+</Note>
+
+#### SYSMGR MODIFY
+
+This command modifies attributes of the System Manager.
+
+**Synopsis**
+
+```sql wrap
+MANAGE SYSMGR MODIFY 
+	[ NETWORK { ADD | REMOVE | SET } net_address [, ...] ] 
+	[ DESCRIPTION free_text ] 
+
+where net_address is: 
+	( EXTERNAL IP ip_addr PORT port_num )
+```
+
+This command is allowed only when the system state is `SETUP`.
+
+**Parameters**
+
+`NETWORK`
+
+The NETWORK clause includes one or more network addresses. It can come with either of the following directives:
+
+- `ADD `– Adds the given network addresses to the list of existing addresses.
+
+- `REMOVE `– Remove each given network address from the list of existing addresses. Each removed network address must be an exact match to an existing one.
+
+- `SET `– Remove all the existing network addresses and replace them with the given network addresses.
+
+`DESCRIPTION`
+
+Optional parameter. Free text that is added to the module.

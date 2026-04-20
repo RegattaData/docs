@@ -1,0 +1,212 @@
+---
+title: "Nodes"
+---
+
+A node is a computer server, either physical or virtual, that can host one or more Regatta modules.
+
+A node can be in either of two states: `AVAILABLE `and `NOT AVAILABLE`.
+
+### Node Commands
+
+All the node commands begin with the prefix `MANAGE NODE`.
+
+#### NODE ADD
+
+This command adds one or more nodes to the system.
+
+This command is accepted only if the system is in `ACTIVE `or `SETUP `state.
+
+**Synopsis**
+
+```sql wrap
+MANAGE NODE ADD [ FORCE ] ) (( 
+	NAME name, 
+	NETWORK ( net_address [, ... ] ) 
+	[, other_node_params ] 
+) [ , ... ] )
+
+where net_address is:
+
+( { EXTERNAL | INTERNAL } IP ip_addr PORT port_num
+```
+
+and `other_node_params `is a list of comma-separate optional parameters listed below.
+
+**Parameters**
+
+`FORCE`
+
+By default, a node will not be added if it already belongs to a different Regatta system. If this option is specified, nodes that belong to another Regatta system will be added. The node will be removed from the other system by force, and the impact on the other system is undefined.
+
+The rest of the parameters should be specified for each node separately.
+
+`NAME`
+
+Required parameter. This name must be unique among all of the system’s nodes, and will be used to identify the node in queries and other commands.
+
+`NETWORK`
+
+Required parameter. Contains a list of up to 4 external addresses and 4 internal addresses. Must contain at least one address (either internal or external). For each address, there are 2 required parameters – IP and PORT.
+
+External addresses are IP addresses that are used by applications to access Regatta. Internal addresses are used only within the Regatta cluster for inter-node communication.
+
+`DESCRIPTION`
+
+Optional parameter. Free text that is added to the node.
+
+`RAM_SIZE`
+
+Optional parameter. The amount of RAM (in MB) that the Regatta modules in this node may use. If not specified – Regatta may use all the available RAM.
+
+`ENV_MACHINE_KIND`
+
+Optional parameter. Used to inform Regatta about the node. If specified, the value must be one of the following: `“PhysicalServer”, “VirtualMachine”, “DockerContainer”`
+
+`ENV_MACHINE_ADDITIONAL_INFO`
+
+Optional parameter. Used to inform Regatta about the node. Can be any string. Currently not used by Regatta.
+
+**Output**
+
+The output of the command is tabular with a row for each node included in the command. The following table lists the output columns.
+
+| Name | Type | Description |
+| --- | --- | --- |
+| NAME | String | The name of the node |
+| ID | Number | The identifier Regatta assigned to the node. (N/A if adding the node failed.) |
+| STATUS | Number | SUCCESS or FAILURE. If FAILURE, the node was not added. |
+| ERROR\_REASON | String | In case of failure, this column contains a description of the failure reason. |
+
+**Example**
+
+This command creates two nodes, named node1 and node2.
+
+<Note>
+  RAM size and external service network address are specified only for node 2.
+</Note>
+
+```sql wrap
+MANAGE NODE ADD ( 
+	(NAME node1, NETWORK ((INTERNAL IP “127.0.0.1” PORT 8401),(EXTERNAL IP “85.245.254.37” PORT 8402)) , 
+	(NAME node2, NETWORK ((INTERNAL IP “127.0.0.1” PORT 8403),(EXTERNAL IP “85.245.253.139” PORT 8404)), RAM_SIZE 24000, EXTERNAL_SERVICE_NET (IP “85.245.253.139” PORT 9876)) 
+);
+```
+
+#### NODE REMOVE
+
+This command removes a node from the system.
+
+This command is accepted only when the system is in `ACTIVE `or `SETUP `state. A node can be removed only when it contains no modules and no storage devices.
+
+**Synopsis**
+
+```sql
+MANAGE NODE REMOVE node_name
+```
+
+#### NODE SHOW
+
+This command shows the attributes of nodes.
+
+**Synopsis**
+
+```sql wrap
+MANAGE NODE SHOW [ FILTER STATE node_state ] [ DETAILED ] 
+MANAGE NODE SHOW ATTR node_name [ FILTER ATTR attribute_name
+```
+
+This command has two variants:
+
+1. A list of nodes and their basic attributes
+2. A detailed list of attributes for a specific node
+
+**Parameters**
+
+`FILTER`
+
+Filter the result by some criterion. In the first variant of this command, nodes can be filtered by state. In the second variant, attributes can be filtered by attribute name. Currently the filtering is by exact match, no support for regular expressions. Only one filter can be specified.
+
+`DETAILED`
+
+Show a more detailed list of attributes for each module. See more details in the **Output** section below.
+
+**Output**
+
+For the first variant, the output of the command is a tabular, with each row representing a node. The following table lists the columns of the output. If the `DETAILED `option is specified, then in addition to those columns, all the attributes listed below in the output of `NODE SHOW ATTR` command are also included for each node. In this variant, only their current values are shown and not their set values.
+
+| Name | Type | Description |
+| --- | --- | --- |
+| NAME | String | The name of the node |
+| ID | Number | The identifier of the node. Assigned by **Regatta**. |
+| STATE | String | The node state |
+| INTERNAL\_NET | String | A comma-separated list of internal network addresses in the form of `<ip_addr>:<port>` |
+| EXTERNAL\_NET | String | A comma-separated list of external network addresses in the form of `<ip_addr>:<port>` |
+
+For the second variant, the output of the command is tabular, with each row representing an attribute of the specified module. The following table lists the columns of the output.
+
+| Name | Type | Description |
+| --- | --- | --- |
+| NAME | String | The name of the attribute |
+| CURRENT\_VALUE | String | The current value of the attribute |
+| SET\_VALUE | String | The set value of the attribute – if different from the current value  <Icon icon="circle-exclamation" /> |
+| REASON | String | If the current value differs from the set value, this column contains a reason for the difference. (For example, “Restart required”). |
+
+<Note>
+  The SET\_VALUE column is displayed only if it’s different than the current value. If it’s equal to the current value, the output cell is empty.
+</Note>
+
+The following table lists the rows included in the output:
+
+| Name | Description |
+| --- | --- |
+| NAME | The name of the node |
+| ID | The identifier of the node. Assigned by Regatta. |
+| RAM\_SIZE | The RAM size (in MB) that may be used by Regatta |
+| SERVICE\_PORT | The port number for Regatta support connection |
+| EXTERNAL\_SERVICE\_NET | External network address for Regatta service connection, in the form of `<ip_addr>:<port>`<Icon icon="circle-exclamation" /> |
+| DESCRIPTION | Informative description of the node |
+
+<Note>
+  The SERVICE\_PORT attribute applies to the internal network.
+</Note>
+
+#### NODE MODIFY
+
+This command modifies the properties of a node.
+
+**Synopsis**
+
+```sql wrap
+MANAGE NODE MODIFY node_name 
+	[ NETWORK { ADD | REMOVE | SET } ( net_address [, ...] ) ] 
+	[ RAM_SIZE [ size_in_mb ]
+	[ DESCRIPTION free_text ]
+
+where net_address is:
+
+( { EXTERNAL | INTERNAL } IP ip_addr PORT port_num )
+```
+
+The command is accepted only if the system state is `SETUP`.
+
+**Parameters**
+
+`NETWORK`
+
+The `NETWORK `clause includes one or more network addresses. It can come with either of the following directives:
+
+- `ADD `– Adds the given network addresses to the list of existing addresses.
+- `REMOVE `– Remove each given network address from the list of existing addresses. Each removed network address must be an exact match to an existing one.
+- `SET `– Remove all the existing network addresses and replace them with the given network addresses.
+
+`RAM_SIZE`
+
+Optional parameter. The amount of RAM (in MB) that the Regatta modules in this node may use. If specified without a value – Regatta may use all the available RAM.
+
+<Note>
+  If modules already exist on the node and the specified value is less than what is already being used, the command will result in an error.
+</Note>
+
+`DESCRIPTION`
+
+Optional parameter. Free text that is added to the module.

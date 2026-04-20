@@ -1,0 +1,141 @@
+---
+title: "Storage Devices"
+---
+
+Storage Devices are attached to nodes and are used by modules running on the nodes to store database data and metadata. Once a storage device is added to a node, it can be assigned to a module. A device can only be attached to one module and cannot be transferred to another module. A module may have multiple storage devices.
+
+A storage device has a state that can be either `OK `or `ERROR`.
+
+### Commands
+
+The storage device commands have the general form:
+
+`MANAGE STORAGE DEVICE command [ parameters ].`
+
+#### STORAGE DEVICE ADD
+
+This command adds one or more storage devices to the system. A storage device is added to a specific node. It is assigned to a module when the module is added in that node (see [MODULE ADD](/modules) above) and cannot be assigned to an existing module.
+
+This command is accepted only if the system is the `SETUP `state.
+
+**Synopsis**
+
+```sql wrap
+MANAGE STORAGE DEVICE ADD [ FORCE ] ( ( 
+	NODE node_name 
+	NAME device_name 
+	[ DESCRIPTION description ] 
+	PATH path 
+) [ , ... ] )
+```
+
+**Parameters**
+
+`FORCE`
+
+Optional parameter. By default, a storage device will not be added if it already belongs to a different Regatta system. If this option is specified, devices that belong to another Regatta system will be added.
+
+The device will be removed from the other system by force, and the impact on the other system is undefined.
+
+`NODE`
+
+Required parameter. The name of the node in which the storage device is added.
+
+`NAME`
+
+Required parameter. This name must be unique among all of the system’s storage devices, and will be used to identify the devices in queries and other commands.
+
+`DESCRIPTION`
+
+Optional parameter. Free text that is added to the storage device.
+
+`PATH`
+
+Required parameter. Specify the path to the device inside the node.
+
+<Note>
+  When using shared networked storage devices, it’s important to specify a path that will not change if the node is restarted or if the module is moved to another node. One way to accomplish that is to use a path based on the device’s universally unique ID (UUID).
+</Note>
+
+#### STORAGE DEVICE MODIFY
+
+This command modifies the attributes of a storage device.
+
+**Synopsis**
+
+```sql wrap
+MANAGE STORAGE DEVICE MODIFY device_name 
+	PATH path 
+	[ DESCRIPTION description ]
+```
+
+**Parameters**
+
+`PATH`
+
+Required parameter. Specify the local path to the device inside the node.
+
+<Note>
+  When using shared networked storage devices, it’s important to specify the uuid-based path so that the module will be reconnected to the same device when it’s moved to another node.
+</Note>
+
+If the device is assigned to an active module, changing the path will take effect in the module only upon module restart.
+
+`DESCRIPTION`
+
+Optional parameter. Free text that is added to the storage device.
+
+#### STORAGE DEVICE SHOW
+
+This command shows the attributes of storage devices.
+
+**Synopsis**
+
+```text
+MANAGE STORAGE DEVICE SHOW 
+	[ FILTER STATE device_state ] [ DETAILED ]
+
+MANAGE STORAGE DEVICE SHOW ATTR device_name [ FILTER ATTR attribute_name ]
+```
+
+This command has two variants:
+
+1. A list of storage devices and their basic attributes
+2. A detailed list of attributes for a specific storage device
+
+**Parameters**
+
+`FILTER`
+
+Filter the result by some criterion. In the first variant of this command, nodes can be filtered by state. In the second variant, attributes can be filtered by attribute name. Currently the filtering is by exact match, no support for regular expressions. Only one filter can be specified.
+
+`DETAILED`
+
+Show a more detailed list of attributes for each module. See more details in the Output section below.
+
+**Output**
+
+For the first variant, the output of the command is tabular, with each row representing a storage device. The following table lists the columns of the output. If the `DETAILED `option is specified, then in addition to those columns, all the attributes listed below in the output of `STORAGE DEVICE SHOW ATTR` command are also included for each storage device. In this variant, only their current values are shown and not their set values.
+
+| Name | Type | Description |
+| --- | --- | --- |
+| NAME | String | The name of the device |
+| ID | Number | The identifier of the device. Assigned by Regatta. |
+| STATE | String | The device state |
+| PATH | String | The path to the device inside the node |
+| NODE\_NAME | String | The name of the node the device is attached to |
+| MODULE\_NAME | String | The name of the module the device is assigned to |
+| CAPACITY | Number | The device capacity in bytes |
+| DESCRIPTION | String | A description of the device (if exists) |
+| LOCAL\_NUMBER | Number | The ordinal number of the device inside the module it’s assigned to. Local numbering starts at zero. |
+
+For the second variant, the output of the command is tabular, with each row representing an attribute of the specified storage device. The following table lists the columns of the output.
+
+| Name | Type | Description |
+| --- | --- | --- |
+| NAME | String | The name of the attribute |
+| CURRENT\_VALUE | String | The current value of the attribute |
+| SET\_VALUE | String | The set value of the attribute |
+| REASON | String | If the current value differs from the set value, this column contains a reason for the difference. (For example, “Restart required”) |
+
+For each of the columns listed in the output of the first variant, there is a row in the second variant’s output.
