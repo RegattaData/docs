@@ -48,7 +48,7 @@ This command is available only when the system state is `SETUP`.
 
 **Synopsis**
 
-```sql wrap
+```text wrap
 MANAGE MODULE ADD ( ( 
 	NODE node_name 
 	NAME module_name 
@@ -134,7 +134,7 @@ This command starts a module.
 
 **Synopsis**
 
-```sql
+```text
 MANAGE MODULE START module_name
 ```
 
@@ -148,7 +148,7 @@ This command shuts down a module.
 
 **Synopsis**
 
-```sql
+```text
 MANAGE MODULE SHUTDOWN module_name
 ```
 
@@ -162,7 +162,7 @@ This command restarts a module.
 
 **Synopsis**
 
-```sql
+```text
 MANAGE MODULE RESTART module_name
 ```
 
@@ -176,7 +176,7 @@ This command modifies the attributes of a module.
 
 **Synopsis**
 
-```sql wrap
+```text wrap
 MANAGE MODULE MODIFY module_name
 	[ NETWORK { ADD | REMOVE | SET } ( net_address [, ...] ) ] 
 	[ RAM_SIZE size_in_mb ] 
@@ -236,7 +236,7 @@ Moving a module to another node requires either use shared storage devices that 
 
 **Synopsis**
 
-```sql wrap
+```text wrap
 MANAGE MODULE MOVE module_name
 	NODE node_name 
 	[ NETWORK ( net_address [, ... ] )
@@ -258,7 +258,7 @@ This command shows the attributes of modules.
 
 **Synopsis**
 
-```sql wrap
+```text wrap
 MANAGE MODULE SHOW [ FILTER { STATE module_state | 
 							  NODE node_name } ] 
 				   [ DETAILED ] 

@@ -18,7 +18,7 @@ This command is accepted only if the system is in `ACTIVE `or `SETUP `state.
 
 **Synopsis**
 
-```sql wrap
+```text wrap
 MANAGE NODE ADD [ FORCE ] (( 
 	NAME name, 
 	NETWORK ( net_address [, ... ] ) 
@@ -28,9 +28,9 @@ MANAGE NODE ADD [ FORCE ] ((
 where net_address is:
 
 ( { EXTERNAL | INTERNAL } IP ip_addr PORT port_num
-```
 
-and `other_node_params `is a list of comma-separate optional parameters listed below.
+and other_node_params is a list of comma-separate optional parameters listed below.
+```
 
 **Parameters**
 
@@ -74,7 +74,7 @@ The output of the command is tabular with a row for each node included in the co
 | --- | --- | --- |
 | NAME | String | The name of the node |
 | ID | Number | The identifier Regatta assigned to the node. (N/A if adding the node failed.) |
-| STATUS | Number | SUCCESS or FAILURE. If FAILURE, the node was not added. |
+| STATUS | String | SUCCESS or FAILURE. If FAILURE, the node was not added. |
 | ERROR\_REASON | String | In case of failure, this column contains a description of the failure reason. |
 
 **Example**
@@ -85,7 +85,7 @@ This command creates two nodes, named node1 and node2.
   RAM size and external service network address are specified only for node 2.
 </Note>
 
-```sql wrap
+```text wrap
 MANAGE NODE ADD ( 
 	(NAME node1, NETWORK ((INTERNAL IP “127.0.0.1” PORT 8401),(EXTERNAL IP “85.245.254.37” PORT 8402)) , 
 	(NAME node2, NETWORK ((INTERNAL IP “127.0.0.1” PORT 8403),(EXTERNAL IP “85.245.253.139” PORT 8404)), RAM_SIZE 24000, EXTERNAL_SERVICE_NET (IP “85.245.253.139” PORT 9876)) 
@@ -100,7 +100,7 @@ This command is accepted only when the system is in `ACTIVE `or `SETUP `state. A
 
 **Synopsis**
 
-```sql
+```text
 MANAGE NODE REMOVE node_name
 ```
 
@@ -110,9 +110,9 @@ This command shows the attributes of nodes.
 
 **Synopsis**
 
-```sql wrap
+```text wrap
 MANAGE NODE SHOW [ FILTER STATE node_state ] [ DETAILED ] 
-MANAGE NODE SHOW ATTR node_name [ FILTER ATTR attribute_name
+MANAGE NODE SHOW ATTR node_name [ FILTER ATTR attribute_name ]
 ```
 
 This command has two variants:
@@ -176,7 +176,7 @@ This command modifies the properties of a node.
 
 **Synopsis**
 
-```sql wrap
+```text wrap
 MANAGE NODE MODIFY node_name 
 	[ NETWORK { ADD | REMOVE | SET } ( net_address [, ...] ) ] 
 	[ RAM_SIZE [ size_in_mb ]

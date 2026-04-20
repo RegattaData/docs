@@ -14,7 +14,7 @@ This command show the attributes of the System Manager.
 
 **Synopsis**
 
-```sql
+```text
 MANAGE SYSMGR SHOW
 ```
 
@@ -40,7 +40,7 @@ This command modifies attributes of the System Manager.
 
 **Synopsis**
 
-```sql wrap
+```text wrap
 MANAGE SYSMGR MODIFY 
 	[ NETWORK { ADD | REMOVE | SET } net_address [, ...] ] 
 	[ DESCRIPTION free_text ] 
@@ -58,9 +58,7 @@ This command is allowed only when the system state is `SETUP`.
 The NETWORK clause includes one or more network addresses. It can come with either of the following directives:
 
 - `ADD `– Adds the given network addresses to the list of existing addresses.
-
 - `REMOVE `– Remove each given network address from the list of existing addresses. Each removed network address must be an exact match to an existing one.
-
 - `SET `– Remove all the existing network addresses and replace them with the given network addresses.
 
 `DESCRIPTION`

@@ -47,7 +47,7 @@ All the system-wide commands begin with the prefix `MANAGE SYSTEM`
 
 Synopsis
 
-```sql
+```text
 MANAGE SYSTEM START
 ```
 
@@ -57,7 +57,7 @@ The command is accepted only if the current system state is `DOWN`. The result o
 
 **Synopsis**
 
-```sql
+```text
 MANAGE SYSTEM SHUTDOWN [ WAIT seconds ]
 ```
 
@@ -75,7 +75,7 @@ Optional parameter. The system will wait up to the specified number of seconds f
 
 **Synopsis**
 
-```sql
+```text
 MANAGE SYSTEM ENTER SETUP
 ```
 
@@ -97,7 +97,7 @@ This command modifies parameters of the system.
 
 **Synopsis**
 
-```sql wrap
+```text wrap
 MANAGE SYSTEM MODIFY 
 	[ RDB_FAILURE_THRESHOLD (FAILURES num_failures DURATION time_window) [ , ... ] ] 
 	[ DCM_FAILURE_THRESHOLD (FAILURES num_failures DURATION time_window) [ , ... ] ] 
