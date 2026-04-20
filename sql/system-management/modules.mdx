@@ -22,7 +22,7 @@ The SEQUENCER module serves a system-wide sequence of time points, effectively a
 
 The GDD module serves as a Global Deadlock Detector, detecting cycles of dependencies among distributed transactions that could cause deadlocks. A Regatta system must have exactly one GDD module.
 
-In order to activate the Regatta system, it must have exactly one <Tooltip tip="Database Catalog Manager">DCM </Tooltip>module, one SEQUENCER module, one <Tooltip tip="Global Deadlock Detector">GDD </Tooltip>module and at least one <Tooltip tip="Regatta Database">RDB</Tooltip> module. Multiple modules may be deployed on the same node. However, at least for the RDB modules the common practice is to deploy each module in a separate node for scalable performance.
+In order to activate the Regatta system, it must have exactly one <Tooltip tip="Database Catalog Manager">DCM </Tooltip> module, one SEQUENCER module, one <Tooltip tip="Global Deadlock Detector">GDD </Tooltip> module and at least one <Tooltip tip="Regatta Database">RDB</Tooltip> module. Multiple modules may be deployed on the same node. However, at least for the RDB modules the common practice is to deploy each module in a separate node for scalable performance.
 
 ### States
 
@@ -325,7 +325,7 @@ The following table lists the rows included in the output:
 | CPU | The list of CPUs that the module’s process is bound to |  |
 | NUM\_THREADS | The number of threads that the module spawns for parallel processing |  |
 | SERVICE\_PORT | The port number for Regatta support connection |  |
-| EXTERNAL\_SERVICE\_NET | External network address for Regatta service connection, in the form of `<ip_addr>:<port>` <Icon icon="circle-exclamation" /> |  |
+| EXTERNAL\_SERVICE\_NET | External network address for Regatta service connection, in the form of `<ip_addr>:<port>`<Icon icon="circle-exclamation" /> |  |
 | NUM\_DOWN | The number of times the module was shut down since the system last became active. |  |
 | NUM\_CRASHES | The number of times the module crashed since the system last became active. |  |
 | CRASH\_DETAILS | The details (such as failure type and/or reason) of the last crash (if any). |  |
