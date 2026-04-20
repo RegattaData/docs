@@ -6,7 +6,7 @@ The deployment of a RegattaDB system follows a structured, step-by-step progress
 
 ### Node Identification and IP Assignment
 
-Identify the physical or virtual servers (nodes) that will host Regatta modules. \
+Identify the nodes that will host Regatta modules. \
 Prepare a list containing:
 
 - Internal IPs for system communications
@@ -20,21 +20,21 @@ Start the SM process.
 
 ### SNA Deployment
 
-For every node designated to host any Regatta module (see nest step), deploy the SNA to that server. If you decide to use your own user account, apply the necessary changes.
+For every node designated to host any Regatta module (see next step), deploy the SNA to that node. If you decide to use your own user account, apply the necessary changes.
 
 Start the SNA process.
 
 ### Module Placement and Role Assignment:
 
-Determine which Regatta modules will reside on which server, noting that a single node can host one or more modules. Each system requires exactly one DCM, one SEQUENCER, and one GDD module, along with at least one RDB module.
+Determine which Regatta modules will reside on which node, noting that a single node can host one or more modules. Each system requires exactly one DCM, one SEQUENCER, and one GDD module, along with at least one RDB module.
 
 ### Software Installation
 
-Deploy the specific RPM packages for the assigned module roles onto their respective servers.
+Deploy the specific RPM packages for the assigned module roles onto their respective nodes.
 
 ### Enter SETUP State
 
-At this point, you will need to deploy the RegattaDB CLI so you can perform all the system management related commands. The CLI is included in the software package you received from Regatta support. You can deploy the CLI on any server, as long as it has access to the server where the SM was deployed.
+At this point, you will need to deploy the RegattaDB CLI so you can perform all the system management related commands. The CLI is included in the software package you received from Regatta support. You can deploy the CLI on any node, as long as it has access to the node where the SM was deployed.
 
 Transition the system from a DOWN state to the SETUP state to enable configuration and deployment operations.
 

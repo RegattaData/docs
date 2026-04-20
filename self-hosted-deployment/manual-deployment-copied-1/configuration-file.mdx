@@ -27,11 +27,11 @@ The most common multi-node deployment is:
   ![Image](/images/image-2.png)
 </Frame>
 
-In this case,  RegattaDB gets the resources available and utilizes all the servers.
+In this case,  RegattaDB gets the resources available and utilizes all the nodes.
 
 #### Multi-node - Standalone
 
-In this case, we dedicate a server to the SM and also distribute the non-RDB Operational Modules across different nodes.
+In this case, we dedicate a node to the SM and also distribute the non-RDB Operational Modules across different nodes.
 
 <Frame>
   ![Image](/images/image-5.png)
@@ -43,7 +43,7 @@ For guidelines on sizing and configuring the RegattaDB to cater to your needs, p
 
 ### Hardware Requirements
 
-You will now need server to accommodate you RegattaDB configuration. These servers may be physical, VMs or even containers. They need to at least meet all the prerequisites defined previously:
+You will now need node to accommodate you RegattaDB configuration. These nodes may be physical, VMs or even containers. They need to at least meet all the prerequisites defined previously:
 
 - CPUs
 - RAM
@@ -122,7 +122,7 @@ In the installation process, the RPM creates a user named **regatta** with requi
 
 ### IP Assignment
 
-Identify the servers and prepare a list containing Internal IPs for cluster communication and External IPs for application access.
+Identify the nodes and prepare a list containing Internal IPs for cluster communication and External IPs for application access.
 
 We also need to assign 2 ports to each of the modules, one for communications and the other for support related operations.  While the Regatta system is flexible and allows the use of any available port, we recommend using the following standardized numbers whenever possible to ensure consistency across the deployment.
 
@@ -137,4 +137,4 @@ We also need to assign 2 ports to each of the modules, one for communications an
 
 ### Firewall Setup
 
-Configure the firewall on all servers to allow access to internal ports and external application access.
+Configure the firewall on all nodes to allow access to internal ports and external application access.
