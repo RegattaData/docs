@@ -6,6 +6,15 @@ title: "Deployment Setup"
 
 The first step is defining the system's topology, which is determined by your workload profile, performance goals, and storage requirements. Since RegattaDB is highly versatile, we can tailor this configuration to meet specific needs.
 
+The basic guidelines are:
+
+- Management Modules
+  - SM - There is only a single SM process in RegattaDB
+  - SNA - Should be deployed on any node where's at least one Operational Module
+- Operational Modules
+  - RDB - One on node server that will manage DB operations
+  - GDD, DCM, Sequencer - one of each
+
 Below are several common configurations.
 
 #### Single Node
