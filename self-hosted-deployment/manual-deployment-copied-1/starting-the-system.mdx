@@ -1,5 +1,5 @@
 ---
-title: "Deployment Example - 10 Servers"
+title: "Deployment Example - 10 Nodes"
 ---
 
 In this section, we will implement a deployment of the Multi-Node – Common Performance mentioned previously. This will allow the reader to follow step by step to achieve the desired configuration.
@@ -16,15 +16,15 @@ The following resources and configurations must be available before beginning th
   For example, in Srv01:
   - **Name**: Srv01\_Disk1
   - **Path**: /dev/nvme0n1
-- **Connectivity**: At least 10GB network between all Regatta servers.
+- **Connectivity**: At least 10GB network between all Regatta nodes.
 
 ## Deployment
 
-Here are the steps one should take to deploy a 10-Server RegattaDB.
+Here are the steps one should take to deploy a 10-Node RegattaDB.
 
 ### Step 1: Node Identification and IP Assignment
 
-Identify the servers and prepare a list containing Internal IPs for cluster communication and External IPs for application access.
+Identify the nodes and prepare a list containing Internal IPs for cluster communication and External IPs for application access.
 
 #### Example IPs:
 
@@ -48,7 +48,7 @@ Please take a few minutes to read and approve the Regatta End User License Agree
 
 ### Step 3: Software Installation (RPM Deployment)
 
-In this example, we will assign specific roles to the servers as follows:
+In this example, we will assign specific roles to the nodes as follows:
 
 - **Srv01**: Will host the SM, GDD, DCM, and Sequencer roles, alongside its local SNA and RDB modules.
 - **Srv02 through Srv10**: Will host both, an SNA and an RDB modules.
@@ -65,7 +65,7 @@ sudo ACCEPT_EULA=1 yum install regatta-sm-26.0.0.112-1.el8.x86_64.rpm
 
 #### 3.2 System Node Agent (SNA) - All Nodes
 
-Deploy the SNA to every node in the cluster. Due to the fact that all servers host RDB modules, all ten servers require an SNA to manage those local components.
+Deploy the SNA to every node in the cluster. Due to the fact that all nodes host RDB modules, all ten nodes require an SNA to manage those local components.
 
 ```shellscript
 sudo ACCEPT_EULA=1 yum install regatta-sna-26.0.0.112-1.el8.x86_64.rpm
@@ -97,7 +97,7 @@ sudo ACCEPT_EULA=1 yum install regatta-sequencer-26.0.0.112-1.el8.x86_64.rpm
 
 #### 3.6 Regatta Database (RDB) - All Nodes
 
-Install the RDB module on all servers to utilize the resources of the entire cluster.
+Install the RDB module on all nodes to utilize the resources of the entire cluster.
 
 ```shellscript
 sudo ACCEPT_EULA=1 yum install regatta-rdb-26.0.0.112-1.el8.x86_64.rpm 
@@ -154,7 +154,7 @@ For both, User and Group, replace the value from regatta to my-user. When we sta
 
 Manually start the processes.
 
-- For the SM nn Srv01:
+- For the SM on Srv01:
   ```shellscript
   sudo systemctl start regatta-1.0-sm@1.service
   ```
@@ -169,7 +169,7 @@ For the next steps we will require the RegattaDB CLI to run the SQL MANAGE comma
 
 #### Deploy CLI
 
-In this example we will deploy the CLI on the Srv01 server where the SM resides. You may use any server, from the system or not, as long as it has network access to the designated SM server.
+In this example we will deploy the CLI on the Srv01 node where the SM resides. You may use any node, from the system or not, as long as it has network access to the designated SM node.
 
 Copy the Regatta CLI RPM package to your target Linux machine, Srv01 in our example, and install it:
 
@@ -253,7 +253,7 @@ MANAGE NODE ADD (
 ); 
 ```
 
-Repeat for servers Srv03 through Srv10.
+Repeat for nodes Srv03 through Srv10.
 
 ### Step 9: Storage Provisioning
 
@@ -286,7 +286,7 @@ MANAGE STORAGE DEVICE ADD (
 );
 ```
 
-Repeat _for servers **Srv03** through **Srv10**_.
+Repeat for nodes **Srv03** through **Srv10**.
 
 ### Step 10: Module Provisioning
 
@@ -356,11 +356,11 @@ MANAGE MODULE ADD (
 );
 ```
 
-As stated previously, the RDB will receive all the server’s available RAM.
+As stated previously, the RDB will receive all the node’s available RAM.
 
 ### Step 11: Firewall Setup
 
-Configure the firewall on all servers to allow access to internal ports and external application access.
+Configure the firewall on all nodes to allow access to internal ports and external application access.
 
 ### Step 12: Exit SETUP and System Activation
 
@@ -373,4 +373,4 @@ MANAGE SYSTEM START;
 MANAGE SYSTEM SHOW;
 ```
 
-Your 10-server RegattaDB system is ready.
+Your 10-node RegattaDB system is ready.

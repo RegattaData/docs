@@ -70,6 +70,57 @@ regatta-sm-26.0.0.112-1.el8.x86_64.rpm
 regatta-sna-26.0.0.112-1.el8.x86_64.rpm
 ```
 
+Once deployed, you will get the following directory structure. Here you can see 2 examples:
+
+System Manager:
+
+```shellscript
+sm/
+├── bin
+│   └── regatta_sm
+├── LICENSE
+├── sm_1
+│   ├── bin
+│   │   ├── regatta_sm -> /opt/regatta/26.0/sm/bin/regatta_sm
+│   │   └── start.sh
+│   ├── conf
+│   │   ├── sm.conf
+│   │   └── sm_genesis.conf
+│   ├── log -> /var/log/regatta/sm/sm_1
+│   └── repo
+│       ├── history
+│       ├── lost+found
+│       ├── repo_signature
+│       ├── security
+│       ├── sys_mgr_command_files
+│       ├── sys_mgr_obj_model_files
+│       └── sys_mgr_states_files
+└── tools
+```
+
+RDB:
+
+```shellscript
+rdb/
+├── bin
+│   ├── launch_gdb.sh
+│   └── regatta_rdb
+├── LICENSE
+├── rdb_1
+│   ├── bin
+│   │   ├── core.regatta_rdb.6133.node-0000-3b1bb5de.1776839192
+│   │   ├── launch_gdb.sh -> /opt/regatta/26.0/rdb/bin/launch_gdb.sh
+│   │   └── regatta_rdb -> /opt/regatta/26.0/rdb/bin/regatta_rdb
+│   ├── conf
+│   │   ├── rdb.conf
+│   │   └── rdb_genesis.conf
+│   ├── log -> /var/log/regatta/rdb/rdb_1
+│   └── repo
+└── tools
+    └── dot
+        └── rdb_dot
+```
+
 #### Tools
 
 The Regatta Support tools:
@@ -80,6 +131,16 @@ The Regatta Support tools:
 ```shellscript
 regatta-bnr-26.0.0.112-1.el8.x86_64.rpm
 regatta-rdt-26.0.0.112-1.el8.x86_64.rpm
+```
+
+Below is an example for the Backup and Restore directory structure:
+
+```shellscript
+bnr/
+├── LICENSE
+├── log -> /var/log/regatta/bnr
+├── regatta_bnr-1.0.0.tar.gz
+└── regatta-dd.tar.gz
 ```
 
 #### Clients
@@ -94,6 +155,50 @@ Regatta connectivity tools:
 regatta-cli-26.0.0.112-1.el8.x86_64.rpm
 regatta-client-26.0.0.112-1.el8.x86_64.rpm
 regatta-connect-26.0.0.112-1.el8.x86_64.rpm
+```
+
+Deploying these RPMs will create the following tree (depenidng on which RPMS you chose to install):
+
+```shellscript
+clients/
+├── cli
+│   ├── bin
+│   │   └── client_cli
+│   ├── conf
+│   │   └── cli.cfg
+│   ├── LICENSE
+│   └── log -> /var/log/regatta/cli
+├── client
+│   └── LICENSE
+└── connect
+    ├── dart
+    │   ├── regatta_dart-26.0.0_full.tar.gz
+    │   └── regatta_dart-26.0.0.tar.gz
+    ├── django
+    │   └── django_regatta-26.0.0.tar.gz
+    ├── hibernate
+    │   └── regatta-hibernate-26.0.0.jar
+    ├── jdbc
+    │   ├── regatta-jdbc-26.0.0_full.jar
+    │   ├── regatta-jdbc-26.0.0.jar
+    │   ├── regatta-jdbc-26.0.0-shaded_full.jar
+    │   └── regatta-jdbc-26.0.0-shaded.jar
+    ├── kafka
+    │   ├── regatta-sink-connector-26.1.0.jar
+    │   ├── regatta-sink-connector-26.1.0-shaded_full.jar
+    │   └── regatta-sink-connector-26.1.0-shaded.jar
+    ├── mcp-server
+    │   └── mcp_server_regatta-26.0.0.tar.gz
+    ├── nodejs
+    │   ├── node-regatta-26.0.0_full.tgz
+    │   └── node-regatta-26.0.0.tgz
+    ├── python
+    │   ├── pyregatta-26.0.0_full.tar.gz
+    │   └── pyregatta-26.0.0.tar.gz
+    ├── sqlalchemy
+    │   └── sqlalchemy_regatta-26.0.0.tar.gz
+    └── typeorm
+        └── typeorm-regatta-26.0.0.tgz
 ```
 
 #### Debugging Tools
