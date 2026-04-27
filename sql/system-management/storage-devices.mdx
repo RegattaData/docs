@@ -53,9 +53,7 @@ Optional parameter. Free text that is added to the storage device.
 
 Required parameter. Specify the path to the device inside the node.
 
-<Note>
-  When using shared networked storage devices, it’s important to specify a path that will not change if the node is restarted or if the module is moved to another node. One way to accomplish that is to use a path based on the device’s universally unique ID (UUID).
-</Note>
+<Icon icon="circle-exclamation" /> When using shared networked storage devices, it’s important to specify a path that will not change if the node is restarted or if the module is moved to another node. One way to accomplish that is to use a path based on the device’s universally unique ID (UUID).
 
 #### STORAGE DEVICE MODIFY
 
@@ -75,9 +73,7 @@ MANAGE STORAGE DEVICE MODIFY device_name
 
 Required parameter. Specify the local path to the device inside the node.
 
-<Note>
-  When using shared networked storage devices, it’s important to specify the uuid-based path so that the module will be reconnected to the same device when it’s moved to another node.
-</Note>
+<Icon icon="circle-exclamation" />  When using shared networked storage devices, it’s important to specify the uuid-based path so that the module will be reconnected to the same device when it’s moved to another node.
 
 If the device is assigned to an active module, changing the path will take effect in the module only upon module restart.
 

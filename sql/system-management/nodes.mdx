@@ -81,9 +81,7 @@ The output of the command is tabular with a row for each node included in the co
 
 This command creates two nodes, named node1 and node2.
 
-<Note>
-  RAM size and external service network address are specified only for node 2.
-</Note>
+<Icon icon="circle-exclamation" /> RAM size and external service network address are specified only for node 2.
 
 ```text wrap
 MANAGE NODE ADD ( 
@@ -151,9 +149,7 @@ For the second variant, the output of the command is tabular, with each row repr
 | SET\_VALUE | String | The set value of the attribute – if different from the current value  <Icon icon="circle-exclamation" /> |
 | REASON | String | If the current value differs from the set value, this column contains a reason for the difference. (For example, “Restart required”). |
 
-<Note>
-  The SET\_VALUE column is displayed only if it’s different than the current value. If it’s equal to the current value, the output cell is empty.
-</Note>
+<Icon icon="circle-exclamation" />  The SET\_VALUE column is displayed only if it’s different than the current value. If it’s equal to the current value, the output cell is empty.
 
 The following table lists the rows included in the output:
 
@@ -166,9 +162,7 @@ The following table lists the rows included in the output:
 | EXTERNAL\_SERVICE\_NET | External network address for Regatta service connection, in the form of `<ip_addr>:<port>`<Icon icon="circle-exclamation" /> |
 | DESCRIPTION | Informative description of the node |
 
-<Note>
-  The SERVICE\_PORT attribute applies to the internal network.
-</Note>
+<Icon icon="circle-exclamation" />  The SERVICE\_PORT attribute applies to the internal network.
 
 #### NODE MODIFY
 
@@ -203,9 +197,7 @@ The `NETWORK `clause includes one or more network addresses. It can come with ei
 
 Optional parameter. The amount of RAM (in MB) that the Regatta modules in this node may use. If specified without a value – Regatta may use all the available RAM.
 
-<Note>
-  If modules already exist on the node and the specified value is less than what is already being used, the command will result in an error.
-</Note>
+<Icon icon="circle-exclamation" />  If modules already exist on the node and the specified value is less than what is already being used, the command will result in an error.
 
 `DESCRIPTION`
 

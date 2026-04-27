@@ -71,7 +71,7 @@ where net_address is:
 
 `NODE`
 
-The name of the node in which the module is added. The module will be run always on that node, unless it is moved with the `MODULE MOVE` command.
+Required parameter. The name of the node in which the module is added. The module will be run always on that node, unless it is moved with the `MODULE MOVE` command.
 
 `NAME`
 
@@ -99,9 +99,7 @@ If this parameter is not specified, the number of threads will be based on the i
 
 Optional parameter. The amount of RAM (in MB) that the module may use. If not specified – Regatta may use all the available RAM.
 
-<Note>
-  If the intention is to add more modules in the same node, this parameter must be specified and set to a value that leaves out RAM for the additional modules, because the `RAM_SIZE `parameter cannot be decreased after the module is added. Adding a module without specifying this parameter implies that no other modules can be added in this node later.
-</Note>
+<Icon icon="circle-exclamation" />  If the intention is to add more modules in the same node, this parameter must be specified and set to a value that leaves out RAM for the additional modules, because the `RAM_SIZE `parameter cannot be decreased after the module is added. Adding a module without specifying this parameter implies that no other modules can be added in this node later.
 
 `STORAGE_DEVICE`
 
@@ -210,9 +208,7 @@ Optional parameter. The number of threads that the module will spawn for paralle
 
 Optional parameter. The amount of RAM (in MB) that the module may use.
 
-<Note>
-  The RAM size can only be increased. Specifying a value lower than the currently used size will result in an error.
-</Note>
+<Icon icon="circle-exclamation" /> The RAM size can only be increased. Specifying a value lower than the currently used size will result in an error.
 
 `SERVICE_PORT`
 
@@ -303,9 +299,7 @@ For the second variant, the output of the command is tabular, with each row repr
 | SET\_VALUE | String | The set value of the attribute – if different from the current value <Icon icon="circle-exclamation" /> |
 | REASON | String | If the current value differs from the set value, this column contains a reason for the difference. (For example, “Restart required”) |
 
-<Note>
-  The SET\_VALUE column is displayed only if it’s different than the current value. If it’s equal to the current value, the output cell is empty.
-</Note>
+<Icon icon="circle-exclamation" /> The SET\_VALUE column is displayed only if it’s different than the current value. If it’s equal to the current value, the output cell is empty.
 
 The following table lists the rows included in the output:
 
@@ -331,6 +325,4 @@ The following table lists the rows included in the output:
 | CRASH\_DETAILS | The details (such as failure type and/or reason) of the last crash (if any). |  |
 | VERSION | The version of the module. |  |
 
-<Note>
-  The SERVICE\_PORT attribute applies to the internal network. For external network service connection, the port number in the EXTERNAL\_SERVICE\_NET attribute may be different.
-</Note>
+<Icon icon="circle-exclamation" /> The SERVICE\_PORT attribute applies to the internal network. For external network service connection, the port number in the EXTERNAL\_SERVICE\_NET attribute may be different.

@@ -114,9 +114,7 @@ Optional parameter. Specify up to 4 failure thresholds for each RDB module. Each
 
 For example, when specifying `RDB_FAILURE_THRESHOLD (FAILURES 3 DURATION 60), (FAILURES 5 DURATION 3600)`, an RDB module will move to state `DOWN `if it fails 3 times within 60 seconds, or if it fails 5 times within an hour.
 
-<Note>
-  The specified failure thresholds replace the existing set of thresholds.
-</Note>
+<Icon icon="circle-exclamation" />  The specified failure thresholds replace the existing set of thresholds.
 
 `DCM_FAILURE_THRESHOLD, GDD_FAILURE_THRESHOLD, SEQUENCER_FAILURE_THRESHOLD`
 
@@ -144,6 +142,4 @@ The output of the command is tabular, containing a single row. The following tab
 | NUM\_UNAVAILABLE\_NODES | Number |  | The number of nodes in state `NOT AVAILABLE` |
 | NUM\_INACTIVE\_MODULES | Number |  | The number of modules that are not in `ACTIVE `state |
 
-<Note>
-  See description of the failure thresholds in the [SYSTEM MODIFY](#system-modify) command.
-</Note>
+<Icon icon="circle-exclamation" />  See description of the failure thresholds in the [SYSTEM MODIFY](https://docs.regatta.dev/#system-modify) command.
