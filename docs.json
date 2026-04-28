@@ -271,6 +271,16 @@
             ]
           },
           {
+            "group": "System Management",
+            "pages": [
+              "sql/system-management/system-states-and-commands",
+              "sql/system-management/nodes",
+              "sql/system-management/modules",
+              "sql/system-management/storage-devices",
+              "sql/system-management/system-manager"
+            ]
+          },
+          {
             "group": "Appendices",
             "pages": [
               "sql/appendices/indentifiers-limitations",

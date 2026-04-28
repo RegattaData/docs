@@ -1,0 +1,328 @@
+---
+title: "Modules"
+---
+
+The Regatta system operates as a cluster of modules. Modules run on nodes, which are physical or virtual computer servers or containers.
+
+Each module in Regatta has a role. Following is a brief description of those roles.
+
+`RDB`
+
+The RDB modules hold the database data and perform the transaction processing. A Regatta system must have at least one RDB module in order to operate on relational data.
+
+`DCM`
+
+The DCM module acts as the Database Catalog Manager. It manages the data definitions including tables, indexes and so on. A Regatta system must have exactly one DCM module.
+
+`SEQUENCER`
+
+The SEQUENCER module serves a system-wide sequence of time points, effectively acting as a global logical clock server. A Regatta system must have exactly one SEQUENCER module.
+
+`GDD`
+
+The GDD module serves as a Global Deadlock Detector, detecting cycles of dependencies among distributed transactions that could cause deadlocks. A Regatta system must have exactly one GDD module.
+
+In order to activate the Regatta system, it must have exactly one <Tooltip tip="Database Catalog Manager">DCM </Tooltip> module, one SEQUENCER module, one <Tooltip tip="Global Deadlock Detector">GDD </Tooltip> module and at least one <Tooltip tip="Regatta Database">RDB</Tooltip> module. Multiple modules may be deployed on the same node. However, at least for the RDB modules the common practice is to deploy each module in a separate node for scalable performance.
+
+### States
+
+A module can be in one of the following states:
+
+`ACTIVE`: The module is active and can perform transaction processing.
+
+`DOWN`: The module is down and cannot perform transaction processing. It is a stable state, and the module will stay in that state until a `MODULE START` command is issued.
+
+`STARTING`: The system is in the process of starting the module, either as part of `SYSTEM START` or `MODULE START` command processing.
+
+`SHUTTING DOWN`: The module is in the process of shutting down following a `MODULE SHUTDOWN` command.
+
+### Commands
+
+The module commands have the general form: `MANAGE MODULE command [ parameters ]` .
+
+#### MODULE ADD
+
+This command adds one or more modules to the system.
+
+This command is available only when the system state is `SETUP`.
+
+**Synopsis**
+
+```text
+MANAGE MODULE ADD ( ( 
+	NODE node_name 
+	NAME module_name 
+	[ DESCRIPTION description ] 
+	ROLE role_name 
+	NETWORK ( net_address [, ... ] ) 
+	[ NUM_CPUS number ] 
+	[ RAM_SIZE size_in_mb ] 
+	[ STORAGE_DEVICE (device_name [, ... ]) ] 
+	[ SERVICE_PORT port_number ] 
+	[ VERSION version ] 
+) [ , ... ] )
+
+where net_address is:
+
+( { EXTERNAL | INTERNAL } IP ip_addr PORT port_num )
+```
+
+**Parameters**
+
+`NODE`
+
+Required parameter. The name of the node in which the module is added. The module will be run always on that node, unless it is moved with the `MODULE MOVE` command.
+
+`NAME`
+
+Required parameter. This name must be unique among all of the system’s modules, and will be used to identify the modules in queries and other commands.
+
+`DESCRIPTION`
+
+Optional parameter. Free text that is added to the module.
+
+`ROLE`
+
+Required parameter. The role of the module. See description of the module roles above.
+
+`NETWORK`
+
+Required parameter. Contains a list of up to 4 external addresses and 4 internal addresses. Must contain at least one address (either internal or external). For each address, there are 2 required parameters – `IP `and `PORT`.
+
+`NUM_CPUS`
+
+Optional parameter. The number of threads that the module will spawn for parallel processing.
+
+If this parameter is not specified, the number of threads will be based on the inspected number of CPU cores in order to maximize parallel processing.
+
+`RAM_SIZE`
+
+Optional parameter. The amount of RAM (in MB) that the module may use. If not specified – Regatta may use all the available RAM.
+
+<Icon icon="circle-exclamation" />  If the intention is to add more modules in the same node, this parameter must be specified and set to a value that leaves out RAM for the additional modules, because the `RAM_SIZE `parameter cannot be decreased after the module is added. Adding a module without specifying this parameter implies that no other modules can be added in this node later.
+
+`STORAGE_DEVICE`
+
+Optional parameter. A comma-separated list of one or more names of storage devices that the module will use to store database data and metadata. The specified devices must be accessible in the given node.
+
+For this version of Regatta, at least one storage device must be specified for an RDB module, and no storage device should be specified for the other module roles.
+
+`SERVICE_PORT`
+
+Optional parameter. The port number to be used by the module for service purposes.
+
+`VERSION`
+
+Optional parameter. By default, the module gets the version from the system. This parameter is intended for use during upgrade.
+
+**Output**
+
+The output of the command is tabular with a row for each module included in the command. The following table lists the output columns.
+
+| Name | Type | Description |
+| --- | --- | --- |
+| NAME | String | The name of the module |
+| ID | Number | The identifier Regatta assigned to the module. (N/A if adding the module failed.) |
+| STATUS | String | SUCCESS or FAILURE. If FAILURE, the module was not added |
+| ERROR\_REASON | String | In case of failure, this column contains a description of the failure reason. |
+
+#### MODULE START
+
+This command starts a module.
+
+**Synopsis**
+
+```text
+MANAGE MODULE START module_name
+```
+
+This command is allowed only when the system state is `ACTIVE`.
+
+The command is accepted only if the module state is `DOWN`. The result of the command is a transition of the module state to `STARTING`.
+
+#### MODULE SHUTDOWN
+
+This command shuts down a module.
+
+**Synopsis**
+
+```text
+MANAGE MODULE SHUTDOWN module_name
+```
+
+This command is allowed only when the system state is `ACTIVE`.
+
+The command returns after the module state has transitioned to `DOWN`.
+
+#### MODULE RESTART
+
+This command restarts a module.
+
+**Synopsis**
+
+```text
+MANAGE MODULE RESTART module_name
+```
+
+This command is allowed only when the system state is `ACTIVE `and the module state is `ACTIVE `or `STARTING`.
+
+The command returns after the module state has transitioned to `STARTING`.
+
+#### MODULE MODIFY
+
+This command modifies the attributes of a module.
+
+**Synopsis**
+
+```text wrap
+MANAGE MODULE MODIFY module_name
+	[ NETWORK { ADD | REMOVE | SET } ( net_address [, ...] ) ] 
+	[ RAM_SIZE size_in_mb ] 
+	[ NUM_CPUS [ number ] ] 
+	[ SERVICE_PORT port_number ] 
+	[ VERSION version ] 
+	[ DESCRIPTION description ] 
+	[ attr_name attr_value [ ... ] ]
+
+where net_address is: 
+	( { EXTERNAL | INTERNAL } IP ip_addr PORT port_num )
+```
+
+This command is only allowed when the system is in SETUP state, with the following exception: It is allowed to use it in ACTIVE state with only the NETWORK parameter. In this case the module’s state must be DOWN.
+
+**Parameters**
+
+`NETWORK`
+
+The `NETWORK `clause includes one or more network addresses. It can come with either of the following directives:
+
+- `ADD `– Adds the given network addresses to the list of existing addresses.
+- `REMOVE `– Remove each given network address from the list of existing addresses. Each removed network address must be an exact match to an existing one.
+- `SET `– Remove all the existing network addresses and replace them with the given network addresses.
+
+`NUM_CPUS`
+
+Optional parameter. The number of threads that the module will spawn for parallel processing. If this parameter is set without a number, the number of threads will be based on the number of CPU cores bound to the module in order to maximize parallel processing.
+
+`RAM_SIZE`
+
+Optional parameter. The amount of RAM (in MB) that the module may use.
+
+<Icon icon="circle-exclamation" /> The RAM size can only be increased. Specifying a value lower than the currently used size will result in an error.
+
+`SERVICE_PORT`
+
+Optional parameter. The port number to be used by the module for service purposes.
+
+`VERSION`
+
+Optional parameter. By default, the module gets the version from the system. This parameter is intended for use during upgrade.
+
+`DESCRIPTION`
+
+Optional parameter. Free text that is added to the module.
+
+#### MODULE MOVE
+
+This command moves a module, along with the device(s) assigned to it, to another node.
+
+The command is accepted only if the system state is `ACTIVE` or `SETUP`, and the modules state is `DOWN`.
+
+Moving a module to another node requires either use shared storage devices that can be made accessible from multiple nodes, or copying over the data from the module’s device(s) in the origin node to the storage device(s) in the destination node. (That copying must be done before the `MODULE MOVE` command and is not done as part of this command.)
+
+**Synopsis**
+
+```text wrap
+MANAGE MODULE MOVE module_name
+	NODE node_name 
+	[ NETWORK ( net_address [, ... ] )
+```
+
+**Parameters**
+
+`NODE`
+
+Required parameter. The name of the target node to which the module is moved.
+
+`NETWORK`
+
+Optional parameter. Contains a list of up to 4 external addresses and 4 internal addresses. Must contain at least one address (either internal or external). For each address, there are 2 required parameters – `IP `and `PORT`.
+
+#### MODULE SHOW
+
+This command shows the attributes of modules.
+
+**Synopsis**
+
+```text wrap
+MANAGE MODULE SHOW [ FILTER { STATE module_state | 
+							  NODE node_name } ] 
+				   [ DETAILED ] 
+MANAGE MODULE SHOW ATTR module_name [ FILTER ATTR attribute_name ]
+```
+
+This command has two variants:
+
+1. A list of modules and their attributes
+2. A detailed list of attributes for a specific module
+
+**Parameters**
+
+`FILTER`
+
+Filter the result by some criterion. In the first variant of this command, modules can be filtered by role, by state or by node name. In the second variant, attributes can be filtered by attribute name. Currently the filtering is by exact match, no support for regular expressions. Only one filter can be specified.
+
+`DETAILED`
+
+Show a more detailed list of attributes for each module. See more details in the Output section below.
+
+**Output**
+
+For the first variant, the output of the command is a tabular, with each row representing a module. The following table lists the columns of the output. If the `DETAILED `option is specified, then in addition to those columns, all the attributes listed below in the output of `MODULE SHOW ATTR` command are also included for each module. In this variant, only their current values are shown and not their set values.
+
+| Name | Type | Description |
+| --- | --- | --- |
+| NAME | String | The name of the module |
+| ID | Number | The identifier of the module. Assigned by Regatta |
+| STATE | String | The module’s state |
+| ROLE | String | The role of the module |
+| NODE\_NAME | String | The node in which the module resides |
+| INTERNAL\_NET | String | A comma-separated list of internal network addresses in the form of `<ip_addr>:<port>` |
+| EXTERNAL\_NET | String | A comma-separated list of external network addresses in the form of `<ip_addr>:<port>` |
+
+For the second variant, the output of the command is tabular, with each row representing an attribute of the specified module. The following table lists the columns of the output.
+
+| Name | Type | Description |
+| --- | --- | --- |
+| NAME | String | The name of the attribute |
+| CURRENT\_VALUE | String | The current value of the attribute |
+| SET\_VALUE | String | The set value of the attribute – if different from the current value <Icon icon="circle-exclamation" /> |
+| REASON | String | If the current value differs from the set value, this column contains a reason for the difference. (For example, “Restart required”) |
+
+<Icon icon="circle-exclamation" /> The SET\_VALUE column is displayed only if it’s different than the current value. If it’s equal to the current value, the output cell is empty.
+
+The following table lists the rows included in the output:
+
+| Name | Description |  |
+| --- | --- | --- |
+| NAME | The name of the module |  |
+| ID | The identifier of the module. Assigned by Regatta. |  |
+| STATE | The module’s state |  |
+| ROLE | The module’s role |  |
+| NODE\_NAME | The name of the node in which the module resides |  |
+| INTERNAL\_NET | A comma-separated list of internal network addresses in the form of `<ip_addr>:<port>` |  |
+| EXTERNAL\_NET | A comma-separated list of external network addresses in the form of `<ip_addr>:<port>` |  |
+| DESCRIPTION | A description of the module (if exists). |  |
+| STATE\_REASON | If the module is in `DOWN `state, this column will contain the reason for it. |  |
+| RAM\_SIZE | The RAM size (in MB) that the module may use |  |
+| NUMA\_NODE | The NUMA node number that the module’s process is bound to |  |
+| CPU | The list of CPUs that the module’s process is bound to |  |
+| NUM\_THREADS | The number of threads that the module spawns for parallel processing |  |
+| SERVICE\_PORT | The port number for Regatta support connection |  |
+| EXTERNAL\_SERVICE\_NET | External network address for Regatta service connection, in the form of `<ip_addr>:<port>`<Icon icon="circle-exclamation" /> |  |
+| NUM\_DOWN | The number of times the module was shut down since the system last became active. |  |
+| NUM\_CRASHES | The number of times the module crashed since the system last became active. |  |
+| CRASH\_DETAILS | The details (such as failure type and/or reason) of the last crash (if any). |  |
+| VERSION | The version of the module. |  |
+
+<Icon icon="circle-exclamation" /> The SERVICE\_PORT attribute applies to the internal network. For external network service connection, the port number in the EXTERNAL\_SERVICE\_NET attribute may be different.
