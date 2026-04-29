@@ -305,6 +305,30 @@
         ]
       },
       {
+        "anchor": "Regatta Cloud - Binyamina",
+        "icon": "cloud",
+        "groups": [
+          {
+            "group": "Regatta Cloud",
+            "pages": [
+              "regatta-cloud-copied-1/regatta-cloud/access-the-cloud",
+              "regatta-cloud-copied-1/regatta-cloud/regatta-cloud",
+              "regatta-cloud-copied-1/regatta-cloud/create-a-cluster",
+              "regatta-cloud-copied-1/regatta-cloud/delete-cluster",
+              "regatta-cloud-copied-1/regatta-cloud/cluster-ip"
+            ]
+          },
+          {
+            "group": "Database Backup and Restore",
+            "pages": [
+              "regatta-cloud-copied-1/database-backup-restore",
+              "regatta-cloud-copied-1/backup",
+              "regatta-cloud-copied-1/restore"
+            ]
+          }
+        ]
+      },
+      {
         "anchor": "Self-Hosted Deployment",
         "icon": "server",
         "groups": [
