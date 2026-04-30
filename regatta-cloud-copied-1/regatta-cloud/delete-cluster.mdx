@@ -1,11 +1,33 @@
 ---
-title: "Delete Cluster"
+title: "Cluster View"
 ---
 
-Once a cluster has served its purpose, you may delete it. To delete a cluster, go to the clusters page, select the cluster to be deleted by clicking on the cog to its right and selecting Delete by hovering over it.
+The **Cluster View** page presents detailed information about a specific RegattaDB system and provides access options for interacting with the cluster. The content displayed depends on whether the cluster is a **user‑defined cluster** or an **Instant cluster**.
 
-Click on the **delete** option. A pop up window will ask you to enter the cluster name (don’t worry, it appears at the top of the message). Once the name is entered (no leading or following spaces please), the **CONFIRM** button will become available. Click it.
+## User‑Defined Cluster View
 
-Once confirmed, a message stating that the deletion started will appear at the top and the
-**Status** of the cluster will change to **Deleting.** From this point, the cluster is unavailable. Once
-removed completely, it will disappear from the cluster list.
+For a user‑defined cluster, the page displays a more comprehensive set of details.
+
+At the top of the page, the cluster name is shown along with action buttons. The **Connect** button provides access to the cluster via the WebCLI, and the **Delete Cluster** button allows deleting the cluster.
+
+### Overview Section
+
+The **Overview** section displays key metadata describing the cluster configuration and identity. This includes the cloud provider, region, cluster type (such as XSMALL), RegattaDB version, the creator of the cluster, the cluster ID, and the user ID. These fields provide context and traceability for the system and are primarily informational.
+
+### Connectivity Section
+
+The **Connectivity** section is critical for external access to the cluster. It includes tabs such as External IPs, Trusted IPs, and VPC, with External IPs shown by default.
+
+Under External IPs, the cluster’s **IP Address** and **Port** are displayed. These two values are required when connecting to the cluster using software‑based access methods such as the RegattaDB CLI, database drivers, or other API‑based integrations. Any client that connects programmatically must use this IP and port combination to establish a connection.
+
+## Instant Cluster View
+
+The **Instant cluster view** presents a reduced set of details compared to user‑defined clusters. Certain fields and configuration details are intentionally omitted, as they are **not accessible in Instant mode**. This streamlined view reflects the simplified nature of Instant clusters, which are designed for rapid provisioning and limited configuration while still supporting core connectivity and usage features.
+
+## WebCLI
+
+Clicking the **Connect** button opens the **WebCLI** in the browser. This interface provides direct command‑line access to the cluster without requiring a local installation.
+
+From this CLI, users can execute **Regatta SQL commands** directly against the cluster, enabling tasks such as querying data, managing schemas, and performing administrative operations.
+
+In the WebCLI, for performance reasons, query results are limited to the first 1,000 rows. For the full experience, use the Regatta Client CLI.

@@ -1,26 +1,60 @@
 ---
-title: "Place holder 1"
+title: "Create New Cluster"
 ---
 
-To access the Cloud website, click the following URL to enter the login page:
+Clicking **Create New Cluster** opens a menu with three options. Each option leads to a different cluster creation flow:
 
-[https://cloud.regatta.dev](https://cloud.regatta.dev)
+- **Create New Cluster** – Creates a brand‑new RegattaDB system based on user‑selected configuration settings such as cloud provider, region, capacity, and optional demo data.
+- **Create From Backup** – Creates a new RegattaDB system using the configuration of an existing backup, without restoring the actual data.
+- **Regatta Instant** – Creates an instant cluster for a user with minimal configuration.
 
-You’ll be required to enter your credentials.
+Each option is described in detail below.
 
-To login, Enter the email used to register and the password received from Regatta. Note that ifthe email being used is one associated with Google and you are already signed into Google, youmay leverage the Single-Sign-On with the Google option.
+## Create New Cluster
 
-Once logged in, the Clusters screen will appear:
+The **Create New Cluster** screen allows configuring and provisioning a new RegattaDB system from scratch.
 
-<Frame caption="Figure 2 Clusters page">
-  ![](/images/figure2-clusterpage.png)
-</Frame>
+The configuration begins with entering a **Cluster Name**, which uniquely identifies the system.
 
-If you already have created clusters before, or someone from your account did, they will be listed here.
+The **Cloud Provider** section displays Google Cloud, AWS, and Azure, but **currently only Google Cloud is supported**. The Google Cloud option is selectable, while the other providers are shown but unavailable.
 
-There are several screens you can select from this page:
+For **Region**, only **East US** is available and selectable at this time.
 
-- **Clusters** - which we are on
-- **Backup/Restore** - will be covered in Database Backup and Restore
-- **Support** - will redirect you to the support channel
-- **Documentation** - Will grant access to useful documents (including this)
+The **Capacity** section allows choosing the system size. Currently, the following capacities are supported:
+
+- **XSmall**
+- **Small**
+- **Medium**
+
+Larger sizes appear visually but are disabled and not selectable. Each capacity option displays the maximum supported database size.
+
+Once a capacity is selected, the **Performance** section appears. At present, there is only a single performance configuration available - **Basic**, which is preselected and cannot be changed.
+
+An **Estimated Cost** is displayed based on the selected capacity and performance settings, providing an hourly cost estimate.
+
+The **Deploy Demo Data** option allows enabling sample data deployment. When enabled, two demo tables are created:
+
+- **Customers**
+- **Purchases**
+
+These tables represent a sports store dataset and are intended to help users get started quickly.
+
+At the bottom of the page, the user can either cancel the process or click **Create Cluster** to provision the system.
+
+## Create Cluster from Backup Config
+
+The **Create Cluster from Backup Config** screen provisions a new RegattaDB system based on the configuration stored in an existing backup.
+
+The user selects a **Backup** from the available list and provides a **Cluster Name** for the new system.
+
+This process **uses only the configuration** of the backed‑up system, such as sizing and settings. **Data is not restored as part of this flow**. After the system is created, data restoration can be performed separately using the Restore functionality.
+
+The screen includes options to cancel or proceed with **Create Cluster**.
+
+## Create Instant Cluster
+
+The **Create Instant Cluster** screen is designed for rapidly provisioning a system for a quick tryout as described in the Overview section.
+
+The user then provides a **Cluster Name** for the new Instant system, clicks **Create Instant Cluster** and a system is created in seconds.
+
+A **Back to Clusters** option is available to return to the main clusters list without creating a cluster.
