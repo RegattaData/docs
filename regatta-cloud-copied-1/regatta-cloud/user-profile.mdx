@@ -2,7 +2,7 @@
 title: "User Profile"
 ---
 
-The **My Account** menu is accessed from the **bottom‑left corner of the RegattaDB navigation** **bar**. By clicking on the **user name** , a menu opens that provides access to user‑specific settings, support resources, and logout functionality.
+The **My Account** menu is accessed from the **bottom‑left corner of the RegattaDB navigation** **bar**. By clicking on the **user name**, a menu opens that provides access to user‑specific settings, support resources, and logout functionality.
 
 The menu includes the following entries:
 
@@ -39,15 +39,11 @@ Password requirements are clearly stated and include a minimum length, as well a
 
 ### Personal Access Tokens
 
-The **Personal Access Tokens** section allows users to create and manage API access tokens for their account.
-
-Personal access tokens grant authenticated access and are used when communicating with the RegattaDB Cloud **programmatically through its API**, such as for automation, integrations, or external tooling.
+The **Personal Access Tokens** section allows users to create and manage API access tokens for their cloud account. They grant authenticated access and are used when communicating with the RegattaDB Cloud **programmatically through its API**, such as for automation, integrations, or external tooling.
 
 Clicking **Create Token** opens the token creation screen.
 
 #### Create Personal Access Token
-
-/
 
 When creating a token, the user specifies:
 
@@ -68,8 +64,7 @@ Deleting a token opens a confirmation dialog that requires typing `delete` to pr
 Currently we support creating and deleting Instant RegattaDB systems \<\<\<LINK\>\>\>. \
 The supported API are:
 
-- **Create** 
-  Creates an instant system to be used. If you replace the **_wait_** value in the URL from false to true, you will receive the details of that system. 
+- **Create** - Creates an instant system to be used. If you replace the **_wait_** value in the URL from false to true, you will receive the details of that system.
 
 ```shellscript
 curl -X 'POST' \
@@ -82,8 +77,7 @@ curl -X 'POST' \
 }'
 ```
 
-- **Get**
-  Receive the details of an instant system to access it.
+- **Get -** Receive the details of an instant system to access it.
 
 ```shellscript
 curl -X 'PATCH' \
@@ -93,8 +87,7 @@ curl -X 'PATCH' \
   -H 'Content-Type: application/json'
 ```
 
-- **Delete**
-  Delete the instant system 
+- **Delete** - Deletes the instant system
   ```shellscript
   curl -X 'GET' \
     'https://backend-regatta-platform.regatta.dev/v1/clusters/instants/<instant-cluster-id>' \
