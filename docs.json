@@ -311,9 +311,9 @@
           {
             "group": "Regatta Cloud",
             "pages": [
-              "regatta-cloud-copied-1/regatta-cloud/access-the-cloud",
               "regatta-cloud-copied-1/regatta-cloud/regatta-cloud",
               "regatta-cloud-copied-1/regatta-cloud/create-a-cluster",
+              "regatta-cloud-copied-1/regatta-cloud/access-the-cloud",
               "regatta-cloud-copied-1/regatta-cloud/delete-cluster",
               "regatta-cloud-copied-1/regatta-cloud/cluster-ip",
               "regatta-cloud-copied-1/regatta-cloud/credits",
