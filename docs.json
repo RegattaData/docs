@@ -307,7 +307,7 @@
       {
         "anchor": "Regatta Cloud - Binyamina",
         "icon": "cloud",
-        "groups": [
+        "pages": [
           {
             "group": "Regatta Cloud",
             "pages": [
@@ -316,7 +316,8 @@
               "regatta-cloud-copied-1/regatta-cloud/create-a-cluster",
               "regatta-cloud-copied-1/regatta-cloud/delete-cluster",
               "regatta-cloud-copied-1/regatta-cloud/cluster-ip",
-              "regatta-cloud-copied-1/regatta-cloud/credits"
+              "regatta-cloud-copied-1/regatta-cloud/credits",
+              "regatta-cloud-copied-1/regatta-cloud/user-profile"
             ]
           },
           {

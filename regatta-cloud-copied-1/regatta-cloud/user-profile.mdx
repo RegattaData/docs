@@ -1,0 +1,73 @@
+---
+title: "User Profile"
+---
+
+The **My Account** menu is accessed from the **bottom‑left corner of the RegattaDB navigation** **bar**. By clicking on the **user name** , a menu opens that provides access to user‑specific settings, support resources, and logout functionality.
+
+The menu includes the following entries:
+
+- **Profile**
+- **Support**
+- **Log out**
+
+## Profile
+
+The **Profile** page is the main account‑management screen for the currently logged‑in user. It is divided into two primary sections: **Account Details** and **Personal Access Tokens**.
+
+### Account Details (Overview)
+
+The **Account Details** section provides a read‑only overview of the user’s account information. It includes:
+
+- **Username** – the display name of the user
+- **Account Name** – the RegattaDB account the user belongs to
+- **Account Type** – for example, ACCOUNT\_ADMIN
+- **Email** – the email address associated with the user
+
+This section allows users to verify their identity, role, and associated account at a glance.
+
+A **Change Password** button is available at the bottom of the section.
+
+Clicking **Change Password** opens a dialog box for updating the account password.
+
+The dialog requires:
+
+- The **current password**
+- A **new password**
+- **Confirmation** of the new password
+
+Password requirements are clearly stated and include a minimum length, as well as the use of uppercase letters, lowercase letters, digits, and symbols. The user may cancel the operation or confirm the change by clicking **Update Password**.
+
+### Personal Access Tokens
+
+The **Personal Access Tokens** section allows users to create and manage API access tokens for their account.
+
+Personal access tokens grant authenticated access and are used when communicating with the RegattaDB Cloud **programmatically through its API**, such as for automation, integrations, or external tooling \<\<\<NEED DETAILS\>\>\>.
+
+Clicking **Create Token** opens the token creation screen.
+
+#### Create Personal Access Token
+
+When creating a token, the user specifies:
+
+- **Token Name**
+- **Description**
+- **Validity period**, defined in days (with a maximum allowed duration of 365 days)
+
+After successful creation, the token value is displayed **only once** in a confirmation dialog. Users must copy and securely store the token at this time, as it cannot be retrieved later.
+
+#### Token Management
+
+Existing tokens are listed with their name, description, and expiration date. Each token includes a **Delete** action.
+
+Deleting a token opens a confirmation dialog that requires typing `delete` to proceed. Once deleted, the token is immediately revoked and cannot be recovered.
+
+## Support
+
+Selecting **Support** from the My Account menu opens the **Support** page.
+
+The **Contact Support** section provides two primary options:
+
+- **Open Support Portal**, which takes the user to the Regatta support portal where they can open new tickets, manage requests, and track the status of existing tickets
+- **Copy Support Email**, which copies `support@regatta.dev` to the clipboard, allowing direct email communication with the Regatta support organization
+
+The page also includes a **Documentation** section with a link to RegattaDB documentation for self‑service help and onboarding guidance (which is where we are at).
