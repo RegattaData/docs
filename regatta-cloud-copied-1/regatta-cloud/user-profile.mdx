@@ -41,11 +41,13 @@ Password requirements are clearly stated and include a minimum length, as well a
 
 The **Personal Access Tokens** section allows users to create and manage API access tokens for their account.
 
-Personal access tokens grant authenticated access and are used when communicating with the RegattaDB Cloud **programmatically through its API**, such as for automation, integrations, or external tooling \<\<\<NEED DETAILS\>\>\>.
+Personal access tokens grant authenticated access and are used when communicating with the RegattaDB Cloud **programmatically through its API**, such as for automation, integrations, or external tooling.
 
 Clicking **Create Token** opens the token creation screen.
 
 #### Create Personal Access Token
+
+/
 
 When creating a token, the user specifies:
 
@@ -60,6 +62,45 @@ After successful creation, the token value is displayed **only once** in a confi
 Existing tokens are listed with their name, description, and expiration date. Each token includes a **Delete** action.
 
 Deleting a token opens a confirmation dialog that requires typing `delete` to proceed. Once deleted, the token is immediately revoked and cannot be recovered.
+
+#### Usage
+
+Currently we support creating and deleting Instant RegattaDB systems \<\<\<LINK\>\>\>. \
+The supported API are:
+
+- **Create** 
+  Creates an instant system to be used. If you replace the **_wait_** value in the URL from false to true, you will receive the details of that system. 
+
+```shellscript
+curl -X 'POST' \
+  'https://backend-regatta-platform.regatta.dev/v1/clusters/instants?wait=false' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer <xxx>' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "<my-cluster>"
+}'
+```
+
+- **Get**
+  Receive the details of an instant system to access it.
+
+```shellscript
+curl -X 'PATCH' \
+  'https://backend-regatta-platform.regatta.dev/v1/clusters/instants/release' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer <xxx>' \
+  -H 'Content-Type: application/json'
+```
+
+- **Delete**
+  Delete the instant system 
+  ```shellscript
+  curl -X 'GET' \
+    'https://backend-regatta-platform.regatta.dev/v1/clusters/instants/<instant-cluster-id>' \
+    -H 'accept: */*' \
+    -H 'Authorization: Bearer <xxx>'
+  ```
 
 ## Support
 
