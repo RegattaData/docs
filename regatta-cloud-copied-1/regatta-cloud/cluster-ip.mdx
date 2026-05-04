@@ -4,7 +4,7 @@ title: "Backup & Restore"
 
 The **Backup & Restore** section provides centralized management for protecting and recovering RegattaDB systems. It supports creating one‑time backups, managing scheduled backup plans, and restoring backups to compatible clusters.
 
-In the main table there are 2 tabs, **Backup** and **Backup Plan**. The default view is the **Backup** tab, but when navigating back here, the system displays **the last tab the user was working in since logging in**, either **Backup** or **Backup Plan**. 
+In the main table there are 2 tabs, **Backup** and **Backup Plan**. The default view is the **Backup** tab, but when navigating back here, the system displays **the last tab the user was working in since logging in**, either **Backup** or **Backup Plan**.
 
 Across all tabs, a global search field allows searching items by name, type, or status, and the table contents can be sorted in the same way as on the Clusters page by toggling the arrows in each of the columns.
 
@@ -23,8 +23,6 @@ On the right‑hand side of each backup row, a three‑dot menu provides the fol
 
 The **Restore** button appears only for backups in the READY state. Backups that are IN PROGRESS cannot be restored.
 
-Filtering, searching, sorting, and pagination behave the same as on the Clusters page, allowing users to easily manage large numbers of backups.
-
 Creating a backup is done by clicking **Create New Backup**, which initiates a one‑time backup operation. During the backup process, **the source system is taken offline until the backup completes**.
 
 ## Backup Details View
@@ -41,21 +39,19 @@ Filtering, sorting, searching, and pagination behave identically to the Backup t
 
 The three‑dot menu on each backup plan provides options to:
 
-- **Enable**
-- **Disable**
-- **Update**
+- **Enable**, which allows backups to be scheduled.
+- **Disable**, which suspends the backup scheduling.
+- **Update**, which opens a configuration dialog where the backup plan name, frequency, and schedule time can be modified.
 
-Enable and Disable are effectively toggles that control whether the plan actively generates backups. Update opens a configuration dialog where the backup plan name, frequency, and schedule time can be modified.
+Enable and Disable are opposite operations, therefore, when one is available the other is disabled and vice versa. 
 
-Creating a backup plan is done via the **Create New Backup Plan** button. The configuration flow is similar to creating a backup, but includes a predefined schedule frequency and execution time.
+Creating a backup plan is done via the **Create New Backup Plan** button. The configuration flow is similar to creating a backup, but includes a predefined schedule frequency and execution time-of-day.
 
 Backups generated as part of a backup plan behave exactly the same as manual backups, including restore behavior and offline impact during execution.
 
 ## Restore
 
-Restoring a backup is initiated either directly from the Backup list or from the backup details view.
-
-When restoring:
+Restoring a backup is initiated either directly from the Backup list or from the backup details view. When restoring:
 
 - The target system **must have the same configuration** as the system from which the backup was taken.
 - Only compatible clusters appear as selectable restore targets.
