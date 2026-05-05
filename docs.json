@@ -431,5 +431,10 @@
       "x": "https://twitter.com/regatta_data",
       "linkedin": "https://www.linkedin.com/company/regatta-data"
     }
+  },
+  "background": {
+    "color": {
+      "dark": "#041225"
+    }
   }
 }
