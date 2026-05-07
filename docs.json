@@ -305,6 +305,32 @@
         ]
       },
       {
+        "anchor": "Regatta Cloud - Binyamina",
+        "icon": "cloud",
+        "pages": [
+          {
+            "group": "Regatta Cloud",
+            "pages": [
+              "regatta-cloud-copied-1/regatta-cloud/regatta-cloud",
+              "regatta-cloud-copied-1/regatta-cloud/create-a-cluster",
+              "regatta-cloud-copied-1/regatta-cloud/access-the-cloud",
+              "regatta-cloud-copied-1/regatta-cloud/delete-cluster",
+              "regatta-cloud-copied-1/regatta-cloud/cluster-ip",
+              "regatta-cloud-copied-1/regatta-cloud/credits",
+              "regatta-cloud-copied-1/regatta-cloud/user-profile"
+            ]
+          },
+          {
+            "group": "Database Backup and Restore",
+            "pages": [
+              "regatta-cloud-copied-1/database-backup-restore",
+              "regatta-cloud-copied-1/backup",
+              "regatta-cloud-copied-1/restore"
+            ]
+          }
+        ]
+      },
+      {
         "anchor": "Self-Hosted Deployment",
         "icon": "server",
         "groups": [
@@ -331,6 +357,15 @@
               "self-hosted-deployment/manual-deployment/configuration-file",
               "self-hosted-deployment/manual-deployment/firewall",
               "self-hosted-deployment/manual-deployment/starting-the-system"
+            ]
+          },
+          {
+            "group": "Binyamina Manual Deployment",
+            "pages": [
+              "self-hosted-deployment/manual-deployment-copied-1/regatta-software-modules",
+              "self-hosted-deployment/manual-deployment-copied-1/configuration-file",
+              "self-hosted-deployment/manual-deployment-copied-1/firewall",
+              "self-hosted-deployment/manual-deployment-copied-1/starting-the-system"
             ]
           },
           {

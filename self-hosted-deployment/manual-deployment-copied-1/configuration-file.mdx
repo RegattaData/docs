@@ -1,0 +1,254 @@
+---
+title: "Deployment Setup"
+---
+
+## Configuration Planning
+
+The first step is defining the system's topology, which is determined by your workload profile, performance goals, and storage requirements. Since RegattaDB is highly versatile, we can tailor this configuration to meet specific needs.
+
+The basic guidelines are:
+
+- Management Modules
+  - SM - There is only a single SM process in RegattaDB
+  - SNA - Should be deployed on any node where's at least one Operational Module
+- Operational Modules
+  - RDB - One on node server that will manage DB operations
+  - GDD, DCM, Sequencer - one of each
+
+Below are several common configurations.
+
+#### Single Node
+
+In a single node deployment, there is only one option:
+
+<Frame>
+  ![Image](/images/image-1.png)
+</Frame>
+
+#### Multi-Node – Classic
+
+The most common multi-node deployment is:
+
+- One node holds all modules as a Single Node deployment will do.
+- All other nodes have the RDB and the SNA
+
+<Frame>
+  ![Image](/images/image-2.png)
+</Frame>
+
+In this case,  RegattaDB gets the resources available and utilizes all the nodes.
+
+#### Multi-node - Standalone
+
+In this case, we dedicate a node to the SM and also distribute the non-RDB Operational Modules across different nodes.
+
+<Frame>
+  ![Image](/images/image-5.png)
+</Frame>
+
+Note that since we place the SM module alone on this node, we don’t need an SNA. This topology may be common in some use cases, such as Kubernetes (K8) deployments.
+
+For guidelines on sizing and configuring the RegattaDB to cater to your needs, please refer to \<\<\<BEST PRACTICES\>\>\> or contact support for assistance.
+
+### Hardware Requirements
+
+You will now need node to accommodate you RegattaDB configuration. These nodes may be physical, VMs or even containers. They need to at least meet all the prerequisites defined previously:
+
+- CPUs
+- RAM
+- Storage devices Networking
+
+To understand the exact requirements, you will need to size the system based on your workload needs. You can consult our \<\<\<BEST PRACTICES\>\>\> documentation or contact Regatta support.
+
+### Regatta Software
+
+Next, download the RegattaDB software package. RegattaDB is distributed as a set of RPM packages, each corresponding to a specific module or tool. These RPMs should be copied to the nodes where they will be installed in later steps based on defined configuration.
+
+Below is an example of the content of the package file.
+
+#### Deployment Software
+
+Each of the RPMs below corresponds with one of the 6 RegattaDB modules
+
+```shellscript
+regatta-dcm-26.0.0.112-1.el8.x86_64.rpm
+regatta-gdd-26.0.0.112-1.el8.x86_64.rpm
+regatta-rdb-26.0.0.112-1.el8.x86_64.rpm
+regatta-sequencer-26.0.0.112-1.el8.x86_64.rpm
+regatta-sm-26.0.0.112-1.el8.x86_64.rpm
+regatta-sna-26.0.0.112-1.el8.x86_64.rpm
+```
+
+Once deployed, you will get the following directory structure. Here you can see 2 examples:
+
+System Manager:
+
+```shellscript
+sm/
+├── bin
+│   └── regatta_sm
+├── LICENSE
+├── sm_1
+│   ├── bin
+│   │   ├── regatta_sm -> /opt/regatta/26.0/sm/bin/regatta_sm
+│   │   └── start.sh
+│   ├── conf
+│   │   ├── sm.conf
+│   │   └── sm_genesis.conf
+│   ├── log -> /var/log/regatta/sm/sm_1
+│   └── repo
+│       ├── history
+│       ├── lost+found
+│       ├── repo_signature
+│       ├── security
+│       ├── sys_mgr_command_files
+│       ├── sys_mgr_obj_model_files
+│       └── sys_mgr_states_files
+└── tools
+```
+
+RDB:
+
+```shellscript
+rdb/
+├── bin
+│   ├── launch_gdb.sh
+│   └── regatta_rdb
+├── LICENSE
+├── rdb_1
+│   ├── bin
+│   │   ├── core.regatta_rdb.6133.node-0000-3b1bb5de.1776839192
+│   │   ├── launch_gdb.sh -> /opt/regatta/26.0/rdb/bin/launch_gdb.sh
+│   │   └── regatta_rdb -> /opt/regatta/26.0/rdb/bin/regatta_rdb
+│   ├── conf
+│   │   ├── rdb.conf
+│   │   └── rdb_genesis.conf
+│   ├── log -> /var/log/regatta/rdb/rdb_1
+│   └── repo
+└── tools
+    └── dot
+        └── rdb_dot
+```
+
+#### Tools
+
+The Regatta Support tools:
+
+- Backup & Restore tool (BnR)
+- Regatta Deployment Tool (RDT)
+
+```shellscript
+regatta-bnr-26.0.0.112-1.el8.x86_64.rpm
+regatta-rdt-26.0.0.112-1.el8.x86_64.rpm
+```
+
+Below is an example for the Backup and Restore directory structure:
+
+```shellscript
+bnr/
+├── LICENSE
+├── log -> /var/log/regatta/bnr
+├── regatta_bnr-1.0.0.tar.gz
+└── regatta-dd.tar.gz
+```
+
+#### Clients
+
+Regatta connectivity tools:
+
+- Regatta Client library - required for any connectivity software.
+- Regatta Command Line Interface (CLI).
+- Regatta Connect – A full suite of drivers and connectors for integrating RegattaDB with external systems and frameworks (drivers, ORMs, etc.).
+
+```shellscript
+regatta-cli-26.0.0.112-1.el8.x86_64.rpm
+regatta-client-26.0.0.112-1.el8.x86_64.rpm
+regatta-connect-26.0.0.112-1.el8.x86_64.rpm
+```
+
+Deploying these RPMs will create the following tree (depenidng on which RPMS you chose to install):
+
+```shellscript
+clients/
+├── cli
+│   ├── bin
+│   │   └── client_cli
+│   ├── conf
+│   │   └── cli.cfg
+│   ├── LICENSE
+│   └── log -> /var/log/regatta/cli
+├── client
+│   └── LICENSE
+└── connect
+    ├── dart
+    │   ├── regatta_dart-26.0.0_full.tar.gz
+    │   └── regatta_dart-26.0.0.tar.gz
+    ├── django
+    │   └── django_regatta-26.0.0.tar.gz
+    ├── hibernate
+    │   └── regatta-hibernate-26.0.0.jar
+    ├── jdbc
+    │   ├── regatta-jdbc-26.0.0_full.jar
+    │   ├── regatta-jdbc-26.0.0.jar
+    │   ├── regatta-jdbc-26.0.0-shaded_full.jar
+    │   └── regatta-jdbc-26.0.0-shaded.jar
+    ├── kafka
+    │   ├── regatta-sink-connector-26.1.0.jar
+    │   ├── regatta-sink-connector-26.1.0-shaded_full.jar
+    │   └── regatta-sink-connector-26.1.0-shaded.jar
+    ├── mcp-server
+    │   └── mcp_server_regatta-26.0.0.tar.gz
+    ├── nodejs
+    │   ├── node-regatta-26.0.0_full.tgz
+    │   └── node-regatta-26.0.0.tgz
+    ├── python
+    │   ├── pyregatta-26.0.0_full.tar.gz
+    │   └── pyregatta-26.0.0.tar.gz
+    ├── sqlalchemy
+    │   └── sqlalchemy_regatta-26.0.0.tar.gz
+    └── typeorm
+        └── typeorm-regatta-26.0.0.tgz
+```
+
+#### Debugging Tools
+
+```shellscript
+regatta-debug-26.0.0.112-1.el8.x86_64.rpm
+```
+
+### EULA Acceptance
+
+To deploy and use RegattaDB, you must read and accept the **Regatta End User License Agreement (EULA)**. This acceptance is built directly into the RPM installation process; you will be prompted to agree to the terms before the installation can be completed.
+
+- **Interactive Installs** (e.g., yum install, dnf install): you will be prompted to accept the EULA during installation.
+- **Automated Installs**: You must set the environment variable ACCEPT\_EULA=1 to proceed without prompts.
+
+Please take a few minutes to read and approve the Regatta End User License Agreement at the Regatta website ([https://regatta.dev/eula/](https://regatta.dev/eula/)) before deployment, especially if you are using the environment variable to bypass interactive prompts.
+
+### Deployment User
+
+In the installation process, the RPM creates a user named **regatta** with required permissions and establishes the directory structure. If you prefer to use another user, say **my-user**, please perform the following steps:
+
+- Make sure **my-user** has the required permissions
+- Transfer ownership of the created directory structure
+- Add **my-user** to the required permissions groups (if missing)
+- Update the System Configuration files for both SM and SNA
+
+### IP Assignment
+
+Identify the nodes and prepare a list containing Internal IPs for cluster communication and External IPs for application access.
+
+We also need to assign 2 ports to each of the modules, one for communications and the other for support related operations.  While the Regatta system is flexible and allows the use of any available port, we recommend using the following standardized numbers whenever possible to ensure consistency across the deployment.
+
+| Module | Communications | Support |
+| :-- | :-- | :-- |
+| SM | 8840 | 5000 |
+| SNA | 8841 | 5001 |
+| Sequencer | 8842 | 5002 |
+| GDD | 8843 | 5003 |
+| DCM | 8844 | 5004 |
+| RDB | 8850 | 6001 |
+
+### Firewall Setup
+
+Configure the firewall on all nodes to allow access to internal ports and external application access.
