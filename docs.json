@@ -16,7 +16,10 @@
         "groups": [
           {
             "group": "Home",
-            "pages": ["home", "support"]
+            "pages": [
+              "home",
+              "support"
+            ]
           }
         ]
       },
@@ -74,7 +77,9 @@
         "groups": [
           {
             "group": "SQL Specification",
-            "pages": ["sql/introduction"]
+            "pages": [
+              "sql/introduction"
+            ]
           },
           {
             "group": "Data Types",
@@ -102,7 +107,9 @@
           },
           {
             "group": "SQL Syntax Conventions",
-            "pages": ["sql/sql-syntax-convention"]
+            "pages": [
+              "sql/sql-syntax-convention"
+            ]
           },
           {
             "group": "Data Definition Language (DDL) Commands",
@@ -129,7 +136,10 @@
           },
           {
             "group": "Data Query Language",
-            "pages": ["sql/dql/select", "sql/dql/explain"]
+            "pages": [
+              "sql/dql/select",
+              "sql/dql/explain"
+            ]
           },
           {
             "group": "Hints",
@@ -301,7 +311,9 @@
         "groups": [
           {
             "group": "Self-Hosted Deployment",
-            "pages": ["self-hosted-deployment/prerequisites"]
+            "pages": [
+              "self-hosted-deployment/prerequisites"
+            ]
           },
           {
             "group": "Regatta Deployment Tool",
