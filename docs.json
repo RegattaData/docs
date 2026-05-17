@@ -394,7 +394,7 @@
       {
         "anchor": "Tuning Performance",
         "icon": "rocket",
-        "groups": [
+        "pages": [
           {
             "group": "Tuning Performance",
             "pages": [
@@ -413,6 +413,13 @@
               "tuning-performance/other-index",
               "tuning-performance/other-limitations",
               "tuning-performance/closing-remarks"
+            ]
+          },
+          {
+            "group": "Running Regatta TPC-C",
+            "pages": [
+              "background",
+              "performance"
             ]
           }
         ]

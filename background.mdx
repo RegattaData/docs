@@ -1,0 +1,23 @@
+---
+title: "Background"
+---
+
+## TPC-C background
+
+The Transaction Processing Performance Council Benchmark C (TPC-C) is one of the most mature and widely adopted industry standard for evaluating online transaction processing (OLTP) systems. It simulates the operations of a wholesale supplier, while remaining applicable to any industry that must manage, sell, or distribute products or services. It models a complex workload involving five concurrent transaction types of varying complexity, executed either online or queued for deferred execution, across a database schema comprised of nine tables with diverse record sizes, indexes and populations.
+
+As a result, TPC-C exercises the full range of SQL operations common to mission-critical workloads, including create, read, update, and delete (CRUD) queries, joins, and other statements that reflect real-world transactional demands. It also specifies detailed requirements for concurrency and workload contention, ensuring that systems are tested under realistic multi-user conditions.
+
+Performance in TPC-C is measured using the metric tpmC (transactions per minute C), which represents the number of new-order transactions processed per minute while the system simultaneously executes the other transaction types. This metric is more representative than simple TPS (transactions per second) or QPS (queries per second) because it accounts for multiple operations per order and includes failed transactions. In addition to throughput, TPC-C enforces strict latency requirements across median, 90th percentile, and maximum response times, ensuring that systems deliver not only volume but also predictable performance.
+
+To prevent unrealistic scaling, TPC-C also imposes restrictions on maximum throughput per warehouse. This ensures that as systems demonstrate higher throughput, they must also manage proportionally larger datasets, reflecting the way workloads grow in real-world environments. By combining throughput, latency, and scalability requirements, TPC-C provides a rigorous, vendor-neutral framework for comparing OLTP performance across platforms.
+
+# Terminology
+
+In this document, “server” means a computer running an OS instance. Ideally, this is a bare-metal server, though it may be some kind of virtual machine or cloud instance.
+
+The term “node” is used for a server that is a member of the Regatta system. RDB software runs on a node.
+
+The term “module” refers to any process running on the servers. There are the 4 Regatta software modules – RDB, Sequencer, DCM and GDD, but we will also mention the **tpcc\_driver** application which refers to the software used to perform the TPC-C test. All are described later on in this document.
+
+Throughout this document we refer to both CPU hyper-threads within the physical CPU and virtual CPUS (vCPUs ) as “logical CPUs”.

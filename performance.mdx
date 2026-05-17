@@ -1,0 +1,189 @@
+---
+title: "Performance and Resource considerations"
+---
+
+The following section will discuss different performance considerations when setting up a Regatta system in general and a TPC-C environment for one in particular.
+
+**NOTE**: All recommendations (e.g., logical CPU ratios) are based on measurements performed with a set of configurations and hardware. These values may vary depending on the hardware in use and the chosen configuration. They should be treated as guidelines and fine‑tuned through additional performance testing.
+
+#  General
+
+The following section will give general guidelines and best practices on how to set up a Regatta System.
+
+As described in the deployment guide in the [Regatta Software Modules](https://docs.regatta.dev/self-hosted-deployment/manual-deployment/regatta-software-modules) section, Regatta installation includes 4 modules
+
+- RDB
+- Sequencer
+- DCM
+- GDD
+
+Here is a set of recommendations to achieve optimal performance. Please read all the sections of the recommendations before deciding, as the recommendations do interact.
+
+## Software Performance Tuning
+
+The following software packages enable performance improvements and are highly recommended.  If you choose to use any of these software packages, then in addition to the defined prerequisites in [Prerequisites](https://docs.regatta.dev/self-hosted-deployment/prerequisites), please make sure you install the selected software packages before installing the RDB packages.
+
+### jemalloc
+
+We recommend replacing the default malloc with jemalloc as it proved to be more efficient for Regatta workloads.
+
+dnf install -y jemalloc
+
+### numactl
+
+By using NUMA domain binding, one can improve the performance of a Regatta system performance by dedicating resources and reducing overhead (see details later).
+
+dnf install -y numactl
+
+## RDB
+
+In an RDB deployment one should follow this set of recommendations:
+
+### RDB per Single Server
+
+It is preferred that there will be only one RDB on each server. You may install more than one RDB in a server, but it is recommended to avoid that, especially in a server with a single NUMA domain.
+
+If there are additional software modules installed on the server, it is recommended to bind the RDB modules to specific logical CPUs, and to bind the other software modules to a different distinct set of logical CPUs.
+
+### NUMA Domains
+
+If there is more than a single NUMA domain in a server, it is preferred to do the following:
+
+1.     An RDB module should never cross a NUMA domain boundary. Make sure you bind the RDB to a specific NUMA domain and the RAM associated with it.
+
+2.     Make sure that the storage and network resources allocated to an RDB are in the same NUMA domain as the RDB where possible.  Performance is negatively impacted if storage and/or network resources are accessed through a different NUMA domain.
+
+3.     You are encouraged to only have one RDB module on a server and therefore deploy it in only one of the NUMA domains.
+
+4.     You may install an RDB in each available NUMA domain.  While this will improve the overall performance of the server, it might be that each of these RDBs individually will not reach the performance of a single RDB on the same server.
+
+## GDD, DCM, Sequencer
+
+These three modules are usually deployed together on the same server and in the same NUMA. While not mandatory, this is the preferred configuration.
+
+### Sequencer
+
+Following are requirements and considerations regarding the Sequencer
+
+1.     The Sequencer requires at least 4 logical CPUs.
+
+2.     The number of logical CPUs dedicated to the Sequencer should be proportionate to the number of logical CPUs dedicated to the RDBs. The actual number depends on the workloads run on the system.
+
+3.     As before, the module should not cross NUMA domain boundaries and logical CPU and RAM binding is recommended as well.
+
+### GDD & DCM
+
+The GDD and DCM may be bound together to the same logical CPU on the same server.  1 logical CPU should be sufficient for them.
+
+## Collocation of Modules
+
+When the RDB is sharing a server with other software modules, be they Regatta or other, apply the following recommendations.
+
+1.     If there are 2 or more NUMA domains
+
+a.     Modules should not cross NUMA domain boundaries
+
+b.    Deploy the RDB on a dedicated NUMA domain
+
+c.     Deploy other modules in different NUMA domains
+
+d.    Bind logical CPUs and resources to software modules.
+
+e.     You may install more RDBs on the non-utilized NUMA domains.  This might reduce their individual performance while increasing the overall performance of the server.
+
+2.     If there is a single NUMA domain (or a single server)
+
+a.     Bind the logical CPUs to the software modules
+
+b.    Co-locate several modules on the same NUMA domain, binding them to a different distinct set of logical CPUs.
+
+## Storage
+
+The preferred storage to deliver high performance is multiple NVMe drives per RDB module.
+
+## Network
+
+The recommendation is at least 10 Gbps network, preferably higher.
+
+# TPC-C
+
+As part of the TPC-C testing, we use an application called **tpcc\_driver**. It serves 2 purposes:
+
+1.     Deploying the dataset that will be used to perform the test.
+
+2.     Generate the TPC-C dedicated workload.
+
+In this section, we will discuss all the considerations one might take when setting up a Regatta System and performing a TPC-C test using the tpcc\_driver application.
+
+## TPC-C Driver
+
+These are the requirements and recommendations regarding the tpcc\_driver application:
+
+1.  The tpcc\_driver application requires at least 4 logical CPUs
+
+2.  The logical CPU ratio between the tpcc\_driver application and the RDB should be 1 logical CPU for roughly 3000 warehouses. We will see in the next section that this translates to 1 logical CPU for the tpcc\_driver application for every 4 RDB logical CPUs.
+
+3.  Each RDB module must be connected to a single tpcc\_driver application.
+
+4.  There are several ways to deploy such a system. \
+Three common options are:
+
+a.     A tpcc\_driver application is connected to only one RDB module, preferably running on the same server as the RDB module.
+
+b.    Dedicate a single server or a single NUMA domain and deploy all tpcc\_driver applications on it.  In this case, the tpcc\_driver or its resources may become a bottleneck in a large deployment.
+
+c.     Dedicate several servers or NUMA domains and deploy a tpcc\_driver application on each.
+
+5.  If there is more than one NUMA domain on the server then it is recommended that the tpcc\_driver application will be run in a different NUMA domain than the RDB.
+
+6.  If there is only one NUMA domain on the server, or if the tpcc\_driver application and an RDB module need to share a NUMA domain, then the logical CPUs should be assigned using numactl.
+
+7.  Apply all module recommendations described above
+
+## RDBs
+
+The RDB configuration determines how many warehouses it can cater to. Please note that these numbers are hardware dependent and may vary depending on the type and configuration of the servers participating in the Regatta system.
+
+The following are the different parameters one should consider when designing the TPC-C test.
+
+Each RDB logical CPU can deliver roughly 700 warehouses. Again, this might change depending on the hardware used and the configuration applied.
+
+In order to deliver that, it will require the following:
+
+1.     A dedicated NUMA domain with the proper binding to its resources.
+
+2.     7 MB RAM per warehouse (100 GB for 15,000 warehouses). The minimal amount of RAM per RDB should be at least 64 GB.
+
+3.     320 MB Storage (preferably NVMe SSD) per single warehouse (4.8TB for 15,000 warehouses).
+
+## Sequencer
+
+For a TPC-C workload, the sequencer requires, as a minimum, 4 logical CPUs. In addition, the ratio of logical CPUs between the Sequencer and RDB should be at least 1 logical CPU for the Sequencer for every 24 RDB logical CPUs.
+
+## Configuration Parameters
+
+To support large workloads in general and large TPC-C workloads in particular, you will need to update some parameters in the RDB module configuration file (discussed in the [Configuring Regatta](https://docs.regatta.dev/self-hosted-deployment/manual-deployment/configuration-file) section of the deployment guide). The following parameters need to be added:
+
+consist\_total\_trans\_num = 1000000
+
+client\_agent\_manager\_request\_handlers = 5000
+
+data\_store\_metadata\_percent\_from\_total\_cache\_budget = 70
+
+data\_store\_max\_dirty\_meatadata\_and\_index\_budget\_in\_mb = 64000
+
+ram\_execution\_var\_size\_budget\_allocation = "15,0,0,0,0,0"
+
+ram\_write\_vector\_var\_size\_budget\_allocation = "4,0,0,0,0,0"
+
+ram\_data\_store\_var\_size\_budget\_allocation = "58,0,0,0,0,0"
+
+ram\_stmt\_processor\_var\_size\_budget\_allocation = "6,0,0,0,0,0"
+
+The purpose of these flags is to increase the number of total transactions and distribute the RAM resources in an optimal manner supporting the TPC-C workload.
+
+The consist\_total\_trans\_num parameter should be set to 40 times the number of warehouses per RDB module that will be run in this Regatta system. In this example, the expectation is to run up to 25K warehouses per RDB module.
+
+The client\_agent\_manager\_request\_handlers should be 20% of the number of warehouses per RDB module that you expect to run.
+
+In addition, ensure that the core\_total\_ram\_budget\_for\_module\_mb variable is at most about 90% of the RAM available in the NUMA domain running the RDB module.
