@@ -1,0 +1,65 @@
+---
+title: "High-Level Deployment Steps"
+---
+
+The deployment of a RegattaDB system follows a structured, step-by-step progression:
+
+### Node Identification and IP Assignment
+
+Identify the nodes that will host Regatta modules. \
+Prepare a list containing:
+
+- Internal IPs for system communications
+- External IPs for application access for each node.
+
+### SM Selection
+
+There is only a single SM process in RegattaDB. Designate one specific node to act as the SM. Deploy the SM component on this node. If you decide to use your own user account, apply the necessary changes.
+
+Start the SM process.
+
+### SNA Deployment
+
+For every node designated to host any Regatta Operational Module, deploy the SNA to that node. If you decide to use your own user account, apply the necessary changes.
+
+Start the SNA process.
+
+### Module Placement and Role Assignment:
+
+Determine which Regatta modules will reside on which node, noting that a single node can host one or more modules. Each system requires exactly one DCM, one SEQUENCER, and one GDD module, along with at least one RDB module.
+
+### Software Installation
+
+Deploy the specific RPM packages for the assigned module roles onto their respective nodes.
+
+### Enter SETUP State
+
+At this point, you will need to deploy the RegattaDB CLI so you can perform all the system management related commands. The CLI is included in the software package you received from Regatta support. You can deploy the CLI on any node, as long as it has access to the node where the SM was deployed.
+
+Transition the system from a DOWN state to the SETUP state to enable configuration and deployment operations.
+
+### Infrastructure Definition
+
+Formally add the identified nodes to the system using their unique names and the prepared IP lists.
+
+### Storage Provisioning
+
+Attach the necessary storage devices to the nodes, specifying the local file paths and capacities required for data storage.
+
+### Module Provisioning
+
+Register the modules into the system by linking them to their designated nodes and assigning them to the defined storage devices.  
+
+By default, system memory is allocated according to the specific requirements of each module. Because the RDB module is designed to scale and consume all available RAM, it should always be added last; this ensures it inherits whatever memory remains after the other modules have been assigned with their fixed shares.
+
+While RegattaDB is highly flexible and allows manual memory assignment on a per-module basis, you should only override the default settings if your specific sizing analysis requires it.
+
+### Exit SETUP
+
+Transition the system back to the DOWN state to finalize and lock the system configuration.
+
+### System Activation
+
+Formally start the system to move it into the ACTIVE state, at which point the modules process are started and they begin accepting client connections.
+
+Your RegattaDB should be up and running.
