@@ -1,0 +1,57 @@
+---
+title: "Clusters"
+---
+
+The **Clusters** page in RegattaDB Cloud provides a centralized view for managing all RegattaDB systems (clusters) associated with the selected account. It is designed to give users immediate visibility into cluster status, configuration type, and access actions.
+
+The page may be accessed from the left‑hand navigation menu by selecting **Clusters** or through other screens like **Overview**
+
+At the center of the page is a **table listing all available RegattaDB systems** along with their operational details. Each row represents a single cluster and includes the following columns:
+
+- **Name**
+  - The unique identifier of the RegattaDB system.
+  - Clicking the cluster name navigates to the **cluster details page**.
+- **Account Name**
+  - The account under which the cluster was created.
+- **Type**
+  - Indicates the system size or configuration (e.g. XSmall).
+- **Status**
+  - Displays the current operational state of the cluster.
+  - Status is visually indicated with a colored dot. The available statuses are:
+    - STARTING
+    - RUNNING
+    - DELETING
+    - FAILED
+- **Created**
+  - Shows the date and time when the cluster was created.
+- **Action**
+  - Contains a **CONNECT** button and a three‑dot (⋮) menu for additional actions.
+
+## Sorting and Pagination
+
+The table supports **sorting by multiple columns** (Name, Account Name, Type, Status, Created) by clicking the column headers.
+
+The clusters list may **span multiple pages**. Pagination controls at the bottom allow navigation between pages (for example, _Previous_, _Next_, and page numbers).
+
+## Search Filter
+
+A search field is displayed above the table and allows filtering clusters by name, type, or status. The search filter is applied across all fields in the table, and results are updated dynamically as text is entered.
+
+## Refresh Action
+
+A refresh button is located to the right of the search filter. Clicking this button reloads the clusters list and updates the displayed information to reflect the most current cluster states and metadata.
+
+## Cluster Actions
+
+Each cluster row includes a **CONNECT** button. Selecting CONNECT opens the WebCLI interface for the specific cluster, providing direct command‑line access to the RegattaDB system.
+
+On the far right of the row, a three‑dot (⋮) menu provides additional actions:
+
+- **VIEW**
+  Choosing VIEW navigates to the cluster details page and is functionally identical to clicking the cluster name. 
+- **DELETE**
+  Choosing DELETE opens a confirmation dialog, which requires the user to type the exact name of the cluster in order to confirm and complete the deletion.
+
+## Create New Cluster
+
+A **Create New Cluster** button is displayed at the top right of the page. Clicking this button navigates to the page where a new RegattaDB system can be created and configured.

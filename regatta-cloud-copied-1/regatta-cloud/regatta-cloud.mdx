@@ -1,0 +1,69 @@
+---
+title: "Overview"
+---
+
+The Overview page is the primary landing page of the RegattaDB Cloud Platform. It provides a concise, real-time summary of account status, resource consumption, and the most common actions required to deploy and manage Regatta clusters.
+
+To access the Cloud website, click the following URL to enter the login page:
+
+[https://cloud.regatta.dev](https://cloud.regatta.dev)
+
+To login, Enter the email used to register and the password received from Regatta. Note that if\
+the email being used is one associated with Google and you are already signed into your Google in your browser; you may leverage the Google Single-Sign-On option.
+
+## Left-Hand Navigation Bar
+
+The left‑hand side (LHS) navigation bar is persistent across the Regatta Cloud Console and provides direct access to all major functional areas. From top to bottom, the primary navigation items are:
+
+- **Overview**: Returns you to this primary dashboard for a high-level summary of your environment.
+- **Clusters**: Displays all clusters associated with the account, allowing users to create, monitor, scale, and manage cluster lifecycles.
+- **Clients & Tools**: Contains the RegattaDB CLI, all the supported APIs, ORMs and toolkits to access and manage a RegattaDB.
+- **Backup & Restore**: Enables management of backup policies, manual backups, and restore operations for the RegattaDB systems.
+- **Credits**: Provides a deep dive into your billing, transaction history, and credit balance.
+
+Following the main navigation items, the navigation bar includes the following additional entries at the bottom:
+
+- **Documentation**: Opens a new browser tab containing the official Regatta product documentation. This is where this guide is being read now.
+- **User Profile**: Located at the bottom left, this allows you to manage account security, credentials, contact support, and logout. \
+  It also has the theme preferences button (toggle between Light and Dark modes).
+
+## Dashboard Content
+
+The main workspace is organized into four primary modules designed for at-a-glance management. Let's review them from the bottom left counter-clockwise:
+
+### 1. Cluster Stats (Bottom)
+
+The **Cluster Stats** panel provides a summarized overview of the account’s clusters and backups. It displays:
+
+- Total number of clusters
+- Active, starting, and deleting clusters
+- Number of backups
+- Timing of the next scheduled backup
+
+Clicking **“View All Clusters”** takes you directly to the Clusters page for detailed cluster management.
+
+### 2. Your Total Credits (Right)
+
+The **Your Total Credits** panel shows an overview of the account’s credit usage, including:
+
+- Credits used
+- Remaining credits
+- Total available credits
+
+Credits are used to pay for the systems and resources consumed by this account. The circular indicator visually represents usage percentage. Clicking **“View Credits”** navigates to the Credits page for full billing and usage details.
+
+### 3. Regatta Instant (Top‑Center)
+
+**Regatta Instant** allows you to quickly spin up a temporary Regatta system for experimentation or testing. This feature acts as a playground and is ideal for getting started quickly and effortlessly.
+
+Key characteristics:
+
+- Created within seconds
+- Available for **24 hours only**
+- **Cannot be backed up**
+- Can be deleted directly from this panel once no longer needed
+- You may only have 1 instance at a time
+
+### 4. Create Cluster (Top‑Left)
+
+The **Create Cluster** panel is the primary entry point for deploying a new Regatta cluster. Clicking **“New Cluster”** takes you to the cluster creation workflow, where you can customize the cluster to meet your specific requirements, including configuration, scale, and deployment options.
