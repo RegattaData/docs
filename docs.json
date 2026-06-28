@@ -81,6 +81,12 @@
             ]
           },
           {
+            "group": "SQL Syntax Conventions",
+            "pages": [
+              "sql/sql-syntax-convention"
+            ]
+          },
+          {
             "group": "Data Types",
             "pages": [
               "sql/data-types/introduction",
@@ -94,6 +100,7 @@
               "sql/data-types/character-types",
               "sql/data-types/date-time-types",
               "sql/data-types/boolean-types",
+              "sql/data-types/uuid-type",
               {
                 "group": "Type Conversion",
                 "pages": [
@@ -105,9 +112,48 @@
             ]
           },
           {
-            "group": "SQL Syntax Conventions",
+            "group": "SQL Functions and Operators",
             "pages": [
-              "sql/sql-syntax-convention"
+              "sql/sql-functions-and-operators/sql-functions-and-operators",
+              "sql/sql-functions-and-operators/comparison-function",
+              {
+                "group": "Mathematical Functions and Operators",
+                "pages": [
+                  "sql/sql-functions-and-operators/maths-functions-operators/maths-functions-operators",
+                  "sql/sql-functions-and-operators/maths-functions-operators/maths-operators",
+                  "sql/sql-functions-and-operators/maths-functions-operators/maths-functions"
+                ]
+              },
+              "sql/sql-functions-and-operators/string-functions-operators",
+              "sql/sql-functions-and-operators/date-time-functions-operators/date-time-functions-operators",
+              {
+                "group": "Conditional Expressions",
+                "pages": [
+                  "sql/sql-functions-and-operators/conditional-expressions/case/"
+                ]
+              },
+              {
+                "group": "Convert Functions",
+                "pages": [
+                  "sql/sql-functions-and-operators/convert-function/cast",
+                  "sql/sql-functions-and-operators/convert-function/date-time-format-functions"
+                ]
+              },
+              {
+                "group": "Aggregate Functions",
+                "pages": [
+                  "sql/sql-functions-and-operators/aggregate-functions/aggregate-functions",
+                  "sql/sql-functions-and-operators/aggregate-functions/examples"
+                ]
+              },
+              {
+                "group": "Subquery Expressions",
+                "pages": [
+                  "sql/sql-functions-and-operators/subquery-expressions/subquery-expressions",
+                  "sql/sql-functions-and-operators/subquery-expressions/not-in/not-in"
+                ]
+              },
+              "sql/sql-functions-and-operators/untitled-page"
             ]
           },
           {
@@ -168,50 +214,6 @@
                   "sql/hints/other-hints/other-hints",
                   "sql/hints/other-hints/hint-index",
                   "sql/hints/other-hints/hint-cardinality"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "SQL Functions and Operators",
-            "pages": [
-              "sql/sql-functions-and-operators/sql-functions-and-operators",
-              "sql/sql-functions-and-operators/comparison-function",
-              {
-                "group": "Mathematical Functions and Operators",
-                "pages": [
-                  "sql/sql-functions-and-operators/maths-functions-operators/maths-functions-operators",
-                  "sql/sql-functions-and-operators/maths-functions-operators/maths-operators",
-                  "sql/sql-functions-and-operators/maths-functions-operators/maths-functions"
-                ]
-              },
-              "sql/sql-functions-and-operators/string-functions-operators",
-              "sql/sql-functions-and-operators/date-time-functions-operators/date-time-functions-operators",
-              {
-                "group": "Conditional Expressions",
-                "pages": [
-                  "sql/sql-functions-and-operators/conditional-expressions/case/"
-                ]
-              },
-              {
-                "group": "Convert Functions",
-                "pages": [
-                  "sql/sql-functions-and-operators/convert-function/cast",
-                  "sql/sql-functions-and-operators/convert-function/date-time-format-functions"
-                ]
-              },
-              {
-                "group": "Aggregate Functions",
-                "pages": [
-                  "sql/sql-functions-and-operators/aggregate-functions/aggregate-functions",
-                  "sql/sql-functions-and-operators/aggregate-functions/examples"
-                ]
-              },
-              {
-                "group": "Subquery Expressions",
-                "pages": [
-                  "sql/sql-functions-and-operators/subquery-expressions/subquery-expressions",
-                  "sql/sql-functions-and-operators/subquery-expressions/not-in/not-in"
                 ]
               }
             ]
