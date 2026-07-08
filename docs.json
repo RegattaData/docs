@@ -15,9 +15,10 @@
         "icon": "house",
         "groups": [
           {
-            "group": " ",
+            "group": "Home",
             "pages": [
-              "home"
+              "home",
+              "support"
             ]
           }
         ]
@@ -77,7 +78,7 @@
           {
             "group": "SQL Specification",
             "pages": [
-              "/sql/introduction"
+              "sql/introduction"
             ]
           },
           {
@@ -429,7 +430,7 @@
     "links": [
       {
         "label": "Support",
-        "href": "https://rdbproject.atlassian.net/servicedesk/customer/portals"
+        "href": "/support"
       }
     ],
     "primary": {
