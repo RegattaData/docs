@@ -1,0 +1,55 @@
+---
+title: Change Data Capture (CDC) Mode
+---
+
+The **CDC (Change Data Capture) mode** allows the Regatta Sink Connector to handle Debezium-style events from Kafka.
+This includes **insert, update, and delete** operations.
+
+## Example CDC Configuration
+
+```json
+{
+    "name": "cdc-sink",
+    "config": {
+        "connector.class": "dev.regatta.sinkConnector.RegSinkConnector",
+        "tasks.max": "1",
+        "mode": "CDC",
+        "topics": "customers",
+        "plugin.path": "/usr/share/java/custom-connector/",
+        "rotate.interval.ms": "1000",
+        "max.poll.interval.ms": "900000",
+        "db.username": "your-username",
+        "db.password": "your-password",
+        "db.url": "cluster_ip:cluster_port",
+        "execution.timeout": "4000",
+        "max.batch.size": "3",
+        "exactly.once": "false",
+        "db.table.name": "customers",
+        "throttle.timeout.ms": "4000",
+        "max.num.records.in.process": "400000",
+        "max.threads.partition": "2",
+        "db.table.auto.create": "true",
+        "throttling.enabled": "true",
+        "metrics.enabled": "false"
+    }
+}
+```
+
+## Configuration Notes for CDC Mode
+
+- **`mode = "CDC"`** → Enables handling of Debezium-style change events (insert, update, delete).
+- **One table per connector** → Each sink connector instance writes to a single Regatta table. To capture multiple tables, a separate sink connector must be created for each table.
+- **Tested with PostgreSQL** → CDC mode has been validated only with **Debezium PostgreSQL** as the source. Consult the team before using CDC with other source databases.
+- **Database connection** → Requires the following parameters:
+  - `db.url` → Regatta cluster in `cluster_ip:cluster_port` format.
+  - `db.username` → Cluster username.
+  - `db.password` → Cluster password.
+- **Auto table creation** → `db.table.auto.create = true` creates the target table automatically if it does not exist.
+  The connector generates a simple table based on the topic schema **without constraints** (no primary keys, unique, or foreign keys).
+  Tables requiring constraints must be created manually.
+- **Batching and timeout controls** →
+  - `execution.timeout` → Flush interval for buffered records.
+  - `max.batch.size` → Maximum number of SQL statements per batch.
+  - `rotate.interval.ms` and `max.poll.interval.ms` → Kafka polling and rotation settings.
+- **Throttling** → Controlled with `throttling.enabled`, `max.num.records.in.process`, and `throttle.timeout.ms`.
+- **Metrics** → Enabled or disabled using `metrics.enabled`.
