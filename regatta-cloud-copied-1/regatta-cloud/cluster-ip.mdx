@@ -1,0 +1,60 @@
+---
+title: "Backup & Restore"
+---
+
+The **Backup & Restore** section provides centralized management for protecting and recovering RegattaDB systems. It supports creating one‑time backups, managing scheduled backup plans, and restoring backups to compatible clusters.
+
+In the main table there are 2 tabs, **Backup** and **Backup Plan**. The default view is the **Backup** tab, but when navigating back here, the system displays **the last tab the user was working in since logging in**, either **Backup** or **Backup Plan**.
+
+Across all tabs, a global search field allows searching items by name, type, or status, and the table contents can be sorted in the same way as on the Clusters page by toggling the arrows in each of the columns.
+
+## Backup Tab
+
+The **Backup** tab lists all existing backups in a table view.
+
+Each backup entry displays the backup name, status, creation date, and available actions. Backup statuses include **IN PROGRESS**, **READY**, and **FAILED**, with visual indicators reflecting the current state.
+
+Clicking the **name of a backup** opens the backup details view, which displays additional metadata and allows restore and delete actions. This behavior is equivalent to selecting View from the actions menu.
+
+On the right‑hand side of each backup row, a three‑dot menu provides the following options:
+
+- **VIEW**, which opens the backup details page
+- **DELETE**, which permanently deletes the backup after confirmation
+
+The **Restore** button appears only for backups in the READY state. Backups that are IN PROGRESS cannot be restored.
+
+Creating a backup is done by clicking **Create New Backup**, which initiates a one‑time backup operation. During the backup process, **the source system is taken offline until the backup completes**.
+
+## Backup Details View
+
+Selecting a specific backup opens its **details view**. This page shows an overview that includes the cloud provider, region, creation time, and the source cluster name.
+
+From this screen, users may initiate a **restore** operation or delete the backup. Deletion requires explicit confirmation by typing a confirmation value, ensuring protection against accidental removal.
+
+## Backup Plan Tab
+
+The **Backup Plan** tab displays scheduled backup plans in a table format. Each row shows the plan name, associated cluster, schedule, current status, last successful backup time, creation date, and available actions.
+
+Filtering, sorting, searching, and pagination behave identically to the Backup tab.
+
+The three‑dot menu on each backup plan provides options to:
+
+- **Enable**, which allows backups to be scheduled.
+- **Disable**, which suspends the backup scheduling.
+- **Update**, which opens a configuration dialog where the backup plan name, frequency, and schedule time can be modified.
+
+Enable and Disable are opposite operations, therefore, when one is available the other is disabled and vice versa. 
+
+Creating a backup plan is done via the **Create New Backup Plan** button. The configuration flow is similar to creating a backup, but includes a predefined schedule frequency and execution time-of-day.
+
+Backups generated as part of a backup plan behave exactly the same as manual backups, including restore behavior and offline impact during execution.
+
+## Restore
+
+Restoring a backup is initiated either directly from the Backup list or from the backup details view. When restoring:
+
+- The target system **must have the same configuration** as the system from which the backup was taken.
+- Only compatible clusters appear as selectable restore targets.
+- The **restored system is taken offline for the entire duration of the restore process**.
+
+The restore dialog displays the backup name and requires selecting the target cluster before proceeding. Once initiated, the restore operation runs to completion before the system becomes available again.
