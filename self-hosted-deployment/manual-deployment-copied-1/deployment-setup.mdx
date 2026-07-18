@@ -9,11 +9,11 @@ The first step is defining your deployment topology. The optimal topology depend
 General deployment guidelines:
 
 - Management Modules
-  - SM - Deploy a single SM module for every RegattaDB cluster
-  - SNA - Deploy one agent on every node that hosts at least one Operational Module
+  - **SM** - Deploy a single SM module for every RegattaDB cluster
+  - **SNA** - Deploy one agent on every node that hosts at least one Operational Module
 - Operational Modules
-  - RDB - Deploy at least one RDB module per RegattaDB cluster
-  - GDD, DCM, Sequencer - Deploy exactly one instance of each module per RegattaDB cluster
+  - **RDB** - Deploy at least one RDB module per RegattaDB cluster
+  - **GDD**, **DCM**, **Sequencer** - Deploy exactly one instance of each module per RegattaDB cluster
 
 Below are several common configurations.
 
@@ -74,14 +74,40 @@ If you are using automated installation, we strongly recommend reviewing the EUL
 
 ### Install the RPM Packages
 
-\[Installation process\]
+Install the required RegattaDB RPM packages using `yum` or `dnf`:
+
+```shellscript
+sudo yum install regatta-<package-name>-<version>.el8.x86_64.rpm
+or
+sudo dnf install regatta-<package-name>-<version>.el8.x86_64.rpm
+```
+
+During installation, you will be prompted to review and accept the Regatta End User License Agreement (EULA):
+
+```shellscript
+******************************************************************************
+Regatta End User License Agreement (EULA)
+URL: https://regatta.dev/eula/
+******************************************************************************
+To continue installation, type Y and press Enter.
+To abort, press any other key and press Enter.
+Accept EULA? [y/N]:
+```
+
+For unattended or automated installations, pre-approve the EULA by setting the `ACCEPT_EULA=1` environment variable:
+
+```shellscript
+sudo ACCEPT_EULA=1 yum install regatta-<package-name>-<version>.el8.x86_64.rpm
+or
+sudo ACCEPT_EULA=1 dnf install regatta-<package-name>-<version>.el8.x86_64.rpm
+```
 
 All RegattaDB RPM packages are installed under `/opt/regatta/<major.minor>`. For convenience, you can use the `/opt/regatta/current` symbolic link to reference the current installation. The examples below show the installation directories for the **SM** and **RDB** modules.
 
-**System Manager:**
+**SM:**
 
 ```shellscript
-sm/
+/opt/regatta/current/sm
 ├── bin
 │   └── regatta_sm
 ├── LICENSE
@@ -100,7 +126,7 @@ sm/
 **RDB:**
 
 ```shellscript
-rdb/
+/opt/regatta/current/rdb
 ├── bin
 │   ├── launch_gdb.sh
 │   └── regatta_rdb
@@ -181,7 +207,7 @@ During installation, the RPM packages automatically create a default deployment 
    ```shellscript
    sudo chown -R <user>:<group> /dev/nvme0n1
    ```
-5. Update the SM and SNA `systemd` service files - Edit the following service files:
+5. Update the **SM** and **SNA** `systemd` service files - Edit the following service files:
    ```shellscript
    /usr/lib/systemd/system/regatta-26.0-sm.service
    /usr/lib/systemd/system/regatta-26.0-sna.service
@@ -193,7 +219,7 @@ During installation, the RPM packages automatically create a default deployment 
    User=<user>
    Group=<group>
    ```
-   After updating the service files, the SM and SNA services will run under the configured deployment user instead of the default `regatta` user. Only the SM and SNA `systemd` services need to be updated. The operational modules are launched by the SNA and therefore inherit the configured deployment user.
+   After updating the service files, the **SM** and **SNA** services will run under the configured deployment user instead of the default `regatta` user. Only the **SM** and **SNA** `systemd` services need to be updated. The operational modules are launched by the **SNA** and therefore inherit the configured deployment user.
 
 ### IP Assignment
 

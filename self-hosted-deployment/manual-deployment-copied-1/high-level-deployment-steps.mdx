@@ -17,18 +17,18 @@ For each node, prepare:
 
 RegattaDB uses a single **SM** (System Manager) module.
 
-- Select the node that will host the SM.
-- Install the SM package.
+- Select the node that will host the **SM**.
+- Install the **SM** package.
 - If using a custom deployment user, update the service configuration accordingly.
-- Start the SM service.
+- Start the **SM** service.
 
 ### Deploy the SNA
 
 Deploy an **SNA** on every node that will host one or more Operational Modules.
 
-- Install the SNA package.
+- Install the **SNA** package.
 - If using a custom deployment user, update the service configuration accordingly.
-- Start the SNA service.
+- Start the **SNA** service.
 
 ### Plan Module Placement
 
@@ -47,7 +47,7 @@ Install the RPM packages corresponding to the assigned module roles on each node
 
 ### Enter SETUP State
 
-Install the RegattaDB CLI, which is included in the software package. The CLI may be installed on any node that has network connectivity to the SM.
+Install the RegattaDB CLI, which is included in the software package. The CLI may be installed on any node that has network connectivity to the **SM**.
 
 Transition the system from the **DOWN** state to the **SETUP** state to enable configuration operations.
 
