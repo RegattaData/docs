@@ -4,7 +4,7 @@ title: "High-Level Deployment Steps"
 
 The deployment of a RegattaDB system follows the sequence below. This overview assumes that you have already completed the [**Deployment Setup**](/self-hosted-deployment/manual-deployment-copied-1/deployment-setup) steps and prepared your environment accordingly. The following sections summarize the deployment workflow. The next page provides a detailed, step-by-step deployment example covering the entire process.
 
-### 1. Identify the Deployment Nodes
+### Identify the Deployment Nodes
 
 Identify the nodes that will host the RegattaDB modules.
 
@@ -13,7 +13,7 @@ For each node, prepare:
 - Internal IP addresses for cluster communication.
 - External IP addresses for client application access (if required).
 
-### 2. Deploy the SM
+### Deploy the SM
 
 RegattaDB uses a single **SM** (System Manager) module.
 
@@ -22,7 +22,7 @@ RegattaDB uses a single **SM** (System Manager) module.
 - If using a custom deployment user, update the service configuration accordingly.
 - Start the SM service.
 
-### 3. Deploy the SNA
+### Deploy the SNA
 
 Deploy an **SNA** on every node that will host one or more Operational Modules.
 
@@ -30,7 +30,7 @@ Deploy an **SNA** on every node that will host one or more Operational Modules.
 - If using a custom deployment user, update the service configuration accordingly.
 - Start the SNA service.
 
-### 4. Plan Module Placement
+### Plan Module Placement
 
 Determine which Operational Modules will run on each node. A single node may host one or more modules.
 
@@ -41,40 +41,36 @@ Each deployment requires:
 - Exactly one **GDD**
 - One or more **RDB** modules
 
-### 5. Install the Operational Modules
+### Install the Operational Modules
 
 Install the RPM packages corresponding to the assigned module roles on each node.
 
-### 6. Enter SETUP State
+### Enter SETUP State
 
 Install the RegattaDB CLI, which is included in the software package. The CLI may be installed on any node that has network connectivity to the SM.
 
 Transition the system from the **DOWN** state to the **SETUP** state to enable configuration operations.
 
-### 7. Define the Infrastructure
+### Define the Infrastructure
 
 Register the cluster nodes using their host names and configured IP addresses.
 
-### 8. Configure Storage
+### Configure Storage
 
 Configure the storage devices assigned to each node by specifying their local paths and capacities.
 
-### 9. Provision the Modules
+### Add the Operational Modules
 
 Register each module, assign it to its designated node, and associate it with the appropriate storage device.
 
-By default, RegattaDB automatically allocates memory according to the requirements of each module.
+<Note>
+  By default, RegattaDB automatically allocates memory according to the requirements of each module. Because the **RDB** is designed to consume all remaining available memory, it should always be provisioned **after** the other modules. This ensures it receives the memory that remains after the fixed allocations for the other modules have been reserved. Although RegattaDB supports manual memory allocation on a per-module basis, the default allocation should be used unless your sizing analysis requires otherwise.
+</Note>
 
-Because the **RDB** is designed to consume all remaining available memory, it should always be provisioned **after** the other modules. This ensures it receives the memory that remains after the fixed allocations for the other modules have been reserved.
-
-Although RegattaDB supports manual memory allocation on a per-module basis, the default allocation should be used unless your sizing analysis requires otherwise.
-
-### 10. Exit SETUP State
+### Exit SETUP State
 
 Transition the system back to the **DOWN** state to finalize and lock the deployment configuration.
 
-### 11. Activate the System
+### Activate the System
 
 Start the system to transition it to the **ACTIVE** state. During this step, the Operational Modules are started and begin accepting client connections.
-
-Your RegattaDB deployment is now ready for use.
