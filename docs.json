@@ -337,7 +337,7 @@
             "group": "Binyamina Manual Deployment",
             "pages": [
               "self-hosted-deployment/manual-deployment-copied-1/regattadb-software-modules",
-              "self-hosted-deployment/manual-deployment-copied-1/configuration-file",
+              "self-hosted-deployment/manual-deployment-copied-1/deployment-setup",
               "self-hosted-deployment/manual-deployment-copied-1/firewall",
               "self-hosted-deployment/manual-deployment-copied-1/starting-the-system"
             ]

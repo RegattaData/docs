@@ -2,13 +2,13 @@
 title: "RegattaDB Software Modules"
 ---
 
-RegattaDB consists of six software modules that together form the Regatta database system. Each deployment includes a combination of these modules, distributed across one or more nodes. These **nodes** may be physical, VMs or even containers.
+RegattaDB consists of six software modules that together form the Regatta database system. Each deployment includes a combination of these modules, distributed across one or more nodes. These nodes may be physical, VMs or containers.
 
-RegattaDB modules can be broken down into 2 groups: Management Modules and Operational Modules, there are 2 types
+RegattaDB modules can be broken down into 2 groups: Management Modules and Operational Modules.
 
 ### Management Modules
 
-These modules form the administrative framework of the cluster, providing the tools necessary to configure, monitor, and maintain the system infrastructure.
+These modules form the administrative framework of the cluster, providing the tools necessary to configure, monitor, and maintain the system infrastructure. The management modules are deployed as `systemd` services. They are responsible for starting, stopping, monitoring, and managing the lifecycle of the operational modules. 
 
 #### SM – System Manager
 
@@ -16,7 +16,7 @@ System Manager handles the deployment of RegattaDB on all nodes. After deploymen
 
 #### SNA – System Node Agent
 
-The System Node Agent runs on each node where a Regatta module is deployed and serves as the local execution layer for the System Manager. It is responsible for managing the lifecycle of all RegattaDB modules on that node.
+The System Node Agent runs on each node where a RegattaDB module is deployed and serves as the local execution layer for the System Manager. It is responsible for managing the lifecycle of all RegattaDB modules on that node.
 
 ### Operational Modules
 
@@ -24,7 +24,7 @@ These modules drive the core database engine, handling active workloads, maintai
 
 #### RDB – Regatta Database
 
-The RDB module is RegattaDB’s distributed compute engine, responsible for query execution and data processing. It leverages CPU, network, and I/O resources efficiently, and scales by adding additional RDB modules.
+The RDB module is RegattaDB's distributed compute engine, responsible for query execution and data processing. It leverages CPU, network, and I/O resources efficiently, and scales by adding additional RDB modules.
 
 #### Sequencer
 
