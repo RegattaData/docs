@@ -74,7 +74,33 @@ If you are using automated installation, we strongly recommend reviewing the EUL
 
 ### Install the RPM Packages
 
-\[Installation process\]
+Install the required RegattaDB RPM packages using your system's package manager (`yum` or `dnf`).
+
+```shellscript
+sudo yum install regatta-<package-name>-<version>.el8.x86_64.rpm
+or
+sudo dnf install regatta-<package-name>-<version>.el8.x86_64.rpm
+```
+
+During installation, you will be prompted to review and accept the Regatta End User License Agreement (EULA):
+
+```shellscript
+******************************************************************************
+Regatta End User License Agreement (EULA)
+URL: https://regatta.dev/eula/
+******************************************************************************
+To continue installation, type Y and press Enter.
+To abort, press any other key and press Enter.
+Accept EULA? [y/N]:
+```
+
+For unattended or automated installations, pre-approve the EULA by setting the `ACCEPT_EULA=1` environment variable:
+
+```shellscript
+sudo ACCEPT_EULA=1 yum install regatta-<package-name>-<version>.el8.x86_64.rpm
+or
+sudo ACCEPT_EULA=1 dnf install regatta-<package-name>-<version>.el8.x86_64.rpm
+```
 
 All RegattaDB RPM packages are installed under `/opt/regatta/<major.minor>`. For convenience, you can use the `/opt/regatta/current` symbolic link to reference the current installation. The examples below show the installation directories for the **SM** and **RDB** modules.
 

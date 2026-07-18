@@ -1,26 +1,8 @@
 ---
-title: "Deployment Example - 10 Nodes"
+title: "Deployment Example: 10-Node Cluster"
 ---
 
-In this section, we will implement a deployment of the Multi-Node – Common Performance mentioned previously. This will allow the reader to follow step by step to achieve the desired configuration.
-
-## Infrastructure
-
-The following resources and configurations must be available before beginning the deployment:
-
-- **Nodes**: 10 Physical or Virtual servers (Srv01 through Srv10).
-- **OS**: Oracle 8 or RHEL 8.10.
-- **Memory**: Minimum 32 GB is required for production.
-- **CPUs**: At least 4 CPUs.
-- **Storage**: 2 dedicated NVMe/SSD devices per node, each 0.5 TB (500 GB).\
-  For example, in Srv01:
-  - **Name**: Srv01\_Disk1
-  - **Path**: /dev/nvme0n1
-- **Connectivity**: At least 10GB network between all Regatta nodes.
-
-## Deployment
-
-Here are the steps one should take to deploy a 10-Node RegattaDB.
+This page walks through the deployment of a simple Multi-Node cluster. The example provides a complete, step-by-step procedure for deploying a 10-node RegattaDB cluster and achieving the target configuration.
 
 ### Step 1: Node Identification and IP Assignment
 
