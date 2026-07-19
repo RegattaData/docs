@@ -2,7 +2,9 @@
 title: "RegattaDB Software Modules"
 ---
 
-RegattaDB consists of six software modules that together form the Regatta database system. Each deployment includes a combination of these modules, distributed across one or more nodes. These nodes may be physical, VMs or containers.
+Below we describe the different software modules which together make up a RegattaDB system. A module is an independently deployable software component that handles a specific functional role within the distributed database architecture.
+
+A RegattaDB system consists of six software modules that together form the Regatta database system. Each deployment includes a combination of these modules, distributed across one or more nodes.
 
 RegattaDB modules can be broken down into 2 groups: Management Modules and Operational Modules.
 
@@ -24,7 +26,7 @@ These modules drive the core database engine, handling active workloads, maintai
 
 #### RDB – Regatta Database
 
-The RDB module is RegattaDB's distributed compute engine, responsible for query execution and data processing. It leverages CPU, network, and I/O resources efficiently, and scales by adding additional RDB modules.
+The RDB module is RegattaDB’s distributed compute engine, responsible for query execution and data processing. It leverages CPU, network, and I/O resources efficiently, and scales by adding additional RDB nodes.
 
 #### Sequencer
 
