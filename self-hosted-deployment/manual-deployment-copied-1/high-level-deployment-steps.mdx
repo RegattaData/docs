@@ -4,6 +4,8 @@ title: "High-Level Deployment Steps"
 
 The deployment of a RegattaDB system follows the sequence below. This overview assumes that you have already completed the [**Deployment Setup**](/self-hosted-deployment/manual-deployment-copied-1/deployment-setup) steps and prepared your environment accordingly. The following sections summarize the deployment workflow. The next page provides a detailed, step-by-step deployment example covering the entire process.
 
+During the deployment process, you will use SQL management commands to communicate with the **SM**. For a complete reference of the SQL management commands, see the [**System Management SQL Specification**.](/sql/system-monitoring/system-management/system-state)
+
 ### Identify the Deployment Nodes
 
 Identify the nodes that will host the RegattaDB modules.
@@ -19,7 +21,7 @@ RegattaDB uses a single **SM** (System Manager) module.
 
 - Select the node that will host the **SM**.
 - Install the **SM** package.
-- If using a custom deployment user, update the service configuration accordingly.
+- ~~If using a custom deployment user, update the service configuration accordingly.~~
 - Start the **SM** service.
 
 ### Deploy the SNA
@@ -27,7 +29,7 @@ RegattaDB uses a single **SM** (System Manager) module.
 Deploy an **SNA** on every node that will host one or more Operational Modules.
 
 - Install the **SNA** package.
-- If using a custom deployment user, update the service configuration accordingly.
+- ~~If using a custom deployment user, update the service configuration accordingly.~~
 - Start the **SNA** service.
 
 ### Plan Module Placement
@@ -49,7 +51,7 @@ Install the RPM packages corresponding to the assigned module roles on each node
 
 Install the RegattaDB CLI, which is included in the software package. The CLI may be installed on any node that has network connectivity to the **SM**.
 
-Transition the system from the **DOWN** state to the **SETUP** state to enable configuration operations.
+Transition the system from the **DOWN** state to the [**SETUP**](/sql/system-management/system-states-and-commands#system-enter-setup) state to enable configuration operations.
 
 ### Define the Infrastructure
 
@@ -57,11 +59,13 @@ Register the cluster nodes using their host names and configured IP addresses.
 
 ### Configure Storage
 
-Configure the storage devices assigned to each node by specifying their local paths and capacities.
+~~Configure the storage devices assigned to each node by specifying their local paths and capacities.~~
+
+[Register the storage devices](/sql/system-management/storage-devices) assigned to each node by specifying a unique name and the local device path for each storage device.
 
 ### Add the Operational Modules
 
-Register each module, assign it to its designated node, and associate it with the appropriate storage device.
+[Register each module](/sql/system-management/modules#module-add), assign it to its designated node, and associate it with the appropriate storage device.
 
 <Note>
   By default, RegattaDB automatically allocates memory according to the requirements of each module. Because the **RDB** is designed to consume all remaining available memory, it should always be provisioned **after** the other modules. This ensures it receives the memory that remains after the fixed allocations for the other modules have been reserved. Although RegattaDB supports manual memory allocation on a per-module basis, the default allocation should be used unless your sizing analysis requires otherwise.
@@ -69,8 +73,8 @@ Register each module, assign it to its designated node, and associate it with th
 
 ### Exit SETUP State
 
-Transition the system back to the **DOWN** state to finalize and lock the deployment configuration.
+Transition the system back to the [**DOWN**](/sql/system-management/system-states-and-commands#system-exit-setup) state to finalize and lock the deployment configuration.
 
 ### Activate the System
 
-Start the system to transition it to the **ACTIVE** state. During this step, the Operational Modules are started and begin accepting client connections.
+[Start the system](/sql/system-management/system-states-and-commands#system-start) to transition it to the **ACTIVE** state. During this step, the Operational Modules are started and begin accepting client connections.

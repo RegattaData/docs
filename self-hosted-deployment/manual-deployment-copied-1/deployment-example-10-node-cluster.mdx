@@ -6,6 +6,11 @@ This page walks through the deployment of a simple Multi-Node cluster. The examp
 
 ### Step 1: Node Identification and IP Assignment
 
+In this example, the cluster nodes are assigned the following RegattaDB modules:
+
+- **Node01** – Hosts the **SM**, **GDD**, **DCM**, and **Sequencer** modules, along with its local **SNA** and **RDB** modules. The node hosting the **SM** is commonly referred to as the _Management Node_.
+- **Node02–Node10** – Each node hosts an **SNA** module and an **RDB** module.
+
 Identify the nodes that will participate in the RegattaDB cluster. For each node, define:
 
 - An **Internal IP address** for cluster communication.
@@ -13,17 +18,16 @@ Identify the nodes that will participate in the RegattaDB cluster. For each node
 
 For this deployment, we will use the following IP assignments:
 
-- **Node01** – Internal: `10.0.0.1`, External: `192.168.1.101` (Management Node)
-- **Node02–Node10** – Internal: `10.0.0.2`–`10.0.0.10`, External: `192.168.1.102`–`192.168.1.110`
+- **Node01**
+  - Internal: `10.0.0.1`
+  - External: `192.168.1.101` ~~(Management Node)~~
+- **Node02–Node10**  
+  - Internal: `10.0.0.2`–`10.0.0.10` 
+  - External: `192.168.1.102`–`192.168.1.110`
 
 The module communication and service ports will use the default port assignments described in the [Deployment Setup](/self-hosted-deployment/manual-deployment-copied-1/deployment-setup) section.
 
 ### Step 2: Software Installation (RPM Deployment)
-
-In this example, the RegattaDB modules are assigned to the cluster nodes as follows:
-
-- **Node01** – Hosts the **SM**, **GDD**, **DCM**, and **Sequencer** modules, along with its local **SNA** and **RDB** modules.
-- **Node02–Node10** – Each node hosts an **SNA** module and an **RDB** module.
 
 Install the required RPM packages on each node according to its assigned role, following the instructions in the [**Deployment Setup**](/self-hosted-deployment/manual-deployment-copied-1/deployment-setup) section.
 
@@ -164,8 +168,8 @@ For example, register **Node01**:
 MANAGE NODE ADD (
   NAME "Node01",
   NETWORK (
-    (INTERNAL IP "10.0.0.1" PORT 8841)
-    (EXTERNAL IP "192.168.1.101" PORT 8841)
+    (INTERNAL IP "10.0.0.1")
+    (EXTERNAL IP "192.168.1.101")
   )
 );
 ```
@@ -176,8 +180,8 @@ Then register **Node02**:
 MANAGE NODE ADD (
   NAME "Node02", 
   NETWORK (
-    (INTERNAL IP "10.0.0.2" PORT 8841)
-    (EXTERNAL IP "192.168.1.102" PORT 8841)
+    (INTERNAL IP "10.0.0.2")
+    (EXTERNAL IP "192.168.1.102")
   )
 ); 
 ```
@@ -236,10 +240,9 @@ MANAGE MODULE ADD (
   NAME "DCM_1",
   ROLE DCM,
   NETWORK (
-    (INTERNAL IP "10.0.0.1" PORT 8844)
-    (EXTERNAL IP "192.168.1.101" PORT 8844)
-  ),
-  SERVICE_PORT 5004
+    (INTERNAL IP "10.0.0.1")
+    (EXTERNAL IP "192.168.1.101")
+  )
 );
 
 MANAGE MODULE ADD (
@@ -247,10 +250,9 @@ MANAGE MODULE ADD (
   NAME "SEQ_1",
   ROLE SEQUENCER,
   NETWORK (
-    (INTERNAL IP "10.0.0.1" PORT 8842)
-    (EXTERNAL IP "192.168.1.101" PORT 8842)
-  ),
-  SERVICE_PORT 5002
+    (INTERNAL IP "10.0.0.1")
+    (EXTERNAL IP "192.168.1.101")
+  )
 );
 
 MANAGE MODULE ADD (
@@ -258,10 +260,9 @@ MANAGE MODULE ADD (
   NAME "GDD_1",
   ROLE GDD,
   NETWORK (
-    (INTERNAL IP "10.0.0.1" PORT 8843)
-    (EXTERNAL IP "192.168.1.101" PORT 8843)
-  ),
-  SERVICE_PORT 5003
+    (INTERNAL IP "10.0.0.1")
+    (EXTERNAL IP "192.168.1.101")
+  )
 );
 ```
 
@@ -281,10 +282,9 @@ MANAGE MODULE ADD (
     "Node01_Disk2"
   ),
   NETWORK (
-    (INTERNAL IP "10.0.0.1" PORT 8601)
-    (EXTERNAL IP "192.168.1.101" PORT 8601)
-  ),
-  SERVICE_PORT 6001
+    (INTERNAL IP "10.0.0.1")
+    (EXTERNAL IP "192.168.1.101")
+  )
 );
 ```
 

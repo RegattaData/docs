@@ -2,11 +2,13 @@
 title: "RegattaDB Software Modules"
 ---
 
-Below we describe the different software modules which together make up a RegattaDB system. A module is an independently deployable software component that handles a specific functional role within the distributed database architecture.
+Below we describe the different software modules which together make up a RegattaDB system. A module is an independently deployable user-mode process that handles a specific functional role within the distributed database architecture.
 
 A RegattaDB system consists of six software modules that together form the Regatta database system. Each deployment includes a combination of these modules, distributed across one or more nodes.
 
-A **_Node_**, is any type of Server on which a RegattaDB system is deployed on. This server may be a physical server, VM, or container.
+<Info>
+  A **node** is the fundamental compute unit in a RegattaDB deployment. It represents a server that provides CPU, memory, networking, and storage resources to the cluster. A node may be a physical server, a virtual machine (VM), or a container, and may host one or more RegattaDB modules.
+</Info>
 
 RegattaDB modules can be broken down into 2 groups: Management Modules and Operational Modules.
 

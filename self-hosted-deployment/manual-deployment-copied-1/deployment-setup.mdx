@@ -38,7 +38,9 @@ The most common multi-node deployment uses the following topology:
 
 ### **Provision the Deployment Nodes**
 
-Next, provision the nodes that will host your RegattaDB deployment. These may be physical servers, virtual machines (VMs), or containers, provided they meet the minimal [prerequisites](/self-hosted-deployment/prerequisites).
+~~Next, provision the nodes that will host your RegattaDB deployment. These may be physical servers, virtual machines (VMs), or containers, provided they meet the minimal [prerequisites](/self-hosted-deployment/prerequisites).~~
+
+> Next, provision the nodes that will host your RegattaDB deployment, ensuring that each node meets the minimum hardware, storage, networking, and software [prerequisites](/self-hosted-deployment/prerequisites).
 
 The exact hardware requirements depend on your deployment topology and workload characteristics. For guidance on sizing your deployment, refer to Best Practices or contact Regatta Support for assistance.
 
@@ -109,15 +111,10 @@ All RegattaDB RPM packages are installed under `/opt/regatta/<major.minor>`. For
 ```shellscript
 /opt/regatta/current/sm
 ├── bin
-│   └── regatta_sm
 ├── LICENSE
 ├── sm_1
 │   ├── bin
-│   │   ├── regatta_sm -> /opt/regatta/26.0/sm/bin/regatta_sm
-│   │   └── start.sh
 │   ├── conf
-│   │   ├── sm.conf
-│   │   └── sm_genesis.conf
 │   ├── log -> /var/log/regatta/sm/sm_1
 │   └── repo
 └── tools
@@ -128,32 +125,24 @@ All RegattaDB RPM packages are installed under `/opt/regatta/<major.minor>`. For
 ```shellscript
 /opt/regatta/current/rdb
 ├── bin
-│   ├── launch_gdb.sh
-│   └── regatta_rdb
 ├── LICENSE
 ├── rdb_1
 │   ├── bin
-│   │   ├── launch_gdb.sh -> /opt/regatta/26.0/rdb/bin/launch_gdb.sh
-│   │   └── regatta_rdb -> /opt/regatta/26.0/rdb/bin/regatta_rdb
 │   ├── conf
-│   │   ├── rdb.conf
-│   │   └── rdb_genesis.conf
 │   ├── log -> /var/log/regatta/rdb/rdb_1
 │   └── repo
 └── tools
-    └── dot
-        └── rdb_dot
 ```
 
 #### Additional RegattaDB RPM Packages
 
-In addition to the core deployment modules, the RegattaDB self-hosted package includes several utilities that simplify deployment, administration, backup, and troubleshooting.
+In addition to the core deployment modules, the RegattaDB self-hosted package includes several utilities that simplify deployment, administration, backup, and troubleshooting. 
 
 The following RPM packages are included:
 
-- Backup & Restore Tool
-- Regatta Deployment Tool (RDT)
-- Regatta Debug Tool
+- Regatta Deployment Tool (RDT) - An automated deployment tool for provisioning and configuring RegattaDB clusters. For detailed instructions, refer to the **Regatta Deployment Tool (RDT) Guide**.
+- Regatta Debug Tool - A Docker-based utility for connecting to running RegattaDB clusters to perform live diagnostics, troubleshooting, and debugging.
+- Regatta Bench - A benchmarking utility for executing preconfigured workloads against a RegattaDB cluster to evaluate performance and validate deployments.
 
 ```shellscript
 regatta-bnr-<version>.el8.x86_64.rpm
@@ -228,14 +217,18 @@ Assign IP addresses to each node in the RegattaDB cluster. Prepare a list of:
 - **Internal IP addresses** used for communication between RegattaDB modules.
 - **External IP addresses** used by client applications to access RegattaDB (if applicable).
 
-Note: The RegattaDB client will default to the external IP where available.  
+<Note>
+  **Note:** RegattaDB clients automatically use the external IP address when one is configured for a node. Otherwise, they fall back to the node's internal IP address.
+</Note>
 
 Each RegattaDB module requires two ports:
 
-- A **Communications Port** used for inter-module communication.
+- A **Communications Port**, used for communication between RegattaDB modules.
 - A **Service Port** used for internal service operations.
 
-Although RegattaDB can be configured to use any available ports, we recommend using the default port assignments shown below whenever possible to ensure consistency across deployments.
+~~Although RegattaDB can be configured to use any available ports, we recommend using the default port assignments shown below whenever possible to ensure consistency across deployments.~~
+
+> By default, RegattaDB uses the port assignments shown below. We recommend using these default values unless your deployment requires otherwise (for example, when running multiple RDB modules on a single node).
 
 | Module | Communications Port | Service Port |
 | :-- | :-- | :-- |
