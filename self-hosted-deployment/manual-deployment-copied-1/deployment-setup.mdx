@@ -8,8 +8,6 @@ The first step is defining your deployment topology. The optimal topology depend
 
 General deployment guidelines:
 
-A **_Node_**, is any type of Server on which a RegattaDB system is deployed on. This server may be a physical server, VM, or container.
-
 - Management Modules
   - **SM** - Deploy a single SM module for every RegattaDB cluster
   - **SNA** - Deploy one agent on every node that hosts at least one Operational Module
@@ -229,6 +227,8 @@ Assign IP addresses to each node in the RegattaDB cluster. Prepare a list of:
 
 - **Internal IP addresses** used for communication between RegattaDB modules.
 - **External IP addresses** used by client applications to access RegattaDB (if applicable).
+
+Note: The RegattaDB client will default to the external IP where available.  
 
 Each RegattaDB module requires two ports:
 
