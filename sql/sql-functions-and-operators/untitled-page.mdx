@@ -1,0 +1,12 @@
+---
+title: "UUID Functions and Operators"
+---
+
+The following functions are supported for generating UUIDs and extracting parts of UUIDs:
+
+| Function | Description | Example |
+| --- | --- | --- |
+| `uuidv4()` → UUID | Generates a version-4 UUID | `uuidv4()`<br />=\> `b42410ee-132f-42ee-9e4f-09a6485c95b8` |
+| `gen_random_uuid()` → UUID | Same as `uuidv4()` |  |
+| `uuid_extract_timestamp(uuid)` → TIMESTAMP | Extracts a timestamp from a UUID of version 1 or 7.<br />For other versions, this function returns null. | `uuid_extract_timestamp('019535d9-3df7-79fb-b466-​fa907fa17f9e'::uuid)` =\> `2025-02-23 21:46:24.503` |
+| `uuid_extract_version(uuid)` → SMALLINT | Extracts the version from a UUID of one of the variants described by [RFC 9562](https://datatracker.ietf.org/doc/html/rfc9562).<br />For other variants, this function returns null. | `uuid_extract_version('41db1265-8bc1-4ab3-992f-​885799a4af1d'::uuid)` =\> `4` |
