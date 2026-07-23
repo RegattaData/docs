@@ -63,7 +63,7 @@ MANAGE SYSTEM SHUTDOWN [ WAIT seconds ]
 
 The command is accepted only if the current system state is either `ACTIVE `or `STARTING`.
 
-The command synchronously waits for the shutdown to be completed and returns only when the system state has changed to `DOWN` .
+The shutdown process is performed asynchronously. The command returns when the system state has changed to `SHUTTING DOWN` .
 
 **Parameters**
 
