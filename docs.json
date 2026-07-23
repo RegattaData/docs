@@ -346,6 +346,15 @@
             ]
           },
           {
+            "group": "Binyamina Manual Deployment",
+            "pages": [
+              "self-hosted-deployment/manual-deployment-copied-1/regattadb-software-modules",
+              "self-hosted-deployment/manual-deployment-copied-1/deployment-setup",
+              "self-hosted-deployment/manual-deployment-copied-1/high-level-deployment-steps",
+              "self-hosted-deployment/manual-deployment-copied-1/deployment-example-10-node-cluster"
+            ]
+          },
+          {
             "group": "Collecting Data",
             "pages": [
               "self-hosted-deployment/collecting-data/installation",

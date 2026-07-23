@@ -1,0 +1,254 @@
+---
+title: "Deployment Setup"
+---
+
+## Deployment Planning
+
+The first step is defining your deployment topology. The optimal topology depends on your workload profile, performance objectives, and storage requirements. RegattaDB supports a wide range of deployment configurations, allowing the system to be tailored to your specific requirements.
+
+General deployment guidelines:
+
+- Management Modules
+  - SM - Deploy a single SM module for every RegattaDB cluster
+  - SNA - Deploy one agent on every node that hosts at least one Operational Module
+- Operational Modules
+  - RDB - Deploy at least one RDB module per RegattaDB cluster
+  - GDD, DCM, Sequencer - Deploy exactly one instance of each module per RegattaDB cluster
+
+Below are several common configurations.
+
+#### Single Node
+
+A single-node deployment consists of a single server hosting all RegattaDB modules:
+
+**\[IMAGE\]**
+
+#### Multi-Node – Classic
+
+The most common multi-node deployment uses the following topology:
+
+- One node hosts all RegattaDB modules, as in a single-node deployment.
+- All additional nodes host both the RDB and SNA modules.
+
+**\[IMAGE\]**
+
+<Info>
+  For guidance on sizing and configuring your RegattaDB deployment, refer to **Best Practices** or contact Regatta Support for assistance.
+</Info>
+
+### **Provision the Deployment Nodes**
+
+Next, provision the nodes that will host your RegattaDB deployment. These may be physical servers, virtual machines (VMs), or containers, provided they meet the minimal [prerequisites](/self-hosted-deployment/prerequisites).
+
+The exact hardware requirements depend on your deployment topology and workload characteristics. For guidance on sizing your deployment, refer to Best Practices or contact Regatta Support for assistance.
+
+### Download the RegattaDB Software
+
+Next, download the RegattaDB software package. RegattaDB is distributed as a set of RPM packages, each corresponding to a specific module or utility. Copy the required RPM packages to the nodes on which they will be installed according to your planned deployment topology.
+
+The following example shows the contents of a RegattaDB software package.
+
+#### Deployment Software
+
+Each of the RPM packages below corresponds to one of the six RegattaDB modules.
+
+```shellscript
+regatta-dcm-<version>.el8.x86_64.rpm
+regatta-gdd-<version>.el8.x86_64.rpm
+regatta-rdb-<version>.el8.x86_64.rpm
+regatta-sequencer-<version>.el8.x86_64.rpm
+regatta-sm-<version>.el8.x86_64.rpm
+regatta-sna-<version>.el8.x86_64.rpm
+```
+
+### EULA Acceptance
+
+Before deploying RegattaDB, you must read and accept the **Regatta End User License Agreement (EULA**). Acceptance of the EULA is integrated into the RPM installation process and is required before the installation can be completed.
+
+- **Interactive installations** (for example, using `yum install` or `dnf install`) - You will be prompted to review and accept the EULA during installation
+- **Automated installations** - Set the environment variable `ACCEPT_EULA=1` to indicate acceptance of the EULA and suppress the interactive prompt.
+
+If you are using automated installation, we strongly recommend reviewing the EULA in advance. The latest version is available at:
+
+[**https://regatta.dev/eula/**](https://regatta.dev/eula/)
+
+### Install the RPM Packages
+
+Install the required RegattaDB RPM packages using your system's package manager (`yum` or `dnf`).
+
+```shellscript
+sudo yum install regatta-<package-name>-<version>.el8.x86_64.rpm
+or
+sudo dnf install regatta-<package-name>-<version>.el8.x86_64.rpm
+```
+
+During installation, you will be prompted to review and accept the Regatta End User License Agreement (EULA):
+
+```shellscript
+******************************************************************************
+Regatta End User License Agreement (EULA)
+URL: https://regatta.dev/eula/
+******************************************************************************
+To continue installation, type Y and press Enter.
+To abort, press any other key and press Enter.
+Accept EULA? [y/N]:
+```
+
+For unattended or automated installations, pre-approve the EULA by setting the `ACCEPT_EULA=1` environment variable:
+
+```shellscript
+sudo ACCEPT_EULA=1 yum install regatta-<package-name>-<version>.el8.x86_64.rpm
+or
+sudo ACCEPT_EULA=1 dnf install regatta-<package-name>-<version>.el8.x86_64.rpm
+```
+
+All RegattaDB RPM packages are installed under `/opt/regatta/<major.minor>`. For convenience, you can use the `/opt/regatta/current` symbolic link to reference the current installation. The examples below show the installation directories for the **SM** and **RDB** modules.
+
+**System Manager:**
+
+```shellscript
+sm/
+├── bin
+│   └── regatta_sm
+├── LICENSE
+├── sm_1
+│   ├── bin
+│   │   ├── regatta_sm -> /opt/regatta/26.0/sm/bin/regatta_sm
+│   │   └── start.sh
+│   ├── conf
+│   │   ├── sm.conf
+│   │   └── sm_genesis.conf
+│   ├── log -> /var/log/regatta/sm/sm_1
+│   └── repo
+└── tools
+```
+
+**RDB:**
+
+```shellscript
+rdb/
+├── bin
+│   ├── launch_gdb.sh
+│   └── regatta_rdb
+├── LICENSE
+├── rdb_1
+│   ├── bin
+│   │   ├── launch_gdb.sh -> /opt/regatta/26.0/rdb/bin/launch_gdb.sh
+│   │   └── regatta_rdb -> /opt/regatta/26.0/rdb/bin/regatta_rdb
+│   ├── conf
+│   │   ├── rdb.conf
+│   │   └── rdb_genesis.conf
+│   ├── log -> /var/log/regatta/rdb/rdb_1
+│   └── repo
+└── tools
+    └── dot
+        └── rdb_dot
+```
+
+#### Additional RegattaDB RPM Packages
+
+In addition to the core deployment modules, the RegattaDB self-hosted package includes several utilities that simplify deployment, administration, backup, and troubleshooting.
+
+The following RPM packages are included:
+
+- Backup & Restore Tool
+- Regatta Deployment Tool (RDT)
+- Regatta Debug Tool
+
+```shellscript
+regatta-bnr-<version>.el8.x86_64.rpm
+regatta-rdt-<version>.el8.x86_64.rpm
+regatta-debug-<version>.el8.x86_64.rpm
+```
+
+#### Client Software
+
+The self-hosted deployment package also includes the RegattaDB client components. For installation and usage instructions, refer to [Drivers & Clients](/drivers-and-clients/connecting-applications-to-regatta).
+
+The following RPM packages are included:
+
+- Regatta Client Library
+- Regatta CLI
+- Regatta Connect - A collection of drivers, ORMs, and connectors for integrating RegattaDB with external applications, frameworks, and data platforms.
+
+```shellscript
+regatta-cli-<version>.el8.x86_64.rpm
+regatta-client-<version>.el8.x86_64.rpm
+regatta-connect-<version>.el8.x86_64.rpm
+```
+
+### Deployment User
+
+RegattaDB requires a deployment user with the appropriate ownership and permissions for the installation directories, shared memory, log directories, and storage devices.
+
+The deployment user must own the following resources:
+
+- Regatta installation directory - `/opt/regatta`
+- Shared memory directory - `/dev/shm/Regatta`
+- Log directory - `/var/log/regatta`
+- Storage devices allocated for RegattaDB
+
+During installation, the RPM packages automatically create a default deployment user named `regatta`. If you wish to use a different deployment user, follow these steps:
+
+1. Change ownership of the RegattaDB installation directory
+   ```shellscript
+   sudo chown -R <user>:<group> /opt/regatta
+   ```
+2. Create or update the shared memory directory - Create the shared memory directory `/dev/shm/Regatta` and assign ownership to the deployment user. If the directory already exists, change its ownership
+   ```shellscript
+   sudo mkdir -p /dev/shm/Regatta
+   sudo chown -R <user>:<group> /dev/shm/Regatta
+   ```
+3. Change ownership of the log directory
+   ```shellscript
+   sudo chown -R <user>:<group> /var/log/regatta
+   ```
+4. Change ownership of the storage devices - Assign ownership of the storage devices allocated to RegattaDB to the deployment user
+   ```shellscript
+   sudo chown -R <user>:<group> /dev/nvme0n1
+   ```
+5. Update the SM and SNA `systemd` service files - Edit the following service files:
+   ```shellscript
+   /usr/lib/systemd/system/regatta-26.0-sm.service
+   /usr/lib/systemd/system/regatta-26.0-sna.service
+   ```
+   Update the `User` and `Group` directives in the `[Service]` section:
+   ```shellscript
+   [Service]
+   Type=simple
+   User=<user>
+   Group=<group>
+   ```
+   After updating the service files, the SM and SNA services will run under the configured deployment user instead of the default `regatta` user. Only the SM and SNA `systemd` services need to be updated. The operational modules are launched by the SNA and therefore inherit the configured deployment user.
+
+### IP Assignment
+
+Assign IP addresses to each node in the RegattaDB cluster. Prepare a list of:
+
+- **Internal IP addresses** used for communication between RegattaDB modules.
+- **External IP addresses** used by client applications to access RegattaDB (if applicable).
+
+Each RegattaDB module requires two ports:
+
+- A **Communications Port** used for inter-module communication.
+- A **Service Port** used for internal service operations.
+
+Although RegattaDB can be configured to use any available ports, we recommend using the default port assignments shown below whenever possible to ensure consistency across deployments.
+
+| Module | Communications Port | Service Port |
+| :-- | :-- | :-- |
+| SM | 8840 | 5000 |
+| SNA | 8841 | 5001 |
+| Sequencer | 8842 | 5002 |
+| GDD | 8843 | 5003 |
+| DCM | 8844 | 5004 |
+| RDB | 8850 | 6001 |
+
+### Firewall Setup
+
+Configure the firewall on each node to allow traffic on the required RegattaDB ports.
+
+At a minimum, ensure that:
+
+- The communications and service ports are accessible between all RegattaDB nodes.
+- Client applications can access the required external endpoints, as defined by your deployment.

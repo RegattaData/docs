@@ -1,0 +1,313 @@
+---
+title: "Deployment Example: 10-Node Cluster"
+---
+
+This page walks through the deployment of a simple Multi-Node cluster. The example provides a complete, step-by-step procedure for deploying a 10-node RegattaDB cluster and achieving the target configuration.
+
+### Step 1: Node Identification and IP Assignment
+
+In this example, the cluster nodes are assigned the following RegattaDB modules:
+
+- **Node01** – Hosts the **SM**, **GDD**, **DCM**, and **Sequencer** modules, along with its local **SNA** and **RDB** modules. The node hosting the **SM** is commonly referred to as the _Management Node_.
+- **Node02–Node10** – Each node hosts an **SNA** module and an **RDB** module.
+
+Identify the nodes that will participate in the RegattaDB cluster. For each node, define:
+
+- An **Internal IP address** for cluster communication.
+- An **External IP address** for client application access (if applicable).
+
+For this deployment, we will use the following IP assignments:
+
+- **Node01**
+  - Internal: `10.0.0.1`
+  - External: `192.168.1.101` ~~(Management Node)~~
+- **Node02–Node10**  
+  - Internal: `10.0.0.2`–`10.0.0.10` 
+  - External: `192.168.1.102`–`192.168.1.110`
+
+The module communication and service ports will use the default port assignments described in the [Deployment Setup](/self-hosted-deployment/manual-deployment-copied-1/deployment-setup) section.
+
+### Step 2: Software Installation (RPM Deployment)
+
+Install the required RPM packages on each node according to its assigned role, following the instructions in the [**Deployment Setup**](/self-hosted-deployment/manual-deployment-copied-1/deployment-setup) section.
+
+For this deployment we will be using the default `regatta` user as the deployment user.
+
+### Step 3: Start the Management Services
+
+Start the **SM** service on **Node01** and the **SNA** service on every node in the cluster.
+
+#### Start the SM service
+
+On **Node01**, run:
+
+```shellscript
+sudo systemctl start regatta-26.0-sm.service
+```
+
+#### Start the SNA services
+
+On **Node01** through **Node10**, run:
+
+```shellscript
+sudo systemctl start regatta-26.0-sna.service
+```
+
+#### Verify the services
+
+Verify that the services are running by checking their status with `systemctl`:
+
+```shellscript
+systemctl status regatta-26.0-sm.service
+```
+
+Expected output:
+
+```shellscript
+● regatta-26.0-sm.service - The Regatta sm service
+   Loaded: loaded (/usr/lib/systemd/system/regatta-26.0-sm.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sun 2026-07-19 00:06:51 IDT; 35min ago
+ Main PID: 158236 (regatta_sm)
+    Tasks: 27 (limit: 203820)
+   Memory: 256.0M
+```
+
+Likewise, verify the SNA service:
+
+```shellscript
+systemctl status regatta-26.0-sna.service
+```
+
+Expected output:
+
+```shellscript
+● regatta-26.0-sna.service - The Regatta sna service
+   Loaded: loaded (/usr/lib/systemd/system/regatta-26.0-sna.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sun 2026-07-19 00:06:52 IDT; 37min ago
+ Main PID: 158366 (regatta_sna)
+    Tasks: 94 (limit: 203820)
+   Memory: 12.4G
+```
+
+### Step 4: Connect to the Cluster
+
+Before continuing with the deployment, you need a client capable of connecting to the RegattaDB cluster and executing SQL management commands.
+
+In this example, we will use the RegattaDB CLI, which is included in the deployment package. However, any supported RegattaDB client can be used. For information about the available clients, drivers, and integrations, refer to the [**Drivers & Clients**](/drivers-and-clients/connecting-applications-to-regatta) section.
+
+#### Connection Parameters
+
+To connect to the cluster, you will need:
+
+- A RegattaDB username and password.
+- The address of the **SM** service in the format `<IP>:<PORT>`.
+
+For this deployment, we will use the default administrator credentials created during installation.
+
+The **SM** can be reached using any of the following addresses:
+
+- **Internal IP:** `10.0.0.1`
+- **External IP:** `192.168.1.101`
+- **Localhost:** `127.0.0.1` (when running the client on the SM node)
+
+The **SM** listens on the default communication port:
+
+- **Port:** `8840`
+
+The connection parameters for this example are therefore:
+
+- **Username:** `admin`
+- **Password:** `RegattaDefault1234!`
+- **URL:** `10.0.0.1:8840`
+
+#### Start the RegattaDB CLI
+
+Run the CLI:
+
+```shellscript
+/opt/regatta/<major.minor>/clients/cli/bin/client_cli
+```
+
+The CLI prompt is displayed:
+
+```shellscript
+rdb>
+```
+
+Connect to the cluster:
+
+```shellscript
+rdb>\connect user=admin pass=RegattaDefault1234! url=10.0.0.1:8840
+```
+
+If the connection is successful, the CLI displays:
+
+```shellscript
+Successfully connected to cluster
+```
+
+You are now connected to the RegattaDB cluster and can execute SQL statements as well as RegattaDB management commands.
+
+The remaining deployment steps assume you are connected to the cluster through the [RegattaDB CLI](/drivers-and-clients/regatta-cli). For a complete reference of the SQL management commands, see the [**System Management SQL Specification**.](/sql/system-monitoring/system-management/system-state)
+
+### Step 5: Enter the SETUP State
+
+Transition the system to the **SETUP** state. In this state, configuration changes are permitted, allowing you to define the cluster infrastructure, storage, and module assignments.
+
+```sql
+MANAGE SYSTEM ENTER SETUP;
+```
+
+### Step 6: Define the Cluster Infrastructure
+
+Register the deployment nodes with the cluster by assigning each node a unique name and its corresponding internal and external network addresses.
+
+For example, register **Node01**:
+
+```sql
+MANAGE NODE ADD (
+  NAME "Node01",
+  NETWORK (
+    (INTERNAL IP "10.0.0.1")
+    (EXTERNAL IP "192.168.1.101")
+  )
+);
+```
+
+Then register **Node02**:
+
+```sql
+MANAGE NODE ADD (
+  NAME "Node02", 
+  NETWORK (
+    (INTERNAL IP "10.0.0.2")
+    (EXTERNAL IP "192.168.1.102")
+  )
+); 
+```
+
+Repeat this step for **Node03** through **Node10**, updating the node name and IP addresses accordingly.
+
+### Step 7: Provision Storage
+
+In this example, each cluster node is configured with two dedicated storage devices. This step assumes that the storage devices have already been assigned the appropriate ownership and permissions for the RegattaDB deployment user, as described in the [**Deployment Setup**](/self-hosted-deployment/manual-deployment-copied-1/deployment-setup) section.
+
+Register the storage devices for each node by specifying a unique name and the local device path.
+
+```sql
+MANAGE STORAGE DEVICE ADD (
+  NODE "Node01",
+  NAME "Node01_Disk1",
+  PATH "/dev/nvme0n1"
+);
+
+MANAGE STORAGE DEVICE ADD (
+  NODE "Node01",
+  NAME "Node01_Disk2",
+  PATH "/dev/nvme1n1"
+);
+
+MANAGE STORAGE DEVICE ADD (
+  NODE "Node02",
+  NAME "Node02_Disk1",
+  PATH "/dev/nvme0n1"
+);
+
+MANAGE STORAGE DEVICE ADD (
+  NODE "Node02",
+  NAME "Node02_Disk2",
+  PATH "/dev/nvme1n1"
+);
+```
+
+Repeat this step for **Node03** through **Node10**, updating the node name, storage device name, and device path as appropriate.
+
+### Step 8: Add the Operational Modules
+
+Register the RegattaDB modules by assigning them to their designated nodes, network endpoints, and, for **RDB** modules, the appropriate storage devices.
+
+<Note>
+  **Important:** Always provision the **RDB** modules after provisioning all other modules. This ensures that memory is first allocated to the non-RDB modules, allowing each **RDB** module to utilize the maximum amount of remaining memory available on its host node.
+</Note>
+
+#### Add the non-RDB Modules
+
+Run the following commands to add the **DCM**, **Sequencer**, and **GDD** modules on **Node01**.
+
+```sql
+MANAGE MODULE ADD (
+  NODE "Node01",
+  NAME "DCM_1",
+  ROLE DCM,
+  NETWORK (
+    (INTERNAL IP "10.0.0.1")
+    (EXTERNAL IP "192.168.1.101")
+  )
+);
+
+MANAGE MODULE ADD (
+  NODE "Node01",
+  NAME "SEQ_1",
+  ROLE SEQUENCER,
+  NETWORK (
+    (INTERNAL IP "10.0.0.1")
+    (EXTERNAL IP "192.168.1.101")
+  )
+);
+
+MANAGE MODULE ADD (
+  NODE "Node01",
+  NAME "GDD_1",
+  ROLE GDD,
+  NETWORK (
+    (INTERNAL IP "10.0.0.1")
+    (EXTERNAL IP "192.168.1.101")
+  )
+);
+```
+
+#### Add the RDB Modules
+
+After all management modules have been added successfully, add an **RDB** module on each node (**Node01** through **Node10**).
+
+We use the module name `RDB_1` for the local **RDB** instance on each node.
+
+```sql
+MANAGE MODULE ADD (
+  NODE "Node01",
+  NAME "RDB_1",
+  ROLE RDB,
+  STORAGE_DEVICE (
+    "Node01_Disk1",
+    "Node01_Disk2"
+  ),
+  NETWORK (
+    (INTERNAL IP "10.0.0.1")
+    (EXTERNAL IP "192.168.1.101")
+  )
+);
+```
+
+Repeat this step for **Node02** through **Node10**, updating the node name, storage device names, and network addresses as appropriate.
+
+### Step 9: Exit the SETUP State and Activate the System
+
+Finalize the deployment by exiting the **SETUP** state and starting the system. Once the system is running, verify that all modules have been provisioned successfully and that the cluster has reached the **ACTIVE** state.
+
+```sql
+MANAGE SYSTEM EXIT SETUP;
+MANAGE SYSTEM START;
+MANAGE SYSTEM SHOW;
+```
+
+Expected output:
+
+```shellscript
+regatta > MANAGE SYSTEM SHOW;
+statement executed successfully
+| STATE  |
+----------
+| Active |
+```
+
+**Your RegattaDB cluster is now fully deployed and ready for use.**
