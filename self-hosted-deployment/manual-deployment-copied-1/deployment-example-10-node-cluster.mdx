@@ -20,16 +20,16 @@ For this deployment, we will use the following IP assignments:
 
 - **Node01**
   - Internal: `10.0.0.1`
-  - External: `192.168.1.101` ~~(Management Node)~~
+  - External: `192.168.1.101` 
 - **Node02–Node10**  
   - Internal: `10.0.0.2`–`10.0.0.10` 
   - External: `192.168.1.102`–`192.168.1.110`
 
-The module communication and service ports will use the default port assignments described in the [Deployment Setup](/self-hosted-deployment/manual-deployment-copied-1/deployment-setup) section.
+The module communication and service ports will use the default port assignments described in the [Prepare for Deployment](/self-hosted-deployment/manual-deployment-copied-1/prepare-for-deployment) guide.
 
 ### Step 2: Software Installation (RPM Deployment)
 
-Install the required RPM packages on each node according to its assigned role, following the instructions in the [**Deployment Setup**](/self-hosted-deployment/manual-deployment-copied-1/deployment-setup) section.
+Install the required RPM packages on each node according to its assigned role, following the instructions in the [**Prepare for Deployment**](/self-hosted-deployment/manual-deployment-copied-1/prepare-for-deployment) guide.
 
 For this deployment we will be using the default `regatta` user as the deployment user.
 
@@ -190,7 +190,7 @@ Repeat this step for **Node03** through **Node10**, updating the node name and I
 
 ### Step 7: Provision Storage
 
-In this example, each cluster node is configured with two dedicated storage devices. This step assumes that the storage devices have already been assigned the appropriate ownership and permissions for the RegattaDB deployment user, as described in the [**Deployment Setup**](/self-hosted-deployment/manual-deployment-copied-1/deployment-setup) section.
+In this example, each cluster node is configured with two dedicated storage devices. This step assumes that the storage devices have already been assigned the appropriate ownership and permissions for the RegattaDB deployment user, as described in the [**Prepare for Deployment**](/self-hosted-deployment/manual-deployment-copied-1/prepare-for-deployment) guide.
 
 Register the storage devices for each node by specifying a unique name and the local device path.
 

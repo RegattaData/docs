@@ -1,5 +1,5 @@
 ---
-title: "Deployment Setup"
+title: "Prepare for Deployment"
 ---
 
 ## Deployment Planning
@@ -23,19 +23,19 @@ A single-node deployment consists of a single server hosting all RegattaDB modul
 
 <Frame>
   <img
-    src="/images/IMG_0279.png"
     alt="IMG 0279"
     title="IMG 0279"
     lightAlt="IMG 0279"
     darkAlt="IMG 0279"
+    src="/images/IMG_0279.png"
     className="dark:hidden"
   />
   <img
-    src="/images/Group-76.png"
     alt="IMG 0279"
     title="IMG 0279"
     lightAlt="IMG 0279"
     darkAlt="IMG 0279"
+    src="/images/Group-76.png"
     className="hidden dark:block"
   />
 </Frame>
@@ -49,19 +49,19 @@ The most common multi-node deployment uses the following topology:
 
 <Frame>
   <img
-    src="/images/Group-75-(1).png"
     alt="IMG 0280"
     title="IMG 0280"
     lightAlt="IMG 0280"
     darkAlt="IMG 0280"
+    src="/images/Group-75-(1).png"
     className="dark:hidden"
   />
   <img
-    src="/images/Group-80.png"
     alt="IMG 0280"
     title="IMG 0280"
     lightAlt="IMG 0280"
     darkAlt="IMG 0280"
+    src="/images/Group-80.png"
     className="hidden dark:block"
   />
 </Frame>
@@ -72,9 +72,7 @@ The most common multi-node deployment uses the following topology:
 
 ### **Provision the Deployment Nodes**
 
-~~Next, provision the nodes that will host your RegattaDB deployment. These may be physical servers, virtual machines (VMs), or containers, provided they meet the minimal [prerequisites](/self-hosted-deployment/prerequisites).~~
-
-> Next, provision the nodes that will host your RegattaDB deployment, ensuring that each node meets the minimum hardware, storage, networking, and software [prerequisites](/self-hosted-deployment/prerequisites).
+Next, provision the nodes that will host your RegattaDB deployment, ensuring that each node meets the minimum hardware, storage, networking, and software [prerequisites](/self-hosted-deployment/prerequisites).
 
 The exact hardware requirements depend on your deployment topology and workload characteristics. For guidance on sizing your deployment, refer to Best Practices or contact Regatta Support for assistance.
 
@@ -170,7 +168,7 @@ All RegattaDB RPM packages are installed under `/opt/regatta/<major.minor>`. For
 
 #### Additional RegattaDB RPM Packages
 
-In addition to the core deployment modules, the RegattaDB self-hosted package includes several utilities that simplify deployment, administration, backup, and troubleshooting. 
+In addition to the core deployment modules, the RegattaDB self-hosted package includes several utilities that simplify deployment, administration, backup, and troubleshooting.
 
 The following RPM packages are included:
 
@@ -200,49 +198,132 @@ regatta-client-<version>.el8.x86_64.rpm
 regatta-connect-<version>.el8.x86_64.rpm
 ```
 
+### Storage Devices
+
+RegattaDB is designed to work directly with **raw block storage devices** to minimize filesystem overhead and achieve the highest possible storage performance. Direct access to raw devices allows RegattaDB to optimize data layout and I/O patterns specifically for database workloads.
+
+#### Storage Requirements
+
+Each **RDB** module must be assigned at least one storage device that is not used as the operating system boot device.
+
+RegattaDB supports virtually any raw block storage device, including:
+
+- Local NVMe devices (recommended for best performance)
+- Local SSD devices
+- SAN-attached block storage (Fibre Channel, iSCSI, etc.)
+- Cloud block storage volumes (for example, Amazon EBS, Azure Managed Disks, or Google Persistent Disk)
+- Shared block storage presented to the operating system as a raw block device
+
+#### Using Filesystem-Backed Storage
+
+Although direct raw block devices are recommended, RegattaDB can also use file-backed storage devices when raw devices are not available. In this configuration, a regular file located on a mounted filesystem is presented to RegattaDB as a storage device. 
+
+For example, the following command creates a sparse 1 TB file on an existing filesystem:
+
+```shellscript
+sudo fallocate -l 1T /mnt/regatta_storage/rdb_device1.dat
+```
+
+The resulting file can then be registered as a storage device during deployment:
+
+```sql
+MANAGE STORAGE DEVICE ADD (
+  NODE "Node01",
+  NAME "Node01_Disk1",
+  PATH "/mnt/regatta_storage/rdb_device1.dat"
+);
+```
+
+While this approach is fully supported, direct raw block devices generally provide the best performance.
+
+#### Persistent Module State
+
+Each RegattaDB module maintains a small amount of persistent state under its repository directory:
+
+```shellscript
+/opt/regatta/current/<module>/<instance>/repo
+```
+
+For example, the repository for the first **RDB** module is located at:
+
+```text
+/opt/regatta/current/rdb/rdb_1/repo
+```
+
+If required by your deployment, this directory may reside on persistent storage by mounting the desired storage device at the appropriate location.
+
+#### Storage Permissions
+
+The deployment user must have read and write access to all storage devices used by RegattaDB.
+
+For raw block devices, assign ownership to the deployment user and group before deployment:
+
+```shellscript
+sudo chown <user>:<group> /dev/path/to/device
+```
+
+Repeat this step for each storage device assigned to RegattaDB.
+
 ### Deployment User
 
 RegattaDB requires a deployment user with the appropriate ownership and permissions for the installation directories, shared memory, log directories, and storage devices.
 
-The deployment user must own the following resources:
+The deployment owns the following resources:
 
-- Regatta installation directory - `/opt/regatta`
-- Shared memory directory - `/dev/shm/Regatta`
-- Log directory - `/var/log/regatta`
+- Regatta installation directory - `/opt/regatta` - created during RPM installation
+- Shared memory directory - `/dev/shm/Regatta` - created automatically by RegattaDB at runtime
+- Log directory - `/var/log/regatta` - created during RPM installation
 - Storage devices allocated for RegattaDB
 
-During installation, the RPM packages automatically create a default deployment user named `regatta`. If you wish to use a different deployment user, follow these steps:
+During installation, the RPM packages automatically create a default deployment user and group named `regatta`. If you wish to use a different deployment user, follow these steps:
 
-1. Change ownership of the RegattaDB installation directory
-   ```shellscript
-   sudo chown -R <user>:<group> /opt/regatta
-   ```
-2. Create or update the shared memory directory - Create the shared memory directory `/dev/shm/Regatta` and assign ownership to the deployment user. If the directory already exists, change its ownership
-   ```shellscript
-   sudo mkdir -p /dev/shm/Regatta
-   sudo chown -R <user>:<group> /dev/shm/Regatta
-   ```
-3. Change ownership of the log directory
-   ```shellscript
-   sudo chown -R <user>:<group> /var/log/regatta
-   ```
-4. Change ownership of the storage devices - Assign ownership of the storage devices allocated to RegattaDB to the deployment user
-   ```shellscript
-   sudo chown -R <user>:<group> /dev/nvme0n1
-   ```
-5. Update the **SM** and **SNA** `systemd` service files - Edit the following service files:
-   ```shellscript
-   /usr/lib/systemd/system/regatta-26.0-sm.service
-   /usr/lib/systemd/system/regatta-26.0-sna.service
-   ```
-   Update the `User` and `Group` directives in the `[Service]` section:
-   ```shellscript
-   [Service]
-   Type=simple
-   User=<user>
-   Group=<group>
-   ```
-   After updating the service files, the **SM** and **SNA** services will run under the configured deployment user instead of the default `regatta` user. Only the **SM** and **SNA** `systemd` services need to be updated. The operational modules are launched by the **SNA** and therefore inherit the configured deployment user.
+#### Installing with a Custom Deployment User
+
+To install RegattaDB with a custom deployment user and/or group, set the `REGATTA_USER` and `REGATTA_GROUP` environment variables when installing the RPM package. Each RPM creates the OS user/group if it doesn't already exist, and applies ownership of its installed files to it.
+
+`REGATTA_USER` and `REGATTA_GROUP` must:
+
+- Not be empty
+- Not be `root`
+- Start with a letter or underscore, and contain only letters, digits, `.`, `_`, or `-`
+
+If a value doesn't meet these requirements, the installation fails immediately with an error. If either variable is left unset, it defaults to `regatta`.
+
+<Warning>
+  When installing with `sudo`, the environment variables must be placed **after** `sudo`, not before it:
+
+  ```bash
+  # Correct - sudo passes the variables through to the installed command
+  sudo REGATTA_USER=myuser REGATTA_GROUP=mygroup yum install regatta-rdb-<version>.el8.x86_64.rpm
+  
+  # Incorrect - sudo resets the environment by default, so these are
+  # dropped before yum ever sees them, silently falling back to `regatta`
+  REGATTA_USER=myuser REGATTA_GROUP=mygroup sudo yum install regatta-rdb-<version>.el8.x86_64.rpm
+  ```
+</Warning>
+
+<Warning>
+  Use the same `REGATTA_USER`/`REGATTA_GROUP` values for every RegattaDB RPM you install. Each package independently resolves the account and applies ownership to its own files, so using inconsistent values across packages will leave some files owned by the wrong user/group.
+</Warning>
+
+**Example**
+
+Given the following RPM packages:
+
+```text
+regatta-cli-<version>.el8.x86_64.rpm
+regatta-client-<version>.el8.x86_64.rpm
+```
+
+Install them with a custom deployment user and group, `myuser`/`mygroup`:
+
+```bash
+sudo REGATTA_USER=myuser REGATTA_GROUP=mygroup yum install \
+  regatta-cli-<version>.el8.x86_64.rpm \
+  regatta-client-<version>.el8.x86_64.rpm
+```
+
+If `myuser`/`mygroup` don't already exist on the system, they are created automatically as a system account (no login shell, no home directory).
 
 ### IP Assignment
 
@@ -260,9 +341,7 @@ Each RegattaDB module requires two ports:
 - A **Communications Port**, used for communication between RegattaDB modules.
 - A **Service Port** used for internal service operations.
 
-~~Although RegattaDB can be configured to use any available ports, we recommend using the default port assignments shown below whenever possible to ensure consistency across deployments.~~
-
-> By default, RegattaDB uses the port assignments shown below. We recommend using these default values unless your deployment requires otherwise (for example, when running multiple RDB modules on a single node).
+By default, RegattaDB uses the port assignments shown below. We recommend using these default values unless your deployment requires otherwise (for example, when running multiple RDB modules on a single node).
 
 | Module | Communications Port | Service Port |
 | :-- | :-- | :-- |
