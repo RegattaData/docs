@@ -45,7 +45,7 @@ A single-node deployment consists of a single server hosting all RegattaDB modul
 The most common multi-node deployment uses the following topology:
 
 - One node hosts all RegattaDB modules, as in a single-node deployment.
-- All additional nodes host both the RDB and SNA modules.
+- All additional nodes host both the **RDB** and **SNA** modules.
 
 <Frame>
   <img
@@ -172,7 +172,7 @@ In addition to the core deployment modules, the RegattaDB self-hosted package in
 
 The following RPM packages are included:
 
-- Regatta Deployment Tool (RDT) - An automated deployment tool for provisioning and configuring RegattaDB clusters. For detailed instructions, refer to the **Regatta Deployment Tool (RDT) Guide**.
+- Regatta Deployment Tool (RDT) - An automated deployment tool for provisioning and configuring RegattaDB clusters. For detailed instructions, refer to the **Regatta Deployment Tool (RDT)** guide.
 - Regatta Debug Tool - A Docker-based utility for connecting to running RegattaDB clusters to perform live diagnostics, troubleshooting, and debugging.
 - Regatta Bench - A benchmarking utility for executing preconfigured workloads against a RegattaDB cluster to evaluate performance and validate deployments.
 
@@ -288,19 +288,6 @@ To install RegattaDB with a custom deployment user and/or group, set the `REGATT
 - Start with a letter or underscore, and contain only letters, digits, `.`, `_`, or `-`
 
 If a value doesn't meet these requirements, the installation fails immediately with an error. If either variable is left unset, it defaults to `regatta`.
-
-<Warning>
-  When installing with `sudo`, the environment variables must be placed **after** `sudo`, not before it:
-
-  ```bash
-  # Correct - sudo passes the variables through to the installed command
-  sudo REGATTA_USER=myuser REGATTA_GROUP=mygroup yum install regatta-rdb-<version>.el8.x86_64.rpm
-  
-  # Incorrect - sudo resets the environment by default, so these are
-  # dropped before yum ever sees them, silently falling back to `regatta`
-  REGATTA_USER=myuser REGATTA_GROUP=mygroup sudo yum install regatta-rdb-<version>.el8.x86_64.rpm
-  ```
-</Warning>
 
 <Warning>
   Use the same `REGATTA_USER`/`REGATTA_GROUP` values for every RegattaDB RPM you install. Each package independently resolves the account and applies ownership to its own files, so using inconsistent values across packages will leave some files owned by the wrong user/group.

@@ -333,7 +333,8 @@
               "self-hosted-deployment/regatta-deployment-tool/configuration",
               "self-hosted-deployment/regatta-deployment-tool/cluster-setup",
               "self-hosted-deployment/regatta-deployment-tool/advanced-deployment-options"
-            ]
+            ],
+            "hidden": true
           },
           {
             "group": "Manual Deployment (Atlit)",
@@ -361,7 +362,8 @@
               "self-hosted-deployment/collecting-data/installation",
               "self-hosted-deployment/collecting-data/setup",
               "self-hosted-deployment/collecting-data/execution"
-            ]
+            ],
+            "hidden": true
           }
         ]
       },
