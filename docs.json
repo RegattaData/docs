@@ -333,16 +333,27 @@
               "self-hosted-deployment/regatta-deployment-tool/configuration",
               "self-hosted-deployment/regatta-deployment-tool/cluster-setup",
               "self-hosted-deployment/regatta-deployment-tool/advanced-deployment-options"
-            ]
+            ],
+            "hidden": true
           },
           {
-            "group": "Manual Deployment",
+            "group": "Manual Deployment (Atlit)",
             "pages": [
               "self-hosted-deployment/manual-deployment/user-setup",
               "self-hosted-deployment/manual-deployment/regatta-software-modules",
               "self-hosted-deployment/manual-deployment/configuration-file",
               "self-hosted-deployment/manual-deployment/firewall",
               "self-hosted-deployment/manual-deployment/starting-the-system"
+            ],
+            "hidden": true
+          },
+          {
+            "group": "Manual Deployment",
+            "pages": [
+              "self-hosted-deployment/manual-deployment-copied-1/regattadb-software-modules",
+              "self-hosted-deployment/manual-deployment-copied-1/prepare-for-deployment",
+              "self-hosted-deployment/manual-deployment-copied-1/high-level-deployment-steps",
+              "self-hosted-deployment/manual-deployment-copied-1/deployment-example-10-node-cluster"
             ]
           },
           {
@@ -351,7 +362,8 @@
               "self-hosted-deployment/collecting-data/installation",
               "self-hosted-deployment/collecting-data/setup",
               "self-hosted-deployment/collecting-data/execution"
-            ]
+            ],
+            "hidden": true
           }
         ]
       },
