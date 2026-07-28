@@ -172,9 +172,9 @@ In addition to the RegattaDB software modules, the RegattaDB self-hosted package
 
 The following RPM packages are included:
 
-- Regatta Deployment Tool (RDT) - An automated deployment tool for provisioning and configuring RegattaDB clusters. For detailed instructions, refer to the **Regatta Deployment Tool (RDT)** guide.
-- Regatta Debug Tool - A Docker-based utility for connecting to running RegattaDB clusters to perform live diagnostics, troubleshooting, and debugging.
-- Regatta Bench - A benchmarking utility for executing preconfigured workloads against a RegattaDB cluster to evaluate performance and validate deployments.
+- Regatta Deployment Tool (RDT) - An automated deployment tool for provisioning and configuring RegattaDB. For detailed instructions, refer to the **Regatta Deployment Tool (RDT)** guide.
+- Regatta Debug Tool - A Docker-based utility for connecting to running RegattaDB systems to perform live diagnostics, troubleshooting, and debugging.
+- Regatta Bench - A benchmarking utility for executing preconfigured workloads against a RegattaDB system to evaluate performance and validate deployments.
 
 ```shellscript
 regatta-bnr-<version>.el8.x86_64.rpm
@@ -216,7 +216,7 @@ RegattaDB supports virtually any raw block storage device, including:
 
 #### Using Filesystem-Backed Storage
 
-Although direct raw block devices are recommended, RegattaDB can also use file-backed storage devices when raw devices are not available. In this configuration, a regular file located on a mounted filesystem is presented to RegattaDB as a storage device. 
+Although direct raw block devices are recommended, RegattaDB can also use file-backed storage devices when raw devices are not available. In this configuration, a regular file located on a mounted filesystem is presented to RegattaDB as a storage device.
 
 For example, the following command creates a sparse 1 TB file on an existing filesystem:
 

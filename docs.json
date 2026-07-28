@@ -350,10 +350,10 @@
           {
             "group": "Manual Deployment",
             "pages": [
-              "self-hosted-deployment/manual-deployment-copied-1/regattadb-software-modules",
-              "self-hosted-deployment/manual-deployment-copied-1/prepare-for-deployment",
-              "self-hosted-deployment/manual-deployment-copied-1/high-level-deployment-steps",
-              "self-hosted-deployment/manual-deployment-copied-1/deployment-example-10-node-cluster"
+              "self-hosted-deployment/manual-deployment/regattadb-software-modules",
+              "self-hosted-deployment/manual-deployment/prepare-for-deployment",
+              "self-hosted-deployment/manual-deployment/high-level-deployment-steps",
+              "self-hosted-deployment/manual-deployment/deployment-example"
             ]
           },
           {

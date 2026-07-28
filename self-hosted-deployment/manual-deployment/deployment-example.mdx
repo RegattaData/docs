@@ -1,8 +1,8 @@
 ---
-title: "Deployment Example: 10-Node Cluster"
+title: "Deployment Example"
 ---
 
-This page walks through the deployment of a simple Multi-Node cluster. The example provides a complete, step-by-step procedure for deploying a 10-node RegattaDB cluster and achieving the target configuration.
+This page walks through the deployment of a 10-Node RegattaDB system. 
 
 ### Step 1: Node Identification and IP Assignment
 
@@ -11,7 +11,7 @@ In this example, the cluster nodes are assigned the following RegattaDB modules:
 - **Node01** – Hosts the **SM**, **GDD**, **DCM**, and **Sequencer** modules, along with its local **SNA** and **RDB** modules. The node hosting the **SM** is commonly referred to as the _Management Node_.
 - **Node02–Node10** – Each node hosts an **SNA** module and an **RDB** module.
 
-Identify the nodes that will participate in the RegattaDB cluster. For each node, define:
+Identify the nodes that will participate in the RegattaDB system. For each node, define:
 
 - An internal IP address for cluster communication.
 - An external IP address for client application access (if applicable).
@@ -20,9 +20,9 @@ For this deployment, we will use the following IP assignments:
 
 - **Node01**
   - Internal: `10.0.0.1`
-  - External: `192.168.1.101` 
-- **Node02–Node10**  
-  - Internal: `10.0.0.2`–`10.0.0.10` 
+  - External: `192.168.1.101`
+- **Node02–Node10**
+  - Internal: `10.0.0.2`–`10.0.0.10`
   - External: `192.168.1.102`–`192.168.1.110`
 
 The module communication and service ports will use the default port assignments described in the [Prepare for Deployment](/self-hosted-deployment/manual-deployment-copied-1/prepare-for-deployment#ip-assignment) guide.
@@ -89,15 +89,15 @@ Expected output:
    Memory: 12.4G
 ```
 
-### Step 4: Connect to the Cluster
+### Step 4: Connect to the System
 
-Before continuing with the deployment, you need a client capable of connecting to the RegattaDB cluster and executing SQL management commands.
+Before continuing with the deployment, you need a client capable of connecting to the RegattaDB system and executing SQL management commands.
 
 In this example, we will use the RegattaDB CLI, which is included in the deployment package. However, any supported RegattaDB client can be used. For information about the available clients, drivers, and integrations, refer to the [**Drivers & Clients**](/drivers-and-clients/connecting-applications-to-regatta) section.
 
 #### Connection Parameters
 
-To connect to the cluster, you will need:
+To connect to the database, you will need:
 
 - A RegattaDB username and password.
 - The address of the **SM** service in the format `<IP>:<PORT>`.
@@ -136,7 +136,7 @@ The CLI prompt is displayed:
 rdb>
 ```
 
-Connect to the cluster:
+Connect to the database:
 
 ```shellscript
 rdb>\connect user=admin pass=RegattaDefault1234! url=10.0.0.1:8840
@@ -148,9 +148,9 @@ If the connection is successful, the CLI displays:
 Successfully connected to cluster
 ```
 
-You are now connected to the RegattaDB cluster and can execute SQL statements as well as RegattaDB management commands.
+You are now connected to RegattaDB and can execute SQL statements as well as RegattaDB management commands.
 
-The remaining deployment steps assume you are connected to the cluster through the [RegattaDB CLI](/drivers-and-clients/regatta-cli). For a complete reference of the SQL management commands, see the [**System Management SQL Specification**.](/sql/system-monitoring/system-management/system-state)
+The remaining deployment steps assume you are connected to the database through the [RegattaDB CLI](/drivers-and-clients/regatta-cli). For a complete reference of the SQL management commands, see the [**System Management SQL Specification**.](/sql/system-monitoring/system-management/system-state)
 
 ### Step 5: Enter the SETUP State
 
@@ -294,7 +294,7 @@ Repeat this step for **Node02** through **Node10**, updating the node name, stor
 
 ### Step 9: Exit the SETUP State and Activate the System
 
-Finalize the deployment by exiting the **SETUP** state and starting the system. Once the system is running, verify that all modules have been provisioned successfully and that the cluster has reached the **ACTIVE** state.
+Finalize the deployment by exiting the **SETUP** state and starting the system. Once the system is running, verify that all modules have been provisioned successfully and that the database has reached the **ACTIVE** state.
 
 ```sql
 MANAGE SYSTEM EXIT SETUP;
@@ -312,4 +312,4 @@ statement executed successfully
 | Active |
 ```
 
-**Your RegattaDB cluster is now fully deployed and ready for use.**
+**Your RegattaDB system is now fully deployed and ready for use.**
