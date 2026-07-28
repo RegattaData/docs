@@ -9,11 +9,11 @@ The first step is defining your deployment topology. The optimal topology depend
 General deployment guidelines:
 
 - Management Modules
-  - **SM** - Deploy a single SM module for every RegattaDB cluster
+  - **SM** - Deploy a single SM module for every RegattaDB system
   - **SNA** - Deploy one agent on every node that hosts at least one Operational Module
 - Operational Modules
-  - **GDD**, **DCM**, **Sequencer** - Deploy exactly one instance of each module per RegattaDB cluster
-  - **RDB** - Deploy at least one RDB module per RegattaDB cluster
+  - **GDD**, **DCM**, **Sequencer** - Deploy one instance of each module per RegattaDB system
+  - **RDB** - Deploy at least one RDB module per RegattaDB system
 
 Below are several common configurations.
 
@@ -168,7 +168,7 @@ All RegattaDB RPM packages are installed under `/opt/regatta/<major.minor>`. For
 
 #### Additional RegattaDB RPM Packages
 
-In addition to the core deployment modules, the RegattaDB self-hosted package includes several utilities that simplify deployment, administration, backup, and troubleshooting.
+In addition to the RegattaDB software modules, the RegattaDB self-hosted package includes several utilities that simplify deployment, administration, backup, and troubleshooting.
 
 The following RPM packages are included:
 
@@ -254,7 +254,7 @@ If required by your deployment, this directory may reside on persistent storage 
 
 #### Storage Permissions
 
-The deployment user must have read and write access to all storage devices used by RegattaDB.
+The [deployment user](/self-hosted-deployment/manual-deployment-copied-1/prepare-for-deployment#deployment-user) must have read and write access to all storage devices used by RegattaDB.
 
 For raw block devices, assign ownership to the deployment user and group before deployment:
 
@@ -275,7 +275,7 @@ The deployment owns the following resources:
 - Log directory - `/var/log/regatta` - created during RPM installation
 - Storage devices allocated for RegattaDB
 
-During installation, the RPM packages automatically create a default deployment user and group named `regatta`. If you wish to use a different deployment user, follow these steps:
+During installation, the RPM packages automatically create a default deployment user and group both named `regatta`. If you wish to use a different deployment user, follow these steps:
 
 #### Installing with a Custom Deployment User
 
@@ -341,7 +341,7 @@ By default, RegattaDB uses the port assignments shown below. We recommend using 
 
 ### Firewall Setup
 
-Configure the firewall on each node to allow traffic on the required RegattaDB ports.
+Configure the firewall on each node to allow traffic on the required RegattaDB IPs and ports.
 
 At a minimum, ensure that:
 
