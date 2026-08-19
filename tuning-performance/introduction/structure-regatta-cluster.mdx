@@ -1,10 +1,10 @@
 ---
-title: Structure of a Regatta cluster
+title: "Structure of a Regatta cluster"
 ---
 
-A Regatta cluster runs on one or more nodes.  A node may be a bare-metal server or a virtual machine.  
+A Regatta cluster runs on one or more nodes.  A node may be a bare-metal server or a virtual machine.
 
-Within the nodes, a cluster of software modules runs the database operations.  One or more modules may be placed in each node.  Regatta has several different module types performing different functionalities.  The _RDB_ module holds tables and indexes and runs transactions.  There are several other modules dedicated to other cluster-wide tasks but for the sake of this document we only care about the RDB modules.  Each RDB module runs on a separate Regatta node.
+Within the nodes, a cluster of software modules runs the database operations. One or more modules may be placed in each node. Regatta has several different module types performing different functionalities. The _RDB_ module holds tables and indexes and runs transactions. For best performance, we recommend using symmetric nodes for RDB modules, ensuring they match in CPU, RAM, disk capacity, and network specifications. There are several other modules dedicated to other cluster-wide tasks but for the sake of this document we only care about the RDB modules. Each RDB module runs on a separate Regatta node.
 
 The storage devices on the nodes running the RDB modules are used for storing table data (rows) and indexes.  In the example cluster below, devices are named by their module number and then the device number within that module.  For example, m3d2 is a device attached to the node running module number 3.
 
