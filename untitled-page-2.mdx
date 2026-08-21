@@ -65,3 +65,18 @@ WITH ( **_option_** \[, ... \] ) 
 Specifies various options for the index creation. The options are listed below. Some of them apply to any vector index type, and some are specific to a certain type.
 
 ## General Options
+
+**_parallelism_** = \{FULL, HIGH, MEDIUM, LOW\} 
+
+This is a hint for determining the number of CPU cores that participate in the construction of the index in each module. The default value is FULL, which is the highest level of parallelism. The actual number of cores participating in the index construction is determined by an internal RegattaDB algorithm and depends on the actual number of cores. 
+
+The higher the parallelism is set, the faster the index will be built. On the other hand, highly-parallel build can potentially impact transaction performance, especially when that processing is CPU-intensive. If you create a vector index while the system is running a high load of mission-critical transaction processing, consider using this parameter to lower the parallelism of the index build to avoid impact to the transactions performance. 
+
+**_Modules_** = ((module\_name \[, parallelism\]), ...) 
+
+Specifies a list of modules for which the vector index should be built, out of the modules in which the table resides. The index will be built only for rows residing in those modules. If this option is not specified, the index is built for all the table rows. 
+
+When modules are specified, an optional parallelism parameter can be used for each specified module. This allows setting parallelism on a per-module basis, overriding the index-wide parameter. 
+
+<Note>
+</Note>
