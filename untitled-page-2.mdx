@@ -24,7 +24,7 @@ Other options are specific to the index type and are listed below.
 
 ## Description
 
-A vector index can be created on a vector column to provide appropriate searches for vectors that are “close” to a given vector according to one of the distance metrics described in the section ‎3 above. Regatta supports two types of vector indexes: HNSW and IVFFLAT. 
+A vector index can be created on a vector column to provide appropriate searches for vectors that are “close” to a given vector according to one of the distance metrics described in the previous section. Regatta supports two types of vector indexes: HNSW and IVFFLAT. 
 
 Each index type supports all the distance metrics, but each index uses a single distance metric and supports approximate searches only for that metric. Multiple vector indexes can be created for the same vector column, as long as they differ in the combination of index type and distance metric. 
 
