@@ -114,5 +114,15 @@ This parameter is optional. The default is `FUNCTION MIN_DIV_SQRT(1000) `
 
 Example:
 
-```text
+```sql
+-- Create an IVEFLAT vector index with default parameters and system- generated name on all the modules the table resides in
+CREATE VECTOR INDEX ON mytable USING IVEFLAT (mycol IP);
+
+-- Create an HNSW vector index with your own name and parameter values on a selected set of modules, parallelism control and other options
+CREATE VECTOR INDEX mytable_mycol_hnsw_ip ON mytable USING HNSW (mycol L2)
+	WITH (parallelisn = HIGH,
+		  modules = ((module_a), (module_b, MEDIUM),
+		  ef_construction = 32,
+		  m = 10
+	);
 ```
