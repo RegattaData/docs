@@ -38,7 +38,7 @@ The following limitations apply:
 
 Examples:
 
-```text
+```plsql
 -- Add two modules
 ALTER VECTOR INDEX my_table_vec1_hnsw_ip
 	ADD MODULE module_c
@@ -48,4 +48,5 @@ ALTER VECTOR INDEX my_table_vec1_hnsw_ip
 ALTER VECTOR INDEX my_table_vec1_hnsw_ip DROP MODULE module_b;
 
 -- Abort any module im which the build process is in the progress
+ALTER VECTOR INDEX my_table_vec1_hnsw_ip ABORT MODULE ALL;
 ```
