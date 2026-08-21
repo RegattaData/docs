@@ -45,4 +45,7 @@ ALTER VECTOR INDEX my_table_vec1_hnsw_ip
 	ADD MODULE module_d MEDIUM;
 
 -- Remove one module
+ALTER VECTOR INDEX my_table_vec1_hnsw_ip DROP MODULE module_b;
+
+-- Abort any module im which the build process is in the progress
 ```
