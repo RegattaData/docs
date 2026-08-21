@@ -23,3 +23,11 @@ Other options are specific to the index type and are listed below.
 ```
 
 ## Description
+
+A vector index can be created on a vector column to provide appropriate searches for vectors that are “close” to a given vector according to one of the distance metrics described in section ‎3 above. Regatta supports two types of vector indexes: HNSW and IVFFLAT. 
+
+Each index type supports all the distance metrics, but each index uses a single distance metric and supports approximate searches only for that metric. Multiple vector indexes can be created for the same vector column, as long as they differ in the combination of index type and distance metric. 
+
+An index vector is created for all the rows of a table, or only for rows residing in specific modules. Modules can be added to and removed from the index at any time using the ALTER <u>VECTOR </u>INDEX command (see section ‎4.3. However, once the index was built for a specific module, it does not change – it is not updated when rows are inserted or updated. In order to update the index for the rows residing in a module, the module should be removed from the index and added back. This will result in rebuilding the index for the module’s rows. 
+
+The `CREATE VECTOR INDEX` command creates the index and initiates the build process. It returns once the index was created and the build process was initiated. Only after the build process is completed, the index becomes usable for approximate vector search. The `SHOW VECTOR INDEXES` command (see section ‎5.1) can be used to query the status of the index. 
