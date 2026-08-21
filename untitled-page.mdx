@@ -39,12 +39,13 @@ INSERT INTO my_table VALUES (1, '[1,2,3,4]'), (2, '[1.4, 1.8, 2, 2.66]');
 
 The following are binary operators that return the distance between two vectors. The vectors must be of the same dimension. 
 
-\<-\>  – L2 distance 
+<Icon icon="hyphen" /> L2 distance
 
-\<#\>  – (negative) inner product 
+<Icon icon="hashtag" /> (negative) Inner product
 
-\<=\>  – cosine distance 
+<Icon icon="equals" /> Cosine distance
 
-- No other operators or functions are supported for the vector type (e.g., no vector arithmetic such as adding vectors or multiplying a vector by a scalar). 
-
-- No aggregations are supported on vector columns. 
+<Note>
+  - No other operators or functions are supported for the vector type (e.g., no vector arithmetic such as adding vectors or multiplying a vector by a scalar). 
+  - No aggregations are supported on vector columns. 
+</Note>
