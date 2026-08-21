@@ -6,5 +6,26 @@ The following command alters a vector index.
 
 ## Synopsis
 
-```text
+```sql
+ALTER VECTOR INDEX index_name 
+  action [, ...] 
+
+where action is one of the following: 
+  ADD MODULE module_idname [ parallelism ] 
+  DROP MODULE module_idname 
+  ABORT MODULE ALL 
 ```
+
+## Description
+
+This command can be used to add modules to and remove modules from an existing vector index. It can also be used to abort the build process for modules on which the index is currently being built. 
+
+Each `ALTER VECTOR INDEX` command may include only one type of clause out of ADD, DROP and ABORT. It can include multiple clauses of the same type. 
+
+Adding modules initiates the build process for the rows residing in the specified modules. The command returns once the build process has been initiated. Only after the build process is completed, the rows residing on those modules are included in approximate vector search. The SHOW VECTOR INDEX MODULES command (see section ‎5.2) can be used to query the status of the build process on the modules. 
+
+Dropped modules must be in final state, i.e. COMPLETE or FAILED. (See SHOW VECTOR INDEX MODULES command (see section ‎5.2) for description of module states). Aborted modules must be in state BUILDING, i.e., during the build process. 
+
+Dropping all the modules of a vector index does not cause dropping of the index. The index remains with zero modules, and it’s a valid state. However, trying to perform approximate search queries on the index will result in an error. 
+
+The ABORT clause aborts index build processes that are in progress. The aborted modules are removed from the index. 
