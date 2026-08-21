@@ -4,4 +4,20 @@ title: "Creating a Vector Index"
 
 The following command creates a vector index.
 
-### Synopsis
+## Synopsis
+
+```sql
+CREATE VECTOR INDEX [ index_name ] ON table_name  
+  USING { HNSW | IVFFLAT } (column_name distance_metric) 
+  [ WITH ( option [, ... ] ) ] 
+
+where distance_metric is one of {COSINE, L2, IP} 
+
+and option is in the form of <param> = <value> 
+
+The following options apply to any vector index: 
+  parallelism = {FULL, HIGH, MEDIUM, LOW} 
+  modules = ((module_idname [, parallelism]), ...) 
+
+Other options are specific to the index type and are listed below. 
+```
