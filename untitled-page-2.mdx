@@ -31,3 +31,35 @@ Each index type supports all the distance metrics, but each index uses a single 
 An index vector is created for all the rows of a table, or only for rows residing in specific modules. Modules can be added to and removed from the index at any time using the `ALTER VECTOR INDEX` command (see **alter vector indexes** However, once the index was built for a specific module, it does not change – it is not updated when rows are inserted or updated. In order to update the index for the rows residing in a module, the module should be removed from the index and added back. This will result in rebuilding the index for the module’s rows. 
 
 The `CREATE VECTOR INDEX` command creates the index and initiates the build process. It returns once the index was created and the build process was initiated. Only after the build process is completed, the index becomes usable for approximate vector search. The `SHOW VECTOR INDEXES` command (see **show vector indexes**) can be used to query the status of the index. 
+
+## Parameters
+
+**_index\_name_** 
+
+The name of the index. If not specified, RegattaDB generates a name. 
+
+ON **_table\_name_** 
+
+Specifies the table containing the vector column to be indexed. 
+
+USING \{ HNSW | IVFFLAT \} 
+
+This parameter indicates that the index is a vector index that supports approximate search. 
+
+**_column\_name_** 
+
+Specifies the column to be indexed. The column must be of type vector. 
+
+**_distance\_metric_** 
+
+This parameter can be one of the following: 
+
+COSINE – Cosine similarity between vectors. 
+
+L2 – Euclidean distance. 
+
+IP – Inner product (also known as dot product) 
+
+WITH ( **_option_** \[, ... \] ) 
+
+Specifies various options for the index creation. The options are listed below. Some of them apply to any vector index type, and some are specific to a certain type.
