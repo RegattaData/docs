@@ -28,6 +28,8 @@ In order to support vector indexing and searches, we introduce the VECTOR type. 
 
 - Vector values are passed as strings following pgvector syntax. 
 
+Example:
+
 ```sql
 CREATE TABLE my_table (id INTEGER PRIMARY KEY INDEX, vec VECTOR(4));
 INSERT INTO my_table VALUES (1, '[1,2,3,4]'), (2, '[1.4, 1.8, 2, 2.66]');  
