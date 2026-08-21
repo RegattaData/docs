@@ -289,6 +289,12 @@
               "sql/appendices/database-limitations",
               "sql/appendices/reserved-words"
             ]
+          },
+          {
+            "group": "Vector Index",
+            "pages": [
+              "untitled-page"
+            ]
           }
         ]
       },
