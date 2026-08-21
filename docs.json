@@ -294,7 +294,13 @@
             "group": "Vector Index",
             "pages": [
               "untitled-page",
-              "untitled-page-2"
+              {
+                "group": "DDL",
+                "pages": [
+                  "untitled-page-2",
+                  "untitled-page-3"
+                ]
+              }
             ]
           }
         ]
