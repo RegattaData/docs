@@ -3,3 +3,49 @@ title: "Performing Approximate Vector Searches"
 ---
 
 ## Select Statements
+
+When vector-distance operators appear within a SELECT statement, the following behavior applies: 
+
+When the operator is not combined with ORDER BY and LIMIT, an exact match is applied. That implies full table (or index) scan. 
+
+Examples:
+
+```sql
+-- Select rows within a certain distance
+SELECT * FROM table WHERE vec <-> '[1,2,3]' < 5;
+
+-- Select all rows ordered by their distance from a given vector
+SELECT * FROM table ORDER BY vec <=> '[1,2,3]';
+
+-- Returns the distances of all the rows from a given vector
+SELECT vec <#> '[1,2,3]' FROM table;
+```
+
+When combined with `ORDER_BY` and `LIMIT` ,  the following rules apply:
+
+- If there is **no** vector index for that distance metric, exact match is applied. That implies full table (or index) scan.
+- If there is **one** vector index for that distance metric, approximate match is applied.
+- If there is **more than one** vector index for that distance metric, the query must specify which vector index to use using the `index_type` param described below.
+
+For example:
+
+```sql
+-- Select the closest 5 rows, perform approximate search if index exists
+SELECT * FROM table ORDER BY vec <-> '[1,2,3]' LIMIT 5;
+```
+
+## Query Parameters
+
+### The Supported query parameters
+
+The following are query parameters specific to vector index searches.
+
+`search_type = {  EXACT | IVEFLAT }` <br />Specifies whether the approximate or exact search should be done. Note that this can be used to override the rules defined above. In particular, it can be used to force an exact search where otherwise an approximate search would be performed. 
+
+Index\_type = \{ HNSW | IVFFLAT \} <br />Specifies which index type to use. This is required when there are two vector indexes for the same column and the same distance metric. 
+
+hnsw\_ef\_search = **_number_** <br />This parameter is relevant to search using HNSW index. It specifies the size of the dynamic candidate list for searching the graph. Valid values are integers from 1 to 65535 inclusive. If not specified, it defaults to 64. 
+
+ivfflat\_probes = **_number_** <br />This parameter is relevant to search using IVFFLAT index. Specifies the number of clusters to search in. Valid values are integers from 1 to the number of clusters (which was determined in creation). If not specified, it defaults to 1. 
+
+modules = (module\_name \[, ...\]) <br />By default, a vector index search is performed on all the modules that have a complete vector index. You may specify specific module(s) and limit the query to those modules
