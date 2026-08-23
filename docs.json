@@ -297,9 +297,9 @@
               {
                 "group": "DDL",
                 "pages": [
-                  "untitled-page-2",
-                  "untitled-page-3",
-                  "untitled-page-4"
+                  "create-vector-index",
+                  "delete-vector-index",
+                  "modify-vector-index"
                 ]
               },
               "show-commands",
