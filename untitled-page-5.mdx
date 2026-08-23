@@ -16,4 +16,24 @@ SHOW VECTOR INDEXES [LIKE 'pattern' ] [ IN TABLE table_name ]
 
 ### Parameters
 
-`LIKE 'pattern'`<br />
+`LIKE 'pattern'`<br />Filter indexes by names matching the given pattern. 
+
+The pattern is case-sensitive with optional leading and/or trailing ‘%’ signs. The ‘%’ sign stands for a sequence of zero or more characters of any kind. For example, ‘foo%’ will match all the index names beginning with “foo” and ‘%foo%’ will match all the indexes that have “foo” anywhere in their name.
+
+`IN TABLE table_name `<br />Show only the indexes in the given table. 
+
+### Output
+
+The output is tabular, each row represents a vector index. The following table lists the columns.
+
+| Name | Type | Description |
+| --- | --- | --- |
+| TABLE\_NAME | VARCHAR(127) | The name of the table |
+| COLUMN\_NAME | VARCHAR(127) | The name of the indexed column |
+| INDEX\_NAME | VARCHAR(127) | The name of the vector index |
+| INDEX\_TYPE | VARCHAR(16) | The vector index type – either ‘HNSW’ or ‘IVFFLAT’ |
+| DISTANCE\_METRIC | VARCHAR(16) | The distance metric – one of ‘COSINE’, ‘L2’, ‘IP’ |
+| PARAMETERS | VARCHAR(127) | Parameters of the index. |
+| MODULES | VARCHAR(1000) |  |
+| STATE | VARCHAR(16) |  |
+| FAILURE\_REASON | VARCHAR(128) |  |
