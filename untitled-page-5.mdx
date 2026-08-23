@@ -52,4 +52,14 @@ SHOW VECTOR INDEX MODULES IN INDEX index_name [ ALL ]
 
 `IN INDEX index_name`<br />Specifies the index to show. This is a <u>mandatory</u> parameter.
 
-`ALL`<br />If this optional parameter is specified, all the modules in which the table may have rows are listed. By default, only the modules ~~that~~ that were added to this vector index are included in the output. 
+`ALL`<br />If this optional parameter is specified, all the modules in which the table may have rows are listed. By default, only the modules that were added to this vector index are included in the output. 
+
+### Output
+
+The output is tabular, each row represents a module. The following table lists the columns.
+
+| Name | Type | Description |
+| --- | --- | --- |
+| NAME | VARCHAR(128) | The name of the module. |
+| STATE | VARCHAR(16) | One of the following:<br />_COMPLETE_ - The build is complete, rows included in searches. <br />_BUILDING_ - The build is in progress.<br />_FAILED_ - The build failed.<br />_NONE_ -The module was not added to the vector index. |
+| FAILURE\_REASON | VARCHAR(128) | In case the state is _FAILED_, provides information about the failure. |
