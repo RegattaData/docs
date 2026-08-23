@@ -49,3 +49,28 @@ The following are query parameters specific to vector index searches.
 `ivfflat_probes = number `<br />This parameter is relevant to search using IVFFLAT index. Specifies the number of clusters to search in. Valid values are integers from 1 to the number of clusters (which was determined in creation). If not specified, it defaults to 1. 
 
 `modules = (module_name [, ...])` <br />By default, a vector index search is performed on all the modules that have a complete vector index. You may specify specific module(s) and limit the query to those modules.
+
+### Examples
+
+In the following examples, assume all vector columns have vector indexes.
+
+```sql
+SELECT * FROM table
+	ORDER BY vec <-> '[1,2,3]' LIMIT 5
+	PARAMS (search_type = EXACT); -- override default
+
+SELECT * FROM table
+	ORDER BY vec <-> '[1,2,3]' LIMIT 5
+	PARAMS (search_type = APPROX); -- this is actually the default
+
+-- approximate search on a vector when there are two vector indexes
+-- with the same distance metrics
+SELECT * FROM table
+	ORDER BY vec <-> '[1,2,3]' LIMIT 5
+	PARAMS (index_type = HNSW);
+
+-- perform the query only on a specific set of modules
+SELECT * FROM table
+	ORDER BY vec <-> '[1,2,3]' LIMIT 5
+	PARAMS (hnsw_ef_search = 32, modules = (module_a, module_b));  
+```
