@@ -82,5 +82,43 @@ The following limitations apply to approximate search queries:
 - `OFFSET `is not supported with approximate search queries. 
 - `LIMIT `is limited to 65535 with approximate search queries. If a higher number is specified, exact search is performed. Specifying a `LIMIT `higher than 65535 and parameter `search_type = APPROX` is not allowed. 
 - It is not allowed to include a vector distance expressions in a hierarchical `ORDER BY `with `LIMIT `using approximate search. 
-  ```text
-  ```
+
+For example, the following queries are not supported and would result in an error:
+
+```sql
+SELECT * FROM table 
+	ORDER BY vec1 <-> '[1,2,3]', vec2 <-> '[5,6,7]' LIMIT 5
+	PARAMS (search_type = APPROX);
+
+SELECT * FROM table1 JOIN table2 ON table1.id = table2.id
+	ORDER BY table1.vec <-> '[1,2,3]', table2.vec <-> '[5,6,7]' LIMIT 5
+	PARAMS (search_type = APPROX);
+
+SELECT * FROM table
+	ORDER BY vec1 <-> '[1,2,3]', color LIMIT 50
+	PARAMS (search_type = APPROX);
+
+SELECT * FROM table
+	ORDER BY color, vec1 <-> '[1,2,3]', LIMIT 50
+	PARAMS (search_type = APPROX);
+```
+
+<Note>
+  All those queries can be performed with exact search by omitting the `PARAMS (search_type = APPROX)` clause.
+</Note>
+
+Note that a table **can** have more than one indexed vector column, the limitation applies only to a query that includes a vector column in combination with other columns in the same `ORDER BY` clause. Such query cannot use approximate search. 
+
+Approximate search is not allowed on intermediate results such as join queries, only on table queries. For example: 
+
+```sql
+-- this will result in an error
+SELECT * FROM table1 JOIN table2 ON table1.color = table2.color
+	ORDER BY table1.vec1 <-> '[1,2,3]' LIMIT 10
+
+-- this will work
+SELECT * FROM
+	(SELECT * from table1 ORDER BY table1.vec1 <-> '[1,2,3]' LIMIT 10
+		PARAMS (search_type = APPROX) as t1
+	JOIN table2 ON t1.color = table2.color;
+```
