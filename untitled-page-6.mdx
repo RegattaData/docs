@@ -74,3 +74,11 @@ SELECT * FROM table
 	ORDER BY vec <-> '[1,2,3]' LIMIT 5
 	PARAMS (hnsw_ef_search = 32, modules = (module_a, module_b));  
 ```
+
+### Limitations for Approximate Search Queries
+
+The following limitations apply to approximate search queries:
+
+- `OFFSET `is not supported with approximate search queries. 
+
+- LIMIT is limited to 65535 with approximate search queries. If a higher number is specified, exact search is performed. Specifying a LIMIT higher than 65535 and parameter search\_type = APPROX is not allowed. 
