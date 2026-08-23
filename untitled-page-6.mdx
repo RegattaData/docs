@@ -40,12 +40,12 @@ SELECT * FROM table ORDER BY vec <-> '[1,2,3]' LIMIT 5;
 
 The following are query parameters specific to vector index searches.
 
-`search_type = {  EXACT | IVEFLAT }` <br />Specifies whether the approximate or exact search should be done. Note that this can be used to override the rules defined above. In particular, it can be used to force an exact search where otherwise an approximate search would be performed. 
+`search_type = { EXACT | IVEFLAT }` <br />Specifies whether the approximate or exact search should be done. Note that this can be used to override the rules defined above. In particular, it can be used to force an exact search where otherwise an approximate search would be performed. 
 
-Index\_type = \{ HNSW | IVFFLAT \} <br />Specifies which index type to use. This is required when there are two vector indexes for the same column and the same distance metric. 
+`Index_type = { HNSW | IVFFLAT } `<br />Specifies which index type to use. This is required when there are two vector indexes for the same column and the same distance metric. 
 
-hnsw\_ef\_search = **_number_** <br />This parameter is relevant to search using HNSW index. It specifies the size of the dynamic candidate list for searching the graph. Valid values are integers from 1 to 65535 inclusive. If not specified, it defaults to 64. 
+`hnsw_ef_search = number `<br />This parameter is relevant to search using HNSW index. It specifies the size of the dynamic candidate list for searching the graph. Valid values are integers from 1 to 65535 inclusive. If not specified, it defaults to 64. 
 
-ivfflat\_probes = **_number_** <br />This parameter is relevant to search using IVFFLAT index. Specifies the number of clusters to search in. Valid values are integers from 1 to the number of clusters (which was determined in creation). If not specified, it defaults to 1. 
+`ivfflat_probes = number `<br />This parameter is relevant to search using IVFFLAT index. Specifies the number of clusters to search in. Valid values are integers from 1 to the number of clusters (which was determined in creation). If not specified, it defaults to 1. 
 
-modules = (module\_name \[, ...\]) <br />By default, a vector index search is performed on all the modules that have a complete vector index. You may specify specific module(s) and limit the query to those modules
+`modules = (module_name [, ...])` <br />By default, a vector index search is performed on all the modules that have a complete vector index. You may specify specific module(s) and limit the query to those modules.
