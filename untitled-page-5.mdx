@@ -39,3 +39,17 @@ The output is tabular, each row represents a vector index. The following table l
 | FAILURE\_REASON | VARCHAR(128) | In case the state is _FAILED_, provides information about the failure. |
 
 ## Show Vector Index Modules
+
+This command shows the modules included in a vector index and their states.
+
+### Synopsis
+
+```sql
+SHOW VECTOR INDEX MODULES IN INDEX index_name [ ALL ]
+```
+
+### Parameters
+
+`IN INDEX index_name`<br />Specifies the index to show. This is a <u>mandatory</u> parameter.
+
+`ALL`<br />If this optional parameter is specified, all the modules in which the table may have rows are listed. By default, only the modules ~~that~~ that were added to this vector index are included in the output. 
