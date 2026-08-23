@@ -293,7 +293,7 @@
           {
             "group": "Vector Index",
             "pages": [
-              "untitled-page",
+              "introduction",
               {
                 "group": "DDL",
                 "pages": [
@@ -302,7 +302,7 @@
                   "untitled-page-4"
                 ]
               },
-              "untitled-page-5",
+              "show-commands",
               "untitled-page-6"
             ]
           }
