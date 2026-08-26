@@ -293,17 +293,17 @@
           {
             "group": "Vector Index",
             "pages": [
-              "vi-introduction",
+              "sql/vector-index/vi-introduction",
               {
                 "group": "DDL",
                 "pages": [
-                  "ddl/create-vector-index",
-                  "ddl/delete-vector-index",
-                  "ddl/modify-vector-index"
+                  "sql/vector-index/ddl/create-vector-index",
+                  "sql/vector-index/ddl/delete-vector-index",
+                  "sql/vector-index/ddl/modify-vector-index"
                 ]
               },
-              "vi-show-commands",
-              "vi-perf-appr-vec-searches"
+              "sql/vector-index/vi-show-commands",
+              "sql/vector-index/vi-perf-appr-vec-searches"
             ]
           }
         ]
