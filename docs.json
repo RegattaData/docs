@@ -303,7 +303,7 @@
                 ]
               },
               "sql/vector-index/show-commands",
-              "sql/vector-index/perf-appr-vec-searches"
+              "sql/vector-index/performing-approximate-vector-searches"
             ]
           }
         ]
