@@ -1,0 +1,65 @@
+---
+title: "Show Commands"
+---
+
+The following commands are available to query vector indexes.
+
+## Show Vector Indexes
+
+This command shows all the vector indexes in the system.
+
+### Synopsis
+
+```sql
+SHOW VECTOR INDEXES [LIKE 'pattern' ] [ IN TABLE table_name ]
+```
+
+### Parameters
+
+`LIKE 'pattern'`<br />Filter indexes by names matching the given pattern. 
+
+The pattern is case-sensitive with optional leading and/or trailing ‘%’ signs. The ‘%’ sign stands for a sequence of zero or more characters of any kind. For example, ‘foo%’ will match all the index names beginning with “foo” and ‘%foo%’ will match all the indexes that have “foo” anywhere in their name.
+
+`IN TABLE table_name `<br />Show only the indexes in the given table. 
+
+### Output
+
+The output is tabular, each row represents a vector index. The following table lists the columns.
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `TABLE_NAME` | `VARCHAR(127)` | The name of the table |
+| `COLUMN_NAME` | `VARCHAR(127)` | The name of the indexed column |
+| `INDEX_NAME` | `VARCHAR(127)` | The name of the vector index |
+| `INDEX_TYPE` | `VARCHAR(16)` | The vector index type – either ‘`HNSW`’ or ‘`IVFFLAT`’ |
+| `DISTANCE_METRIC` | `VARCHAR(16)` | The distance metric – one of ‘`COSINE`’, ‘`L2`’, ‘`IP`’ |
+| `PARAMETERS` | `VARCHAR(127)` | Parameters of the index. |
+| `MODULES` | `VARCHAR(1000)` | Comma-separated list of module names. If it doesn’t fit in 1000 characters, includes a partial trimmed list. |
+| `STATE` | `VARCHAR(16)` | One of the following: _FAILED_ – The index build had failed on at least one module. _BUILDING_ – Index build in progress on any of the modules. _COMPLETE_ – The index build is complete on all the modules. |
+| `FAILURE_REASON` | `VARCHAR(128)` | In case the state is _FAILED_, provides information about the failure. |
+
+## Show Vector Index Modules
+
+This command shows the modules included in a vector index and their states.
+
+### Synopsis
+
+```sql
+SHOW VECTOR INDEX MODULES IN INDEX index_name [ ALL ]
+```
+
+### Parameters
+
+`IN INDEX index_name`<br />Specifies the index to show. This is a <u>mandatory</u> parameter.
+
+`ALL`<br />If this optional parameter is specified, all the modules in which the table may have rows are listed. By default, only the modules that were added to this vector index are included in the output. 
+
+### Output
+
+The output is tabular, each row represents a module. The following table lists the columns.
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `NAME` | `VARCHAR(128)` | The name of the module. |
+| `STATE` | `VARCHAR(16)` | One of the following:<br />_COMPLETE_ - The build is complete, rows included in searches. <br />_BUILDING_ - The build is in progress.<br />_FAILED_ - The build failed.<br />_NONE_ -The module was not added to the vector index. |
+| `FAILURE_REASON` | `VARCHAR(128)` | In case the state is _FAILED_, provides information about the failure. |

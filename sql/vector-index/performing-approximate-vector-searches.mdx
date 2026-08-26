@@ -1,0 +1,124 @@
+---
+title: "Performing Approximate Vector Searches"
+---
+
+## Select Statements
+
+When vector-distance operators appear within a `SELECT `statement, the following behavior applies: 
+
+When the operator is not combined with `ORDER BY` and `LIMIT`, an exact match is applied. That implies full table (or index) scan. 
+
+Examples:
+
+```sql
+-- Select rows within a certain distance
+SELECT * FROM table WHERE vec <-> '[1,2,3]' < 5;
+
+-- Select all rows ordered by their distance from a given vector
+SELECT * FROM table ORDER BY vec <=> '[1,2,3]';
+
+-- Returns the distances of all the rows from a given vector
+SELECT vec <#> '[1,2,3]' FROM table;
+```
+
+When combined with `ORDER_BY` and `LIMIT` ,  the following rules apply:
+
+- If there is **no** vector index for that distance metric, exact match is applied. That implies full table (or index) scan.
+- If there is **one** vector index for that distance metric, approximate match is applied.
+- If there is **more than one** vector index for that distance metric, the query must specify which vector index to use using the `index_type` param described below.
+
+For example:
+
+```sql
+-- Select the closest 5 rows, perform approximate search if index exists
+SELECT * FROM table ORDER BY vec <-> '[1,2,3]' LIMIT 5;
+```
+
+## Query Parameters
+
+### The Supported query parameters
+
+The following are query parameters specific to vector index searches.
+
+`search_type = { EXACT | IVEFLAT }` <br />Specifies whether the approximate or exact search should be done. Note that this can be used to override the rules defined above. In particular, it can be used to force an exact search where otherwise an approximate search would be performed. 
+
+`Index_type = { HNSW | IVFFLAT } `<br />Specifies which index type to use. This is required when there are two vector indexes for the same column and the same distance metric. 
+
+`hnsw_ef_search = number `<br />This parameter is relevant to search using HNSW index. It specifies the size of the dynamic candidate list for searching the graph. Valid values are integers from 1 to 65535 inclusive. If not specified, it defaults to 64. 
+
+`ivfflat_probes = number `<br />This parameter is relevant to search using IVFFLAT index. Specifies the number of clusters to search in. Valid values are integers from 1 to the number of clusters (which was determined in creation). If not specified, it defaults to 1. 
+
+`modules = (module_name [, ...])` <br />By default, a vector index search is performed on all the modules that have a complete vector index. You may specify specific module(s) and limit the query to those modules.
+
+### Examples
+
+In the following examples, assume all vector columns have vector indexes.
+
+```sql
+SELECT * FROM table
+	ORDER BY vec <-> '[1,2,3]' LIMIT 5
+	PARAMS (search_type = EXACT); -- override default
+
+SELECT * FROM table
+	ORDER BY vec <-> '[1,2,3]' LIMIT 5
+	PARAMS (search_type = APPROX); -- this is actually the default
+
+-- approximate search on a vector when there are two vector indexes
+-- with the same distance metrics
+SELECT * FROM table
+	ORDER BY vec <-> '[1,2,3]' LIMIT 5
+	PARAMS (index_type = HNSW);
+
+-- perform the query only on a specific set of modules
+SELECT * FROM table
+	ORDER BY vec <-> '[1,2,3]' LIMIT 5
+	PARAMS (hnsw_ef_search = 32, modules = (module_a, module_b));  
+```
+
+### Limitations for Approximate Search Queries
+
+The following limitations apply to approximate search queries:
+
+- `OFFSET `is not supported with approximate search queries. 
+- `LIMIT `is limited to 65535 with approximate search queries. If a higher number is specified, exact search is performed. Specifying a `LIMIT `higher than 65535 and parameter `search_type = APPROX` is not allowed. 
+- It is not allowed to include a vector distance expressions in a hierarchical `ORDER BY `with `LIMIT `using approximate search.
+
+For example, the following queries are not supported and would result in an error:
+
+```sql
+SELECT * FROM table 
+	ORDER BY vec1 <-> '[1,2,3]', vec2 <-> '[5,6,7]' LIMIT 5
+	PARAMS (search_type = APPROX);
+
+SELECT * FROM table1 JOIN table2 ON table1.id = table2.id
+	ORDER BY table1.vec <-> '[1,2,3]', table2.vec <-> '[5,6,7]' LIMIT 5
+	PARAMS (search_type = APPROX);
+
+SELECT * FROM table
+	ORDER BY vec1 <-> '[1,2,3]', color LIMIT 50
+	PARAMS (search_type = APPROX);
+
+SELECT * FROM table
+	ORDER BY color, vec1 <-> '[1,2,3]', LIMIT 50
+	PARAMS (search_type = APPROX);
+```
+
+<Note>
+  All those queries can be performed with exact search by omitting the `PARAMS (search_type = APPROX)` clause.
+</Note>
+
+Note that a table **can** have more than one indexed vector column, the limitation applies only to a query that includes a vector column in combination with other columns in the same `ORDER BY` clause. Such query cannot use approximate search. 
+
+Approximate search is not allowed on intermediate results such as join queries, only on table queries. For example: 
+
+```sql
+-- this will result in an error
+SELECT * FROM table1 JOIN table2 ON table1.color = table2.color
+	ORDER BY table1.vec1 <-> '[1,2,3]' LIMIT 10
+
+-- this will work
+SELECT * FROM
+	(SELECT * from table1 ORDER BY table1.vec1 <-> '[1,2,3]' LIMIT 10
+		PARAMS (search_type = APPROX) as t1
+	JOIN table2 ON t1.color = table2.color;
+```
