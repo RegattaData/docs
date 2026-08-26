@@ -60,6 +60,6 @@ The output is tabular, each row represents a module. The following table lists t
 
 | Name | Type | Description |
 | --- | --- | --- |
-| NAME | VARCHAR(128) | The name of the module. |
-| STATE | VARCHAR(16) | One of the following:<br />_COMPLETE_ - The build is complete, rows included in searches. <br />_BUILDING_ - The build is in progress.<br />_FAILED_ - The build failed.<br />_NONE_ -The module was not added to the vector index. |
-| FAILURE\_REASON | VARCHAR(128) | In case the state is _FAILED_, provides information about the failure. |
+| `NAME` | `VARCHAR(128)` | The name of the module. |
+| `STATE` | `VARCHAR(16)` | One of the following:<br />_COMPLETE_ - The build is complete, rows included in searches. <br />_BUILDING_ - The build is in progress.<br />_FAILED_ - The build failed.<br />_NONE_ -The module was not added to the vector index. |
+| `FAILURE_REASON` | `VARCHAR(128)` | In case the state is _FAILED_, provides information about the failure. |
