@@ -297,9 +297,9 @@
               {
                 "group": "DDL",
                 "pages": [
-                  "sql/vector-index/ddl/create-vector-index",
-                  "sql/vector-index/ddl/delete-vector-index",
-                  "sql/vector-index/ddl/modify-vector-index"
+                  "sql/vector-index/ddl/creating-vector-index",
+                  "sql/vector-index/ddl/deleting-vector-index",
+                  "sql/vector-index/ddl/modifying-vector-index"
                 ]
               },
               "sql/vector-index/show-commands",
