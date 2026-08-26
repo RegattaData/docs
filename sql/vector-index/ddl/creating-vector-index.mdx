@@ -87,12 +87,12 @@ When modules are specified, an optional parallelism parameter can be used for ea
 | Name(s) | Value Range | Default Value | Description |
 | --- | --- | --- | --- |
 | `m connectivity` | `[2, 64]` | 16 | The maximum number of connections per layer for all the layers other than layer 0. |
-| `m_0 connectivity_base` | \[m, 64\] | The minimum between 2m and 64 | The maximum number of connections in layer 0. |
-| `ef_construction` | \[m\_0, 65535\] | max(m\_0, 40) | The size of the dynamic candidate list for constructing the graph. |
+| `m_0 connectivity_base` | `[m, 64]` | The minimum between 2m and 64 | The maximum number of connections in layer 0. |
+| `ef_construction` | `[m_0, 65535]` | max(m\_0, 40) | The size of the dynamic candidate list for constructing the graph. |
 
 ### Options for the IVFFLAT Index Type
 
-There is currently one option that applies only to IVFFLAT Index type. 
+There is currently one option that applies only to `IVFFLAT `Index type. 
 
 `lists | num_clusters `
 
