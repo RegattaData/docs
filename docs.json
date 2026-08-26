@@ -293,7 +293,7 @@
           {
             "group": "Vector Index",
             "pages": [
-              "sql/vector-index/vi-introduction",
+              "sql/vector-index/introduction",
               {
                 "group": "DDL",
                 "pages": [
@@ -302,8 +302,8 @@
                   "sql/vector-index/ddl/modify-vector-index"
                 ]
               },
-              "sql/vector-index/vi-show-commands",
-              "sql/vector-index/vi-perf-appr-vec-searches"
+              "sql/vector-index/show-commands",
+              "sql/vector-index/perf-appr-vec-searches"
             ]
           }
         ]
