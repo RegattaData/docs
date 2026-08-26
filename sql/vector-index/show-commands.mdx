@@ -34,7 +34,7 @@ The output is tabular, each row represents a vector index. The following table l
 | `INDEX_TYPE` | `VARCHAR(16)` | The vector index type – either ‘`HNSW`’ or ‘`IVFFLAT`’ |
 | `DISTANCE_METRIC` | `VARCHAR(16)` | The distance metric – one of ‘`COSINE`’, ‘`L2`’, ‘`IP`’ |
 | `PARAMETERS` | `VARCHAR(127)` | Parameters of the index. |
-| `MODULES` | `VARCHAR(1000)` | Comma-separated list of module~~-~~names. If it doesn’t fit in 1000 characters, includes a partial trimmed list. |
+| `MODULES` | `VARCHAR(1000)` | Comma-separated list of module names. If it doesn’t fit in 1000 characters, includes a partial trimmed list. |
 | `STATE` | `VARCHAR(16)` | One of the following: _FAILED_ – The index build had failed on at least one module. _BUILDING_ – Index build in progress on any of the modules. _COMPLETE_ – The index build is complete on all the modules. |
 | `FAILURE_REASON` | `VARCHAR(128)` | In case the state is _FAILED_, provides information about the failure. |
 
