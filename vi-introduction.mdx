@@ -12,13 +12,13 @@ In order to support vector indexing and searches, we introduce the VECTOR type. 
 
 - A vector column’s dimension can be any integer between 1 and 2048 (inclusive). 
 
-- The data type of the vector elements is REAL (FLOAT4) 
+- The data type of the vector elements is` REAL (FLOAT4) `
 
-- Elements of the vector cannot be NULL and cannot have any of the values Infinity, -Infinity or NaN. 
+- Elements of the vector cannot be `NULL` and cannot have any of the values Infinity, -Infinity or NaN. 
 
-- A vector column can be nullable. The NOT NULL constraint is supported. 
+- A vector column can be nullable. The `NOT NULL` constraint is supported. 
 
-- UNIQUE and PRIMARY KEY constraints are not supported. 
+- `UNIQUE `and `PRIMARY KEY` constraints are not supported. 
 
 - A vector column cannot be a foreign key or target of a foreign key. 
 
