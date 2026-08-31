@@ -6,13 +6,13 @@ Remove a table.
 
 ## Synopsis
 
-```
-DROP TABLE table_name [RESTRICT]
+```text
+DROP TABLE table_name [, ...] [RESTRICT]
 ```
 
 ## Description
 
-The `DROP TABLE` command is used to remove a table from the current database, including all its rows, its metadata and related indexes.
+The `DROP TABLE` command is used to remove one or more tables from the current database, including all its rows, its metadata and related indexes.
 
 ## Parameters
 
@@ -22,8 +22,7 @@ The name of the table to be dropped.
 
 `RESTRICT`
 
-Return an error if any column in the table to be dropped is referenced by another table’s column (foreign key).
-Note: This is the default behavior even without specifying `RESTRICT`. The option is supported for for compatibility with PostgreSQL.
+Return an error if any column in the table to be dropped is referenced by another table’s column (foreign key). Note: This is the default behavior even without specifying `RESTRICT`. The option is supported for for compatibility with PostgreSQL.
 
 ## Examples
 
