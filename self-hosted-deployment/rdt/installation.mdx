@@ -1,0 +1,101 @@
+---
+title: "Installation"
+description: "Install RDT on your control node via RPM or from source."
+---
+
+# Installation
+
+Make sure you've read [Prerequisites](./prerequisites.mdx) first. This page covers
+installing RDT on your control node. If your control node has no internet access, see
+[Offline Installation](./advanced/offline-installation.mdx) instead; if you'd rather run
+RDT from a container image, see
+[Running RDT in a Container](./advanced/running-rdt-in-a-container.mdx).
+
+## Installing via the RDT RPM (recommended)
+
+RDT is distributed as the `regatta-rdt` RPM, one of the utility packages in Regatta's
+tools suite. It's installed like
+any other RegattaDB RPM package, from the local `.rpm` file included in your RegattaDB
+software package (see
+[Prepare for Deployment](https://docs.regatta.dev/self-hosted-deployment/manual-deployment/prepare-for-deployment)
+for how these packages are delivered):
+
+```bash
+sudo dnf -y install regatta-rdt-<version>.el8.x86_64.rpm
+```
+
+During installation you'll be prompted to accept the Regatta EULA (or set
+`ACCEPT_EULA=1` for unattended installs; see
+[EULA Acceptance](https://docs.regatta.dev/self-hosted-deployment/manual-deployment/prepare-for-deployment#eula-acceptance)).
+By default the RPM creates and installs for a `regatta` deployment user/group; to use a
+different one, set `REGATTA_USER`/`REGATTA_GROUP` (see
+[Deployment User](https://docs.regatta.dev/self-hosted-deployment/manual-deployment/prepare-for-deployment#deployment-user)
+for the naming rules).
+
+Once installed, the RPM automatically installs RDT itself for the deployment user via
+`pip install --user`, bundling the self-contained Regatta Python driver (`pyregatta`) so
+no separate driver installation is needed.
+
+### Manual install (skip or retry the automatic step)
+
+To skip the automatic install and only unpack the files, set `AUTO_INSTALL=0` on the
+install command:
+
+```bash
+sudo AUTO_INSTALL=0 dnf -y install regatta-rdt-<version>.el8.x86_64.rpm
+```
+
+If the automatic install is skipped, or fails (for example on a host without network
+access), the install log is written to `/var/log/regatta/rdt/install.log`. You can then
+install (or reinstall) manually, as the deployment user:
+
+```bash
+bash /opt/regatta/current/tools/rdt/install.sh --user
+```
+
+Any extra arguments are forwarded to `pip` (e.g. `--user`, `--break-system-packages`).
+
+Because RDT is installed with `--user`, the `rdt` command lands in `~/.local/bin`. If
+it's not on your `PATH`, add it:
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+### Uninstalling
+
+Removing the RPM uninstalls RDT automatically for the deployment user:
+
+```bash
+sudo REGATTA_USER=<user> dnf -y remove regatta-rdt
+```
+
+Set `AUTO_INSTALL=0` on the remove command to skip this. You can also uninstall
+manually at any time, as that user:
+
+```bash
+bash /opt/regatta/current/tools/rdt/uninstall.sh
+```
+
+Note that uninstalling only removes RDT itself, not the bundled `pyregatta` driver; it
+may be shared with other Regatta tools installed for the same user.
+
+## Installing from source
+
+```bash
+pip install .
+```
+
+Installing from source requires the `pyregatta` driver to be available separately (it's
+only bundled automatically by the RPM install path above).
+
+## Verifying the install
+
+```bash
+rdt --version
+```
+
+## Next steps
+
+Continue to [Configuration Overview](./configuration/overview.mdx) to create your first
+RegattaDB configuration.

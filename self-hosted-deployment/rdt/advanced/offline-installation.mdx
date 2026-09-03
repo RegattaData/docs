@@ -1,0 +1,92 @@
+---
+title: "Offline Installation"
+description: "Install RDT on a control node with no internet access, from a pre-built artifact bundle."
+---
+
+# Offline Installation
+
+If your control node has no internet access, install RDT from an offline artifact
+bundle: a standalone Python build plus pre-built wheels for RDT and its dependencies.
+This page assumes you already have that bundle in hand (obtained from your Regatta
+distribution or support contact).
+
+## Installing
+
+The bundle is a directory containing `python3.9-build.tar.gz` and a `python-wheels/`
+folder. Run:
+
+```bash
+packaging/offline/install.sh /path/to/bundle
+```
+
+If you omit the path, it defaults to the current directory. This:
+
+1. Extracts the standalone Python build to `~/.local/python/`.
+2. Installs RDT and all its dependencies from the local wheels, no network access
+   required.
+3. Adds `~/.local/python/bin` to your `PATH` via `~/.bashrc` (only if not already
+   present).
+
+Apply the `PATH` change and confirm:
+
+```bash
+source ~/.bashrc
+rdt --version
+```
+
+The `~/.bashrc` PATH update only takes effect in interactive bash shells that source it,
+either the current shell (after you `source` it manually) or any new one you open
+afterward. It won't apply automatically in a few common cases:
+- **Non-interactive contexts**: scripts, cron jobs, or a single non-interactive SSH
+  command (e.g. `ssh host 'rdt --version'`) don't source `~/.bashrc` at all. Either call
+  `rdt` by its full path (`~/.local/python/bin/rdt`) or export the `PATH` explicitly in
+  that context:
+  ```bash
+  export PATH="$HOME/.local/python/bin:$PATH"
+  ```
+- **A different login shell**: if your default shell isn't bash (e.g. zsh, fish), add
+  the same line to that shell's own startup file instead (e.g. `~/.zshrc` for zsh).
+- **Login shells that don't source `~/.bashrc`**: some minimal environments only read
+  `~/.bash_profile`/`~/.profile` on login and don't chain-load `~/.bashrc`. If a fresh
+  login doesn't pick up the change, add the same `export PATH=...` line to whichever of
+  those files exists on your system.
+
+This installs entirely into your home directory and doesn't require root. If you'd
+rather make this the system-wide `python3`, do so manually (requires root):
+
+```bash
+sudo alternatives --set python3 "$HOME/.local/python/bin/python3.9"
+```
+
+## Compiling native extensions
+
+If installing a wheel needs to compile a C/C++ extension, set `CC`/`CXX` first:
+
+```bash
+CC=gcc CXX=g++ packaging/offline/install.sh /path/to/bundle
+```
+
+## Troubleshooting
+
+- **"file not found"**: confirm the bundle path contains both
+  `python3.9-build.tar.gz` and a `python-wheels/` directory.
+- **"permission denied"**: everything is installed under `~/.local`, so this usually
+  means `~/.local` (or `~/.local/python` from a previous attempt) is owned by a
+  different user or has restrictive permissions, or the bundle directory itself isn't
+  readable by your user. Check ownership and fix it before retrying:
+  `ls -la ~/.local` and `chown -R "$(id -un)" ~/.local` if needed.
+- **pip build errors for C extensions**: see the `CC`/`CXX` step above.
+- For more detail on what's happening, run with shell tracing:
+  `bash -x packaging/offline/install.sh /path/to/bundle`.
+
+## Verifying the install
+
+If `rdt --version` didn't work after installing, use these to isolate which layer
+failed: the extracted Python itself, your `PATH`, or the package install:
+
+```bash
+"$HOME/.local/python/bin/python3" --version   # should report Python 3.9
+python3 --version                             # run after `source ~/.bashrc`, should also report
+                                               # 3.9 if PATH now resolves python3 to the new install
+python3 -m pip list                           # should list rdt and its dependencies
+```

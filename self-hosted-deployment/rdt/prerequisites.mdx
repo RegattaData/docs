@@ -1,0 +1,69 @@
+---
+title: "Prerequisites"
+description: "What you need before installing and running RDT to deploy RegattaDB."
+---
+
+# Prerequisites
+
+Deploying RegattaDB with RDT (Regatta Deployment Tool) works with two kinds of
+machines: the **control node**, where you install and run the `rdt` CLI, and the
+**RegattaDB nodes** that RDT connects to and configures. Make sure both sides meet the
+requirements below before you start.
+
+## Control node (where you run `rdt`)
+
+- **Python 3.9 or later**, with `pip` available.
+- **Network access to your Python package index** (PyPI or an internal mirror) for the
+  online install path. If the control node has no network access, see
+  [Offline Installation](./advanced/offline-installation.mdx) instead.
+- **Docker** (or a compatible CLI such as Podman), only if you plan to run RDT from a
+  provided container image instead of installing it directly. See
+  [Running RDT in a Container](./advanced/running-rdt-in-a-container.mdx).
+
+### Software dependencies
+
+RDT depends on two different kinds of packages. You don't need to install either set
+manually on a normal install; they're listed here so you can verify them ahead of time
+on a minimal or hardened image.
+
+**Python packages**, installed automatically by `pip` when you install RDT:
+- `ansible`
+- `ansible-runner`
+- `pydantic`
+- `pyregatta` (Regatta's Python driver; RDT bundles a self-contained build of it)
+- `typer`
+- `rich`
+
+**Linux system packages**: must already be present on the control node's OS. These are
+required by the bundled `pyregatta` driver, which embeds a compiled client library:
+- `glibc`
+- `libstdc++`
+- `libgcc`
+- `util-linux-libs`
+- `openssl-libs`
+- `libaio`
+
+## RegattaDB nodes (the machines RDT will manage)
+
+These nodes must meet RegattaDB's general
+[self-hosted deployment prerequisites](https://docs.regatta.dev/self-hosted-deployment/prerequisites)
+(OS, architecture, system packages, hardware, and connectivity). RDT adds the following
+requirements on top of those, specific to how it connects to and configures nodes:
+
+- **SSH access** from the control node to every node, using either:
+  - a key pair (recommended; see `--key`/`-k` in
+    [Global Options & Credentials](./advanced/global-options-and-credentials.mdx)), or
+  - a shared username/password (`--ask-password` or `--password`).
+- **Sudo access** for the SSH user on every node: installing packages, writing udev
+  rules, and managing `systemd` services all require root privileges. Passwordless sudo
+  is preferred; a sudo password also works, since RDT reuses the SSH password you provide
+  to answer the sudo prompt automatically.
+
+## Choosing an installation path
+
+- Nodes with internet access: follow [Installation](./installation.mdx) (RPM or `pip install`).
+- Air-gapped nodes: follow [Offline Installation](./advanced/offline-installation.mdx).
+- Running RDT itself from a container instead of installing it: follow
+  [Running RDT in a Container](./advanced/running-rdt-in-a-container.mdx).
+
+Once prerequisites are met, continue to [Installation](./installation.mdx).

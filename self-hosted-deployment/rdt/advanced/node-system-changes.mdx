@@ -1,0 +1,75 @@
+---
+title: "What Changes on Your Nodes"
+description: "The system-level changes RDT makes on RegattaDB nodes during setup, cleanup, and reset."
+---
+
+# What Changes on Your Nodes
+
+This page documents what RDT actually changes on a node's operating system when you run
+`setup`, `create-cluster`, `clean`, or `reset`. Useful for troubleshooting, or for
+understanding what you're authorizing when you grant RDT sudo access.
+
+## Storage & device setup
+
+- Every storage device referenced by an **RDB** module has its ownership changed to
+  `regatta:regatta`. For a raw block device, this is done via a udev rule written to
+  `/etc/udev/rules.d/99-regatta-storage.rules` (re-applied immediately with
+  `udevadm trigger`, not just after a reboot). For a file-backed device (a regular file
+  used as storage instead of a raw block device), ownership is changed directly, since
+  udev rules only apply to block devices.
+- Devices used by **SM** and **DCM** modules are handled differently: they're formatted
+  as `ext4` and mounted at a fixed path under the Regatta installation directory. **This
+  reformats the device: use a raw, unused block device, never one with existing data.**
+  Ownership of the mount point is set to `regatta:regatta`.
+
+## Service management
+
+RDT discovers every installed `regatta-*` systemd service on a node (except internal/
+templated units) and manages all of them together: starting, stopping, or enabling
+them for boot as a group, based on what you asked for (`start-services`/`stop-services`/
+`setup`/etc.).
+
+## Performance tuning (jemalloc)
+
+If `libjemalloc` is available on the node (checked under `/usr/lib64`, then as a
+fallback via the system's shared library cache), RDT wires it in as `LD_PRELOAD` for the
+SM and SNA module environments. If it's not found, `setup` prints a warning and skips
+this step; it's a performance optimization, not a requirement.
+
+## Module configuration files
+
+RDT writes each module's configuration file from your RegattaDB config, one per module
+instance, under that module's directory in the Regatta installation.
+
+## Cleanup (`clean`)
+
+Removes Regatta's installation, logs, and runtime data from a node. If RDT itself is
+installed on that node, `clean` specifically preserves RDT's own installed files and its
+own log directory; everything else is removed. If RDT isn't installed there, the wipe
+is unconditional (installation directory, symlinks, logs, lock files, shared memory).
+
+## Reset (`reset`)
+
+Clears RegattaDB's runtime data while leaving the installation itself intact: shared
+memory files, core dumps, crash info and lock files, network identifiers, each module's
+repository contents, and log directories (events, traces, workload data). Binaries and
+configuration files are not touched. See
+[RegattaDB Lifecycle](../system-setup/lifecycle.mdx#resetting-regattadb) for the
+manual steps needed to bring RegattaDB back up afterward.
+
+## Hardware discovery (`--probe-nodes`)
+
+When you create a config with `--probe-nodes`, RDT connects to each node and reads:
+- Total CPU thread count and RAM.
+- NUMA topology (which CPUs and how much memory belong to each NUMA node): see
+  [Module & NUMA Configuration](./module-and-numa-configuration.mdx).
+- Unmounted, unformatted block devices: any large enough one found gets assigned to
+  that node's RDB module(s) automatically.
+
+## How RDT connects to nodes
+
+RDT connects to nodes over SSH, in parallel across many nodes at once (so large
+deployments aren't set up one node at a time), and reuses connections across the steps of a
+single command for speed. Host key verification is skipped by default, so first-time
+connections to new nodes won't prompt for confirmation. Make sure you trust your
+network path to these nodes accordingly.

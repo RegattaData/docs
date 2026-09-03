@@ -1,0 +1,51 @@
+---
+title: "Module & NUMA Configuration"
+description: "Manually pin modules to CPU cores using your node's real NUMA topology."
+---
+
+# Module & NUMA Configuration
+
+See [Configuration Overview](../configuration/overview.mdx#core-binding) for the
+`core_binded_node`/`core_binded_cores` fields themselves. This page covers how to fill
+them in deliberately, using your node's real NUMA topology.
+
+## Reading probed NUMA data
+
+If you created your config with `--probe-nodes` (see
+[What Changes on Your Nodes](./node-system-changes.mdx#hardware-discovery---probe-nodes)),
+each node's `config.numa_specs` is filled in with something like:
+
+```json
+"config": {
+  "numa_specs": {
+    "node0": { "cpu": "0,1,2,3,4,5,6,7", "mem_mb": 131072 },
+    "node1": { "cpu": "8,9,10,11,12,13,14,15", "mem_mb": 131072 }
+  }
+}
+```
+
+Each key is a NUMA node, with the CPU ids that belong to it and its local memory. This
+is recorded for reference; RDT doesn't automatically bind modules to NUMA nodes for
+you, you decide the binding based on this data.
+
+## Setting core binding manually
+
+To pin a module to a set of cores, set both fields in its `config`:
+
+```json
+"config": {
+  "core_binded_node": "0",
+  "core_binded_cores": "0-5"
+}
+```
+
+- `core_binded_node` identifies which NUMA node this binding corresponds to (for your
+  own reference; it's not cross-checked against `numa_specs`).
+- `core_binded_cores` accepts individual CPU ids, ranges, or a mix, comma-separated
+  (e.g. `0-5`, `0,1,2`, or `0-3,8,10-11`). Unlike the flat comma-separated list in
+  `numa_specs.cpu`, ranges are written with a hyphen here.
+- If `num_threads` is left unset, it's derived automatically from the core count. If
+  you set it explicitly, it must not exceed the number of cores in `core_binded_cores`.
+
+A typical pattern: pick a NUMA node from `numa_specs`, use a subset (or all) of its CPU
+list as `core_binded_cores`, and set `core_binded_node` to that NUMA node's id.

@@ -1,0 +1,39 @@
+---
+title: "Example: Collecting Debug Information"
+description: "Practical RDT collect invocations for gathering RegattaDB diagnostics."
+---
+
+# Example: Collecting Debug Information
+
+See [RegattaDB Lifecycle](../system-setup/lifecycle.mdx#collecting-debug-information)
+for an overview of what `rdt collect` does. Run `rdt collect --help` at any time for the
+full list of options.
+
+## Collect from every node
+
+```bash
+rdt collect --name my-regattadb --destination ./debug-output
+```
+
+## Collect from specific nodes only
+
+By node name:
+
+```bash
+rdt collect --name my-regattadb --destination ./debug-output --nodes node_1 --nodes node_2
+```
+
+By node id:
+
+```bash
+rdt collect --name my-regattadb --destination ./debug-output --nodes 1
+```
+
+## Use a custom remote staging directory
+
+By default, RDT stages collected files under `/tmp/regatta-collect` on each node before
+pulling them to your destination. Override it if that path isn't writable or available:
+
+```bash
+rdt collect --name my-regattadb --destination ./debug-output --remote-destination /data/tmp/regatta-collect
+```
