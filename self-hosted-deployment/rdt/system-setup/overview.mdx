@@ -24,6 +24,36 @@ flowchart LR
     I --> J[Start RegattaDB]
 ```
 
+<Steps>
+  <Step title="Distribute RPMs">
+    Copy the RPM bundle to every target node.
+  </Step>
+  <Step title="Stop Regatta services">
+    Halt SM, SNA, and RegattaDB before touching packages.
+  </Step>
+  <Step title="Remove previous installation (optional)">
+    Only when running with `--clean-install`. Skip otherwise.
+  </Step>
+  <Step title="Install module RPMs">
+    Install the distributed module packages.
+  </Step>
+  <Step title="Configure node environment">
+    Apply per-node environment settings.
+  </Step>
+  <Step title="Generate module configs">
+    Render configuration files for each module.
+  </Step>
+  <Step title="Start SM & SNA services">
+    Bring the control plane services online.
+  </Step>
+  <Step title="Configure RegattaDB">
+    Apply cluster and storage configuration.
+  </Step>
+  <Step title="Start RegattaDB">
+    Start the database and verify the cluster is healthy.
+  </Step>
+</Steps>
+
 ## What each step does
 
 1. **Distribute RPMs**: distributes Regatta RPM packages to every node.
