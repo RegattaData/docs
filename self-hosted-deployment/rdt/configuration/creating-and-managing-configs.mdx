@@ -16,14 +16,14 @@ rdt config create --name <name> [options]
 
 | Option | Description |
 |---|---|
-| `--name`/`-n` | Config name (required). |
-| `--from`/`-f` | Start from a packaged template (`small` or `xsmall`). Cannot be combined with `--nodes`. |
-| `--nodes`/`-no` | Generate a config with this many nodes instead of using a template. |
-| `--ip-file`/`-ipf` | A file containing node IP addresses. |
-| `--ip-list`/`-ips` | A comma-separated list of node IP addresses (e.g. `10.0.0.1,10.0.0.2`). |
-| `--probe-nodes`/`-p` | Connect to each node over SSH to detect its CPU, RAM, and devices. |
-| `--output`/`-o` | Write the config to a local file instead of `~/.rdt/configs/` (it won't show up in `rdt config list`). |
-| `--force` | Recreate the config without prompting if a config by this name already exists. |
+| `--name`/`-n` | Config name (required) |
+| `--from`/`-f` | Start from a packaged template (`small` or `xsmall`). Cannot be combined with `--nodes` |
+| `--nodes`/`-no` | Generate a config with this many nodes instead of using a template |
+| `--ip-file`/`-ipf` | A file containing node IP addresses |
+| `--ip-list`/`-ips` | A comma-separated list of node IP addresses (e.g. `10.0.0.1,10.0.0.2`) |
+| `--probe-nodes`/`-p` | Connect to each node over SSH to detect its CPU, RAM, and devices |
+| `--output`/`-o` | Write the config to a local file instead of `~/.rdt/configs/` (it won't show up in `rdt config list`) |
+| `--force` | Recreate the config without prompting if a config by this name already exists |
 
 You must choose either `--from` or `--nodes` (not both) to decide the module layout:
 
