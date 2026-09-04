@@ -343,16 +343,6 @@
             ]
           },
           {
-            "group": "Regatta Deployment Tool",
-            "pages": [
-              "self-hosted-deployment/regatta-deployment-tool/installation",
-              "self-hosted-deployment/regatta-deployment-tool/configuration",
-              "self-hosted-deployment/regatta-deployment-tool/cluster-setup",
-              "self-hosted-deployment/regatta-deployment-tool/advanced-deployment-options"
-            ],
-            "hidden": true
-          },
-          {
             "group": "Manual Deployment (Atlit)",
             "pages": [
               "self-hosted-deployment/manual-deployment/user-setup",
@@ -370,6 +360,48 @@
               "self-hosted-deployment/manual-deployment/prepare-for-deployment",
               "self-hosted-deployment/manual-deployment/high-level-deployment-steps",
               "self-hosted-deployment/manual-deployment/deployment-example"
+            ]
+          },
+          {
+            "group": "Regatta Deployment Tool",
+            "pages": [
+              "self-hosted-deployment/rdt/introduction",
+              "self-hosted-deployment/rdt/prerequisites",
+              "self-hosted-deployment/rdt/installation",
+              "self-hosted-deployment/rdt/command-reference",
+              {
+                "group": "Configuration",
+                "pages": [
+                  "self-hosted-deployment/rdt/configuration/overview",
+                  "self-hosted-deployment/rdt/configuration/creating-and-managing-configs"
+                ]
+              },
+              {
+                "group": "System Setup",
+                "pages": [
+                  "self-hosted-deployment/rdt/system-setup/overview",
+                  "self-hosted-deployment/rdt/system-setup/lifecycle"
+                ]
+              },
+              {
+                "group": "Examples",
+                "pages": [
+                  "self-hosted-deployment/rdt/examples/quickstart-single-node",
+                  "self-hosted-deployment/rdt/examples/multi-node-deployment",
+                  "self-hosted-deployment/rdt/examples/config-recipes",
+                  "self-hosted-deployment/rdt/examples/collecting-debug-info"
+                ]
+              },
+              {
+                "group": "Advanced",
+                "pages": [
+                  "self-hosted-deployment/rdt/advanced/global-options-and-credentials",
+                  "self-hosted-deployment/rdt/advanced/running-rdt-in-a-container",
+                  "self-hosted-deployment/rdt/advanced/offline-installation",
+                  "self-hosted-deployment/rdt/advanced/node-system-changes",
+                  "self-hosted-deployment/rdt/advanced/module-and-numa-configuration"
+                ]
+              }
             ]
           },
           {

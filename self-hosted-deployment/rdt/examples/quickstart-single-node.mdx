@@ -1,0 +1,170 @@
+---
+title: "Quickstart: Single-Node RegattaDB"
+description: "Install RDT and stand up a single-node RegattaDB deployment end to end."
+---
+
+This page walks you through creating a single-node RegattaDB deployment from scratch. Make sure you've read
+[Prerequisites](../prerequisites.mdx) first: you'll need SSH access (key or password)
+from your control node to the node you're deploying to.
+
+## 1. Install RDT
+
+```bash
+sudo dnf -y install regatta-rdt-<version>.el8.x86_64.rpm
+```
+
+See [Installation](../installation.mdx) for other install paths.
+
+## 2. Set up SSH access
+
+RDT connects to your node over SSH using either a key or a password. If your SSH user,
+key, or password aren't already set up as RDT's defaults, pass them explicitly on every
+command:
+
+```bash
+rdt --user regatta --key ~/.ssh/id_rsa <command> ...
+```
+
+See [Global Options & Credentials](../advanced/global-options-and-credentials.mdx) for
+all connection options; the rest of this walkthrough omits them for brevity.
+
+## 3. Create a config
+
+```bash
+rdt config create --name quickstart --from xsmall --ip-list 10.0.0.1
+```
+
+This uses the `xsmall` template: a single node running every module type. Replace
+`10.0.0.1` with your node's real address.
+
+The template doesn't specify storage devices, and every RDB module needs at least one.
+Edit the config and add one before deploying:
+
+```bash
+rdt config edit quickstart
+```
+
+```json
+"devices": [
+  { "name": "disk1", "path": "/dev/nvme0n1" }
+],
+"modules": [
+  { "type": "rdb", "id": 11, "devices": ["disk1"], ... }
+]
+```
+
+Everything else (CPU thread count, RAM) can be left unset, the System Manager decides
+those automatically, and storage devices can be auto-detected instead of hand-edited;
+see the next step.
+
+Review the result:
+
+```bash
+rdt config print quickstart --validate
+```
+
+See [Configuration Overview](../configuration/overview.mdx) for the full schema.
+
+## 4. Probe node hardware (optional)
+
+Instead of hand-editing CPU/RAM/device info, you can have RDT connect to the node and
+detect it for you when creating the config:
+
+```bash
+rdt config create --name quickstart --from xsmall --ip-list 10.0.0.1 --probe-nodes
+```
+
+RDT looks for unmounted, unformatted block devices on the node and assigns any it finds
+(above ~20GB) to the RDB module automatically. If the node has no such device attached,
+you'll still need to add one manually as shown in step 3.
+
+## 5. Create and start RegattaDB
+
+```bash
+rdt create-cluster --name quickstart --src /path/to/regatta-rpms
+```
+
+`--src` points to a directory containing the Regatta RPMs (a `.tar.zst` archive also
+works; see [RegattaDB Lifecycle](../system-setup/lifecycle.mdx)).
+
+If something goes wrong partway through, see
+[RegattaDB Lifecycle](../system-setup/lifecycle.mdx) for how to retry individual
+steps, and [Collecting Debug Information](./collecting-debug-info.mdx) if you need to
+gather logs.
+
+## 6. Verify and connect
+
+Once `create-cluster` finishes, connect to RegattaDB to confirm it's up and start
+running SQL.
+
+### Connection parameters
+
+- **Username**: `admin`
+- **Password**: `RegattaDefault1234!` (the default admin credentials; change this
+  immediately after deployment)
+- **URL**: `10.0.0.1:8840` (your node's IP and the SM's default communication port)
+
+### Connect with the RegattaDB CLI
+
+```bash
+/opt/regatta/<major.minor>/clients/cli/bin/client_cli
+```
+
+```
+rdb>\connect user=admin pass=RegattaDefault1234! url=10.0.0.1:8840
+```
+
+If the connection succeeds:
+
+```
+Successfully connected to RegattaDB system
+```
+
+See [Connecting Applications to Regatta](/drivers-and-clients/connecting-applications-to-regatta)
+to connect from your own application instead.
+
+### Confirm the system is active
+
+```sql
+regatta > MANAGE SYSTEM SHOW;
+statement executed successfully
+| STATE  |
+----------
+| Active |
+```
+
+A healthy single-node deployment reports `Active`. See
+[System States and Commands](https://docs.regatta.dev/sql/system-management/system-states-and-commands#system-show)
+for what each state means.
+
+## Next steps
+
+- [Multi-Node Deployment](./multi-node-deployment.mdx) for a realistic production topology.
+- [Config Recipes](./config-recipes.mdx) for hardware probing and other config shortcuts.
+
+## Appendix: full config file
+
+```json expandable
+{
+  "version": "26.0",
+  "id": "quickstart",
+  "nodes": [
+    {
+      "id": 1,
+      "name": "node_1",
+      "ip": "10.0.0.1",
+      "devices": [
+        { "name": "disk1", "path": "/dev/nvme0n1" }
+      ],
+      "modules": [
+        { "type": "sna", "id": 10, "port": 8841, "service_port": 5001, "config": {}, "devices": [] },
+        { "type": "rdb", "id": 11, "port": 8850, "service_port": 6001, "config": {}, "devices": ["disk1"] },
+        { "type": "sm", "id": 1, "port": 8840, "service_port": 5000, "config": {}, "devices": [] },
+        { "type": "sequencer", "id": 3, "port": 8842, "service_port": 5002, "config": {}, "devices": [] },
+        { "type": "gdd", "id": 4, "port": 8843, "service_port": 5003, "config": {}, "devices": [] },
+        { "type": "dcm", "id": 5, "port": 8844, "service_port": 5004, "config": {}, "devices": [] }
+      ]
+    }
+  ]
+}
+```

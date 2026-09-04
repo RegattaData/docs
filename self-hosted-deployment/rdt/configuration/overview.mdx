@@ -1,0 +1,160 @@
+---
+title: "Configuration Overview"
+description: "The RDT configuration schema: the Cluster, Node, Device, and Module object types."
+---
+
+RDT describes a RegattaDB deployment with a single JSON configuration file, stored under
+`~/.rdt/configs/<name>.json`. This page documents the schema. For the commands used to
+create, edit, and manage these files, see
+[Creating & Managing Configs](./creating-and-managing-configs.mdx).
+
+## Deployment guidelines
+
+Before designing a configuration, keep RegattaDB's general module placement guidelines
+in mind:
+
+- **SM**: exactly one per deployment.
+- **SNA**: one per node that hosts at least one operational module (GDD, DCM,
+  Sequencer, or RDB). Configuring more than one SNA on the same node is not supported.
+- **GDD**, **DCM**, **Sequencer**: exactly one per deployment.
+- **RDB**: at least one per deployment; a node may host multiple RDB modules.
+
+With that in mind, here's the JSON schema itself: the fields that make up the `Cluster`,
+`Node`, `Device`, and `Module` objects in a config file.
+
+## Cluster
+
+| Field   | Type            | Description                                              |
+|---------|-----------------|-------------------------------------------------------------|
+| `version` | `string` | Configuration schema version |
+| `id` | `string/UUID/int` | Cluster identifier. Defaults to `"regatta-cluster"` |
+| `nodes` | list of Node | The nodes that make up the deployment. Defaults to empty |
+
+**Cluster-level validation:**
+- Node `id`s must be unique across the deployment.
+- At most one instance each of SM, Sequencer, GDD, and DCM is allowed across the entire
+  deployment (not per node).
+
+## Node
+
+| Field       | Type            | Description                                                        |
+|-------------|-----------------|------------------------------------------------------------------------|
+| `id` | `int` | Unique identifier within the deployment. Defaults to `1` |
+| `name` | `string` | Node name. Defaults to `"regatta-node"` |
+| `ip` | IP address | Address RDT uses to connect to the node |
+| `num_threads` | `int `(optional) | Concurrency level for the node. Leave unset to let the SM decide |
+| `ram_MB` | `int `(optional) | RAM budget for the node, in megabytes. Leave unset to let the SM decide |
+| `devices` | list of Device | Storage devices available on this node. Defaults to empty |
+| `modules` | list of Module | Modules to run on this node. Defaults to empty |
+| `config` | `object` | Arbitrary node config (e.g. probed hardware data). Defaults to empty |
+
+**Node-level validation:**
+- At most one instance each of SM, Sequencer, GDD, and DCM is allowed per node (mirrors
+  the cluster-level rule).
+- Module `id`s must be unique within the node.
+- Every device name referenced by a module must exist in the node's `devices` list.
+- Two modules on the same node cannot reference the same device.
+
+## Device
+
+| Field       | Type               | Description                                                 |
+|-------------|--------------------|--------------------------------------------------------------|
+| `name` | `string` | Referenced by modules by this name |
+| `path` | path | Path to the raw block device |
+| `capacity` | `int `(optional) | Capacity in bytes |
+| `config` | `object` | Arbitrary device config. Defaults to empty |
+| `description` | `string `(optional) | Free-form description |
+
+## Module
+
+All modules share a common set of fields; each module type additionally has fixed
+defaults for `id`, `port`, and `service_port`.
+
+| Field        | Type            | Description                                                     |
+|--------------|-----------------|---------------------------------------------------------------------|
+| `type` | `string` | One of `sm`, `sna`, `sequencer`, `gdd`, `dcm`, `rdb` |
+| `id` | `int` | Defaults to the type's standard id (see table below) |
+| `name` | `string` | Auto-generated as `<type>_<id>` if not set |
+| `port` | `int` | Communications port. Defaults to the type's standard port |
+| `service_port` | `int` | Service port. Defaults to the type's standard service port |
+| `num_threads` | `int `(optional) | Concurrency level for the module. Leave unset to let the SM decide |
+| `ram_MB` | `int `(optional) | RAM budget for the module, in megabytes. Leave unset to let the SM decide |
+| `devices` | list of strings | Names of devices (from the node) used by this module |
+| `config` | `object` | Arbitrary module config, e.g. core binding (see below) |
+
+### Module type defaults
+
+| Type      | Default id | Port | Service port |
+|-----------|-----------|------|---------------|
+| SM        | 1         | 8840 | 5000          |
+| SNA       | 2         | 8841 | 5001          |
+| Sequencer | 3         | 8842 | 5002          |
+| GDD       | 4         | 8843 | 5003          |
+| DCM       | 5         | 8844 | 5004          |
+| RDB       | 10        | 8850 | 6001          |
+
+### Core binding
+
+A module can be pinned to specific CPU cores via its `config`:
+
+```json
+"config": {
+  "core_binded_node": "0",
+  "core_binded_cores": "0-5"
+}
+```
+
+- `core_binded_node` is required whenever `core_binded_cores` is set.
+- If `num_threads` is left unset, it's derived automatically from the core range.
+- If `num_threads` is set, it must not exceed the number of cores in the range.
+
+## Example
+
+A minimal single-node config with one RDB storage device:
+
+```json
+{
+  "version": "26.0",
+  "id": "my-regattadb",
+  "nodes": [
+    {
+      "id": 1,
+      "name": "node_1",
+      "ip": "10.0.0.1",
+      "devices": [
+        { "name": "disk1", "path": "/dev/nvme0n1" }
+      ],
+      "modules": [
+        { "type": "sm", "id": 1, "port": 8840, "service_port": 5000, "config": {}, "devices": [] },
+        { "type": "sna", "id": 2, "port": 8841, "service_port": 5001, "config": {}, "devices": [] },
+        { "type": "sequencer", "id": 3, "port": 8842, "service_port": 5002, "config": {}, "devices": [] },
+        { "type": "gdd", "id": 4, "port": 8843, "service_port": 5003, "config": {}, "devices": [] },
+        { "type": "dcm", "id": 5, "port": 8844, "service_port": 5004, "config": {}, "devices": [] },
+        { "type": "rdb", "id": 10, "port": 8850, "service_port": 6001, "config": {}, "devices": ["disk1"] }
+      ]
+    }
+  ]
+}
+```
+
+See [Creating & Managing Configs](./creating-and-managing-configs.mdx) for how to generate,
+edit, and validate files like this without hand-writing the JSON, and
+[Config Recipes](../examples/config-recipes.mdx) for multi-node and probed-hardware examples.
+
+## Templates
+
+`rdt config create --from <template>` starts a config from a packaged template instead
+of a blank one. Two templates ship with RDT today:
+
+- **`xsmall`**: a single-node, all-in-one layout: one node running every module type
+  (SM, SNA, Sequencer, GDD, DCM, RDB).
+- **`small`**: a 3-node "classic" multi-node layout: `node_1` runs every module type
+  (like `xsmall`), while `node_2` and `node_3` each run only SNA and RDB.
+
+No devices or CPU/RAM values are specified in either template. Adjust these, the node
+IPs, and the node count for your environment.
+
+## Next steps
+
+See [Creating & Managing Configs](./creating-and-managing-configs.mdx) for the commands
+that create, edit, validate, and share these configuration files.

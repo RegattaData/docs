@@ -1,0 +1,110 @@
+---
+title: "Creating & Managing Configs"
+description: "Commands for creating, editing, validating, and sharing RDT configs."
+---
+
+This page covers the `rdt config` subcommands. See
+[Configuration Overview](./overview.mdx) for the JSON schema these commands read and write.
+
+## Create a config
+
+```bash
+rdt config create --name <name> [options]
+```
+
+| Option | Description |
+|---|---|
+| `--name`/`-n` | Config name (required) |
+| `--from`/`-f` | Start from a packaged template (`small` or `xsmall`). Cannot be combined with `--nodes` |
+| `--nodes`/`-no` | Generate a config with this many nodes instead of using a template |
+| `--ip-file`/`-ipf` | A file containing node IP addresses |
+| `--ip-list`/`-ips` | A comma-separated list of node IP addresses (e.g. `10.0.0.1,10.0.0.2`) |
+| `--probe-nodes`/`-p` | Connect to each node over SSH to detect its CPU, RAM, and devices |
+| `--output`/`-o` | Write the config to a local file instead of `~/.rdt/configs/` (it won't show up in `rdt config list`) |
+| `--force` | Recreate the config without prompting if a config by this name already exists |
+
+You must choose either `--from` or `--nodes` (not both) to decide the module layout:
+
+- `--from small` / `--from xsmall`: use one of the packaged templates (see
+  [Configuration Overview](./overview.mdx#templates)).
+- `--nodes <N>`: generate an N-node config yourself, following the same layout as the
+  `small` template: node 1 gets every module type (SM, SNA, Sequencer, GDD, DCM, RDB),
+  and every other node gets only SNA and RDB.
+
+### Assigning node IPs
+
+If you provide `--ip-file` or `--ip-list`, those addresses are assigned to the generated
+nodes in order. If you provide neither, nodes default to `127.0.0.<node-id>`, fine for
+local testing, but you'll need to edit the config afterward with real addresses.
+
+`--ip-file` scans the file for anything that looks like an IPv4 address, so one per
+line, comma-separated, or a mix of both all work:
+
+```
+10.0.0.1
+10.0.0.2, 10.0.0.3
+```
+
+`--ip-list` is a simple comma-separated list and additionally accepts IPv6 addresses:
+
+```bash
+rdt config create --name my-regattadb --from small --ip-list 10.0.0.1,10.0.0.2,10.0.0.3
+```
+
+### Examples
+
+```bash
+# From a template, with real node IPs
+rdt config create --name my-regattadb --from small --ip-list 10.0.0.1,10.0.0.2,10.0.0.3
+
+# Generate a 4-node layout from an IP file, probing each node's hardware
+rdt config create --name my-regattadb --ip-file ./ips.txt --nodes 4 --probe-nodes
+```
+
+## Print a config
+
+```bash
+rdt config print <name> [--validate/--no-validate]
+```
+
+Prints the config as JSON. `--validate` (on by default) also prints a warning if the
+config fails schema validation.
+
+## Edit a config
+
+```bash
+rdt config edit <name>
+```
+
+Opens the config in your `$EDITOR`. On save, it's re-validated; if it's invalid, you're
+prompted to save anyway or discard the changes.
+
+## List configs and templates
+
+```bash
+rdt config list
+```
+
+Lists both the packaged templates and your saved configs (`~/.rdt/configs/`).
+
+## Load a config from a file
+
+```bash
+rdt config load --file <path> [--name <name>]
+```
+
+Imports an existing JSON file into `~/.rdt/configs/`. If `--name` is omitted, the config
+is named after the file (its filename without the `.json` extension).
+
+## Delete a config
+
+```bash
+rdt config rm <name> [--force]
+```
+
+Deletes a saved config. Prompts for confirmation unless `--force` is given.
+
+## Next steps
+
+Once you have a config, continue to
+[System Setup Overview](../system-setup/overview.mdx) to deploy RegattaDB from it.

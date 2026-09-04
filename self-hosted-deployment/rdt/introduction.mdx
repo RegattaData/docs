@@ -1,0 +1,41 @@
+---
+title: "Introduction"
+description: "Easily automate RegattaDB deployment and management across multiple servers."
+---
+
+RDT (**Regatta Deployment Tool**) is a command-line tool that automates deploying and managing a self-hosted RegattaDB deployment across one or more servers. Instead of manually installing packages, configuring storage devices, and issuing SQL management commands on every node yourself (see [Manual Deployment](/self-hosted-deployment/manual-deployment/high-level-deployment-steps)), you describe your deployment once in a JSON config file and let RDT drive the whole rollout over SSH: distributing RPMs, installing and configuring modules, starting services, and bringing the database online.
+
+## What RDT does for you
+
+- **Describes your deployment as config**: nodes, storage devices, and modules (SM, SNA,
+  Sequencer, GDD, DCM, RDB) all live in a single JSON file that RDT can generate,
+  validate, and edit for you.
+- **Connects to your nodes over SSH**, in parallel, so setting up a multi-node deployment
+  doesn't mean repeating the same steps by hand on every server.
+- **Runs the full deployment pipeline in one command** (`create-cluster`), or step by
+  step if you want more control: distribute RPMs, install packages, configure the node
+  environment, start the System Manager and SNA, register everything with the System
+  Manager, and start RegattaDB.
+- **Manages RegattaDB's lifecycle** after deployment: starting and stopping services
+  or RegattaDB itself, resetting its data, cleaning up an installation entirely, and
+  collecting debug information from every node.
+- **Probes node hardware** (CPU, RAM, NUMA topology, storage devices) over SSH so you
+  don't have to hand-type it into your config.
+
+## How this section is organized
+
+- **[Prerequisites](/self-hosted-deployment/rdt/prerequisites)** and
+  **[Installation](/self-hosted-deployment/rdt/installation)**: what your control node
+  and RegattaDB nodes need, and how to install the `rdt` CLI.
+- [**Command Reference**](/self-hosted-deployment/rdt/command-reference): every `rdt` command and option in one place, for quick lookup while you work.
+- [**Configuration**](/self-hosted-deployment/rdt/configuration/overview): the JSON config schema, and the `rdt config` commands used to create, edit, validate, and share config files.
+- [**System Setup**](/self-hosted-deployment/rdt/system-setup/overview): the setup pipeline RDT runs on your nodes, in order, and the commands that create, start, stop, reset, and clean a RegattaDB deployment.
+- [**Examples**](/self-hosted-deployment/rdt/examples/quickstart-single-node): end-to-end walkthroughs, from a single-node QuickStart to a realistic multi-node production topology.
+- [**Advanced**](/self-hosted-deployment/rdt/advanced/global-options-and-credentials): SSH credentials and global options, running RDT from a container, installing offline, exactly what RDT changes on your nodes' operating systems, and the NUMA and core-binding details behind module placement.
+
+## Next steps
+
+New to RDT? Start with [Prerequisites](/self-hosted-deployment/rdt/prerequisites) and
+[Installation](/self-hosted-deployment/rdt/installation), then follow the
+[Quickstart: Single-Node RegattaDB](/self-hosted-deployment/rdt/examples/quickstart-single-node)
+to deploy RegattaDB end to end.

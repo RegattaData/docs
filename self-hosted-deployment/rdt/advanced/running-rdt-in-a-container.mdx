@@ -1,0 +1,54 @@
+---
+title: "Running RDT in a Container"
+description: "Run RDT from a pre-built container image instead of installing it directly."
+---
+
+If you've been given a pre-built RDTcontainer image (or an image tar), you can run
+`rdt` through it without installing anything on your control node besides Docker.
+
+## Prerequisites
+
+- Docker, or a compatible CLI such as Podman (set `DOCKER=podman` if so).
+- The `rdt.sh` wrapper script (shipped alongside the image).
+
+## Running commands
+
+Use the wrapper script exactly as you would the `rdt` binary: it forwards all
+arguments:
+
+```bash
+./rdt.sh --help
+./rdt.sh config create --name my-regattadb --from xsmall --ip-list 10.0.0.1
+./rdt.sh config list
+./rdt.sh create-cluster --name my-regattadb --src /path/to/regatta-rpms
+```
+
+It automatically mounts your `~/.rdt` config directory and `~/.ssh` keys into the
+container and runs with host networking, so configs and SSH access work the same as a
+native install.
+
+## Providing the image
+
+If you weren't given an already-loaded Docker image, load one from a tar file
+explicitly:
+
+```bash
+./rdt.sh --src rdt_image.tar config list
+```
+
+Otherwise, the wrapper looks for an image automatically, in this order:
+
+1. An existing Docker image tagged `rdt:<version>` or `rdt:latest`.
+2. A tar at `$RDT_DOCKER_IMAGE_PATH` (default: `/opt/regatta/current/tools/rdt/rdt_image.tar`).
+3. `rdt_image.tar` in the current working directory.
+
+If none of these are found, the wrapper reports an error. See
+`./rdt.sh --help` for the full set of flags and environment variables.
+
+## Environment variables
+
+| Variable | Default | Description |
+|---|---|---|
+| `DOCKER` | `docker` | Docker CLI binary to use |
+| `RDT_DOCKER_IMAGE_FILE` | `rdt_image.tar` | Tar filename used for auto-discovery |
+| `RDT_DOCKER_IMAGE_PATH` | `/opt/regatta/current/tools/rdt/rdt_image.tar` | Full tar path used for auto-discovery |

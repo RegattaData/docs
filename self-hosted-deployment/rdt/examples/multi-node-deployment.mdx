@@ -1,0 +1,139 @@
+---
+title: "Example: Multi-Node Deployment"
+description: "Create a 3-node classic RegattaDB deployment with RDT."
+---
+
+This page walks you through deploying the "classic" multi-node topology: one node running every
+management module plus SNA/RDB, and additional nodes running only SNA/RDB.
+
+## 1. Create a config from the `small` template
+
+```bash
+rdt config create --name prod-regattadb --from small \
+  --ip-list 10.0.0.1,10.0.0.2,10.0.0.3
+```
+
+This gives you 3 nodes: `node_1` (SM, SNA, Sequencer, GDD, DCM, RDB) and `node_2`/`node_3`
+(SNA, RDB only). See [Configuration Overview](../configuration/overview.mdx) for the full
+layout.
+
+## 2. Assign real storage devices
+
+The template ships with no devices assigned, and every RDB module needs at least one.
+Each node has its own RDB module, so you need a device entry per node. Edit the config
+and add one to each node's `devices` list, then reference it from that node's RDB module:
+
+```bash
+rdt config edit prod-regattadb
+```
+
+```json
+// node_1
+"devices": [
+  { "name": "disk1", "path": "/dev/nvme0n1" }
+],
+"modules": [
+  { "type": "rdb", "id": 11, "devices": ["disk1"], ... }
+]
+```
+
+```json
+// node_2
+"devices": [
+  { "name": "disk1", "path": "/dev/nvme0n1" }
+],
+"modules": [
+  { "type": "rdb", "id": 21, "devices": ["disk1"], ... }
+]
+```
+
+```json
+// node_3
+"devices": [
+  { "name": "disk1", "path": "/dev/nvme0n1" }
+],
+"modules": [
+  { "type": "rdb", "id": 31, "devices": ["disk1"], ... }
+]
+```
+
+Device names only need to be unique within a node, so reusing `disk1` on every node is
+fine as long as it points to that node's own local device. See the full config file in
+the [appendix](#appendix-full-config-file) below.
+
+## 3. Probe node hardware (optional)
+
+Instead of hand-editing CPU/RAM/device info, you can have RDT connect to each node and
+detect it for you when creating the config:
+
+```bash
+rdt config create --name prod-regattadb --from small \
+  --ip-list 10.0.0.1,10.0.0.2,10.0.0.3 --probe-nodes
+```
+
+## 4. Create and start RegattaDB
+
+```bash
+rdt create-cluster --name prod-regattadb --src /path/to/regatta-rpms --clean-install
+```
+
+`--src` points to a directory containing the Regatta RPMs. `--clean-install` removes any
+previous installation on the nodes first, useful when reusing nodes from an earlier
+deployment.
+
+## Appendix: full config file
+
+```json expandable
+{
+  "version": "26.0",
+  "id": "prod-regattadb",
+  "nodes": [
+    {
+      "id": 1,
+      "name": "node_1",
+      "ip": "10.0.0.1",
+      "devices": [
+        { "name": "disk1", "path": "/dev/nvme0n1" }
+      ],
+      "modules": [
+        { "type": "sna", "id": 10, "port": 8841, "service_port": 5001, "config": {}, "devices": [] },
+        { "type": "rdb", "id": 11, "port": 8850, "service_port": 6001, "config": {}, "devices": ["disk1"] },
+        { "type": "sm", "id": 1, "port": 8840, "service_port": 5000, "config": {}, "devices": [] },
+        { "type": "sequencer", "id": 3, "port": 8842, "service_port": 5002, "config": {}, "devices": [] },
+        { "type": "gdd", "id": 4, "port": 8843, "service_port": 5003, "config": {}, "devices": [] },
+        { "type": "dcm", "id": 5, "port": 8844, "service_port": 5004, "config": {}, "devices": [] }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "node_2",
+      "ip": "10.0.0.2",
+      "devices": [
+        { "name": "disk1", "path": "/dev/nvme0n1" }
+      ],
+      "modules": [
+        { "type": "sna", "id": 20, "port": 8841, "service_port": 5001, "config": {}, "devices": [] },
+        { "type": "rdb", "id": 21, "port": 8850, "service_port": 6001, "config": {}, "devices": ["disk1"] }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "node_3",
+      "ip": "10.0.0.3",
+      "devices": [
+        { "name": "disk1", "path": "/dev/nvme0n1" }
+      ],
+      "modules": [
+        { "type": "sna", "id": 30, "port": 8841, "service_port": 5001, "config": {}, "devices": [] },
+        { "type": "rdb", "id": 31, "port": 8850, "service_port": 6001, "config": {}, "devices": ["disk1"] }
+      ]
+    }
+  ]
+}
+```
+
+## Next steps
+
+- [Config Recipes](./config-recipes.mdx) for more `config create` options.
+- [System Setup Overview](../system-setup/overview.mdx) to understand what happens on
+  each node during this step.

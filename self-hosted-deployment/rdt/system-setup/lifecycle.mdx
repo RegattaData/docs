@@ -1,0 +1,105 @@
+---
+title: "RegattaDB Lifecycle"
+description: "Commands for creating, starting, stopping, resetting, and cleaning a RegattaDB deployment."
+---
+
+# RegattaDB Lifecycle
+
+These commands run the sequence of steps described in
+[System Setup Overview](./overview.mdx). Each one takes `--name <config>` to select which
+[config](../configuration/overview.mdx) to act on.
+
+## Deploying RegattaDB
+
+### One-step
+
+```bash
+rdt create-cluster --name <config> --src <path/to/rpms> [--clean-install]
+```
+
+`--src` accepts either a `.tar.zst` archive or a directory containing Regatta RPMs.
+`--clean-install` removes any previous installation on the nodes before reinstalling.
+
+### Step-by-step
+
+```bash
+rdt distribute --name <config> --src <path/to/rpms>
+rdt setup --name <config> [--clean-install]
+rdt start-services --name <config>
+rdt configure --name <config>
+rdt start-cluster --name <config>
+```
+
+This runs the same sequence as `create-cluster`, one step at a time. Useful if you want
+to inspect or troubleshoot a specific stage.
+
+A few things worth knowing:
+- Management commands take effect on the System Manager as soon as they're issued.
+  There's no transactional rollback. If `configure` fails partway through (for example,
+  a node can't be reached), whatever was already applied before the failure stays applied.
+- After `start-cluster`, if some modules didn't reach an active state, RDT prints them as
+  a warning rather than failing outright. Check the warning and investigate those
+  modules before considering RegattaDB ready.
+
+## Starting and stopping
+
+There are two independent layers you can start or stop:
+
+- **`start-services`/`stop-services`**: starts or stops the System Manager and SNA as
+  node-level services. This doesn't affect whether the database modules themselves are
+  running.
+- **`start-cluster`/`stop-cluster`**: tells the System Manager to start or stop every
+  configured module (RDB, GDD, DCM, Sequencer, etc.), bringing the database up or down.
+  Under the hood these issue the `MANAGE SYSTEM START` and `MANAGE SYSTEM SHUTDOWN`
+  management commands (see the
+  [System States and Commands](https://docs.regatta.dev/sql/system-management/system-states-and-commands)).
+
+```bash
+rdt stop-cluster --name <config>
+rdt start-cluster --name <config>
+```
+
+## Resetting RegattaDB
+
+```bash
+rdt reset --name <config>
+```
+
+Stops services, clears all RegattaDB data, and restarts services, but it does **not**
+automatically reconfigure or restart the database afterward. Run `configure` and
+`start-cluster` again once `reset` finishes:
+
+```bash
+rdt reset --name <config>
+rdt configure --name <config>
+rdt start-cluster --name <config>
+```
+
+## Cleaning up
+
+```bash
+rdt clean --name <config>
+```
+
+Removes Regatta's installation, files, logs, and traces from every node. If RDT itself
+is installed on a given node, `clean` preserves RDT and its own logs on that node while
+removing everything else; if RDT isn't installed there, the node is wiped completely.
+
+## Collecting debug information
+
+```bash
+rdt collect --name <config> --destination <path> [--nodes <node>...] [--remote-destination <path>]
+```
+
+Collects logs and diagnostics from RegattaDB nodes into a local directory. Use `--nodes`
+(repeatable, by node name or id) to limit collection to specific nodes; omit it to
+collect from all nodes. `--remote-destination` controls the staging directory used on
+each node (defaults to `/tmp/regatta-collect`). Run `rdt collect --help` for the full
+list of options for this command.
+
+This command wraps the standalone `regatta-collect` tool that runs on each node. See
+that tool's own documentation for its full set of options and additional examples.
+
+## Next steps
+
+See [Examples](../examples/quickstart-single-node.mdx) for end-to-end walkthroughs.

@@ -1,0 +1,144 @@
+---
+title: "Command Reference"
+description: "Every RDT command, its options, and what it does."
+---
+
+Every command below also accepts the [global options](./advanced/global-options-and-credentials.mdx)
+(`--user`, `--key`, `--password`, `--ask-password`, `--verbose`, `--version`). Each command
+also has a short alias, shown in parentheses next to its name below (aliases aren't
+shown in `--help` output, but work identically to the full name). Run `rdt <command>
+--help` at any time for the same information from the CLI itself.
+
+## config (alias: `c`)
+
+Manage RegattaDB configuration files. See
+[Creating & Managing Configs](./configuration/creating-and-managing-configs.mdx) for a
+guided walkthrough.
+
+### config create (alias: `cr`)
+
+| Option | Description |
+|---|---|
+| `--name`/`-n` | Config name (required) |
+| `--from`/`-f` | Start from a packaged template (`small` or `xsmall`). Mutually exclusive with `--nodes` |
+| `--nodes`/`-no` | Number of nodes to generate (mutually exclusive with `--from`) |
+| `--ip-file`/`-ipf` | File containing node IP addresses |
+| `--ip-list`/`-ips` | Comma-separated list of node IP addresses |
+| `--probe-nodes`/`-p` | Connect to each node over SSH to detect CPU, RAM, and devices |
+| `--output`/`-o` | Write to a local file instead of the config store |
+| `--force` | Recreate without prompting if a config by this name already exists |
+
+### config print (alias: `p`)
+
+| Option | Description |
+|---|---|
+| `--name`/`-n` | Config name (required) |
+| `--validate`/`-v` | Print a warning if the config fails validation. Default: enabled |
+
+### config edit (alias: `e`)
+
+| Option | Description |
+|---|---|
+| `--name`/`-n` | Config name (required). Opens it in `$EDITOR` |
+
+### config list (alias: `ls`)
+
+No options. Lists both packaged templates and saved configs.
+
+### config load (alias: `l`)
+
+| Option | Description |
+|---|---|
+| `--file`/`-f` | Local JSON config file to import (required) |
+| `--name`/`-n` | Name to save it as. Defaults to the file's name (without `.json`) |
+
+### config remove (alias: `rm`)
+
+| Option | Description |
+|---|---|
+| `--name`/`-n` | Config name to delete (required) |
+| `--force` | Delete without prompting for confirmation |
+
+## distribute (alias: `di`)
+
+Distributes Regatta RPMs to every node.
+
+| Option | Description |
+|---|---|
+| `--name`/`-n` | Config name (required) |
+| `--src`/`-s` | Path to a directory of RPMs or a `.tar.zst` archive (required) |
+
+## setup (alias: `st`)
+
+Installs RPMs and configures nodes (see [System Setup Overview](./system-setup/overview.mdx)).
+
+| Option | Description |
+|---|---|
+| `--name`/`-n` | Config name (required) |
+| `--clean-install`/`-ci` | Remove any previous installation before reinstalling. Default: off |
+
+## start-services (alias: `ss`) / stop-services (alias: `sps`)
+
+Starts or stops the System Manager and SNA as node-level services.
+
+| Option | Description |
+|---|---|
+| `--name`/`-n` | Config name (required) |
+
+## configure (alias: `co`)
+
+Registers the nodes, devices, and modules with the System Manager.
+
+| Option | Description |
+|---|---|
+| `--name`/`-n` | Config name (required) |
+
+## start-cluster (alias: `sc`) / stop-cluster (alias: `stop`)
+
+Starts or stops every configured module via the System Manager (`MANAGE SYSTEM START`/
+`MANAGE SYSTEM SHUTDOWN`).
+
+| Option | Description |
+|---|---|
+| `--name`/`-n` | Config name (required) |
+
+## create-cluster (alias: `ccl`)
+
+Runs the full pipeline in one command: distribute → setup → start-services → configure →
+start-cluster.
+
+| Option | Description |
+|---|---|
+| `--name`/`-n` | Config name (required) |
+| `--src`/`-s` | Path to a directory of RPMs or a `.tar.zst` archive (required) |
+| `--clean-install`/`-ci` | Remove any previous installation before reinstalling. Default: off |
+
+## reset (alias: `re`)
+
+Stops services, clears all RegattaDB data, and restarts services. Does **not**
+automatically reconfigure or restart the database afterward. See
+[RegattaDB Lifecycle](./system-setup/lifecycle.mdx#resetting-regattadb).
+
+| Option | Description |
+|---|---|
+| `--name`/`-n` | Config name (required) |
+
+## clean (alias: `cl`)
+
+Removes Regatta's installation, files, logs, and traces from every node (preserving RDT
+itself where it's installed; see [What Changes on Your Nodes](./advanced/node-system-changes.mdx#cleanup-clean)).
+
+| Option | Description |
+|---|---|
+| `--name`/`-n` | Config name (required) |
+
+## collect (alias: `coll`)
+
+Collects debug information from RegattaDB nodes.
+
+| Option | Description |
+|---|---|
+| `--name`/`-n` | Config name (required) |
+| `--destination`/`-d` | Local destination path (required) |
+| `--nodes`/`-N` | Node name or id to collect from. Repeatable. Defaults to all nodes |
+| `--remote-destination`/`-r` | Remote staging directory on each node. Default: `/tmp/regatta-collect` |
