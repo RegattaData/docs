@@ -28,9 +28,9 @@ With that in mind, here's the JSON schema itself: the fields that make up the `C
 
 | Field   | Type            | Description                                              |
 |---------|-----------------|-------------------------------------------------------------|
-| version | string          | Configuration schema version. Defaults to `"26.0"`.          |
-| id      | string/UUID/int | Cluster identifier. Defaults to `"regatta-cluster"`.         |
-| nodes   | list of Node    | The nodes that make up the deployment. Defaults to empty.       |
+| `version` | `string` | Configuration schema version |
+| `id` | `string/UUID/int` | Cluster identifier. Defaults to `"regatta-cluster"` |
+| `nodes` | list of Node | The nodes that make up the deployment. Defaults to empty |
 
 **Cluster-level validation:**
 - Node `id`s must be unique across the deployment.
@@ -41,14 +41,14 @@ With that in mind, here's the JSON schema itself: the fields that make up the `C
 
 | Field       | Type            | Description                                                        |
 |-------------|-----------------|------------------------------------------------------------------------|
-| id          | int             | Unique identifier within the deployment. Defaults to `1`.                 |
-| name        | string          | Node name. Defaults to `"regatta-node"`.                               |
-| ip          | IP address      | Address RDT uses to connect to the node.                               |
-| num_threads | int (optional)  | Concurrency level for the node. Leave unset to let the SM decide.      |
-| ram_MB      | int (optional)  | RAM budget for the node, in megabytes. Leave unset to let the SM decide. |
-| devices     | list of Device  | Storage devices available on this node. Defaults to empty.            |
-| modules     | list of Module  | Modules to run on this node. Defaults to empty.                        |
-| config      | object          | Arbitrary node config (e.g. probed hardware data). Defaults to empty.  |
+| `id` | `int` | Unique identifier within the deployment. Defaults to `1` |
+| `name` | `string` | Node name. Defaults to `"regatta-node"` |
+| `ip` | IP address | Address RDT uses to connect to the node |
+| `num_threads` | `int `(optional) | Concurrency level for the node. Leave unset to let the SM decide |
+| `ram_MB` | `int `(optional) | RAM budget for the node, in megabytes. Leave unset to let the SM decide |
+| `devices` | list of Device | Storage devices available on this node. Defaults to empty |
+| `modules` | list of Module | Modules to run on this node. Defaults to empty |
+| `config` | `object` | Arbitrary node config (e.g. probed hardware data). Defaults to empty |
 
 **Node-level validation:**
 - At most one instance each of SM, Sequencer, GDD, and DCM is allowed per node (mirrors
@@ -61,11 +61,11 @@ With that in mind, here's the JSON schema itself: the fields that make up the `C
 
 | Field       | Type               | Description                                                 |
 |-------------|--------------------|--------------------------------------------------------------|
-| name        | string             | Referenced by modules by this name.                           |
-| path        | path               | Path to the raw block device.                                 |
-| capacity    | int (optional)     | Capacity in bytes.                                            |
-| config      | object             | Arbitrary device config. Defaults to empty.                   |
-| description | string (optional)  | Free-form description.                                        |
+| `name` | `string` | Referenced by modules by this name |
+| `path` | path | Path to the raw block device |
+| `capacity` | `int `(optional) | Capacity in bytes |
+| `config` | `object` | Arbitrary device config. Defaults to empty |
+| `description` | `string `(optional) | Free-form description |
 
 ## Module
 
@@ -74,15 +74,15 @@ defaults for `id`, `port`, and `service_port`.
 
 | Field        | Type            | Description                                                     |
 |--------------|-----------------|---------------------------------------------------------------------|
-| type         | string          | One of `sm`, `sna`, `sequencer`, `gdd`, `dcm`, `rdb`.                |
-| id           | int             | Defaults to the type's standard id (see table below).               |
-| name         | string          | Auto-generated as `<type>_<id>` if not set.                          |
-| port         | int             | Communications port. Defaults to the type's standard port.          |
-| service_port | int             | Service port. Defaults to the type's standard service port.         |
-| num_threads  | int (optional)  | Concurrency level for the module. Leave unset to let the SM decide. |
-| ram_MB       | int (optional)  | RAM budget for the module, in megabytes. Leave unset to let the SM decide. |
-| devices      | list of strings | Names of devices (from the node) used by this module.               |
-| config       | object          | Arbitrary module config, e.g. core binding (see below).              |
+| `type` | `string` | One of `sm`, `sna`, `sequencer`, `gdd`, `dcm`, `rdb` |
+| `id` | `int` | Defaults to the type's standard id (see table below) |
+| `name` | `string` | Auto-generated as `<type>_<id>` if not set |
+| `port` | `int` | Communications port. Defaults to the type's standard port |
+| `service_port` | `int` | Service port. Defaults to the type's standard service port |
+| `num_threads` | `int `(optional) | Concurrency level for the module. Leave unset to let the SM decide |
+| `ram_MB` | `int `(optional) | RAM budget for the module, in megabytes. Leave unset to let the SM decide |
+| `devices` | list of strings | Names of devices (from the node) used by this module |
+| `config` | `object` | Arbitrary module config, e.g. core binding (see below) |
 
 ### Module type defaults
 
