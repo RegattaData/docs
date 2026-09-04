@@ -10,20 +10,6 @@ expect on your machines. For the actual commands, see
 
 ## The setup pipeline
 
-```mermaid
-flowchart LR
-    A[Distribute RPMs] --> B[Stop Regatta services]
-    B --> C{"--clean-install?"}
-    C -->|yes| D[Remove previous installation]
-    C -->|no| E[Install module RPMs]
-    D --> E
-    E --> F[Configure node environment]
-    F --> G[Generate module configs]
-    G --> H[Start SM & SNA services]
-    H --> I[Configure RegattaDB]
-    I --> J[Start RegattaDB]
-```
-
 <Steps>
   <Step title="Distribute RPMs">
     Copy the RPM bundle to every target node.
