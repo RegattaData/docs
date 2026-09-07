@@ -22,13 +22,7 @@ for how these packages are delivered):
 sudo dnf -y install regatta-rdt-<version>.el8.x86_64.rpm
 ```
 
-During installation, you'll be prompted to accept the Regatta EULA (or set
-`ACCEPT_EULA=1` for unattended installs; see
-[EULA Acceptance](https://docs.regatta.dev/self-hosted-deployment/manual-deployment/prepare-for-deployment#eula-acceptance)).
-By default the RPM creates and installs for a `regatta` deployment user/group; to use a
-different one, set `REGATTA_USER`/`REGATTA_GROUP` (see
-[Deployment User](https://docs.regatta.dev/self-hosted-deployment/manual-deployment/prepare-for-deployment#deployment-user)
-for the naming rules).
+During installation you'll be prompted to accept the Regatta EULA (or set `ACCEPT_EULA=1` for unattended installs; see [EULA Acceptance](https://docs.regatta.dev/self-hosted-deployment/manual-deployment/prepare-for-deployment#eula-acceptance)). By default, the RPM creates and installs for a `regatta` deployment user/group; to use a different one, set `REGATTA_USER`/`REGATTA_GROUP` (see [Deployment User](https://docs.regatta.dev/self-hosted-deployment/manual-deployment/prepare-for-deployment#deployment-user) for the naming rules).
 
 Once installed, the RPM automatically installs RDT itself for the deployment user via
 `pip install --user`, bundling the self-contained Regatta Python driver (`pyregatta`) so
