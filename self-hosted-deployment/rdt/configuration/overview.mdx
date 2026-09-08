@@ -76,8 +76,8 @@ defaults for `id`, `port`, and `service_port`.
 | `name` | `string` | Auto-generated as `<type>_<id>` if not set |
 | `port` | `int` | Communications port. Defaults to the type's standard port |
 | `service_port` | `int` | Service port. Defaults to the type's standard service port |
-| `num_threads` | `int `(optional) | Concurrency level for the module. Leave unset to let the SM decide |
-| `ram_MB` | `int `(optional) | RAM budget for the module, in megabytes. Leave unset to let the SM decide |
+| `num_threads` | `int `(optional) | Concurrency level for the module.<br />Leave unset to let the SM automatically set the value |
+| `ram_MB` | `int `(optional) | RAM budget for the module, in megabytes. <br />Leave unset to let the SM automatically set the value |
 | `devices` | list of strings | Names of devices (from the node) used by this module |
 | `config` | `object` | Arbitrary module config, e.g. core binding (see below) |
 
