@@ -1,0 +1,66 @@
+---
+title: "Config Recipes"
+description: "Practical RDT config create recipes: probing hardware, IP files, and importing/exporting configs."
+---
+
+# Config Recipes
+
+See [Creating & Managing Configs](../configuration/creating-and-managing-configs.mdx) for
+the full set of `rdt config` options. This page is a set of practical recipes.
+
+## Generate nodes from an IP file, without a template
+
+```bash
+cat <<EOF > ips.txt
+10.0.0.1
+10.0.0.2
+10.0.0.3
+EOF
+
+rdt config create --name my-regattadb --ip-file ips.txt --nodes 3
+```
+
+Node 1 gets every module type; nodes 2 and 3 get only SNA and RDB (the same layout as
+the `small` template).
+
+## Probe node hardware while creating a config
+
+```bash
+rdt config create --name my-regattadb --from small \
+  --ip-list 10.0.0.1,10.0.0.2,10.0.0.3 --probe-nodes
+```
+
+RDT connects to each node over SSH and detects its CPU thread count and RAM, leaving
+those unset otherwise (the System Manager decides them at startup if you don't
+probe or set them yourself).
+
+Probing also looks for unmounted, unformatted block devices on each node and assigns any
+it finds (above ~20GB) to that node's RDB module(s) automatically. If a node has no such
+device attached, its RDB module still ends up with no device, and you'll need to add one
+manually. See [Quickstart: Single-Node RegattaDB](./quickstart-single-node.mdx#3-create-a-config)
+for the manual device-assignment steps.
+
+## Save a config to a local file instead of the config store
+
+```bash
+rdt config create --name draft --from xsmall --output ./draft-config.json
+```
+
+Useful for reviewing or version-controlling a config before importing it. A config
+created this way with `--output` isn't saved to `~/.rdt/configs/`, so it won't appear in
+`rdt config list` until you load it.
+
+## Import an existing config file
+
+```bash
+rdt config load --file ./draft-config.json --name my-regattadb
+```
+
+If you omit `--name`, the config is named after the file (its filename without the
+`.json` extension).
+
+## Export a config for sharing or version control
+
+```bash
+rdt config print my-regattadb > my-regattadb.json
+```
