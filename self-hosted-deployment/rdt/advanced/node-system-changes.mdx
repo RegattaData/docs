@@ -20,7 +20,7 @@ templated units) and manages all of them together: starting, stopping, or enabli
 them for boot as a group, based on what you asked for (`start-services`/`stop-services`/
 `setup`/etc.).
 
-## Performance tuning (jemalloc)
+## Performance tuning (`jemalloc`)
 
 If `libjemalloc` is available on the node (checked under `/usr/lib64`, then as a
 fallback via the system's shared library cache), RDT wires it in as `LD_PRELOAD` for the
@@ -37,7 +37,7 @@ instance, under that module's directory in the Regatta installation.
 Removes Regatta's installation, logs, and runtime data from a node. If RDT itself is
 installed on that node, `clean` specifically preserves RDT's own installed files and its
 own log directory; everything else is removed. If RDT isn't installed there, the wipe
-is unconditional (installation directory, symlinks, logs, lock files, shared memory).
+is unconditional (installation directory, symbolic links, logs, lock files, shared memory).
 
 ## Reset (`reset`)
 
