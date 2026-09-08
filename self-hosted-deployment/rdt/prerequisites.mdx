@@ -42,9 +42,9 @@ These nodes must meet RegattaDB's general
 requirements on top of those, specific to how it connects to and configures nodes:
 
 - **SSH access** from the control node to every node, using either:
-  - a key pair (recommended; see `--key`/`-k` in
+  - A key pair (recommended; see `--key`/`-k` in
     [Global Options & Credentials](./advanced/global-options-and-credentials.mdx)), or
-  - a shared username/password (`--ask-password` or `--password`).
+  - A shared username/password (`--ask-password` or `--password`).
 - `sudo `**access** for the SSH user on every node: installing packages, writing `udev` rules, and managing `systemd` services all require root privileges. Passwordless `sudo` is preferred; a `sudo` password also works, since RDT reuses the SSH password you provide to answer the `sudo` prompt automatically.
 
 ## Choosing an installation path
