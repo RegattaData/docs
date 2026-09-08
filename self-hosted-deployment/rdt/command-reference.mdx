@@ -5,13 +5,13 @@ description: "Every RDT command, its options, and what it does."
 
 Below is a command reference guide for the RDT. Every command also accepts the [global options](./advanced/global-options-and-credentials.mdx) (`--user`, `--key`, `--password`, `--ask-password`, `--verbose`, `--version`). Each command also has a short alias, shown in parentheses next to its name below (aliases aren't shown in `--help` output, but work the same as the full name). Run `rdt <command>`<br />`--help` at any time for the same information from the CLI itself.
 
-## config (alias: `c`)
+## `config `(alias: `c`)
 
 Manage RegattaDB configuration files. See
 [Creating & Managing Configs](./configuration/creating-and-managing-configs.mdx) for a
 guided walkthrough.
 
-### config create (alias: `cr`)
+### `config create` (alias: `cr`)
 
 | Option | Description |
 |---|---|
@@ -24,14 +24,14 @@ guided walkthrough.
 | `--output`/`-o` | Write to a local file instead of the config store |
 | `--force` | Recreate without prompting if a config by this name already exists |
 
-### config print (alias: `p`)
+### `config print` (alias: `p`)
 
 | Option | Description |
 |---|---|
 | `--name`/`-n` | Config name (required) |
 | `--validate`/`-v` | Print a warning if the config fails validation. Default: enabled |
 
-### config edit (alias: `e`)
+### `config edit` (alias: `e`)
 
 | Option | Description |
 |---|---|
