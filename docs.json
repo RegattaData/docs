@@ -328,7 +328,8 @@
               "regatta-cloud/database-backup-restore",
               "regatta-cloud/backup",
               "regatta-cloud/restore"
-            ]
+            ],
+            "hidden": true
           }
         ]
       },
