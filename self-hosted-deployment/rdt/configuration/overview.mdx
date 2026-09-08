@@ -41,8 +41,8 @@ With that in mind, here's the JSON schema itself: the fields that make up the `C
 | `id` | `int` | Unique identifier within the deployment. Defaults to `1` |
 | `name` | `string` | Node name. Defaults to `"regatta-node"` |
 | `ip` | IP address | Address RDT uses to connect to the node |
-| `num_threads` | `int `(optional) | Concurrency level for the node.<br />Leave unset to let the SM decide |
-| `ram_MB` | `int `(optional) | RAM budget for the node, in megabytes. Leave unset to let the SM decide |
+| `num_threads` | `int `(optional) | Concurrency level for the node.<br />Leave unset to let the SM automatically set the value |
+| `ram_MB` | `int `(optional) | RAM budget for the node, in megabytes. Leave unset to let the SM automatically set the value |
 | `devices` | list of Device | Storage devices available on this node. Defaults to empty |
 | `modules` | list of Module | Modules to run on this node. Defaults to empty |
 | `config` | `object` | Arbitrary node config (e.g. probed hardware data). Defaults to empty |
