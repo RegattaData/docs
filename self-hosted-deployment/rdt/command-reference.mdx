@@ -5,13 +5,13 @@ description: "Every RDT command, its options, and what it does."
 
 Below is a command reference guide for the RDT. Every command also accepts the [global options](./advanced/global-options-and-credentials.mdx) (`--user`, `--key`, `--password`, `--ask-password`, `--verbose`, `--version`). Each command also has a short alias, shown in parentheses next to its name below (aliases aren't shown in `--help` output, but work the same as the full name). Run `rdt <command>`<br />`--help` at any time for the same information from the CLI itself.
 
-## config (alias: `c`)
+## `config `(alias: `c`)
 
 Manage RegattaDB configuration files. See
 [Creating & Managing Configs](./configuration/creating-and-managing-configs.mdx) for a
 guided walkthrough.
 
-### config create (alias: `cr`)
+### `config create` (alias: `cr`)
 
 | Option | Description |
 |---|---|
@@ -24,38 +24,38 @@ guided walkthrough.
 | `--output`/`-o` | Write to a local file instead of the config store |
 | `--force` | Recreate without prompting if a config by this name already exists |
 
-### config print (alias: `p`)
+### `config print` (alias: `p`)
 
 | Option | Description |
 |---|---|
 | `--name`/`-n` | Config name (required) |
 | `--validate`/`-v` | Print a warning if the config fails validation. Default: enabled |
 
-### config edit (alias: `e`)
+### `config edit` (alias: `e`)
 
 | Option | Description |
 |---|---|
 | `--name`/`-n` | Config name (required). Opens it in `$EDITOR` |
 
-### config list (alias: `ls`)
+### `config list` (alias: `ls`)
 
 No options. Lists both packaged templates and saved configs.
 
-### config load (alias: `l`)
+### `config load` (alias: `l`)
 
 | Option | Description |
 |---|---|
 | `--file`/`-f` | Local JSON config file to import (required) |
 | `--name`/`-n` | Name to save it as. Defaults to the file's name (without `.json`) |
 
-### config remove (alias: `rm`)
+### `config remove` (alias: `rm`)
 
 | Option | Description |
 |---|---|
 | `--name`/`-n` | Config name to delete (required) |
 | `--force` | Delete without prompting for confirmation |
 
-## distribute (alias: `di`)
+## `distribute` (alias: `di`)
 
 Distributes Regatta RPMs to every node.
 
@@ -64,7 +64,7 @@ Distributes Regatta RPMs to every node.
 | `--name`/`-n` | Config name (required) |
 | `--src`/`-s` | Path to a directory of RPMs or a `.tar.zst` archive (required) |
 
-## setup (alias: `st`)
+## `setup` (alias: `st`)
 
 Installs RPMs and configures nodes (see [System Setup Overview](./system-setup/overview.mdx)).
 
@@ -73,7 +73,7 @@ Installs RPMs and configures nodes (see [System Setup Overview](./system-setup/o
 | `--name`/`-n` | Config name (required) |
 | `--clean-install`/`-ci` | Remove any previous installation before reinstalling. Default: off |
 
-## start-services (alias: `ss`) / stop-services (alias: `sps`)
+## `start-services` (alias: `ss`) / stop-services (alias: `sps`)
 
 Starts or stops the System Manager and SNA as node-level services.
 
@@ -81,7 +81,7 @@ Starts or stops the System Manager and SNA as node-level services.
 |---|---|
 | `--name`/`-n` | Config name (required) |
 
-## configure (alias: `co`)
+## `configure` (alias: `co`)
 
 Registers the nodes, devices, and modules with the System Manager.
 
@@ -89,7 +89,7 @@ Registers the nodes, devices, and modules with the System Manager.
 |---|---|
 | `--name`/`-n` | Config name (required) |
 
-## start-cluster (alias: `sc`) / stop-cluster (alias: `stop`)
+## `start-cluster` (alias: `sc`) / stop-cluster (alias: `stop`)
 
 Starts or stops every configured module via the System Manager (`MANAGE SYSTEM START`/
 `MANAGE SYSTEM SHUTDOWN`).
@@ -98,7 +98,7 @@ Starts or stops every configured module via the System Manager (`MANAGE SYSTEM S
 |---|---|
 | `--name`/`-n` | Config name (required) |
 
-## create-cluster (alias: `ccl`)
+## `create-cluster` (alias: `ccl`)
 
 Runs the full pipeline in one command: distribute → setup → start-services → configure →
 start-cluster.
@@ -109,7 +109,7 @@ start-cluster.
 | `--src`/`-s` | Path to a directory of RPMs or a `.tar.zst` archive (required) |
 | `--clean-install`/`-ci` | Remove any previous installation before reinstalling. Default: off |
 
-## reset (alias: `re`)
+## `reset` (alias: `re`)
 
 Stops services, clears all RegattaDB data, and restarts services. Does **not**
 automatically reconfigure or restart the database afterward. See
@@ -119,7 +119,7 @@ automatically reconfigure or restart the database afterward. See
 |---|---|
 | `--name`/`-n` | Config name (required) |
 
-## clean (alias: `cl`)
+## `clean` (alias: `cl`)
 
 Removes Regatta's installation, files, logs, and traces from every node (preserving RDT
 itself where it's installed; see [What Changes on Your Nodes](./advanced/node-system-changes.mdx#cleanup-clean)).
@@ -128,7 +128,7 @@ itself where it's installed; see [What Changes on Your Nodes](./advanced/node-sy
 |---|---|
 | `--name`/`-n` | Config name (required) |
 
-## collect (alias: `coll`)
+## `collect` (alias: `coll`)
 
 Collects debug information from RegattaDB nodes.
 
