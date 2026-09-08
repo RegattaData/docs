@@ -7,6 +7,41 @@ See [Configuration Overview](../configuration/overview.mdx#core-binding) for the
 `core_binded_node`/`core_binded_cores` fields themselves. This page covers how to fill
 them in deliberately, using your node's real NUMA topology.
 
+## Inspecting your node's CPU and NUMA layout
+
+Before setting `core_binded_node`/`core_binded_cores` by hand, find your node's real
+CPU and NUMA layout. Two common tools:
+
+`lscpu` prints the NUMA node count and, for each node, the CPU ids that belong to it:
+
+```bash
+lscpu
+```
+
+```text
+NUMA node(s):          2
+NUMA node0 CPU(s):     0-7
+NUMA node1 CPU(s):     8-15
+```
+
+`numactl --hardware` (package `numactl`) gives the same CPU breakdown plus each NUMA
+node's local memory:
+
+```bash
+numactl --hardware
+```
+
+```text
+available: 2 nodes (0-1)
+node 0 cpus: 0 1 2 3 4 5 6 7
+node 0 size: 131072 MB
+node 1 cpus: 8 9 10 11 12 13 14 15
+node 1 size: 131072 MB
+```
+
+Use this data the same way you'd use probed `numa_specs` below: pick a NUMA node, use
+its CPU list (or a subset) as `core_binded_cores`, and set `core_binded_node` to match.
+
 ## Reading probed NUMA data
 
 If you created your config with `--probe-nodes` (see
@@ -14,12 +49,19 @@ If you created your config with `--probe-nodes` (see
 each node's `config.numa_specs` is filled in with something like:
 
 ```json
-"config": {
-  "numa_specs": {
-    "node0": { "cpu": "0,1,2,3,4,5,6,7", "mem_mb": 131072 },
-    "node1": { "cpu": "8,9,10,11,12,13,14,15", "mem_mb": 131072 }
+"modules": [
+  {
+    "type": "rdb",
+    "id": 11,
+    ...,
+    "config": {
+      "numa_specs": {
+        "node0": { "cpu": "0,1,2,3,4,5,6,7", "mem_mb": 131072 },
+        "node1": { "cpu": "8,9,10,11,12,13,14,15", "mem_mb": 131072 }
+      }
+    }
   }
-}
+]
 ```
 
 Each key is a NUMA node, with the CPU ids that belong to it and its local memory. This
@@ -31,10 +73,17 @@ you, you decide the binding based on this data.
 To pin a module to a set of cores, set both fields in its `config`:
 
 ```json
-"config": {
-  "core_binded_node": "0",
-  "core_binded_cores": "0-5"
-}
+"modules": [
+  {
+    "type": "rdb",
+    "id": 11,
+    ...,
+    "config": {
+      "core_binded_node": "0",
+      "core_binded_cores": "0-5"
+    }
+  }
+]
 ```
 
 - `core_binded_node` identifies which NUMA node this binding corresponds to (for your
