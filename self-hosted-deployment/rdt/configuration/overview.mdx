@@ -14,8 +14,7 @@ Before designing a configuration, keep RegattaDB's general module placement guid
 in mind:
 
 - **SM**: exactly one per deployment.
-- **SNA**: one per node that hosts at least one operational module (GDD, DCM,
-  Sequencer, or RDB). Configuring more than one SNA on the same node is not supported.
+- **SNA**: one per node that hosts at least one operational module (GDD, DCM, Sequencer, or RDB). 
 - **GDD**, **DCM**, **Sequencer**: exactly one per deployment.
 - **RDB**: at least one per deployment; a node may host multiple RDB modules.
 
