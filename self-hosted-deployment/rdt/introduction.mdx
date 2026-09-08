@@ -4,7 +4,7 @@ description: "Easily automate RegattaDB deployment and management across multipl
 ---
 
 <Note>
-  This section assumes you're already familiar with the [RegattaDB software modules](/self-hosted-deployment/manual-deployment/regatta-software-modules) (SM, SNA, GDD, DCM, Sequencer, RDB) and basic deployment concepts such as a **node** (a physical or virtual machine in your deployment) and a **module** (a RegattaDB component running on a node).
+  This section assumes you're already familiar with the [RegattaDB software modules](/self-hosted-deployment/manual-deployment/regattadb-software-modules) (SM, SNA, GDD, DCM, Sequencer, RDB) and basic deployment concepts such as a **node** (a physical or virtual machine in your deployment) and a **module** (a RegattaDB component running on a node).
 </Note>
 
 **RDT** (**Regatta Deployment Tool**) is a command-line tool that automates deploying and managing a self-hosted RegattaDB deployment across one or more nodes. Instead of manually installing packages, configuring storage devices, and issuing SQL management commands on every node yourself (see [Manual Deployment](/self-hosted-deployment/manual-deployment/high-level-deployment-steps)), you describe your deployment once in a JSON config file and let RDT drive the whole rollout over SSH: distributing RPMs, installing and configuring modules, starting services, and bringing the database online.

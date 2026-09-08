@@ -343,17 +343,6 @@
             ]
           },
           {
-            "group": "Manual Deployment (Atlit)",
-            "pages": [
-              "self-hosted-deployment/manual-deployment/user-setup",
-              "self-hosted-deployment/manual-deployment/regatta-software-modules",
-              "self-hosted-deployment/manual-deployment/configuration-file",
-              "self-hosted-deployment/manual-deployment/firewall",
-              "self-hosted-deployment/manual-deployment/starting-the-system"
-            ],
-            "hidden": true
-          },
-          {
             "group": "Manual Deployment",
             "pages": [
               "self-hosted-deployment/manual-deployment/regattadb-software-modules",
