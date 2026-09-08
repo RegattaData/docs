@@ -46,11 +46,7 @@ There are two independent layers you can start or stop:
 - **`start-services`/`stop-services`**: starts or stops the System Manager and SNA as
   node-level services. This doesn't affect whether the database modules themselves are
   running.
-- **`start-cluster`/`stop-cluster`**: tells the System Manager to start or stop every
-  configured module (RDB, GDD, DCM, Sequencer, etc.), bringing the database up or down.
-  Under the hood these issue the `MANAGE SYSTEM START` and `MANAGE SYSTEM SHUTDOWN`
-  management commands (see the
-  [System States and Commands](https://docs.regatta.dev/sql/system-management/system-states-and-commands)).
+- `start-cluster`**/**`stop-cluster`: tells the System Manager to start or stop the operational modules (RDB, GDD, DCM, Sequencer), bringing the database up or down. Under the hood these issue the `MANAGE SYSTEM START` and `MANAGE SYSTEM SHUTDOWN` management commands (see the [System States and Commands](https://docs.regatta.dev/sql/system-management/system-states-and-commands)).
 
 ```bash
 rdt stop-cluster --name <config>
