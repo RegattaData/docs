@@ -30,8 +30,8 @@ With that in mind, here's the JSON schema itself: the fields that make up the `C
 | `nodes` | list of Node | The nodes that make up the deployment. Defaults to empty |
 
 **Cluster-level validation:**
-- Node `id`s must be unique across the deployment.
-- Only one instance each of SM, Sequencer, GDD, and DCM is allowed across the entire
+- Node `id` must be unique across the deployment.
+- Exactly one instance each of SM, Sequencer, GDD, and DCM across the entire
   deployment (not per node).
 
 ## Node
