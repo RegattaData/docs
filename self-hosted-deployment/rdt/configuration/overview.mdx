@@ -48,7 +48,7 @@ With that in mind, here's the JSON schema itself: the fields that make up the `C
 | `config` | `object` | Arbitrary node config (e.g. probed hardware data). Defaults to empty |
 
 **Node-level validation:**
-- At most one instance each of SM, Sequencer, GDD, and DCM is allowed per node (mirrors
+- At most one instance each of SM, SNA, Sequencer, GDD, and DCM is allowed per node (mirrors
   the cluster-level rule).
 - Module `id`s must be unique within the node.
 - Every device name referenced by a module must exist in the node's `devices` list.
