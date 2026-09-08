@@ -14,8 +14,7 @@ Before designing a configuration, keep RegattaDB's general module placement guid
 in mind:
 
 - **SM**: exactly one per deployment.
-- **SNA**: one per node that hosts at least one operational module (GDD, DCM,
-  Sequencer, or RDB). Configuring more than one SNA on the same node is not supported.
+- **SNA**: one per node that hosts at least one operational module (GDD, DCM, Sequencer, or RDB). 
 - **GDD**, **DCM**, **Sequencer**: exactly one per deployment.
 - **RDB**: at least one per deployment; a node may host multiple RDB modules.
 
@@ -31,8 +30,8 @@ With that in mind, here's the JSON schema itself: the fields that make up the `C
 | `nodes` | list of Node | The nodes that make up the deployment. Defaults to empty |
 
 **Cluster-level validation:**
-- Node `id`s must be unique across the deployment.
-- At most one instance each of SM, Sequencer, GDD, and DCM is allowed across the entire
+- Node `id` must be unique across the deployment.
+- Exactly one instance each of SM, Sequencer, GDD, and DCM across the entire
   deployment (not per node).
 
 ## Node
@@ -42,14 +41,14 @@ With that in mind, here's the JSON schema itself: the fields that make up the `C
 | `id` | `int` | Unique identifier within the deployment. Defaults to `1` |
 | `name` | `string` | Node name. Defaults to `"regatta-node"` |
 | `ip` | IP address | Address RDT uses to connect to the node |
-| `num_threads` | `int `(optional) | Concurrency level for the node. Leave unset to let the SM decide |
-| `ram_MB` | `int `(optional) | RAM budget for the node, in megabytes. Leave unset to let the SM decide |
+| `num_threads` | `int `(optional) | Concurrency level for the node.<br />Leave unset to let the SM automatically set the value |
+| `ram_MB` | `int `(optional) | RAM budget for the node, in megabytes. Leave unset to let the SM automatically set the value |
 | `devices` | list of Device | Storage devices available on this node. Defaults to empty |
 | `modules` | list of Module | Modules to run on this node. Defaults to empty |
 | `config` | `object` | Arbitrary node config (e.g. probed hardware data). Defaults to empty |
 
 **Node-level validation:**
-- At most one instance each of SM, Sequencer, GDD, and DCM is allowed per node (mirrors
+- At most one instance each of SM, SNA, Sequencer, GDD, and DCM is allowed per node (mirrors
   the cluster-level rule).
 - Module `id`s must be unique within the node.
 - Every device name referenced by a module must exist in the node's `devices` list.
@@ -77,8 +76,8 @@ defaults for `id`, `port`, and `service_port`.
 | `name` | `string` | Auto-generated as `<type>_<id>` if not set |
 | `port` | `int` | Communications port. Defaults to the type's standard port |
 | `service_port` | `int` | Service port. Defaults to the type's standard service port |
-| `num_threads` | `int `(optional) | Concurrency level for the module. Leave unset to let the SM decide |
-| `ram_MB` | `int `(optional) | RAM budget for the module, in megabytes. Leave unset to let the SM decide |
+| `num_threads` | `int `(optional) | Concurrency level for the module.<br />Leave unset to let the SM automatically set the value |
+| `ram_MB` | `int `(optional) | RAM budget for the module, in megabytes. <br />Leave unset to let the SM automatically set the value |
 | `devices` | list of strings | Names of devices (from the node) used by this module |
 | `config` | `object` | Arbitrary module config, e.g. core binding (see below) |
 
@@ -137,7 +136,7 @@ A minimal single-node config with one RDB storage device:
 }
 ```
 
-See [Creating & Managing Configs](./creating-and-managing-configs.mdx) for how to generate,
+See [Creating & Managing Configs](./creating-and-managing-configs.mdx) to learn how to generate,
 edit, and validate files like this without hand-writing the JSON, and
 [Config Recipes](../examples/config-recipes.mdx) for multi-node and probed-hardware examples.
 
@@ -146,7 +145,7 @@ edit, and validate files like this without hand-writing the JSON, and
 `rdt config create --from <template>` starts a config from a packaged template instead
 of a blank one. Two templates ship with RDT today:
 
-- **`xsmall`**: a single-node, all-in-one layout: one node running every module type
+- **`xsmall`**: a single-node, all-in-one layout: one node running all module types
   (SM, SNA, Sequencer, GDD, DCM, RDB).
 - **`small`**: a 3-node "classic" multi-node layout: `node_1` runs every module type
   (like `xsmall`), while `node_2` and `node_3` each run only SNA and RDB.
