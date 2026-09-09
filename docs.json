@@ -187,6 +187,22 @@
             ]
           },
           {
+            "group": "Vector Index",
+            "pages": [
+              "sql/vector-index/introduction",
+              {
+                "group": "DDL",
+                "pages": [
+                  "sql/vector-index/ddl/creating-vector-index",
+                  "sql/vector-index/ddl/deleting-vector-index",
+                  "sql/vector-index/ddl/modifying-vector-index"
+                ]
+              },
+              "sql/vector-index/show-commands",
+              "sql/vector-index/performing-approximate-vector-searches"
+            ]
+          },
+          {
             "group": "Hints",
             "pages": [
               "sql/hints/overview",
@@ -288,22 +304,6 @@
               "sql/appendices/indentifiers-limitations",
               "sql/appendices/database-limitations",
               "sql/appendices/reserved-words"
-            ]
-          },
-          {
-            "group": "Vector Index",
-            "pages": [
-              "sql/vector-index/introduction",
-              {
-                "group": "DDL",
-                "pages": [
-                  "sql/vector-index/ddl/creating-vector-index",
-                  "sql/vector-index/ddl/deleting-vector-index",
-                  "sql/vector-index/ddl/modifying-vector-index"
-                ]
-              },
-              "sql/vector-index/show-commands",
-              "sql/vector-index/performing-approximate-vector-searches"
             ]
           }
         ]

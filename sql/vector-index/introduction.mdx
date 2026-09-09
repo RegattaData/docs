@@ -11,19 +11,12 @@ The RegattaDB specification follows the style of the `pgvector `extension of Pos
 In order to support vector indexing and searches, we introduce the `VECTOR `type. This type is not a generic vector. A `VECTOR `column has one parameter that defines the dimension of all the vectors in the table column. In addition, the following applies to vector columns: 
 
 - A vector column’s dimension can be any integer between 1 and 2048 (inclusive). 
-
 - The data type of the vector elements is` REAL (FLOAT4) `
-
 - Elements of the vector cannot be `NULL` and cannot have any of the values Infinity, -Infinity or NaN. 
-
 - A vector column can be nullable. The `NOT NULL` constraint is supported. 
-
 - `UNIQUE `and `PRIMARY KEY` constraints are not supported. 
-
 - A vector column cannot be a foreign key or target of a foreign key. 
-
 - Regular index for a vector column is not supported. 
-
 - Vector values are passed as strings following `pgvector `syntax. 
 
 For example:
@@ -37,11 +30,11 @@ INSERT INTO my_table VALUES (1, '[1,2,3,4]'), (2, '[1.4, 1.8, 2, 2.66]');
 
 The following are binary operators that return the distance between two vectors. The vectors must be of the same dimension. 
 
-<Icon icon="hyphen" /> L2 distance
+\<<Icon icon="hyphen" />\> L2 distance
 
-<Icon icon="hashtag" /> (negative) Inner product
+\<<Icon icon="hashtag" />\> (negative) Inner product
 
-<Icon icon="equals" /> Cosine distance
+\<<Icon icon="equals" />\> Cosine distance
 
 <Info>
   - No other operators or functions are supported for the vector type (e.g., no vector arithmetic such as adding vectors or multiplying a vector by a scalar). 
