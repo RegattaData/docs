@@ -1,0 +1,20 @@
+---
+title: "Networking"
+description: "How the operator exposes SM and RDB Pods inside and outside your Kubernetes cluster."
+---
+
+The operator gives every module a stable Kubernetes Service, so its address does not change even if Kubernetes reschedules its Pod to a different node:
+
+- The SM Pod gets one Service, always `ClusterIP`, reachable only from inside your Kubernetes cluster.
+- Every RDB Pod gets its own Service, also always `ClusterIP`. The operator and SM use these directly for topology-aware routing to a specific RDB replica.
+- All RDB Pods together also get one aggregate Service, `ClusterIP` by default or `LoadBalancer` if you set `spec.rdb.service.type`. This is a simple entry point for clients that do not need to target a specific RDB replica.
+
+Setting `spec.rdb.service.type: LoadBalancer` requests an externally reachable address for the aggregate Service. Kubernetes does not fulfill this by itself: it depends on a load-balancer integration already being available in your cluster - built in on managed offerings such as GKE, EKS, and AKS, or provided by an on-prem controller such as MetalLB. If your cluster has no such integration, the Service simply stays `<pending>` with no external IP. When the address is provisioned, traffic sent to it is forwarded to the Service, which then load-balances it across every RDB Pod, the same way any Kubernetes Service load-balances across its backing Pods, and is shared across every client that connects to it rather than reserved for one. It does not target one specific RDB Pod: a client connecting through the aggregate Service may reach any RDB replica.
+
+You can additionally restrict which source IPs may reach it with `spec.rdb.service.loadBalancerSourceRanges` (a list of CIDR blocks). Just like `type: LoadBalancer` itself, Kubernetes does not enforce this field directly: it is fulfilled by the same load-balancer integration, and enforcement varies by platform - for example GKE's translates it into a firewall rule at the network edge, while other cloud providers and on-prem controllers differ or may not support it at all. Verify traffic is actually restricted on your platform rather than assuming it always is; if the integration ignores the field, the Service stays reachable from anywhere.
+
+<Warning>
+  The aggregate RDB Service is the only Service the operator itself can expose outside your Kubernetes cluster: the SM Service and per-RDB Services are always generated as `ClusterIP`, with no built-in option to change that. This means RegattaDB management operations have no supported external access path out of the box - it does not mean SM is unreachable from outside the cluster. Nothing stops you from creating your own additional Service (or Ingress) pointed at the SM Pod's selector labels to expose it yourself; the operator simply does not do this for you, will not manage or secure it, and will not know about it.
+</Warning>
+
+If you need to run RegattaDB management commands from an external host, run your client as a Pod inside the Kubernetes cluster, use a standard Kubernetes technique such as `kubectl port-forward` to reach SM temporarily, or create your own additional Service restricted to trusted source ranges and take responsibility for securing it. `spec.rdb.service.type` only supports `ClusterIP`/`LoadBalancer` today; if you specifically need a NodePort-style Service, the same applies - you could create your own additional Service alongside the operator-managed ones.

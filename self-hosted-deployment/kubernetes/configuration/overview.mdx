@@ -1,0 +1,95 @@
+---
+title: "Configuration Overview"
+description: "The RegattaCluster resource: object header, version and image, and module settings."
+---
+
+Everything you configure lives in a single `RegattaCluster` resource. This page covers the fields you set for every deployment: the object header, RegattaDB version and image, and per-module settings. See [Storage](./storage.mdx), [Networking](./networking.mdx), [Security & Lifecycle](./security-and-lifecycle.mdx), and [Resources & Scheduling](./resources-and-scheduling.mdx) for the rest of the spec.
+
+## A minimal RegattaCluster resource
+
+```yaml
+apiVersion: regatta.dev/<crd-api-version>
+kind: RegattaCluster
+metadata:
+  name: my-regattadb
+  namespace: <namespace>
+spec:
+  version: "<version>"
+  image:
+    repository: registry.example.com/regatta
+    tag: "<version>"
+  security:
+    runAsUser: 1000
+    runAsGroup: 1001
+    fsGroup: 1001
+  rdb:
+    replicas: 3
+    blockStorage:
+      size: 60Gi
+  repoStorage:
+    size: 5Gi
+  logs:
+    size: 5Gi
+```
+
+`spec.version`, `spec.image`, `spec.rdb`, `spec.repoStorage`, and `spec.logs` are required. The rest of this page, and the pages that follow it, walk through every field. See [Quickstart: Single-Node RegattaCluster](../examples/quickstart-single-node.mdx) to apply this example end to end.
+
+## Configure the object header
+
+| Field | Description |
+| --- | --- |
+| `apiVersion` | `regatta.dev/<crd-api-version>` |
+| `kind` | `RegattaCluster` |
+| `metadata.name` | A unique, DNS-compatible name. It is used to name every generated resource, so keep the total generated names under 63 characters |
+| `metadata.namespace` | The namespace where you installed the operator |
+
+## Configure version and image
+
+| Field | Required/default | Description |
+| --- | --- | --- |
+| `spec.version` | Required; immutable after creation | The RegattaDB release version. It must match the release built into your image |
+| `spec.image.repository` | Required | The RegattaDB image repository in your registry |
+| `spec.image.tag` | Required unless `digest` is set | An image tag |
+| `spec.image.digest` | Required unless `tag` is set | An immutable image digest, for example `sha256:...`; prefer this for production |
+| `spec.image.pullPolicy` | `IfNotPresent` | `Always`, `IfNotPresent`, or `Never` |
+| `spec.image.pullSecrets` | Optional | Names of image-pull Secrets in your namespace, for a private image repository |
+
+You can change `spec.image` after creation as long as `spec.version` stays the same. The operator applies the change as a same-version rolling update of the affected StatefulSet: standard Kubernetes StatefulSet behavior that replaces Pods one at a time, waiting for each replacement Pod to become Ready before moving to the next, rather than restarting every Pod at once. For the SM Pod (a single replica) this means one restart; for RDB, replicas are replaced one at a time so the others keep serving. You cannot control the pace or order of this rollout.
+
+## Configure module settings
+
+RegattaDB has six modules: SM, SNA, Sequencer, GDD, DCM, and RDB. Each has its own `spec.<module>` section with the same fields:
+
+| Field | Required/default | Immutable | Description |
+| --- | --- | --- | --- |
+| `port` | Module default (see table below) | Yes | The RegattaDB process port. Change it only if your release requires a different port. The operator's generated Kubernetes Service exposes it alongside `service_port` |
+| `service_port` | Module default (see table below) | Yes | RegattaDB's own internal service port for the module, used for internal service operations |
+| `num_threads` | Optional | Yes | The module's thread allocation. If set, `spec.resources` must cover it (see [Resources & Scheduling](./resources-and-scheduling.mdx)) |
+| `ram_MB` | Optional | Yes | The module's memory allocation in megabytes. If set, `spec.resources` must cover it |
+| `config` | `{}` | No | RegattaDB module settings as string key/value pairs. Every value must be a string, even for numbers or booleans, for example `"1"` rather than `1` |
+
+Default ports:
+
+| Module | `port` | `service_port` |
+| --- | ---: | ---: |
+| SM | 8840 | 5000 |
+| SNA | 8841 | 5001 |
+| Sequencer | 8842 | 5002 |
+| GDD | 8843 | 5003 |
+| DCM | 8844 | 5004 |
+| RDB | 8850 | 6001 |
+
+## RegattaCluster examples
+
+`config/examples/` in the release package includes:
+
+- `regatta-minimal.yaml`: the smallest example, shown above.
+- `regatta-full.yaml`: a comprehensive example that sets every configurable field, across every module, storage setting, and resource profile. Use it as a field-by-field reference, not as sizing guidance.
+- `regatta-static-storage.yaml`: uses pre-created PersistentVolumes for RDB block storage instead of a StorageClass, with more than one raw block device per RDB Pod. See [Example: Two Local NVMe Devices, One RDB Replica](../examples/static-storage-local-nvme.mdx) for a full walkthrough.
+
+## Next steps
+
+- [Storage](./storage.mdx) for RDB, repo, and log storage.
+- [Networking](./networking.mdx) for how RegattaDB is exposed inside and outside the cluster.
+- [Security & Lifecycle](./security-and-lifecycle.mdx) for the security context and starting/stopping RegattaDB.
+- [Resources & Scheduling](./resources-and-scheduling.mdx) for CPU, RAM, and Pod placement.
