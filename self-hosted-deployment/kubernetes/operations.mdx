@@ -32,7 +32,7 @@ Kubernetes objects being healthy is necessary but not sufficient: your `RegattaC
 | Condition | True means | False means |
 | --- | --- | --- |
 | `Progressing` | Waiting for infrastructure to become ready, or a RegattaDB action was just issued and a follow-up check is scheduled | Steady state with nothing pending (`KubernetesResourcesApplied`), or a permanent error blocked reconciliation - check `Degraded` and this condition's `message` |
-| `StorageReady` | Every expected PersistentVolumeClaim exists and is bound (`StorageHealthy`) | No PersistentVolumeClaims observed yet (`WaitingForStorage`), or some are missing, unbound, or otherwise unhealthy (`PVCsNotBound`) |
+| `StorageReady` | Every expected `PersistentVolumeClaim` exists and is bound (`StorageHealthy`) | No `PersistentVolumeClaims` observed yet (`WaitingForStorage`), or some are missing, unbound, or otherwise unhealthy (`PVCsNotBound`) |
 | `KubernetesReady` | Both StatefulSets are fully rolled out and every expected Pod is Running and Ready (`WorkloadsReady`) | Pods are not ready (`PodsNotReady`), or a StatefulSet has not rolled out (`WorkloadsNotReady`) |
 | `Ready` | RegattaDB itself, through the System Manager, confirms it is active and healthy, in addition to Kubernetes being ready | Kubernetes is not ready yet (`InfrastructureNotReady`), or Kubernetes is ready but SM has not confirmed active and healthy yet (`RegattaStatusPending`) |
 | `Degraded` | A permanent error blocked reconciliation - for example, reason `ValidationFailed` for spec values only caught at reconcile time; check the condition's `message` for the cause | Normal operation, including a `RegattaCluster` resource you deliberately stopped (`spec.lifecycle.start: false`), which is not treated as degraded |
@@ -66,7 +66,7 @@ Deletion:
 1. Makes a bounded attempt, up to 30 seconds, to stop RegattaDB through the System Manager if it is running.
 2. Continues even if that stop attempt fails, recording a warning Event instead of blocking.
 3. Deletes the generated StatefulSets, Services, ConfigMaps, and the credentials Secret.
-4. Leaves every PersistentVolumeClaim in place, so your data is not deleted along with the `RegattaCluster` resource.
+4. Leaves every `PersistentVolumeClaim` in place, so your data is not deleted along with the `RegattaCluster` resource.
 
 If you are certain the data is no longer needed, delete the retained PVCs explicitly:
 

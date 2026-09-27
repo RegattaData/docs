@@ -26,9 +26,9 @@ Every Pod also always runs as non-root and uses the `OnRootMismatch` file system
 
 ## Security context and credentials
 
-Every RegattaDB Pod runs with the settings from `spec.security`: non-root UID/GID, the seccomp profile, and `allowPrivilegeEscalation`, as configured. Pods do not mount a Kubernetes ServiceAccount token, because RegattaDB itself never calls the Kubernetes API.
+Every RegattaDB Pod runs with the settings from `spec.security`: non-root UID/GID, the seccomp profile, and `allowPrivilegeEscalation`, as configured. Pods do not mount a Kubernetes `ServiceAccount` token, because RegattaDB itself never calls the Kubernetes API.
 
-The operator's own namespaced permissions let it manage the resources described throughout this guide: Services, StatefulSets, ConfigMaps, the credentials Secret, and your `RegattaCluster` status. Its only access outside that namespace is the cluster-scoped read-only permission described in [Prerequisites](../prerequisites.mdx) and [Installation](../installation.mdx).
+The operator's own namespaced permissions let it manage the resources described throughout this section: Services, StatefulSets, ConfigMaps, the credentials Secret, and your `RegattaCluster` status. Its only access outside that namespace is the cluster-scoped read-only permission described in [Prerequisites](../prerequisites.mdx) and [Installation](../installation.mdx).
 
 <Danger>
   The initial RegattaDB administrator credentials, stored in a Secret named like `my-regattadb-credentials`, are deterministic rather than randomly generated per installation. Read them from that Secret rather than assuming a fixed value, and handle it with the same care as any other credential in your Kubernetes cluster. Never print the contents of the credentials Secret while troubleshooting.

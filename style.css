@@ -14,3 +14,9 @@ body::-webkit-scrollbar-track {
 #sidebar-content::-webkit-scrollbar {
   display: none;
 }
+
+/* Long dotted field paths (e.g. spec.image.repository) in table cells were breaking mid-word instead of wrapping at a whole segment; keep inline code on one line and let the cell scroll horizontally instead. */
+table code {
+  white-space: nowrap;
+}
+

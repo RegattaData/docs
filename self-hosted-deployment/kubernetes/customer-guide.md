@@ -12,6 +12,21 @@ System Manager (SM) commands yourself, you describe the RegattaDB deployment
 you want in a single `RegattaCluster` resource and let the operator drive
 Kubernetes and RegattaDB into that state.
 
+## Kubernetes Concepts You Will Use
+
+| Concept | What it means for this guide |
+| --- | --- |
+| [Pod](https://kubernetes.io/docs/concepts/workloads/pods/) | Where one or more RegattaDB modules run together; see [Deployment Architecture](#deployment-architecture) below |
+| [Kubernetes node](https://kubernetes.io/docs/concepts/architecture/nodes/) | A physical or virtual machine that can run Pods. Kubernetes places Pods on nodes automatically |
+| [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) | Keeps a fixed, ordered set of Pods running with stable identities and their own storage. The operator creates one StatefulSet for the SM Pod and one for the RDB Pods |
+| [Service](https://kubernetes.io/docs/concepts/services-networking/service/) | A stable network name and address for one or more Pods, even as Pods restart or move between Kubernetes nodes |
+| [`PersistentVolumeClaim` (PVC)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) | A request for storage that Kubernetes binds to an actual storage volume or device |
+| [Raw block volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#raw-block-volume-support) | A storage device given to a Pod directly, the same way you would give RegattaDB a raw block device in a manual deployment, without a filesystem in between |
+| [CustomResourceDefinition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) | Registers `RegattaCluster` (full name `regattaclusters.regatta.dev`, short names `regatta`/`rgc`, usable in place of `regattacluster` in `kubectl`) as a Kubernetes resource type, so Kubernetes can store, validate, and let the operator watch it |
+| [`spec`](https://kubernetes.io/docs/concepts/overview/working-with-objects/#object-spec-and-status) | The part of your `RegattaCluster` resource where you write the state you want; only you (and the operator's own defaults) ever set it |
+| [`status`](https://kubernetes.io/docs/concepts/overview/working-with-objects/#object-spec-and-status) | The part of your `RegattaCluster` resource where the operator reports the state it observed; never edit it yourself |
+| [Operator](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/) | The program that continuously watches your `RegattaCluster` resource and keeps Kubernetes and RegattaDB matching it |
+
 ## What the operator does for you
 
 - **Describes your deployment as a single Kubernetes resource**: the
@@ -134,22 +149,10 @@ cluster. It is a different concept from the node used in manual RegattaDB
 deployment guides: a single Kubernetes node can run many Pods at once,
 including Pods belonging to other applications, and Kubernetes decides which
 node each Pod runs on and can move a Pod to a different node later. You do
-not assign modules to specific Kubernetes nodes yourself.
-
-## Kubernetes Concepts You Will Use
-
-| Concept | What it means for this guide |
-| --- | --- |
-| Pod | Where one or more RegattaDB modules run together, as described above |
-| Kubernetes node | A physical or virtual machine that can run Pods. Kubernetes places Pods on nodes automatically |
-| StatefulSet | Keeps a fixed, ordered set of Pods running with stable identities and their own storage. The operator creates one StatefulSet for the SM Pod and one for the RDB Pods |
-| Service | A stable network name and address for one or more Pods, even as Pods restart or move between Kubernetes nodes |
-| PersistentVolumeClaim (PVC) | A request for storage that Kubernetes binds to an actual storage volume or device |
-| Raw block volume | A storage device given to a Pod directly, the same way you would give RegattaDB a raw block device in a manual deployment, without a filesystem in between |
-| CustomResourceDefinition (CRD) | Registers `RegattaCluster` (full name `regattaclusters.regatta.dev`, short names `regatta`/`rgc`, usable in place of `regattacluster` in `kubectl`) as a Kubernetes resource type, so Kubernetes can store, validate, and let the operator watch it |
-| `spec` | The part of your `RegattaCluster` resource where you write the state you want; only you (and the operator's own defaults) ever set it |
-| `status` | The part of your `RegattaCluster` resource where the operator reports the state it observed; never edit it yourself |
-| Operator | The program that continuously watches your `RegattaCluster` resource and keeps Kubernetes and RegattaDB matching it |
+not assign RegattaDB modules to specific Kubernetes nodes yourself, though
+you can influence which Kubernetes nodes the operator's Pods are eligible to
+run on using standard scheduling controls; see
+[Schedule Pods](#schedule-pods).
 
 Later sections describe how to install the operator and walk through
 creating your first `RegattaCluster` resource, including what the operator
@@ -169,11 +172,11 @@ Before you start, make sure you have:
 - Enough CPU and RAM on your Kubernetes nodes for the SM Pod and every RDB
   Pod you plan to run (see Deployment Architecture).
 - Filesystem storage for RegattaDB's repo and log directories, through a
-  StorageClass or pre-created PersistentVolumes.
-- Raw block storage for RDB, through a StorageClass or pre-created
-  PersistentVolumes that support Kubernetes `volumeMode: Block`. RDB always
+  `StorageClass` or pre-created `PersistentVolumes`.
+- Raw block storage for RDB, through a `StorageClass` or pre-created
+  `PersistentVolumes` that support Kubernetes `volumeMode: Block`. RDB always
   uses raw block storage. This is not limited to local physical disks:
-  any StorageClass or CSI driver that can present a raw block device works,
+  any `StorageClass` or CSI driver that can present a raw block device works,
   including SAN, NVMe-oF, and distributed-filesystem vendor drivers that
   provision block-mode volumes backed by their own storage. Non-root access
   to raw devices, including any container-runtime configuration it requires,
@@ -262,15 +265,15 @@ Do not continue if the checksum verification fails.
    is required so the operator can discover its configured namespace and the
    `RegattaCluster` resource type, and recover existing resources after a
    restart. The same permissions also let it validate static RDB
-   PersistentVolumes and StorageClasses before applying resources:
+   `PersistentVolumes` and `StorageClasses` before applying resources:
 
    ```sh
    kubectl apply -f config/rbac/clusterrole-readonly.yaml
    ```
 
-   Its default binding targets the `regatta-operator` ServiceAccount in the
+   Its default binding targets the `regatta-operator` `ServiceAccount` in the
    `regatta` namespace. If `<namespace>` is not `regatta`, edit the
-   ClusterRoleBinding's subject namespace before applying it.
+   `ClusterRoleBinding`'s subject namespace before applying it.
 
 5. Install the operator Deployment:
 
@@ -392,11 +395,11 @@ Default ports:
 | `spec.rdb.service.type` | `ClusterIP` | No | How the aggregate RDB Kubernetes Service (the Service that selects every RDB Pod together) is exposed. `ClusterIP` keeps it reachable only from inside your Kubernetes cluster. `LoadBalancer` additionally requests an externally reachable address; this is optional, and the resulting address is shared/load-balanced across every RDB Pod, not reserved for one client - see RegattaDB Service Networking below |
 | `spec.rdb.service.port` | `spec.rdb.port` | No | The port RegattaDB clients connect to on the aggregate RDB Kubernetes Service, for database queries. It defaults to `spec.rdb.port`, but unlike `spec.rdb.port` (immutable), you can change it later: it only changes the Service's exposed port, not the port RDB listens on inside the container |
 | `spec.rdb.service.loadBalancerSourceRanges` | Optional | No | CIDR blocks allowed to reach the aggregate RDB Service when `spec.rdb.service.type` is `LoadBalancer`; ignored for `ClusterIP`. Enforcement depends on your cluster's LoadBalancer integration - GKE enforces it as a firewall rule, but behavior varies by cloud provider and on-prem controller, so verify it actually restricts traffic on your platform before relying on it |
-| `spec.rdb.blockStorage.size` | Required | Cannot change | Capacity of each raw block device; must resolve to more than 0 bytes |
-| `spec.rdb.blockStorage.storageClassName` | Optional | Cannot change | StorageClass that provisions the raw block devices dynamically. If omitted, Kubernetes uses your cluster's default StorageClass, if one is set; otherwise the PVCs stay `Pending` |
+| `spec.rdb.blockStorage.size` | Required | Cannot change | Capacity of each raw block device |
+| `spec.rdb.blockStorage.storageClassName` | Optional | Cannot change | `StorageClass` that provisions the raw block devices dynamically. If omitted, Kubernetes uses your cluster's default `StorageClass`, if one is set; otherwise the PVCs stay `Pending` |
 | `spec.rdb.blockStorage.accessModes` | `[ReadWriteOnce]` | Cannot change | Access modes requested for each raw block device. `ReadWriteOncePod` must be used alone |
-| `spec.rdb.blockStorage.provisioning` | `Dynamic` | Cannot change | `Dynamic` provisions devices from the named StorageClass. `Static` binds to PersistentVolumes you pre-create; see Choosing Dynamic Or Static RDB Storage below |
-| `spec.rdb.blockStorage.selector` | Required for `Static`; rejected for `Dynamic` | Cannot change | Selector (`matchLabels`/`matchExpressions`) matching the PersistentVolumes to bind, when using `Static` provisioning |
+| `spec.rdb.blockStorage.provisioning` | `Dynamic` | Cannot change | `Dynamic` provisions devices from the named `StorageClass`. `Static` binds to `PersistentVolumes` you pre-create; see Choosing Dynamic Or Static RDB Storage below |
+| `spec.rdb.blockStorage.selector` | Required for `Static` | Cannot change | Selector (`matchLabels`/`matchExpressions`) matching the `PersistentVolumes` to bind, when using `Static` provisioning |
 
 ### Notes
 
@@ -415,7 +418,7 @@ Default ports:
 - Every RDB Pod can be given more than one raw block device: set
   `spec.rdb.devices` to the total device count per Pod. All devices on an
   RDB Pod share the same `spec.rdb.blockStorage` settings; there is no
-  per-device size or StorageClass. Device indexes start at `0`: the first
+  per-device size or `StorageClass`. Device indexes start at `0`: the first
   device is `/dev/rdb0`, the second is `/dev/rdb1`, and so on. A
   `RegattaCluster` with `spec.rdb.replicas: 3` and `spec.rdb.devices: 2`
   creates 6 raw block PVCs in total (2 per RDB Pod):
@@ -431,23 +434,19 @@ rdb:
 
 ### Choosing Dynamic Or Static RDB Storage
 
-In short: use `Dynamic` if your cluster has a StorageClass that provisions
+In short: use `Dynamic` if your cluster has a `StorageClass` that provisions
 raw block volumes on demand, and use `Static` if your raw block storage is
 provisioned outside Kubernetes (for example pre-attached local disks) or
 your environment does not support dynamic block provisioning.
 
 `spec.rdb.blockStorage.provisioning` selects how Kubernetes obtains the raw
-block PersistentVolumes for RDB:
+block `PersistentVolumes` for RDB:
 
-- `Dynamic` (the default): a StorageClass, named in
+- `Dynamic` (the default): a `StorageClass`, named in
   `spec.rdb.blockStorage.storageClassName`, provisions a new
-  PersistentVolume for every raw block PVC on demand. Use this when your
-  Kubernetes cluster has a StorageClass that supports `volumeMode: Block`.
-  Do not set `spec.rdb.blockStorage.selector` with `Dynamic` provisioning:
-  Kubernetes never dynamically provisions a PersistentVolumeClaim that has
-  a selector, so the PVC would stay `Pending` indefinitely; the operator
-  rejects this combination up front instead.
-- `Static`: you pre-create the PersistentVolumes yourself, and
+  `PersistentVolume` for every raw block PVC on demand. Use this when your
+  Kubernetes cluster has a `StorageClass` that supports `volumeMode: Block`.
+- `Static`: you pre-create the `PersistentVolumes` yourself, and
   `spec.rdb.blockStorage.selector` (`matchLabels` or `matchExpressions`)
   tells the operator which ones to bind. Use this when your raw block
   storage is provisioned outside Kubernetes, for example pre-attached local
@@ -455,8 +454,8 @@ block PersistentVolumes for RDB:
   block storage.
 
 With `Static` provisioning, you need at least
-`spec.rdb.replicas * spec.rdb.devices` PersistentVolumes that match the
-selector, StorageClass, requested access modes, `volumeMode: Block`, and
+`spec.rdb.replicas * spec.rdb.devices` `PersistentVolumes` that match the
+selector, `StorageClass`, requested access modes, `volumeMode: Block`, and
 requested capacity, and that are available or already bound to your claims.
 
 The cluster-scoped read-only permission you installed earlier lets the
@@ -474,18 +473,18 @@ at `/var/log/regatta`. See
 [Prepare For Deployment](https://docs.regatta.dev/self-hosted-deployment/manual-deployment/prepare-for-deployment)
 for the underlying storage-sizing guidance this maps to. Neither field has
 a default size - you must size both for your workload; `storageClassName`
-falls back to your cluster's default StorageClass if omitted.
+falls back to your cluster's default `StorageClass` if omitted.
 
 | Field | Required/default | Immutable | Description |
 | --- | --- | --- | --- |
-| `spec.repoStorage.size` | Required | Cannot change | Filesystem capacity for RegattaDB's mutable repository paths, on every Pod; must resolve to more than 0 bytes |
-| `spec.repoStorage.storageClassName` | Optional | Cannot change | StorageClass for repository storage. If omitted, Kubernetes uses your cluster's default StorageClass, if one is set; otherwise the PVCs stay `Pending` |
+| `spec.repoStorage.size` | Required | Cannot change | Filesystem capacity for RegattaDB's mutable repository paths, on every Pod |
+| `spec.repoStorage.storageClassName` | Optional | Cannot change | `StorageClass` for repository storage. If omitted, Kubernetes uses your cluster's default `StorageClass`, if one is set; otherwise the PVCs stay `Pending` |
 | `spec.repoStorage.accessModes` | `[ReadWriteOnce]` | Cannot change | Access modes requested for the repository storage. `ReadWriteOncePod` must be used alone |
-| `spec.logs.size` | Required | Cannot change | Filesystem capacity for `/var/log/regatta`, on every Pod; must resolve to more than 0 bytes |
-| `spec.logs.storageClassName` | Optional | Cannot change | StorageClass for log storage. If omitted, Kubernetes uses your cluster's default StorageClass, if one is set; otherwise the PVCs stay `Pending` |
+| `spec.logs.size` | Required | Cannot change | Filesystem capacity for `/var/log/regatta`, on every Pod |
+| `spec.logs.storageClassName` | Optional | Cannot change | `StorageClass` for log storage. If omitted, Kubernetes uses your cluster's default `StorageClass`, if one is set; otherwise the PVCs stay `Pending` |
 | `spec.logs.accessModes` | `[ReadWriteOnce]` | Cannot change | Access modes requested for the log storage. |
 
-Storage size, StorageClass, and access modes for `spec.repoStorage` and
+Storage size, `StorageClass`, and access modes for `spec.repoStorage` and
 `spec.logs` cannot change once your `RegattaCluster` resource is created,
 for the same reason as `spec.rdb.blockStorage`. Choose these values
 carefully up front.
@@ -542,7 +541,7 @@ CPU and memory values use standard Kubernetes quantity notation:
   `"500m"`, which equals `0.5` cores. `1000m` equals one full core.
 - Memory: a number followed by a size suffix. Binary suffixes `Ki`, `Mi`,
   `Gi`, and `Ti` are powers of 1024, for example `"512Mi"` or `"8Gi"`.
-  Decimal suffixes `k`, `M`, `G`, and `T` are powers of 1000, for example
+  Decimal suffixes `K`, `M`, `G`, and `T` are powers of 1000, for example
   `"500M"`. There is no plain `MB` unit; use `Mi` or `M` explicitly.
 
 This quantity notation applies to `spec.resources.*.requests/limits.memory`
@@ -612,8 +611,8 @@ refer to your Kubernetes documentation for available operators and details.
 - `regatta-full.yaml`: a comprehensive example that sets every configurable
   field, across every module, storage setting, and resource profile. Use it
   as a field-by-field reference, not as sizing guidance.
-- `regatta-static-storage.yaml`: uses pre-created PersistentVolumes for RDB
-  block storage instead of a StorageClass, with more than one raw block
+- `regatta-static-storage.yaml`: uses pre-created `PersistentVolumes` for RDB
+  block storage instead of a `StorageClass`, with more than one raw block
   device per RDB Pod to show how the required PV count scales with
   `spec.rdb.devices`; see Choosing Dynamic Or Static RDB Storage above for
   when to choose static provisioning.
@@ -621,7 +620,7 @@ refer to your Kubernetes documentation for available operators and details.
 ## Multiple RDB Devices: Naming And Readiness
 
 Every raw block device on an RDB Pod is backed by its own
-PersistentVolumeClaim, generated from the claim-template name, the RDB
+`PersistentVolumeClaim`, generated from the claim-template name, the RDB
 StatefulSet name, and the Pod ordinal. For a `RegattaCluster` named
 `my-regattadb`, device `0` of RDB Pod `0` produces the PVC
 `rdb-block-0-my-regattadb-rdb-0`; device `1` of the same Pod produces
@@ -641,7 +640,7 @@ RDB replica end to end (`spec.rdb.replicas: 1`, `spec.rdb.devices: 2`).
    format or mount them; RegattaDB manages them directly as raw block
    devices.
 
-2. Create one PersistentVolume per device, each pinned to the node that has
+2. Create one `PersistentVolume` per device, each pinned to the node that has
    the device attached:
 
    ```yaml
@@ -698,21 +697,21 @@ RDB replica end to end (`spec.rdb.replicas: 1`, `spec.rdb.devices: 2`).
 
    A Kubernetes `local` volume needs no CSI driver or provisioner for static
    binding: Kubernetes mounts the given `path` directly on the node named in
-   `nodeAffinity`. Because both PersistentVolumes are pinned to `worker-1`,
+   `nodeAffinity`. Because both `PersistentVolumes` are pinned to `worker-1`,
    Kubernetes also schedules the RDB Pod on `worker-1`, since that is the
    only node where both devices exist.
 
    `capacity.storage` is required by the Kubernetes `PersistentVolume` API
    itself; it is Kubernetes' own bookkeeping value for matching
-   PersistentVolumeClaims to PersistentVolumes, and does not resize or
+   `PersistentVolumeClaims` to `PersistentVolumes`, and does not resize or
    limit the underlying device - RegattaDB uses the raw device directly
    regardless of this value. If you have raw devices on more than one
    Kubernetes node, repeat this pattern once per node: one pair of
-   PersistentVolumes (pinned through `nodeAffinity`) for every node that
+   `PersistentVolumes` (pinned through `nodeAffinity`) for every node that
    has its own local devices.
 
 3. Point your `RegattaCluster` resource's RDB storage at these
-   PersistentVolumes:
+   `PersistentVolumes`:
 
    ```yaml
    rdb:
@@ -727,18 +726,18 @@ RDB replica end to end (`spec.rdb.replicas: 1`, `spec.rdb.devices: 2`).
            regatta.dev/cluster: my-regattadb
    ```
 
-4. Apply the PersistentVolumes, then apply your `RegattaCluster` resource.
+4. Apply the `PersistentVolumes`, then apply your `RegattaCluster` resource.
    With `replicas: 1` and `devices: 2`, the operator expects
-   `1 * 2 = 2` matching PersistentVolumes, exactly the two you created.
-   Kubernetes binds one PVC to each PersistentVolume; which one binds to
+   `1 * 2 = 2` matching `PersistentVolumes`, exactly the two you created.
+   Kubernetes binds one PVC to each `PersistentVolume`; which one binds to
    which device index is not something a shared selector lets you control
-   directly, but for two identically sized devices on the same StorageClass
+   directly, but for two identically sized devices on the same `StorageClass`
    this makes no difference to RegattaDB, since every device is used the
    same way. Both end up mounted in the single RDB Pod, as `/dev/rdb0` and
    `/dev/rdb1`.
 
    If you need deterministic control over which physical device becomes
-   `/dev/rdb0` versus `/dev/rdb1`, pre-bind each PersistentVolume to its
+   `/dev/rdb0` versus `/dev/rdb1`, pre-bind each `PersistentVolume` to its
    expected PVC name with `claimRef` instead of relying only on the
    selector; the exact generated PVC names are covered above.
 
@@ -858,7 +857,7 @@ for the headroom they need within that allocation.
 
 Every RegattaDB Pod runs with the settings from `spec.security`: non-root
 UID/GID, the seccomp profile, and `allowPrivilegeEscalation`, as configured.
-Pods do not mount a Kubernetes ServiceAccount token, because RegattaDB
+Pods do not mount a Kubernetes `ServiceAccount` token, because RegattaDB
 itself never calls the Kubernetes API.
 
 The operator's own namespaced permissions let it manage the resources
@@ -950,7 +949,7 @@ confirms, through the System Manager, that it is active and healthy.
 | Condition | True means | False means |
 | --- | --- | --- |
 | `Progressing` | Waiting for infrastructure to become ready, or a RegattaDB action was just issued and a follow-up check is scheduled | Steady state with nothing pending (`KubernetesResourcesApplied`), or a permanent error blocked reconciliation - check `Degraded` and this condition's `message` |
-| `StorageReady` | Every expected PersistentVolumeClaim exists and is bound (`StorageHealthy`) | No PersistentVolumeClaims observed yet (`WaitingForStorage`), or some are missing, unbound, or otherwise unhealthy (`PVCsNotBound`) |
+| `StorageReady` | Every expected `PersistentVolumeClaim` exists and is bound (`StorageHealthy`) | No `PersistentVolumeClaims` observed yet (`WaitingForStorage`), or some are missing, unbound, or otherwise unhealthy (`PVCsNotBound`) |
 | `KubernetesReady` | Both StatefulSets are fully rolled out and every expected Pod is Running and Ready (`WorkloadsReady`) | Pods are not ready (`PodsNotReady`), or a StatefulSet has not rolled out (`WorkloadsNotReady`) |
 | `Ready` | RegattaDB itself, through the System Manager, confirms it is active and healthy, in addition to Kubernetes being ready | Kubernetes is not ready yet (`InfrastructureNotReady`), or Kubernetes is ready but SM has not confirmed active and healthy yet (`RegattaStatusPending`) |
 | `Degraded` | A permanent error blocked reconciliation - for example, reason `ValidationFailed` for spec values only caught at reconcile time; check the condition's `message` for the cause | Normal operation, including a `RegattaCluster` resource you deliberately stopped (`spec.lifecycle.start: false`), which is not treated as degraded |
@@ -999,7 +998,7 @@ Deletion:
    instead of blocking.
 3. Deletes the generated StatefulSets, Services, ConfigMaps, and the
    credentials Secret.
-4. Leaves every PersistentVolumeClaim in place, so your data is not deleted
+4. Leaves every `PersistentVolumeClaim` in place, so your data is not deleted
    along with the `RegattaCluster` resource.
 
 If you are certain the data is no longer needed, delete the retained PVCs
@@ -1025,8 +1024,8 @@ sense once earlier ones pass:
 1. The resource is rejected on `apply`. The CRD schema or an immutability
    rule rejected your change before the operator ever saw it; the error
    Kubernetes prints names the field to fix.
-2. `StorageReady` is `False`. Check PersistentVolumeClaims, PersistentVolumes,
-   and StorageClasses:
+2. `StorageReady` is `False`. Check `PersistentVolumeClaims`, `PersistentVolumes`,
+   and `StorageClasses`:
 
    ```sh
    kubectl -n <namespace> get pvc -l app.kubernetes.io/instance=my-regattadb

@@ -6,11 +6,11 @@ description: "What you need before installing the Regatta operator and deploying
 Before you start, make sure you have:
 
 - Access to a Kubernetes cluster, with a `kubeconfig` that can create namespaces and install a CustomResourceDefinition, RBAC, and a Deployment.
-- A namespace to install into. This guide uses `<namespace>` as a placeholder for the Kubernetes namespace where you want the operator and RegattaDB to run.
+- A namespace to install into. This section uses `<namespace>` as a placeholder for the Kubernetes namespace where you want the operator and RegattaDB to run.
 - A registry reachable from every Kubernetes node that will run RegattaDB or the operator, and any credentials it requires for image pulls.
 - Enough CPU and RAM on your Kubernetes nodes for the SM Pod and every RDB Pod you plan to run (see [Deployment Architecture](/self-hosted-deployment/kubernetes/introduction#deployment-architecture)).
-- Filesystem storage for RegattaDB's repo and log directories, through a StorageClass or pre-created PersistentVolumes.
-- Raw block storage for RDB, through a StorageClass or pre-created PersistentVolumes that support Kubernetes `volumeMode: Block`. RDB always uses raw block storage. This is not limited to local physical disks: any StorageClass or CSI driver that can present a raw block device works, including SAN, NVMe-oF, and distributed-filesystem vendor drivers that provision block-mode volumes backed by their own storage. Non-root access to raw devices, including any container-runtime configuration it requires, is covered in [Storage](/self-hosted-deployment/kubernetes/configuration/storage).
+- Filesystem storage for RegattaDB's repo and log directories, through a `StorageClass` or pre-created `PersistentVolumes`.
+- Raw block storage for RDB, through a `StorageClass` or pre-created `PersistentVolumes` that support Kubernetes `volumeMode: Block`. RDB always uses raw block storage. This is not limited to local physical disks: any `StorageClass` or CSI driver that can present a raw block device works, including SAN, NVMe-oF, and distributed-filesystem vendor drivers that provision block-mode volumes backed by their own storage. Non-root access to raw devices, including any container-runtime configuration it requires, is covered in [Storage](/self-hosted-deployment/kubernetes/configuration/storage).
 
 ## Next steps
 

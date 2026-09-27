@@ -13,7 +13,7 @@ kubectl -n <namespace> get events --sort-by=.lastTimestamp
 Then work through these checks in order, since later checks only make sense once earlier ones pass:
 
 1. **The resource is rejected on `apply`.** The CRD schema or an immutability rule rejected your change before the operator ever saw it; the error Kubernetes prints names the field to fix.
-2. **`StorageReady` is `False`.** Check PersistentVolumeClaims, PersistentVolumes, and StorageClasses:
+2. **`StorageReady` is `False`.** Check `PersistentVolumeClaims`, `PersistentVolumes`, and `StorageClasses`:
 
    ```sh
    kubectl -n <namespace> get pvc -l app.kubernetes.io/instance=my-regattadb

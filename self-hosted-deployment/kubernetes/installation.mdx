@@ -21,7 +21,7 @@ It contains everything you need to import RegattaDB and the operator into your o
 - The operator's Kubernetes identity and permissions.
 - The operator Deployment.
 - RegattaDB deployment examples you can edit.
-- This guide.
+- `README.md`: a copy of this documentation, packaged as a single file.
 - Licensing and third-party attribution files.
 - Release metadata and integrity checksums.
 
@@ -54,7 +54,7 @@ regatta-k8s-<version>-<architecture>/
         `-- regatta-static-storage.yaml
 ```
 
-The sections below describe each of these files in detail, at the point where you actually use them: during installation, storage configuration, and `RegattaCluster` creation.
+The rest of this page covers extracting the package and installing the operator using the `config/crd`, `config/rbac`, and `config/operator` files above. See [Configuration Overview](/self-hosted-deployment/kubernetes/configuration/overview) and [Storage](/self-hosted-deployment/kubernetes/configuration/storage) for how the `config/examples/` files are used when you create a `RegattaCluster` resource.
 
 ## 1. Extract and verify the package
 
@@ -125,13 +125,13 @@ sha256sum --check SHA256SUMS
    kubectl -n <namespace> apply -f config/rbac/rolebinding.yaml
    ```
 
-4. Install the cluster-scoped read-only permission the operator needs. This is required so the operator can discover its configured namespace and the `RegattaCluster` resource type, and recover existing resources after a restart. The same permissions also let it validate static RDB PersistentVolumes and StorageClasses before applying resources:
+4. Install the cluster-scoped read-only permission the operator needs. This is required so the operator can discover its configured namespace and the `RegattaCluster` resource type, and recover existing resources after a restart. The same permissions also let it validate static RDB `PersistentVolumes` and `StorageClasses` before applying resources:
 
    ```sh
    kubectl apply -f config/rbac/clusterrole-readonly.yaml
    ```
 
-   Its default binding targets the `regatta-operator` ServiceAccount in the `regatta` namespace. If `<namespace>` is not `regatta`, edit the ClusterRoleBinding's subject namespace before applying it.
+   Its default binding targets the `regatta-operator` `ServiceAccount` in the `regatta` namespace. If `<namespace>` is not `regatta`, edit the `ClusterRoleBinding`'s subject namespace before applying it.
 
 5. Install the operator Deployment:
 
