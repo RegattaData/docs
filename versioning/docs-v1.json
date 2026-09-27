@@ -7,7 +7,7 @@
     "light": "#FF6600",
     "dark": "#FF751A"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/images/favicon.svg",
   "navigation": {
     "versions": [
       {
@@ -19,7 +19,9 @@
             "groups": [
               {
                 "group": " ",
-                "pages": ["home"]
+                "pages": [
+                  "home"
+                ]
               }
             ]
           },
@@ -79,7 +81,9 @@
             "groups": [
               {
                 "group": "SQL Specification",
-                "pages": ["/sql/introduction"]
+                "pages": [
+                  "/sql/introduction"
+                ]
               },
               {
                 "group": "Data Types",
@@ -107,7 +111,9 @@
               },
               {
                 "group": "SQL Syntax Conventions",
-                "pages": ["sql/sql-syntax-convention"]
+                "pages": [
+                  "sql/sql-syntax-convention"
+                ]
               },
               {
                 "group": "Data Definition Language (DDL) Commands",
@@ -134,7 +140,10 @@
               },
               {
                 "group": "Data Query Language",
-                "pages": ["sql/dql/select", "sql/dql/explain"]
+                "pages": [
+                  "sql/dql/select",
+                  "sql/dql/explain"
+                ]
               },
               {
                 "group": "Hints",
@@ -313,7 +322,9 @@
             "groups": [
               {
                 "group": "Scripted Solution",
-                "pages": ["self-hosted-deployment/prerequisites"]
+                "pages": [
+                  "self-hosted-deployment/prerequisites"
+                ]
               },
               {
                 "group": "Manual Deployment",
