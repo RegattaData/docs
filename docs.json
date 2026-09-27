@@ -391,7 +391,9 @@
                   "self-hosted-deployment/rdt/advanced/node-system-changes",
                   "self-hosted-deployment/rdt/advanced/module-and-numa-configuration"
                 ]
-              }
+              },
+              "self-hosted-deployment/rdt/troubleshooting",
+              "self-hosted-deployment/rdt/release-notes"
             ]
           },
           {

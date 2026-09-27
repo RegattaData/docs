@@ -1,0 +1,10 @@
+---
+title: "Release Notes"
+description: "Changes, fixes, and known limitations for each RDT release."
+---
+
+## [26.1.4] - 2026-07-28
+
+- Deployment always uses the `regatta`/`regatta` user and group on managed nodes; there's no support for a custom user/group for RDT-managed files.
+- `configure`, `start-cluster`, and `stop-cluster` connect to the System Manager using Regatta's default database credentials for cluster management commands; these aren't currently configurable.
+- Known issue: Python 3.12 doesn't currently allow using RDT; downgrade to a lower version (3.9 recommended).

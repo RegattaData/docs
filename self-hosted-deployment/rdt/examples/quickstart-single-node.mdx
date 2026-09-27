@@ -41,7 +41,7 @@ The template doesn't specify storage devices, and every RDB module needs at leas
 Edit the config and add one before deploying:
 
 ```bash
-rdt config edit quickstart
+rdt config edit --name quickstart
 ```
 
 ```json
@@ -60,7 +60,7 @@ see the next step.
 Review the result:
 
 ```bash
-rdt config print quickstart --validate
+rdt config print --name quickstart --validate
 ```
 
 See [Configuration Overview](../configuration/overview.mdx) for the full schema.
