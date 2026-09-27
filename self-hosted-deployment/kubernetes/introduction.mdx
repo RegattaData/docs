@@ -40,24 +40,24 @@ In a manual or RDT-driven RegattaDB deployment, you decide which node runs which
 | SM Pod | One per RegattaDB system | SM, SNA, GDD, DCM, Sequencer |
 | RDB Pod | One for every RDB replica you configure | SNA, RDB |
 
-```mermaid
-graph TD
-  subgraph SM_Pod["SM Pod (one per system)"]
-    SM["SM"]
-    SNA1["SNA"]
-    GDD["GDD"]
-    DCM["DCM"]
-    SEQ["Sequencer"]
-  end
-  subgraph RDB_Pod_0["RDB Pod 0"]
-    SNA2["SNA"]
-    RDB0["RDB"]
-  end
-  subgraph RDB_Pod_N["RDB Pod N"]
-    SNA3["SNA"]
-    RDBN["RDB"]
-  end
-```
+<Frame>
+  <img
+    alt="RegattaDB Kubernetes Pod layout"
+    title="RegattaDB Kubernetes Pod layout"
+    lightAlt="RegattaDB Kubernetes Pod layout light"
+    darkAlt="RegattaDB Kubernetes Pod layout dark"
+    src="/images/regattadb-kubernetes-pods.png"
+    className="dark:hidden"
+  />
+  <img
+    alt="RegattaDB Kubernetes Pod layout"
+    title="RegattaDB Kubernetes Pod layout"
+    lightAlt="RegattaDB Kubernetes Pod layout light"
+    darkAlt="RegattaDB Kubernetes Pod layout dark"
+    src="/images/regattadb-kubernetes-pods-dark.png"
+    className="hidden dark:block"
+  />
+</Frame>
 
 Unlike a manual deployment, you do not choose per-Pod module placement here. The operator uses this default layout; the only placement decision you make today is how many RDB replicas to configure.
 
