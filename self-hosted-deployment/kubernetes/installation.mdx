@@ -29,29 +29,29 @@ Extracting the archive gives you the following layout:
 
 ```text
 regatta-k8s-<version>-<architecture>/
-|-- README.md
-|-- LICENSE
-|-- THIRD_PARTY_NOTICES
-|-- CHANGELOG.md
-|-- MANIFEST.json
-|-- SHA256SUMS
-|-- images/
-|   |-- regatta-db-<version>-<architecture>.tar
-|   `-- regatta-operator-<version>-<architecture>.tar
-`-- config/
-    |-- crd/
-    |   `-- regattacluster-crd.yaml
-    |-- rbac/
-    |   |-- serviceaccount.yaml
-    |   |-- role.yaml
-    |   |-- rolebinding.yaml
-    |   `-- clusterrole-readonly.yaml
-    |-- operator/
-    |   `-- deployment.yaml
-    `-- examples/
-        |-- regatta-minimal.yaml
-        |-- regatta-full.yaml
-        `-- regatta-static-storage.yaml
+├── README.md
+├── LICENSE
+├── THIRD_PARTY_NOTICES
+├── CHANGELOG.md
+├── MANIFEST.json
+├── SHA256SUMS
+├── images/
+│   ├── regatta-db-<version>-<architecture>.tar
+│   └── regatta-operator-<version>-<architecture>.tar
+└── config/
+    ├── crd/
+    │   └── regattacluster-crd.yaml
+    ├── rbac/
+    │   ├── serviceaccount.yaml
+    │   ├── role.yaml
+    │   ├── rolebinding.yaml
+    │   └── clusterrole-readonly.yaml
+    ├── operator/
+    │   └── deployment.yaml
+    └── examples/
+        ├── regatta-minimal.yaml
+        ├── regatta-full.yaml
+        └── regatta-static-storage.yaml
 ```
 
 The rest of this page covers extracting the package and installing the operator using the `config/crd`, `config/rbac`, and `config/operator` files above. See [Configuration Overview](/self-hosted-deployment/kubernetes/configuration/overview) and [Storage](/self-hosted-deployment/kubernetes/configuration/storage) for how the `config/examples/` files are used when you create a `RegattaCluster` resource.

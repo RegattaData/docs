@@ -18,7 +18,14 @@ body::-webkit-scrollbar-track {
   display: none;
 }
 
-/* Long dotted field paths (e.g. spec.image.repository) in table cells were breaking mid-word instead of wrapping at a whole segment; keep inline code on one line and let the cell scroll horizontally instead. */
+/* Long dotted field paths (e.g. spec.image.repository) in the first table column were either forcing a horizontal scrollbar (nowrap) or squeezing the rest of the row into unreadably narrow columns. Cap the first column's width and let it wrap onto more lines instead. */
+table td:first-child,
+table th:first-child {
+  max-width: 16rem;
+}
+
 table code {
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }

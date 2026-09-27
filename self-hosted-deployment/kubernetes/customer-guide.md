@@ -72,29 +72,29 @@ Extracting the archive gives you the following layout:
 
 ```text
 regatta-k8s-<version>-<architecture>/
-|-- README.md
-|-- LICENSE
-|-- THIRD_PARTY_NOTICES
-|-- CHANGELOG.md
-|-- MANIFEST.json
-|-- SHA256SUMS
-|-- images/
-|   |-- regatta-db-<version>-<architecture>.tar
-|   `-- regatta-operator-<version>-<architecture>.tar
-`-- config/
-    |-- crd/
-    |   `-- regattacluster-crd.yaml
-    |-- rbac/
-    |   |-- serviceaccount.yaml
-    |   |-- role.yaml
-    |   |-- rolebinding.yaml
-    |   `-- clusterrole-readonly.yaml
-    |-- operator/
-    |   `-- deployment.yaml
-    `-- examples/
-        |-- regatta-minimal.yaml
-        |-- regatta-full.yaml
-        `-- regatta-static-storage.yaml
+├── README.md
+├── LICENSE
+├── THIRD_PARTY_NOTICES
+├── CHANGELOG.md
+├── MANIFEST.json
+├── SHA256SUMS
+├── images/
+│   ├── regatta-db-<version>-<architecture>.tar
+│   └── regatta-operator-<version>-<architecture>.tar
+└── config/
+    ├── crd/
+    │   └── regattacluster-crd.yaml
+    ├── rbac/
+    │   ├── serviceaccount.yaml
+    │   ├── role.yaml
+    │   ├── rolebinding.yaml
+    │   └── clusterrole-readonly.yaml
+    ├── operator/
+    │   └── deployment.yaml
+    └── examples/
+        ├── regatta-minimal.yaml
+        ├── regatta-full.yaml
+        └── regatta-static-storage.yaml
 ```
 
 Later sections describe each of these files in detail, at the point where you
@@ -1018,41 +1018,59 @@ kubectl -n <namespace> describe rgc my-regattadb
 kubectl -n <namespace> get events --sort-by=.lastTimestamp
 ```
 
-Then work through these checks in order, since later checks only make
-sense once earlier ones pass:
+The issues below are ordered by how the operator brings a `RegattaCluster`
+resource up: work through them in order, since later ones only make sense
+once the earlier conditions pass.
 
-1. The resource is rejected on `apply`. The CRD schema or an immutability
-   rule rejected your change before the operator ever saw it; the error
-   Kubernetes prints names the field to fix.
-2. `StorageReady` is `False`. Check `PersistentVolumeClaims`, `PersistentVolumes`,
-   and `StorageClasses`:
+### The resource is rejected on `apply`
 
-   ```sh
-   kubectl -n <namespace> get pvc -l app.kubernetes.io/instance=my-regattadb
-   kubectl -n <namespace> describe pvc <pvc-name>
-   ```
+The CRD schema or an immutability rule rejected your change before the
+operator ever saw it.
 
-3. `KubernetesReady` is `False`. Check StatefulSet rollout and Pod
-   scheduling, image pulls, init containers, and readiness:
+**Solution:** check the error Kubernetes printed; it names the field to fix.
 
-   ```sh
-   kubectl -n <namespace> rollout status statefulset/my-regattadb-sm
-   kubectl -n <namespace> rollout status statefulset/my-regattadb-rdb
-   kubectl -n <namespace> get pods -l app.kubernetes.io/instance=my-regattadb
-   kubectl -n <namespace> describe pod <pod-name>
-   ```
+### `StorageReady` is `False`
 
-4. `StorageReady` and `KubernetesReady` are both `True`, but `Ready` is
-   still `False`. Kubernetes is healthy; RegattaDB itself is not confirmed
-   yet. Check `status.regatta`, `status.modules`, and `status.devices`,
-   and the operator's own logs:
+Kubernetes hasn't bound all the storage your `RegattaCluster` resource needs
+yet.
 
-   ```sh
-   kubectl -n <namespace> logs deployment/regatta-operator
-   ```
+**Solution:** check the `PersistentVolumeClaims`, `PersistentVolumes`, and
+`StorageClasses` involved:
 
-Never print the contents of the credentials Secret while troubleshooting;
-nothing in it is needed to diagnose any of these conditions.
+```sh
+kubectl -n <namespace> get pvc -l app.kubernetes.io/instance=my-regattadb
+kubectl -n <namespace> describe pvc <pvc-name>
+```
+
+### `KubernetesReady` is `False`
+
+One or both StatefulSets haven't finished rolling out, or their Pods aren't
+Running and Ready yet.
+
+**Solution:** check StatefulSet rollout and Pod scheduling, image pulls,
+init containers, and readiness:
+
+```sh
+kubectl -n <namespace> rollout status statefulset/my-regattadb-sm
+kubectl -n <namespace> rollout status statefulset/my-regattadb-rdb
+kubectl -n <namespace> get pods -l app.kubernetes.io/instance=my-regattadb
+kubectl -n <namespace> describe pod <pod-name>
+```
+
+### `StorageReady` and `KubernetesReady` are `True`, but `Ready` is still `False`
+
+Kubernetes is healthy; RegattaDB itself is not confirmed healthy yet.
+
+**Solution:** check `status.regatta`, `status.modules`, and
+`status.devices`, and the operator's own logs:
+
+```sh
+kubectl -n <namespace> logs deployment/regatta-operator
+```
+
+> **Warning:** Never print the contents of the credentials Secret while
+> troubleshooting; nothing in it is needed to diagnose any of these
+> conditions.
 
 # Release Notes
 
@@ -1066,14 +1084,10 @@ Add new entries below, most recent first:
 
 ### Fixed
 - ...
-
-### Known Limitations
-- ...
 */}
 
 ## [26.1.0] - 2026-09-16
 
-### Known Limitations
 - Module-to-Pod placement is fixed: SM, SNA, GDD, DCM, and Sequencer always
   run together in one SM Pod, and SNA and RDB always run together in each
   RDB Pod. There is no supported way to configure a different placement.

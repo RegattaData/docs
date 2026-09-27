@@ -5,8 +5,6 @@ description: "Changes, fixes, and known limitations for each Regatta operator re
 
 ## [26.1.0] - 2026-09-16
 
-### Known Limitations
-
 - Module-to-Pod placement is fixed: SM, SNA, GDD, DCM, and Sequencer always run together in one SM Pod, and SNA and RDB always run together in each RDB Pod. There is no supported way to configure a different placement.
 - Changing a module's `config` settings is not a live update: it restarts the Pod or Pods that host the affected module.
 - `spec.rdb.service.type: LoadBalancer` exposes a single external address shared by every RDB replica; it does not provide per-replica external routing. A client that needs to reach a specific RDB Pod directly must do so from inside your Kubernetes cluster.
