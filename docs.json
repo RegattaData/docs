@@ -395,7 +395,7 @@
             ]
           },
           {
-            "group": "Kubernetes",
+            "group": "Kubernetes Deployment",
             "pages": [
               "self-hosted-deployment/kubernetes/introduction",
               "self-hosted-deployment/kubernetes/prerequisites",
