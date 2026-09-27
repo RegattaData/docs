@@ -1056,7 +1056,7 @@ nothing in it is needed to diagnose any of these conditions.
 
 # Release Notes
 
-<!--
+{/*
 Add new entries below, most recent first:
 
 ## [<regatta-operator-version>] - YYYY-MM-DD
@@ -1069,7 +1069,7 @@ Add new entries below, most recent first:
 
 ### Known Limitations
 - ...
--->
+*/}
 
 ## [26.1.0] - 2026-09-16
 
