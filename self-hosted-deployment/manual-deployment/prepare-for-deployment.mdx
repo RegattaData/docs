@@ -66,6 +66,33 @@ The most common multi-node deployment uses the following topology:
   />
 </Frame>
 
+#### Multi-Node – Custom
+
+An example of a custom multi-node deployment, which may be common in large-scale deployments. Here module placement is spread across dedicated nodes instead of following the classic layout:
+
+- One node hosts **SM**, **SNA**, **DCM**, and **GDD**.
+- A second node hosts **SNA** and **Sequencer**.
+- Every additional node (scale-out nodes) hosts **RDB** and **SNA**.
+
+<Frame>
+  <img
+    alt="RegattaDB custom multi-node deployment"
+    title="RegattaDB custom multi-node deployment"
+    lightAlt="Custom multi node light"
+    darkAlt="Custom multi node dark"
+    src="/images/regattadb-custom-multi-node.png"
+    className="dark:hidden"
+  />
+  <img
+    alt="RegattaDB custom multi-node deployment"
+    title="RegattaDB custom multi-node deployment"
+    lightAlt="Custom multi node light"
+    darkAlt="Custom multi node dark"
+    src="/images/regattadb-custom-multi-node-dark.png"
+    className="hidden dark:block"
+  />
+</Frame>
+
 <Info>
   For guidance on sizing and configuring your RegattaDB deployment, refer to **Best Practices** or contact Regatta Support for assistance.
 </Info>
