@@ -1,0 +1,59 @@
+---
+title: "Troubleshooting"
+description: "Diagnose a RegattaCluster resource that isn't reaching Ready."
+---
+
+Start with the resource's own status and Events:
+
+```sh
+kubectl -n <namespace> describe rgc my-regattadb
+kubectl -n <namespace> get events --sort-by=.lastTimestamp
+```
+
+The issues below are ordered by how the operator brings a `RegattaCluster` resource up: work through them in order, since later ones only make sense once the earlier conditions pass.
+
+## The resource is rejected on `apply`
+
+The CRD schema or an immutability rule rejected your change before the operator ever saw it.
+
+**Solution:** check the error Kubernetes printed; it names the field to fix.
+
+## `StorageReady` is `False`
+
+Kubernetes hasn't bound all the storage your `RegattaCluster` resource needs yet.
+
+**Solution:** check the `PersistentVolumeClaims`, `PersistentVolumes`, and `StorageClasses` involved:
+
+```sh
+kubectl -n <namespace> get pvc -l app.kubernetes.io/instance=my-regattadb
+kubectl -n <namespace> describe pvc <pvc-name>
+```
+
+## `KubernetesReady` is `False`
+
+One or both StatefulSets haven't finished rolling out, or their Pods aren't Running and Ready yet.
+
+**Solution:** check StatefulSet rollout and Pod scheduling, image pulls, init containers, and readiness:
+
+```sh
+kubectl -n <namespace> rollout status statefulset/my-regattadb-sm
+kubectl -n <namespace> rollout status statefulset/my-regattadb-rdb
+kubectl -n <namespace> get pods -l app.kubernetes.io/instance=my-regattadb
+kubectl -n <namespace> describe pod <pod-name>
+```
+
+## `StorageReady` and `KubernetesReady` are `True`, but `Ready` is still `False`
+
+Kubernetes is healthy; RegattaDB itself is not confirmed healthy yet.
+
+**Solution:** check `status.regatta`, `status.modules`, and `status.devices`, and the operator's own logs:
+
+```sh
+kubectl -n <namespace> logs deployment/regatta-operator
+```
+
+<Danger>
+  Never print the contents of the credentials Secret while troubleshooting; nothing in it is needed to diagnose any of these conditions.
+</Danger>
+
+See [Reading RegattaCluster Status](./operations.mdx#reading-regattacluster-status) for what each condition and status field means.

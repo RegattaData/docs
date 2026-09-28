@@ -64,7 +64,7 @@ rdt config create --name my-regattadb --ip-file ./ips.txt --nodes 4 --probe-node
 ## Print a config
 
 ```bash
-rdt config print <name> [--validate/--no-validate]
+rdt config print --name <name> [--validate/--no-validate]
 ```
 
 Prints the config as JSON. `--validate` (on by default) also prints a warning if the
@@ -73,7 +73,7 @@ config fails schema validation.
 ## Edit a config
 
 ```bash
-rdt config edit <name>
+rdt config edit --name <name>
 ```
 
 Opens the config in your `$EDITOR`. On save, it's re-validated; if it's invalid, you're
@@ -99,7 +99,7 @@ is named after the file (its filename without the `.json` extension).
 ## Delete a config
 
 ```bash
-rdt config rm <name> [--force]
+rdt config rm --name <name> [--force]
 ```
 
 Deletes a saved config. Prompts for confirmation unless `--force` is given.

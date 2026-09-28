@@ -1,0 +1,97 @@
+---
+title: "Example: Two Local NVMe Devices, One RDB Replica"
+description: "Bind pre-existing local NVMe devices to RDB using static RDB storage provisioning."
+---
+
+This walks through binding two pre-existing local NVMe devices to a single RDB replica end to end (`spec.rdb.replicas: 1`, `spec.rdb.devices: 2`). See [Choosing dynamic or static RDB storage](../configuration/storage.mdx#choosing-dynamic-or-static-rdb-storage) for when to use static provisioning.
+
+## 1. Identify the devices
+
+Identify the two raw block devices to dedicate to RDB, for example `/dev/nvme1n1` and `/dev/nvme2n1` on Kubernetes node `worker-1`. Do not format or mount them; RegattaDB manages them directly as raw block devices.
+
+## 2. Create a `PersistentVolume` per device
+
+Create one `PersistentVolume` per device, each pinned to the node that has the device attached:
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: rdb-nvme-0
+  labels:
+    regatta.dev/cluster: my-regattadb
+spec:
+  capacity:
+    storage: 2Ti
+  volumeMode: Block
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-nvme
+  local:
+    path: /dev/nvme1n1
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - worker-1
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: rdb-nvme-1
+  labels:
+    regatta.dev/cluster: my-regattadb
+spec:
+  capacity:
+    storage: 2Ti
+  volumeMode: Block
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-nvme
+  local:
+    path: /dev/nvme2n1
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - worker-1
+```
+
+A Kubernetes `local` volume needs no CSI driver or provisioner for static binding: Kubernetes mounts the given `path` directly on the node named in `nodeAffinity`. Because both `PersistentVolumes` are pinned to `worker-1`, Kubernetes also schedules the RDB Pod on `worker-1`, since that is the only node where both devices exist.
+
+<Note>
+  `capacity.storage` is required by the Kubernetes `PersistentVolume` API itself; it is Kubernetes' own bookkeeping value for matching `PersistentVolumeClaims` to `PersistentVolumes`, and does not resize or limit the underlying device - RegattaDB uses the raw device directly regardless of this value.
+</Note>
+
+If you have raw devices on more than one Kubernetes node, repeat this pattern once per node: one pair of `PersistentVolumes` (pinned through `nodeAffinity`) for every node that has its own local devices.
+
+## 3. Point your RegattaCluster resource at these `PersistentVolumes`
+
+```yaml
+rdb:
+  replicas: 1
+  devices: 2
+  blockStorage:
+    provisioning: Static
+    size: 2Ti
+    storageClassName: local-nvme
+    selector:
+      matchLabels:
+        regatta.dev/cluster: my-regattadb
+```
+
+## 4. Apply and verify
+
+Apply the `PersistentVolumes`, then apply your `RegattaCluster` resource. With `replicas: 1` and `devices: 2`, the operator expects `1 * 2 = 2` matching `PersistentVolumes`, exactly the two you created. Kubernetes binds one PVC to each `PersistentVolume`; which one binds to which device index is not something a shared selector lets you control directly, but for two identically sized devices on the same `StorageClass` this makes no difference to RegattaDB, since every device is used the same way. Both end up mounted in the single RDB Pod, as `/dev/rdb0` and `/dev/rdb1`.
+
+If you need deterministic control over which physical device becomes `/dev/rdb0` versus `/dev/rdb1`, pre-bind each `PersistentVolume` to its expected PVC name with `claimRef` instead of relying only on the selector; see [Multiple RDB Devices: Naming And Readiness](../configuration/storage.mdx#multiple-rdb-devices-naming-and-readiness) for the exact generated PVC names.
+
+`/dev/rdb0` and `/dev/rdb1` are fixed, operator-assigned paths inside the container; they do not depend on how the host enumerates its own raw devices, so they stay stable across Pod restarts and node reboots.

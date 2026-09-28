@@ -1,0 +1,12 @@
+---
+title: "Release Notes"
+description: "Changes, fixes, and known limitations for each Regatta operator release."
+---
+
+## [26.1.0] - 2026-09-16
+
+- Module-to-Pod placement is fixed: SM, SNA, GDD, DCM, and Sequencer always run together in one SM Pod, and SNA and RDB always run together in each RDB Pod. There is no supported way to configure a different placement.
+- Changing a module's `config` settings is not a live update: it restarts the Pod or Pods that host the affected module.
+- `spec.rdb.service.type: LoadBalancer` exposes a single external address shared by every RDB replica; it does not provide per-replica external routing. A client that needs to reach a specific RDB Pod directly must do so from inside your Kubernetes cluster.
+- The operator configures RegattaDB with its default administrator account - the account RegattaDB itself uses to authenticate and manage the database, separate from any Kubernetes or operator credential. There is no current support for custom database credentials.
+- SM's Service is always `ClusterIP`, with no built-in, operator-managed way to expose it outside your Kubernetes cluster. This is not the same as SM being technically unreachable from outside the cluster: you can create your own additional Service (or use `kubectl port-forward`) pointed at the SM Pod yourself - the operator just does not provide, manage, or secure one for you, and doing so is your own responsibility.

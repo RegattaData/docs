@@ -1,0 +1,156 @@
+---
+title: "Installation"
+description: "Extract the release package, import images into your registry, and install the Regatta operator on your cluster."
+---
+
+Make sure you've read [Prerequisites](./prerequisites.mdx) first. This page covers extracting the release package, importing its images into your own registry, and installing the Regatta operator.
+
+## The release package
+
+You receive a single archive:
+
+```text
+regatta-k8s-<version>-<architecture>.tar.gz
+```
+
+It contains everything you need to import RegattaDB and the operator into your own environment and install them on Kubernetes:
+
+- The RegattaDB workload image (the container that runs RegattaDB itself).
+- The Regatta operator image.
+- The Kubernetes API definition (CRD) for `RegattaCluster`.
+- The operator's Kubernetes identity and permissions.
+- The operator Deployment.
+- RegattaDB deployment examples you can edit.
+- `README.md`.
+- Licensing and third-party attribution files.
+- Release metadata and integrity checksums.
+
+Extracting the archive gives you the following layout:
+
+```text
+regatta-k8s-<version>-<architecture>/
+├── README.md
+├── LICENSE
+├── THIRD_PARTY_NOTICES
+├── CHANGELOG.md
+├── MANIFEST.json
+├── SHA256SUMS
+├── images/
+│   ├── regatta-db-<version>-<architecture>.tar
+│   └── regatta-operator-<version>-<architecture>.tar
+└── config/
+    ├── crd/
+    │   └── regattacluster-crd.yaml
+    ├── rbac/
+    │   ├── serviceaccount.yaml
+    │   ├── role.yaml
+    │   ├── rolebinding.yaml
+    │   └── clusterrole-readonly.yaml
+    ├── operator/
+    │   └── deployment.yaml
+    └── examples/
+        ├── regatta-minimal.yaml
+        ├── regatta-full.yaml
+        └── regatta-static-storage.yaml
+```
+
+The rest of this page covers extracting the package and installing the operator using the `config/crd`, `config/rbac`, and `config/operator` files above. See [Configuration Overview](/self-hosted-deployment/kubernetes/configuration/overview) and [Storage](/self-hosted-deployment/kubernetes/configuration/storage) for how the `config/examples/` files are used when you create a `RegattaCluster` resource.
+
+## 1. Extract and verify the package
+
+```sh
+tar -xzf regatta-k8s-<version>-<architecture>.tar.gz
+cd regatta-k8s-<version>-<architecture>
+sha256sum --check SHA256SUMS
+```
+
+<Warning>
+  Do not continue if the checksum verification fails.
+</Warning>
+
+## 2. Import images into your registry
+
+1. Import and push each image archive to your registry. The recommended tool is `skopeo`, because it copies an image archive directly into a registry without needing a local container runtime, and preserves the exact image digest instead of rebuilding the image. `docker load` and `podman load` followed by `docker push`/`podman push` also work with these archives if you prefer a tool you already have installed:
+
+   ```sh
+   skopeo copy \
+     docker-archive:images/regatta-db-<version>-<architecture>.tar \
+     docker://registry.example.com/regatta-db:<version>
+
+   skopeo copy \
+     docker-archive:images/regatta-operator-<version>-<architecture>.tar \
+     docker://registry.example.com/regatta-operator:<version>
+   ```
+
+2. Record the digest your registry assigns to each uploaded image:
+
+   ```sh
+   skopeo inspect docker://registry.example.com/regatta-db:<version> \
+     --format '{{.Digest}}'
+   skopeo inspect docker://registry.example.com/regatta-operator:<version> \
+     --format '{{.Digest}}'
+   ```
+
+   You will use these digests in the next step, as part of a full image reference such as:
+
+   ```text
+   registry.example.com/regatta-operator@sha256:1a2b3c4d5e6f...
+   ```
+
+## 3. Point the manifests at your registry
+
+1. In `config/operator/deployment.yaml`, set the operator container image to your uploaded operator image and digest.
+2. In the example you plan to use under `config/examples/`, set `spec.image` to your uploaded RegattaDB image and digest.
+3. If your registry requires authentication, create a Kubernetes Secret of type `kubernetes.io/dockerconfigjson` in `<namespace>`, then reference it in `imagePullSecrets` in `config/operator/deployment.yaml` for the operator image, and in `spec.image.pullSecrets` in your `RegattaCluster` example for the RegattaDB image.
+
+## 4. Install the operator
+
+1. Create the namespace:
+
+   ```sh
+   kubectl create namespace <namespace>
+   ```
+
+2. Install the CustomResourceDefinition:
+
+   ```sh
+   kubectl apply -f config/crd/regattacluster-crd.yaml
+   ```
+
+3. Install the operator's Kubernetes identity and permissions:
+
+   ```sh
+   kubectl -n <namespace> apply -f config/rbac/serviceaccount.yaml
+   kubectl -n <namespace> apply -f config/rbac/role.yaml
+   kubectl -n <namespace> apply -f config/rbac/rolebinding.yaml
+   ```
+
+4. Install the cluster-scoped read-only permission the operator needs. This is required so the operator can discover its configured namespace and the `RegattaCluster` resource type, and recover existing resources after a restart. The same permissions also let it validate static RDB `PersistentVolumes` and `StorageClasses` before applying resources:
+
+   ```sh
+   kubectl apply -f config/rbac/clusterrole-readonly.yaml
+   ```
+
+   Its default binding targets the `regatta-operator` `ServiceAccount` in the `regatta` namespace. If `<namespace>` is not `regatta`, edit the `ClusterRoleBinding`'s subject namespace before applying it.
+
+5. Install the operator Deployment:
+
+   ```sh
+   kubectl -n <namespace> apply -f config/operator/deployment.yaml
+   ```
+
+6. Verify that the operator is running:
+
+   ```sh
+   kubectl -n <namespace> rollout status deployment/regatta-operator
+   kubectl -n <namespace> get pods -l app.kubernetes.io/name=regatta-operator,app.kubernetes.io/component=operator
+   kubectl -n <namespace> logs deployment/regatta-operator
+   ```
+
+<Note>
+  The operator is running at this point, but RegattaDB itself does not exist yet: nothing runs RegattaDB until you apply a `RegattaCluster` resource.
+</Note>
+
+## Next steps
+
+Continue to [Configuration Overview](/self-hosted-deployment/kubernetes/configuration/overview), or jump straight to the [Quickstart: Single-Node RegattaCluster](/self-hosted-deployment/kubernetes/examples/quickstart-single-node) to create your first `RegattaCluster` resource.

@@ -1,0 +1,79 @@
+---
+title: "Storage"
+description: "Configure RDB block storage, repo and log storage, and raw block device access."
+---
+
+## Configure RDB replicas and storage
+
+| Field | Required/default | Immutable | Description |
+| --- | --- | --- | --- |
+| `spec.rdb.replicas` | Required; minimum `1` | Yes | The number of RDB Pods. Decide this before creating your `RegattaCluster` resource |
+| `spec.rdb.devices` | `1`; minimum `1` | Yes | The number of raw block devices given to every RDB Pod |
+| `spec.rdb.service.type` | `ClusterIP` | No | How the aggregate RDB Kubernetes Service (the Service that selects every RDB Pod together) is exposed. `ClusterIP` keeps it reachable only from inside your Kubernetes cluster. `LoadBalancer` additionally requests an externally reachable address; this is optional, and the resulting address is shared/load-balanced across every RDB Pod, not reserved for one client - see [Networking](./networking.mdx) |
+| `spec.rdb.service.port` | `spec.rdb.port` | No | The port RegattaDB clients connect to on the aggregate RDB Kubernetes Service, for database queries. It defaults to `spec.rdb.port`, but unlike `spec.rdb.port` (immutable), you can change it later: it only changes the Service's exposed port, not the port RDB listens on inside the container |
+| `spec.rdb.service.loadBalancerSourceRanges` | Optional | No | CIDR blocks allowed to reach the aggregate RDB Service when `spec.rdb.service.type` is `LoadBalancer`; ignored for `ClusterIP`. Enforcement depends on your cluster's LoadBalancer integration - GKE enforces it as a firewall rule, but behavior varies by cloud provider and on-prem controller, so verify it actually restricts traffic on your platform before relying on it |
+| `spec.rdb.blockStorage.size` | Required | Cannot change | Capacity of each raw block device; must resolve to more than 0 bytes |
+| `spec.rdb.blockStorage.storageClassName` | Optional | Cannot change | `StorageClass` that provisions the raw block devices dynamically. If omitted, Kubernetes uses your cluster's default `StorageClass`, if one is set; otherwise the PVCs stay `Pending` |
+| `spec.rdb.blockStorage.accessModes` | `[ReadWriteOnce]` | Cannot change | Access modes requested for each raw block device. `ReadWriteOncePod` must be used alone |
+| `spec.rdb.blockStorage.provisioning` | `Dynamic` | Cannot change | `Dynamic` provisions devices from the named `StorageClass`. `Static` binds to `PersistentVolumes` you pre-create; see [Choosing dynamic or static RDB storage](#choosing-dynamic-or-static-rdb-storage) below |
+| `spec.rdb.blockStorage.selector` | Required for `Static`; rejected for `Dynamic` | Cannot change | Selector (`matchLabels`/`matchExpressions`) matching the `PersistentVolumes` to bind, when using `Static` provisioning |
+
+<Warning>
+  Every setting under `spec.rdb.blockStorage` is fixed once your `RegattaCluster` resource is created, because Kubernetes does not allow changing a StatefulSet's storage templates. Choose these values carefully up front.
+</Warning>
+
+- `accessModes` is a list mainly so you can request `ReadWriteOncePod` instead of the default `ReadWriteOnce`. `ReadWriteOncePod` restricts the volume to exactly one Pod cluster-wide, stricter than `ReadWriteOnce` (which technically still permits multiple Pods on the same Kubernetes node); some customers prefer it for raw block storage. `ReadOnlyMany` and `ReadWriteMany` are part of the underlying Kubernetes API but are not meaningful choices here - RDB's raw block storage is always single-writer, one device per Pod.
+- Every RDB Pod can be given more than one raw block device: set `spec.rdb.devices` to the total device count per Pod. All devices on an RDB Pod share the same `spec.rdb.blockStorage` settings; there is no per-device size or `StorageClass`. Device indexes start at `0`: the first device is `/dev/rdb0`, the second is `/dev/rdb1`, and so on. A `RegattaCluster` with `spec.rdb.replicas: 3` and `spec.rdb.devices: 2` creates 6 raw block PVCs in total (2 per RDB Pod):
+
+```yaml
+rdb:
+  replicas: 3
+  devices: 2
+  blockStorage:
+    size: 500Gi
+    storageClassName: <storage-class>
+```
+
+### Choosing dynamic or static RDB storage
+
+In short: use `Dynamic` if your cluster has a `StorageClass` that provisions raw block volumes on demand, and use `Static` if your raw block storage is provisioned outside Kubernetes (for example pre-attached local disks) or your environment does not support dynamic block provisioning.
+
+`spec.rdb.blockStorage.provisioning` selects how Kubernetes obtains the raw block `PersistentVolumes` for RDB:
+
+- `Dynamic` (the default): a `StorageClass`, named in `spec.rdb.blockStorage.storageClassName`, provisions a new `PersistentVolume` for every raw block PVC on demand. Use this when your Kubernetes cluster has a `StorageClass` that supports `volumeMode: Block`. Do not set `spec.rdb.blockStorage.selector` with `Dynamic` provisioning: Kubernetes never dynamically provisions a `PersistentVolumeClaim` that has a selector, so the PVC would stay `Pending` indefinitely; the operator rejects this combination up front instead.
+- `Static`: you pre-create the `PersistentVolumes` yourself, and `spec.rdb.blockStorage.selector` (`matchLabels` or `matchExpressions`) tells the operator which ones to bind. Use this when your raw block storage is provisioned outside Kubernetes, for example pre-attached local disks, or your environment does not allow dynamic provisioning for raw block storage.
+
+With `Static` provisioning, you need at least `spec.rdb.replicas * spec.rdb.devices` `PersistentVolumes` that match the selector, `StorageClass`, requested access modes, `volumeMode: Block`, and requested capacity, and that are available or already bound to your claims.
+
+The cluster-scoped read-only permission you installed in [Installation](../installation.mdx) lets the operator check these conditions before applying resources, so problems surface early. If that permission is ever missing or denied, the operator skips this check and relies on normal PVC binding as the readiness signal instead.
+
+See [Example: Two Local NVMe Devices, One RDB Replica](../examples/static-storage-local-nvme.mdx) for a full walkthrough of static provisioning.
+
+## Configure repo and log storage
+
+`spec.repoStorage` and `spec.logs` are Pod-level settings, applying equally to the SM Pod and every RDB Pod. `spec.repoStorage` backs RegattaDB's mutable runtime repository paths. `spec.logs` backs RegattaDB's own log output at `/var/log/regatta`. See [Prepare For Deployment](https://docs.regatta.dev/self-hosted-deployment/manual-deployment/prepare-for-deployment) for the underlying storage-sizing guidance this maps to. Neither field has a default size - you must size both for your workload; `storageClassName` falls back to your cluster's default `StorageClass` if omitted.
+
+| Field | Required/default | Immutable | Description |
+| --- | --- | --- | --- |
+| `spec.repoStorage.size` | Required | Cannot change | Filesystem capacity for RegattaDB's mutable repository paths, on every Pod; must resolve to more than 0 bytes |
+| `spec.repoStorage.storageClassName` | Optional | Cannot change | `StorageClass` for repository storage. If omitted, Kubernetes uses your cluster's default `StorageClass`, if one is set; otherwise the PVCs stay `Pending` |
+| `spec.repoStorage.accessModes` | `[ReadWriteOnce]` | Cannot change | Access modes requested for the repository storage. `ReadWriteOncePod` must be used alone |
+| `spec.logs.size` | Required | Cannot change | Filesystem capacity for `/var/log/regatta`, on every Pod; must resolve to more than 0 bytes |
+| `spec.logs.storageClassName` | Optional | Cannot change | `StorageClass` for log storage. If omitted, Kubernetes uses your cluster's default `StorageClass`, if one is set; otherwise the PVCs stay `Pending` |
+| `spec.logs.accessModes` | `[ReadWriteOnce]` | Cannot change | Access modes requested for the log storage. |
+
+<Warning>
+  Storage size, `StorageClass`, and access modes for `spec.repoStorage` and `spec.logs` cannot change once your `RegattaCluster` resource is created, for the same reason as `spec.rdb.blockStorage`. Choose these values carefully up front.
+</Warning>
+
+## Multiple RDB devices: naming and readiness
+
+Every raw block device on an RDB Pod is backed by its own `PersistentVolumeClaim`, generated from the claim-template name, the RDB StatefulSet name, and the Pod ordinal. For a `RegattaCluster` named `my-regattadb`, device `0` of RDB Pod `0` produces the PVC `rdb-block-0-my-regattadb-rdb-0`; device `1` of the same Pod produces `rdb-block-1-my-regattadb-rdb-0`, and so on.
+
+Storage readiness requires every one of these PVCs, for every RDB Pod, to be bound before RegattaDB is configured. An RDB Pod with `spec.rdb.devices: 2` stays pending until both of its raw block PVCs are bound, not just one.
+
+## Non-root access to raw block devices
+
+RDB Pods run as the non-root user and group configured in [`spec.security`](./security-and-lifecycle.mdx) (UID `1000`/GID `1001` by default) and additionally receive Linux supplemental group `6`, the conventional `disk` group on most Linux distributions, so that user can open the raw block devices without running as root. The SM Pod does not receive this supplemental group, because it has no raw block devices.
+
+Whether group `6` actually grants access depends on which Linux group your storage and container runtime assign to the device node inside the Pod. For deterministic, non-root device ownership, configure your container runtime to derive device ownership from the Pod's security context: set `device_ownership_from_security_context = true` under containerd, or the equivalent option under `[crio.runtime]` for CRI-O. Validate this on one RDB Pod, for example by checking device ownership inside the Pod, before relying on it for production.

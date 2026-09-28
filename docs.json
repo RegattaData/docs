@@ -7,7 +7,7 @@
     "light": "#FF6600",
     "dark": "#ff6600"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/images/favicon.svg",
   "navigation": {
     "anchors": [
       {
@@ -391,7 +391,37 @@
                   "self-hosted-deployment/rdt/advanced/node-system-changes",
                   "self-hosted-deployment/rdt/advanced/module-and-numa-configuration"
                 ]
-              }
+              },
+              "self-hosted-deployment/rdt/troubleshooting",
+              "self-hosted-deployment/rdt/release-notes"
+            ]
+          },
+          {
+            "group": "Kubernetes Deployment",
+            "pages": [
+              "self-hosted-deployment/kubernetes/introduction",
+              "self-hosted-deployment/kubernetes/prerequisites",
+              "self-hosted-deployment/kubernetes/installation",
+              {
+                "group": "Configuration",
+                "pages": [
+                  "self-hosted-deployment/kubernetes/configuration/overview",
+                  "self-hosted-deployment/kubernetes/configuration/storage",
+                  "self-hosted-deployment/kubernetes/configuration/networking",
+                  "self-hosted-deployment/kubernetes/configuration/security-and-lifecycle",
+                  "self-hosted-deployment/kubernetes/configuration/resources-and-scheduling"
+                ]
+              },
+              {
+                "group": "Examples",
+                "pages": [
+                  "self-hosted-deployment/kubernetes/examples/quickstart-single-node",
+                  "self-hosted-deployment/kubernetes/examples/static-storage-local-nvme"
+                ]
+              },
+              "self-hosted-deployment/kubernetes/operations",
+              "self-hosted-deployment/kubernetes/troubleshooting",
+              "self-hosted-deployment/kubernetes/release-notes"
             ]
           },
           {

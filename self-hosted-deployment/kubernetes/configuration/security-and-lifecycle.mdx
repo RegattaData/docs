@@ -1,0 +1,35 @@
+---
+title: "Security & Lifecycle"
+description: "Configure the Pod security context, RegattaDB's credentials, and whether the operator starts or stops it."
+---
+
+## Configure lifecycle
+
+These fields control whether the operator actively configures and starts RegattaDB, or leaves it untouched while still managing the surrounding Kubernetes resources. Use them to stage a `RegattaCluster` resource before go-live, or to stop RegattaDB for planned maintenance without deleting anything.
+
+| Field | Default | Description |
+| --- | --- | --- |
+| `spec.lifecycle.configure` | `true` | Whether the operator configures RegattaDB through the System Manager once Kubernetes is ready. Set `false` only when creating a new, stopped RegattaCluster resource, together with `start: false` |
+| `spec.lifecycle.start` | `true` | Whether the operator starts RegattaDB after configuring it. Set `false` to keep Kubernetes Pods running with RegattaDB stopped |
+
+## Configure security
+
+| Field | Default | Description |
+| --- | --- | --- |
+| `spec.security.runAsUser` | `1000` | The non-root Linux UID RegattaDB processes run as |
+| `spec.security.runAsGroup` | `1001` | The non-root Linux GID RegattaDB processes run as |
+| `spec.security.fsGroup` | `1001` | The filesystem group applied to mounted storage |
+| `spec.security.seccompProfile` | `RuntimeDefault` | A seccomp profile restricts which Linux syscalls a container may make; `RuntimeDefault` applies Kubernetes' standard restricted set, or use `Unconfined` to disable it |
+| `spec.security.allowPrivilegeEscalation` | `false` | Whether a RegattaDB process can gain more privileges than its parent (for example through a setuid binary). Keep `false` for production |
+
+Every Pod also always runs as non-root and uses the `OnRootMismatch` file system group-change policy, so mounted volumes are already owned by the right group when the container starts. Neither is configurable; both apply regardless of what you set under `spec.security`.
+
+## Security context and credentials
+
+Every RegattaDB Pod runs with the settings from `spec.security`: non-root UID/GID, the seccomp profile, and `allowPrivilegeEscalation`, as configured. Pods do not mount a Kubernetes `ServiceAccount` token, because RegattaDB itself never calls the Kubernetes API.
+
+The operator's own namespaced permissions let it manage the resources described throughout this section: Services, StatefulSets, ConfigMaps, the credentials Secret, and your `RegattaCluster` status. Its only access outside that namespace is the cluster-scoped read-only permission described in [Prerequisites](../prerequisites.mdx) and [Installation](../installation.mdx).
+
+<Danger>
+  The initial RegattaDB administrator credentials, stored in a Secret named like `my-regattadb-credentials`, are deterministic rather than randomly generated per installation. Read them from that Secret rather than assuming a fixed value, and handle it with the same care as any other credential in your Kubernetes cluster. Never print the contents of the credentials Secret while troubleshooting.
+</Danger>

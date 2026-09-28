@@ -1,0 +1,76 @@
+---
+title: "Operations"
+description: "How the operator keeps Kubernetes and RegattaDB in sync, reading status, and making supported changes."
+---
+
+## How the operator keeps things in sync
+
+After you apply a `RegattaCluster` resource, the operator continuously works to bring Kubernetes and RegattaDB into the state you described:
+
+1. It creates or updates the StatefulSets, Services, ConfigMaps, and Secret your `RegattaCluster` resource requires.
+2. It waits until the storage your Pods requested is bound, and every Pod is running and ready.
+3. Once Kubernetes is ready, it configures and starts, or stops, RegattaDB through the System Manager (SM), using the Service addresses Kubernetes created.
+4. It writes what it observed, including readiness, endpoints, and RegattaDB health, back into your `RegattaCluster` resource's status, and repeats this cycle so any drift is corrected automatically, at least every five minutes even without any change.
+
+Kubernetes objects being healthy is necessary but not sufficient: your `RegattaCluster` resource only reports readiness once RegattaDB itself confirms, through the System Manager, that it is active and healthy.
+
+## Reading RegattaCluster status
+
+`status` is owned by the operator; never edit it yourself. Useful fields:
+
+- `status.observedGeneration`: the most recent `spec` generation the operator has reconciled. If this lags behind `metadata.generation`, the operator has not caught up yet.
+- `status.endpoints.sm` and `status.endpoints.rdbs[]`: the Service names, DNS names, ClusterIPs, and ports the operator advertised to RegattaDB. RegattaDB clients and management tools should use these addresses from `status`; `spec` never contains live connection addresses, only your desired configuration.
+- `status.rdb`: `desiredReplicas`, `readyPods`, `configuredReplicas`, and `activeReplicas` - how many RDB Pods exist, are ready, are configured in RegattaDB, and are active.
+- `status.modules`: per-module role summaries (`total`/`active`/`down`), as RegattaDB itself reports them.
+- `status.devices`: raw block device health, with a `status`, a `healthy` flag, a `failed` list of device names that are not healthy, and an `items[]` list. Each item includes the device's `name`, `path`, `node`, and `module`.
+- `status.regatta`: the raw System Manager observation, including `systemState`, `healthy`, `desiredState`, and recent `actions`.
+
+### Conditions
+
+`status.conditions` follows the standard Kubernetes condition shape (`type`, `status`, `reason`, `message`):
+
+| Condition | True means | False means |
+| --- | --- | --- |
+| `Progressing` | Waiting for infrastructure to become ready, or a RegattaDB action was just issued and a follow-up check is scheduled | Steady state with nothing pending (`KubernetesResourcesApplied`), or a permanent error blocked reconciliation - check `Degraded` and this condition's `message` |
+| `StorageReady` | Every expected `PersistentVolumeClaim` exists and is bound (`StorageHealthy`) | No `PersistentVolumeClaims` observed yet (`WaitingForStorage`), or some are missing, unbound, or otherwise unhealthy (`PVCsNotBound`) |
+| `KubernetesReady` | Both StatefulSets are fully rolled out and every expected Pod is Running and Ready (`WorkloadsReady`) | Pods are not ready (`PodsNotReady`), or a StatefulSet has not rolled out (`WorkloadsNotReady`) |
+| `Ready` | RegattaDB itself, through the System Manager, confirms it is active and healthy, in addition to Kubernetes being ready | Kubernetes is not ready yet (`InfrastructureNotReady`), or Kubernetes is ready but SM has not confirmed active and healthy yet (`RegattaStatusPending`) |
+| `Degraded` | A permanent error blocked reconciliation - for example, reason `ValidationFailed` for spec values only caught at reconcile time; check the condition's `message` for the cause | Normal operation, including a `RegattaCluster` resource you deliberately stopped (`spec.lifecycle.start: false`), which is not treated as degraded |
+| `RegattaStopped` | Present only when `spec.lifecycle.start: false`. SM confirms RegattaDB is stopped | The stop is still in progress (`RegattaStopping`) |
+
+<Note>
+  `Ready=True` always requires both Kubernetes readiness and SM-confirmed RegattaDB health together; Kubernetes readiness alone is never enough.
+</Note>
+
+## Making supported changes
+
+Once your `RegattaCluster` resource exists, a small set of fields remain mutable, though some have side effects worth planning for:
+
+- `spec.image` (`tag`, `digest`, `pullPolicy`, `pullSecrets`), as long as `spec.version` stays the same. The operator applies this as a same-version rolling update - see [Configure Version And Image](./configuration/overview.mdx#configure-version-and-image) for what that means and what you can/cannot control.
+- `config` on any module. Note that changing it restarts the Pod or Pods that host the affected module.
+- `spec.rdb.service.type` and `spec.rdb.service.port` (the aggregate RDB Service's own type and exposed port) only affect that Service object. RDB's actual container port stays fixed, and Kubernetes forwards the externally exposed port to it correctly, so both are always safe to change.
+- `spec.lifecycle.start`: set to `false` to stop RegattaDB while keeping Kubernetes Pods running, and back to `true` to start it again.
+
+Every other field covered in [Configuration](./configuration/overview.mdx), including `spec.version`, `spec.rdb.replicas`, `spec.rdb.devices`, module `port`/`service_port`/`num_threads`/`ram_MB`, and every storage setting, is immutable once your `RegattaCluster` resource is created.
+
+## Deleting a RegattaCluster
+
+Delete the resource like any other Kubernetes object:
+
+```sh
+kubectl -n <namespace> delete rgc my-regattadb
+```
+
+Deletion:
+
+1. Makes a bounded attempt, up to 30 seconds, to stop RegattaDB through the System Manager if it is running.
+2. Continues even if that stop attempt fails, recording a warning Event instead of blocking.
+3. Deletes the generated StatefulSets, Services, ConfigMaps, and the credentials Secret.
+4. Leaves every `PersistentVolumeClaim` in place, so your data is not deleted along with the `RegattaCluster` resource.
+
+If you are certain the data is no longer needed, delete the retained PVCs explicitly:
+
+```sh
+kubectl -n <namespace> delete pvc \
+  -l app.kubernetes.io/name=regatta,app.kubernetes.io/instance=my-regattadb,app.kubernetes.io/managed-by=regatta-operator
+```

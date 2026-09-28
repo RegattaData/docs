@@ -1,0 +1,62 @@
+---
+title: "Quickstart: Single-Node RegattaCluster"
+description: "Install the operator and stand up a single-node RegattaDB deployment on Kubernetes end to end."
+---
+
+This page walks you through creating your first `RegattaCluster` resource. Make sure you've completed [Installation](../installation.mdx) first: the operator must already be running in your cluster.
+
+## 1. Create a RegattaCluster resource
+
+A minimal `RegattaCluster` resource looks like this:
+
+```yaml
+apiVersion: regatta.dev/<crd-api-version>
+kind: RegattaCluster
+metadata:
+  name: my-regattadb
+  namespace: <namespace>
+spec:
+  version: "<version>"
+  image:
+    repository: registry.example.com/regatta
+    tag: "<version>"
+  security:
+    runAsUser: 1000
+    runAsGroup: 1001
+    fsGroup: 1001
+  rdb:
+    replicas: 3
+    blockStorage:
+      size: 60Gi
+  repoStorage:
+    size: 5Gi
+  logs:
+    size: 5Gi
+```
+
+Save it to a file under `config/examples/`, for example `config/examples/regatta-minimal.yaml`. See [Configuration Overview](../configuration/overview.mdx) for what every field means.
+
+## 2. Apply and verify
+
+```sh
+kubectl -n <namespace> apply -f config/examples/regatta-minimal.yaml
+kubectl -n <namespace> get rgc
+kubectl -n <namespace> get rgc my-regattadb -o yaml
+```
+
+You can also list every resource the operator generated in one command:
+
+```sh
+kubectl -n <namespace> get statefulsets,services,configmaps,secrets,pods,pvc \
+  -l app.kubernetes.io/instance=my-regattadb
+```
+
+<Note>
+  A new `RegattaCluster` resource does not become `Ready` immediately: Kubernetes must provision storage and start Pods before the operator can configure and start RegattaDB through the System Manager. Track `status.conditions` (see [Reading RegattaCluster Status](../operations.mdx#reading-regattacluster-status)) until you see `Ready` reported as `True`, rather than expecting readiness right away.
+</Note>
+
+## Next steps
+
+- [Operations](../operations.mdx) to understand how the operator keeps Kubernetes and RegattaDB in sync, and what you can safely change afterward.
+- [Example: Two Local NVMe Devices, One RDB Replica](./static-storage-local-nvme.mdx) for a static-storage walkthrough.
+- [Troubleshooting](../troubleshooting.mdx) if your `RegattaCluster` resource doesn't reach `Ready`.

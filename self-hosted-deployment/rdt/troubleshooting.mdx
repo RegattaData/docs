@@ -1,0 +1,88 @@
+---
+title: "Troubleshooting"
+description: "Diagnose common issues when installing and running RDT."
+---
+
+Start by re-running the failing command with `--verbose` for more detail. If you need to
+gather logs from every node to investigate further, see
+[Collecting Debug Information](./examples/collecting-debug-info.mdx).
+
+## `rdt` command not found after installing
+
+The RPM installs RDT for the deployment user with `pip install --user`, which places
+the `rdt` command under `~/.local/bin`. That directory isn't always on `PATH` by
+default.
+
+**Solution:** add it to your `PATH`:
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+Add this to your shell profile (e.g. `~/.bashrc`) to make it permanent. See
+[Installation](./installation.mdx) for other install paths and details.
+
+## SSH connection or authentication failures
+
+A node-level command (`distribute`, `setup`, `start-services`, `collect`, `clean`,
+`reset`, etc.) hangs or fails with a connection or authentication error.
+
+Every node-level operation connects over SSH using the credentials from
+[Global Options & Credentials](./advanced/global-options-and-credentials.mdx)
+(`--user`/`--key`/`--password`/`--ask-password`), and needs `sudo` access on the node
+once connected; see [Prerequisites](./prerequisites.mdx).
+
+**Solution:** verify you can connect manually with the same credentials
+(`ssh -i <key> <user>@<node>`), confirm the SSH user has passwordless (or password)
+`sudo` access on the node, and pass `--user`/`--key` or `--ask-password` explicitly if
+your local SSH defaults differ from RDT's.
+
+## RDB module fails to start because its storage device isn't accessible
+
+The RDB module fails to boot, and its error log shows it couldn't open its storage
+device. `ls -la` on the device shows it's still owned by `root:disk` instead of
+`regatta:regatta`.
+
+As described in [What Changes on Your Nodes](./advanced/node-system-changes.mdx#storage--device-setup),
+RDT changes ownership of every storage device referenced by an RDB module to
+`regatta:regatta` via a `udev` rule. If the path you reference in your config is a
+symbolic link (for example a device-mapper or multipath alias under `/dev/mapper/`)
+rather than the underlying device node itself (for example `/dev/dm-*`), ownership needs
+to end up on the real device the link resolves to, not just the link.
+
+**Solution:** resolve the link and fix ownership on both the link and its target:
+
+```bash
+readlink -f <your-device-path>
+chown regatta:regatta <your-device-path> <resolved-target-path>
+```
+
+Prefer referencing the resolved device path directly in your config instead of a
+symlink, so RDT's ownership change reliably applies to the actual device.
+
+## `setup` warns that `jemalloc` wasn't found
+
+As described in [What Changes on Your Nodes](./advanced/node-system-changes.mdx#performance-tuning-jemalloc),
+`setup` looks for `libjemalloc` on the node (under `/usr/lib64`, then as a fallback via
+the system's shared library cache) to wire it in as `LD_PRELOAD` for the SM and SNA
+module environments. This warning is expected and doesn't block deployment; it's a
+performance optimization, not a requirement.
+
+**Solution:** none needed. If you want the performance benefit, install `libjemalloc`
+on the node and re-run `setup`.
+
+## Cluster stays down after `reset`
+
+`reset` stops services, clears all RegattaDB data, and restarts services, but it does
+**not** automatically reconfigure or restart the database afterward: it leaves you at
+the same point as right after `start-services`, with nothing configured or started yet.
+
+**Solution:** run `configure` and `start-cluster` again once `reset` finishes:
+
+```bash
+rdt configure --name <config>
+rdt start-cluster --name <config>
+```
+
+See [RegattaDB Lifecycle](./system-setup/lifecycle.mdx#resetting-regattadb) for the full
+sequence.
