@@ -26,11 +26,13 @@ The pattern is case-sensitive with optional leading and/or trailing ‘%’ sign
 
 The output is tabular, each row represents a vector index. The following table lists the columns.
 
+The output is ordered by `TABLE_NAME`, `INDEX_NAME`
+
 | Name | Type | Description |
 | --- | --- | --- |
 | `TABLE_NAME` | `VARCHAR(127)` | The name of the table |
-| `COLUMN_NAME` | `VARCHAR(127)` | The name of the indexed column |
 | `INDEX_NAME` | `VARCHAR(127)` | The name of the vector index |
+| `COLUMN_NAME` | `VARCHAR(127)` | The name of the indexed column |
 | `INDEX_TYPE` | `VARCHAR(16)` | The vector index type – either ‘`HNSW`’ or ‘`IVFFLAT`’ |
 | `DISTANCE_METRIC` | `VARCHAR(16)` | The distance metric – one of ‘`COSINE`’, ‘`L2`’, ‘`IP`’ |
 | `PARAMETERS` | `VARCHAR(127)` | Parameters of the index. |
@@ -57,6 +59,8 @@ SHOW VECTOR INDEX MODULES IN INDEX index_name [ ALL ]
 ### Output
 
 The output is tabular, each row represents a module. The following table lists the columns.
+
+The output is ordered by `NAME`.
 
 | Name | Type | Description |
 | --- | --- | --- |
