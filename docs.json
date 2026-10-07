@@ -261,14 +261,6 @@
                   "sql/system-monitoring/dynamic-system/show-module-metrics",
                   "sql/system-monitoring/dynamic-system/show-device-metrics"
                 ]
-              },
-              {
-                "group": "System Management",
-                "pages": [
-                  "sql/system-monitoring/system-management/system-command",
-                  "sql/system-monitoring/system-management/system-shutdown",
-                  "sql/system-monitoring/system-management/system-state"
-                ]
               }
             ]
           },
