@@ -2,7 +2,7 @@
 title: "Selected Device Mapping"
 ---
 
-If you do decide to select to define the mapping for either data or indexes, you may do so. If you define one and not the other, Regatta will complete the definition for you. For example, if you do map the table to some devices but not decaler where an indexed key should go, Regatta will select a random device and map the index to it.
+If you do decide to select to define the mapping for either data or indexes, you may do so. If you define one and not the other, RegattaDB will complete the definition for you. For example, if you do map the table to some devices but not decaler where an indexed key should go, RegattaDB will select a random device and map the index to it.
 
 The first command should display the devices that are used in the cluster. We enter SHOW DEVICES in the WebCLI command line:
 
@@ -31,6 +31,6 @@ Enter the SQL show tables command:
 SHOW TABLES
 ```
 
-We can see the table with all the columns and the device mapping. Note that in the **workers** table, the data is only mapped once to the device since this is what we chose as opposed to **employees** where Regatta mapped it 3 times.
+We can see the table with all the columns and the device mapping. Note that in the **workers** table, the data is only mapped once to the device since this is what we chose as opposed to **employees** where RegattaDB mapped it 3 times.
 
 We will continue here using the **employees** table.
