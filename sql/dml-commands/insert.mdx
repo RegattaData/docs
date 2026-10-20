@@ -38,7 +38,7 @@ This parameter is optional. If no column names were specified, the values are as
 
 **`VALUES`**
 
-Specifies the values to insert into the corresponding columns in the table. The data types of the values should be compatible with the data types of the corresponding columns in the column list (note that in some cases, Regatta will overcome mismatches with implicit conversion).
+Specifies the values to insert into the corresponding columns in the table. The data types of the values should be compatible with the data types of the corresponding columns in the column list (note that in some cases, RegattaDB will overcome mismatches with implicit conversion).
 
 The list of values can only contain literals (e.g. 'hello'), the `DEFAULT` and `NULL` keywords, expressions or functions that can be computed at the planning time such as `NOW()` or 5\*50.
 
@@ -46,7 +46,7 @@ String literals and date literals in the `VALUES` list must be enclosed by singl
 
 **`expression`**
 
-An expression or value to assign to the corresponding column. The expression is given as a string and Regatta attempts to convert it to the desired data type.
+An expression or value to assign to the corresponding column. The expression is given as a string and RegattaDB attempts to convert it to the desired data type.
 
 **`DEFAULT`**
 
@@ -61,9 +61,9 @@ A SELECT statement that supplies the rows to be inserted. See [SELECT](/sql/dql/
 
 `WITH devices = ( device_list ) IN MODULES ( module_list )`
 
-Regatta uses an internal algorithm to distribute the rows of a table across the table storage devices optimally. You can override it by specifying one or more device into which the rows will be inserted. The devices are identified by their internal device number within the pertinent modules, and modules containing the devices should also be specified.
+RegattaDB uses an internal algorithm to distribute the rows of a table across the table storage devices optimally. You can override it by specifying one or more device into which the rows will be inserted. The devices are identified by their internal device number within the pertinent modules, and modules containing the devices should also be specified.
 
-Use of this clause is generally discouraged as it could interfere with Regatta's internal data distribution algorithms and degrade performance and/or cause a storage device to fill up unintentionally. It should be used with care in very specific use cases.
+Use of this clause is generally discouraged as it could interfere with RegattaDB's internal data distribution algorithms and degrade performance and/or cause a storage device to fill up unintentionally. It should be used with care in very specific use cases.
 
 **`RETURNING output_expression`**
 
