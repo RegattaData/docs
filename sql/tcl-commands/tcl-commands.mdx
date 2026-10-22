@@ -5,7 +5,7 @@ title: Transaction Control Language Commands
 
 Transactions are the basis of concurrency control, providing strong consistency and preserving the ACID guarantees: Atomicity, Consistency, Isolation and Durability. A transaction is a sequence of SQL statements that is committed or rolled back as a whole, in a single operation. The intermediate states between the statements of a transaction are not visible to other concurrent transactions, and if some failure occurs that prevents the transaction from being completed, then none of its statements affect the database at all.
 
-   An active transaction ends either by successful commit, or rollback (abort). Rollback can happen either by the client request, or by the Regatta system itself if it encounters an error or if it detects that the transaction entered a deadlock with other transactions.
+   An active transaction ends either by successful commit, or rollback (abort). Rollback can happen either by the client request, or by the RegattaDB system itself if it encounters an error or if it detects that the transaction entered a deadlock with other transactions.
 
    The transaction control commands aren’t regular SQL statements. They are executed by calling specific API on the Regatta client drivers. The only exception is the `SET TRANSACTION` command, which can be executed as a statement, provided that it’s the first statement in the transaction. The specification of that command is detailed below.
 
@@ -26,4 +26,4 @@ A DDL statement must be the first statement in a transaction, and it causes an i
 
 Other concurrent transactions are not isolated from changes made by DDLs, and they may be exposed to changes made by a DDL even before the DDL is completed and even if they run in snapshot-based isolation mode.
 
-For example, a statement that performs a full scan on a table and a DROP TABLE is issued concurrently to the scan execution, may either complete successfully or fail depending on the timing of execution (even if the scan is snapshot-based). However, Regatta guarantees that if it succeeds, it won’t return partial results.
+For example, a statement that performs a full scan on a table and a DROP TABLE is issued concurrently to the scan execution, may either complete successfully or fail depending on the timing of execution (even if the scan is snapshot-based). However, RegattaDB guarantees that if it succeeds, it won’t return partial results.
