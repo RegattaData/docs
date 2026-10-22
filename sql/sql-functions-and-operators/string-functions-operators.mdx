@@ -27,7 +27,7 @@ Notes:
 | `LEFT(STRING, n_int)` | Returns the first n_int characters in the string, or when n_int is negative, returns all but last n_int characters | `LEFT('This is me', 8)`<br />=> This is <br />`LEFT('This is me', -8)`<br />=> Th |
 | `RIGHT(STRING, n_int)` | Returns the last n_int characters in the string, or when n_int is negative, returns all but last n_int characters | `RIGHT('This is me', 8)`<br />=> is me <br />`RIGHT('This is me', -8)`<br />=> me |
 | `LENGTH(STRING)` | Returns the number of characters in the string. Returns an INT. See notes. | `LENGTH('This is me')`<br />=> 10 |
-| `LPAD(STRING, length_int [, fill_string])` | Extends the string to length_int length by prepending the fill_string (a space by default). Returns an INT. See notes. | `LPAD('Hello', 10, '-')`<br />=> -----Hello <br />`LPAD('Hello', 10)`<br />=>      Hello (5 spaces) |
+| `LPAD(STRING, length_int [, fill_string])` | Extends the string to length_int length by prepending the fill_string (a space by default). See notes. | `LPAD('Hello', 10, '-')`<br />=> -----Hello <br />`LPAD('Hello', 10)`<br />=>      Hello (5 spaces) |
 | `RPAD(STRING, length_int [, fill_string])` | Extends the string to length_int length by appending the fill_string (a space by default). See notes. | `RPAD('Hello', 10, '-')`<br />=> Hello----- |
 | `REPEAT(STRING, n_int)` | Repeats string the specified n_int times | `REPEAT('Hello', 3)`<br />=> Hello_Hello_Hello |
 | `REPLACE(STRING, from_text, to_text)` | Replaces all occurrences in string of substring from_text with substring to_text | `REPLACE('Hello this is me', 'me', 'you')`<br />=> Hello this is you |
