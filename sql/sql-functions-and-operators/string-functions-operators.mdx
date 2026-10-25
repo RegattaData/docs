@@ -14,7 +14,7 @@ Notes:
 | Function | Description and Comments | Example |
 | :-- | :-- | :-- |
 | `STRING \|\| STRING` | Concatenate of two strings. See also CONCAT(). See notes. | 'This in an ' \|\| 'example' <br /> => This in an example |
-| `CONCAT(STRING [, STRING [, ...]])` | Concatenation of all the string arguments. See notes. | `CONCAT('Hello', ' it', ' is me')`<br /> => Hello it is me |
+| `CONCAT(STRING , STRING [, ...])` | Concatenate two or more stringsarguments. See notes. | `CONCAT('Hello', ' it', ' is me')`<br /> => Hello it is me |
 | `LOWER(STRING)` | Converts the string to all lowercase | `LOWER('Hello')`<br /> => hello |
 | `UPPER(STRING)` | Converts the string to all uppercase | `UPPER('Hello')`<br /> => HELLO |
 | `POSITION(sub_string IN STRING)` | Return the first starting index of the specified substring within the string, or zero if it's not present. Returns an INT | `POSITION('o' IN 'Hello')`<br /> => 5 |
