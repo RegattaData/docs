@@ -53,7 +53,7 @@ Notes:
     <tr>
       <td>`SUBSTRING(STRING start_int [, count_int] )`<br />`SUBSTRING([FROM start] [FOR count])`</td>
       <td>Extracts a substring from a given string.<br />See note 3</td>
-      <td>`SUBSTRING('123456789' FROM 4 FOR 4)`<br /> => 4567<br />`SUBSTRING('123456789' FOR 2)`<br /> => 12 <br />`SUBSTRING('123456789' FROM 4)`<br />=> 456789 <br />`SUBSTRING('123456789' FROM -1 FOR 4)`<br />=> 12</td>
+      <td>SUBSTRING(‘hello’, 2, 3) ⇒ ‘ell’ SUBSTRING(‘hello’, 2) à ‘ello’ SUBSTRING(‘hello’ FROM 2 FOR 3) à ‘ell’ SUBSTRING(‘hello’ FROM 2) à ‘ello’ SUBSTRING ‘hello’ FOR 3) à ‘hel’</td>
     </tr>
     <tr>
       <td>`SUBSTRING(STRING start\_int FOR count\_int)`</td>
