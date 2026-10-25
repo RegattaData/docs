@@ -58,7 +58,7 @@ Notes:
       <td></td>
     </tr>
     <tr>
-      <td>`SUBSTRING(STRING start_int [, count_int] )`<br />`SUBSTRING([FROM start] [FOR count])`</td>
+      <td>`SUBSTRING(STRING, start [, count] )`<br />`SUBSTRING([FROM start] [FOR count])`</td>
       <td>Extracts a substring from a given string.<br />See note 3</td>
       <td>`SUBSTRING(‘hello’, 2, 3) => ‘ell’`<br />`SUBSTRING(‘hello’, 2) => ‘ello’`<br />`SUBSTRING(‘hello’ FROM 2 FOR 3) => ‘ell’`<br />`SUBSTRING(‘hello’ FROM 2) => ‘ello’`<br />`SUBSTRING ‘hello’ FOR 3) => ‘hel’`</td>
       <td></td>
@@ -156,6 +156,7 @@ Notes:
 2. `CONCAT():`
    - All values are implicitly converted to strings
    - `NULL` arguments are ignored. For example: `SELECT CONCAT('Hello', NULL, ' this is me');` Return: 'Hello this is me'
+3. `SUBSTRING(string, start [, count])` receives start position and optional count. If count is omitted, the extracted substring is until the end of the input string.<br />SUBSTRING(string [FROM start] [FOR count]) – both FROM and FOR are optional but at least one of them should be included. If FROM is omitted, start from the beginning of the input string. If FOR is omitted, extract until the end of the input string.
 3. `LPAD()` (`RPAD()`): If the string is already longer than the requested `length_int` then it is truncated on the right (left).
 4. `LIKE` and `NOT LIKE`: a . String match is case sensitive b . escape character should be a single character. c. Possible patterns:
    - An underscore (\_): stands for a single character
