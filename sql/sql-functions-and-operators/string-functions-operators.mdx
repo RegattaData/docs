@@ -51,7 +51,7 @@ Notes:
       <td>`POSITION('o' IN 'Hello')`<br /> => 5</td>
     </tr>
     <tr>
-      <td>`SUBSTRING(STRING start_int [, count_int] )`<br />`[FROM start_int] [FOR count_int])`</td>
+      <td>`SUBSTRING(STRING start_int [, count_int] )`<br />`SUBSTRING([FROM start] [FOR count])`</td>
       <td>Extracts the substring of string starting at the start_int position if that is specified, and stopping after count_int characters if that is specified.<br /> If start_int is not specified - default to 1.<br /> If count_int is not specified - default is until the end of the string.<br /> If start_int is less than 1, the difference (1 - start_int) is subtracted from count_int and the result starts from position 1</td>
       <td>`SUBSTRING('123456789' FROM 4 FOR 4)`<br /> => 4567<br />`SUBSTRING('123456789' FOR 2)`<br /> => 12 <br />`SUBSTRING('123456789' FROM 4)`<br />=> 456789 <br />`SUBSTRING('123456789' FROM -1 FOR 4)`<br />=> 12</td>
     </tr>
