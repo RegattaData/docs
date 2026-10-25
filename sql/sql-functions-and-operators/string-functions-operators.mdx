@@ -64,12 +64,6 @@ Notes:
       <td></td>
     </tr>
     <tr>
-      <td>`SUBSTRING(STRING start\_int FOR count\_int)`</td>
-      <td>Alias of SUBSTRING</td>
-      <td>`SUBSTRING('My example', 3, 5)`<br />=> exam</td>
-      <td></td>
-    </tr>
-    <tr>
       <td>`TRIM( [LEADING | TRAILING | BOTH] [trim_chars] FROM string)`</td>
       <td>Removes the longest string containing only characters in `trim_chars` (a space by default) from the start, end, or both ends (`BOTH` is the default) of `string`.</td>
       <td>`TRIM(LEADING 'xx' FROM 'xxhello')`<br />=> hello <br />`TRIM(FROM ' hello ')`<br />=> hello (no spaces) <br />`TRIM(BOTH 'xyz' FROM 'xthis_is_mezy')`<br />=> this_is_me</td>
