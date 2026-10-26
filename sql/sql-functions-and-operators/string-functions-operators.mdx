@@ -117,7 +117,7 @@ Notes:
     </tr>
     <tr>
       <td>`string [NOT] LIKE pattern [ESCAPE escape-char]`</td>
-      <td>Match a string expression by a pattern. The match is case sensitive. Returns BOOLEAN. See note 6.</td>
+      <td>Match a string expression by a pattern. The match is case sensitive. Returns `BOOLEAN`. See note 6.</td>
       <td>`'Regatta' LIKE 'Rega%'`<br />`=> true` <br />`'Regatta' LIKE '_e_a%a'`<br />`=> true` <br />`‘20% discount’ LIKE ’20!%’ ESCAPE ‘!’`<br />`=> false` <br />`‘20% discount’ LIKE ’20!%%’ ESCAPE ‘!’`<br />`=> true`</td>
     </tr>
   </tbody>
