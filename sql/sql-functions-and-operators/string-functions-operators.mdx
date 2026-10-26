@@ -58,12 +58,12 @@ Notes:
     <tr>
       <td>`TRIM( [LEADING | TRAILING | BOTH] { [trim_chars FROM] | [FROM] } string)`<br /><br />`TRIM([LEADING | TRAILING | BOTH] [FROM] string [, trim_chars])`</td>
       <td>Remove the longest string containing only characters in `trim_chars` (space by default), from either the front or the back of the input string, or both (the default). See note 4.</td>
-      <td>`TRIM(LEADING ‘xyz’ FROM ‘zxxzhello’)`<br />`=> ‘hello’` <br />`TRIM(BOTH ‘xyz’ FROM ‘yxthis is mezy’)`<br />`=> ‘this is me’` <br />`TRIM(‘ hello ’) =>`<br />`‘hello’` <br />`TRIM(‘__hello__’, ‘_’)`<br />`=> ‘hello’`</td>
+      <td>`TRIM(LEADING ‘xyz’ FROM ‘zxxzhello’)`<br />`=> ‘hello’` <br />`TRIM(BOTH ‘xyz’ FROM ‘yxthis is mezy’)`<br />`=> ‘this is me’` <br />`TRIM(‘ hello ’)`<br />`=> ‘hello’` <br />`TRIM(‘__hello__’, ‘_’)`<br />`=> ‘hello’`</td>
     </tr>
     <tr>
       <td>`BTRIM(STRING [, trim_chars])`</td>
       <td>Alias of `TRIM()` with `BOTH`</td>
-      <td>`BTRIM('xthis_is_mez', 'xz')`<br />`=> 'this_is_me'`<br />`BTRIM(' hello ') = TRIM(' hello ')`<br />`⇒ true`</td>
+      <td>`BTRIM('xthis_is_mez', 'xz')`<br />`=> 'this_is_me'`<br />`BTRIM(' hello ') = TRIM(' hello ')`<br />`=> true`</td>
     </tr>
     <tr>
       <td>`LTRIM(STRING [, trim_chars])`</td>
