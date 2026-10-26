@@ -16,14 +16,12 @@ Notes:
     <col width="332" />
     <col width="325" />
     <col width="315" />
-    <col width="100" />
   </colgroup>
   <thead>
     <tr>
       <th>Function</th>
       <th>Description and Comments</th>
       <th>Example</th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -31,115 +29,96 @@ Notes:
       <td>`STRING || STRING`</td>
       <td>Concatenate of two strings. See also CONCAT(). See note 1.</td>
       <td>`'This in an ' || 'example' `<br />` => This in an example`</td>
-      <td></td>
     </tr>
     <tr>
       <td>`CONCAT(STRING , STRING [, ...])`</td>
       <td>Concatenate two or more strings. See note 2.</td>
       <td>`CONCAT('Hello', ' it', ' is me')`<br /> => Hello it is me</td>
-      <td></td>
     </tr>
     <tr>
       <td>`LOWER(STRING)`</td>
       <td>Converts the string to all lowercase</td>
       <td>`LOWER('Hello')`<br /> => hello</td>
-      <td></td>
     </tr>
     <tr>
       <td>`UPPER(STRING)`</td>
       <td>Converts the string to all uppercase</td>
       <td>`UPPER('Hello')`<br /> => HELLO</td>
-      <td></td>
     </tr>
     <tr>
       <td>`POSITION(sub_string IN STRING)`</td>
       <td>Return the first starting index of the specified substring within the string, or zero if it's not present. Returns an INT</td>
       <td>`POSITION('o' IN 'Hello')`<br /> => 5</td>
-      <td></td>
     </tr>
     <tr>
       <td>`SUBSTRING(STRING, start [, count] )`<br /><br />`SUBSTRING([FROM start] [FOR count])`</td>
       <td>Extracts a substring from a given string.<br />See note 3</td>
       <td>`SUBSTRING(‘hello’, 2, 3) => ‘ell’`<br />`SUBSTRING(‘hello’, 2) => ‘ello’`<br />`SUBSTRING(‘hello’ FROM 2 FOR 3) => ‘ell’`<br />`SUBSTRING(‘hello’ FROM 2) => ‘ello’`<br />`SUBSTRING ‘hello’ FOR 3) => ‘hel’`</td>
-      <td></td>
     </tr>
     <tr>
       <td>`TRIM( [LEADING | TRAILING | BOTH] { [trim_chars FROM] | [FROM] } string)` `TRIM([LEADING | TRAILING | BOTH] [FROM] string [, trim_chars])`</td>
       <td>Removes the longest string containing only characters in trim_chars (space by default), from either the front or the back of the input string, or both (the default). See note 4.</td>
       <td>`TRIM(LEADING ‘xyz’ FROM ‘zxxzhello’) => ‘hello’` `TRIM(BOTH ‘xyz’ FROM ‘yxthis is mezy’) => ‘this is me’` `TRIM(‘ hello ’) => ‘hello’` `TRIM(‘__hello__’, ‘_’) => ‘hello’`</td>
-      <td></td>
     </tr>
     <tr>
       <td>`BTRIM(STRING [, trim_chars])`</td>
       <td>Alias of TRIM with BOTH</td>
       <td>`BTRIM('this_is_mez', 'xz')`<br />`=> 'this_is_me'`</td>
-      <td></td>
     </tr>
     <tr>
       <td>`LTRIM(STRING [, trim_chars])`</td>
       <td>Alias of TRIM with LEADING</td>
       <td>`LTRIM('xthis_is_mex', 'x')`<br />`=> 'this_is_mex'`</td>
-      <td></td>
     </tr>
     <tr>
       <td>`RTRIM(STRING [, trim_chars])`</td>
       <td>Alias of TRIM with TRAILING</td>
       <td>`RTRIM('xthis_is_mex', 'x')`<br />`=> 'xthis_is_me'`</td>
-      <td></td>
     </tr>
     <tr>
       <td>`LEFT(STRING, n_int)`</td>
       <td>Returns the first n_int characters in the string, or when n_int is negative, returns all but last n_int characters</td>
       <td>`LEFT('This is me', 8)`<br />=> This is <br />`LEFT('This is me', -8)`<br />=> Th</td>
-      <td></td>
     </tr>
     <tr>
       <td>`RIGHT(STRING, n_int)`</td>
       <td>Returns the last n_int characters in the string, or when n_int is negative, returns all but last n_int characters</td>
       <td>`RIGHT('This is me', 8)`<br />=> is me <br />`RIGHT('This is me', -8)`<br />=> me</td>
-      <td></td>
     </tr>
     <tr>
       <td>`LENGTH(STRING)`</td>
       <td>Returns the number of characters in the string. Returns an INT. See notes.</td>
       <td>`LENGTH('This is me')`<br />=> 10</td>
-      <td></td>
     </tr>
     <tr>
       <td>`LPAD(STRING, length_int [, fill_string])`</td>
       <td>Extends the string to length_int length by prepending the fill_string (a space by default). See notes.</td>
       <td>`LPAD('Hello', 10, '-')`<br />=> -----Hello <br />`LPAD('Hello', 10)`<br />=>      Hello (5 spaces)</td>
-      <td></td>
     </tr>
     <tr>
       <td>`RPAD(STRING, length_int [, fill_string])`</td>
       <td>Extends the string to length_int length by appending the fill_string (a space by default). See notes.</td>
       <td>`RPAD('Hello', 10, '-')`<br />=> Hello-----</td>
-      <td></td>
     </tr>
     <tr>
       <td>`REPEAT(STRING, n_int)`</td>
       <td>Repeats string the specified n_int times</td>
       <td>`REPEAT('Hello', 3)`<br />=> Hello_Hello_Hello</td>
-      <td></td>
     </tr>
     <tr>
       <td>`REPLACE(STRING, from_text, to_text)`</td>
       <td>Replaces all occurrences in string of substring from_text with substring to_text</td>
       <td>`REPLACE('Hello this is me', 'me', 'you')`<br />=> Hello this is you</td>
-      <td></td>
     </tr>
     <tr>
       <td>`REVERSE(STRING)`</td>
       <td>Reverses the order of the characters in the string</td>
       <td>`REVERSE('Hello')`<br />=> olleH</td>
-      <td></td>
     </tr>
     <tr>
       <td>`string [NOT] LIKE pattern [ESCAPE escape-char]`</td>
       <td>Matches (or not) string expressions by patterns. The match is case sensitive. Returns BOOLEAN. See notes.</td>
       <td>`'This is me' LIKE 'This%'`<br />=> true <br />`'This is me' LIKE '%is%'`<br />=> true <br />`'20% discount' LIKE '20!%' ESCAPE '!'`<br />=> true</td>
-      <td></td>
     </tr>
   </tbody>
 </table>
