@@ -66,25 +66,25 @@ Notes:
     <tr>
       <td>`TRIM( [LEADING | TRAILING | BOTH] [trim_chars] FROM string)`</td>
       <td>Removes the longest string containing only characters in `trim_chars` (a space by default) from the start, end, or both ends (`BOTH` is the default) of `string`.</td>
-      <td>`TRIM(LEADING 'xx' FROM 'xxhello')`<br />=> hello <br />`TRIM(FROM ' hello ')`<br />=> hello (no spaces) <br />`TRIM(BOTH 'xyz' FROM 'xthis_is_mezy')`<br />=> this_is_me</td>
+      <td>`TRIM(LEADING 'x' FROM 'xxhello')`<br />`=> 'hello' `<br />`TRIM(FROM ' hello ')`<br />`=> 'hello' `<br />`TRIM(BOTH 'xyz' FROM 'xthis_is_mezy')`<br />`=> 'this_is_me'`</td>
       <td></td>
     </tr>
     <tr>
       <td>`BTRIM(STRING [, trim_chars])`</td>
       <td>Alias of TRIM with BOTH</td>
-      <td>`BTRIM('this_is_mez', 'xz')`<br />=> this_is_me</td>
+      <td>`BTRIM('this_is_mez', 'xz')`<br />`=> 'this_is_me'`</td>
       <td></td>
     </tr>
     <tr>
       <td>`LTRIM(STRING [, trim_chars])`</td>
       <td>Alias of TRIM with LEADING</td>
-      <td>`LTRIM('xthis_is_mex', 'x')`<br />=> this_is_mex</td>
+      <td>`LTRIM('xthis_is_mex', 'x')`<br />`=> 'this_is_mex'`</td>
       <td></td>
     </tr>
     <tr>
       <td>`RTRIM(STRING [, trim_chars])`</td>
       <td>Alias of TRIM with TRAILING</td>
-      <td>`RTRIM('xthis_is_mex', 'x')`<br />=> xthis_is_me</td>
+      <td>`RTRIM('xthis_is_mex', 'x')`<br />`=> 'xthis_is_me'`</td>
       <td></td>
     </tr>
     <tr>
