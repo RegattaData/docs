@@ -26,32 +26,32 @@ Notes:
   </thead>
   <tbody>
     <tr>
-      <td>`STRING || STRING`</td>
-      <td>Concatenate of two strings. See also CONCAT(). See note 1.</td>
+      <td>`string || string`</td>
+      <td>Concatenate of two strings. See also `CONCAT()`. See note 1.</td>
       <td>`'This in an ' || 'example' `<br />` => This in an example`</td>
     </tr>
     <tr>
-      <td>`CONCAT(STRING , STRING [, ...])`</td>
+      <td>`CONCAT(string, string [, ...])`</td>
       <td>Concatenate two or more strings. See note 2.</td>
       <td>`CONCAT('Hello', ' it', ' is me')`<br /> => Hello it is me</td>
     </tr>
     <tr>
-      <td>`LOWER(STRING)`</td>
+      <td>`LOWER(string)`</td>
       <td>Converts the string to all lowercase</td>
       <td>`LOWER('Hello')`<br /> => hello</td>
     </tr>
     <tr>
-      <td>`UPPER(STRING)`</td>
+      <td>`UPPER(string)`</td>
       <td>Converts the string to all uppercase</td>
       <td>`UPPER('Hello')`<br /> => HELLO</td>
     </tr>
     <tr>
-      <td>`POSITION(sub_string IN STRING)`</td>
+      <td>`POSITION(sub_string IN string)`</td>
       <td>Return the first starting index of the specified substring within the string, or zero if it's not present. Returns an INT</td>
       <td>`POSITION('o' IN 'Hello')`<br /> => 5</td>
     </tr>
     <tr>
-      <td>`SUBSTRING(STRING, start [, count] )`<br /><br />`SUBSTRING([FROM start] [FOR count])`</td>
+      <td>`SUBSTRING(string, start [, count] )`<br /><br />`SUBSTRING([FROM start] [FOR count])`</td>
       <td>Extracts a substring from a given string.<br />See note 3</td>
       <td>`SUBSTRING(‘hello’, 2, 3) => ‘ell’`<br />`SUBSTRING(‘hello’, 2) => ‘ello’`<br />`SUBSTRING(‘hello’ FROM 2 FOR 3) => ‘ell’`<br />`SUBSTRING(‘hello’ FROM 2) => ‘ello’`<br />`SUBSTRING ‘hello’ FOR 3) => ‘hel’`</td>
     </tr>
