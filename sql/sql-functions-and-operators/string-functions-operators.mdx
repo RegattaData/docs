@@ -96,22 +96,22 @@ Notes:
       <td>`LPAD('Hello', 10, '-')`<br />`=> '-----Hello'`<br />`LPAD('Hello', 10)`<br />`=> '     Hello'`</td>
     </tr>
     <tr>
-      <td>`RPAD(STRING, length [, fill_string])`</td>
+      <td>`RPAD(string, length [, fill_string])`</td>
       <td>Extend a string to a given length by appending the `fill_string` (a space by default). See note 5.</td>
       <td>`RPAD('Hello', 10, '12')`<br />`=> 'Hello12121'`</td>
     </tr>
     <tr>
-      <td>`REPEAT(STRING, count)`</td>
+      <td>`REPEAT(string, count)`</td>
       <td>Repeats a string the specified number of times</td>
-      <td>`REPEAT('Hello', 3)`<br />=> Hello_Hello_Hello</td>
+      <td>`REPEAT('Hello', 3)`<br />`=> HelloHelloHello`</td>
     </tr>
     <tr>
-      <td>`REPLACE(STRING, from_text, to_text)`</td>
+      <td>`REPLACE(string, from_text, to_text)`</td>
       <td>Replaces all occurrences in string of substring from_text with substring to_text</td>
       <td>`REPLACE('Hello this is me', 'me', 'you')`<br />=> Hello this is you</td>
     </tr>
     <tr>
-      <td>`REVERSE(STRING)`</td>
+      <td>`REVERSE(string)`</td>
       <td>Reverses the order of the characters in the string</td>
       <td>`REVERSE('Hello')`<br />=> olleH</td>
     </tr>
