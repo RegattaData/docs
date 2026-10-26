@@ -65,7 +65,7 @@ Notes:
     </tr>
     <tr>
       <td>`TRIM( [LEADING | TRAILING | BOTH] { [trim_chars FROM] | [FROM] } string)` `TRIM([LEADING | TRAILING | BOTH] [FROM] string [, trim_chars])`</td>
-      <td>Removes the longest string containing only characters in `trim_chars` (a space by default) from the start, end, or both ends (`BOTH` is the default) of `string`.</td>
+      <td>Removes the longest string containing only characters in trim_chars (space by default), from either the front or the back of the input string, or both (the default). See note 4.</td>
       <td>`TRIM(LEADING 'x' FROM 'xxhello')`<br />`=> 'hello' `<br />`TRIM(FROM ' hello ')`<br />`=> 'hello' `<br />`TRIM(BOTH 'xyz' FROM 'xthis_is_mezy')`<br />`=> 'this_is_me'`</td>
       <td></td>
     </tr>
