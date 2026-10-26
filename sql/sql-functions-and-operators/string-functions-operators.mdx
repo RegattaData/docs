@@ -8,7 +8,7 @@ Except where noted, these functions and operators are declared to accept and ret
 
 Notes:
 
-1. Text comparison is case-sensitive (e.g, ‘Regatta’ `<>` ’REGATTA’ `<>` ‘regatta’ and 'A' \< 'B' \< 'a' \< 'b').
+1. Text comparison is case-sensitive (e.g., ‘Regatta’ `<>` ’REGATTA’ `<>` ‘regatta’ and 'A' \< 'B' \< 'a' \< 'b').
 2. Values of type `CHAR` are converted to `VARCHAR` before the function or operator is applied, resulting in stripping any trailing spaces in the character value.
 
 <table>
@@ -56,23 +56,23 @@ Notes:
       <td>`SUBSTRING(‘hello’, 2, 3) => ‘ell’`<br />`SUBSTRING(‘hello’, 2) => ‘ello’`<br />`SUBSTRING(‘hello’ FROM 2 FOR 3) => ‘ell’`<br />`SUBSTRING(‘hello’ FROM 2) => ‘ello’`<br />`SUBSTRING ‘hello’ FOR 3) => ‘hel’`</td>
     </tr>
     <tr>
-      <td>`TRIM( [LEADING | TRAILING | BOTH] { [trim_chars FROM] | [FROM] } string)` `TRIM([LEADING | TRAILING | BOTH] [FROM] string [, trim_chars])`</td>
-      <td>Removes the longest string containing only characters in trim_chars (space by default), from either the front or the back of the input string, or both (the default). See note 4.</td>
-      <td>`TRIM(LEADING ‘xyz’ FROM ‘zxxzhello’)`<br />`=> ‘hello’` `TRIM(BOTH ‘xyz’ FROM ‘yxthis is mezy’)`<br />`=> ‘this is me’` `TRIM(‘ hello ’) =>`<br />`‘hello’` `TRIM(‘__hello__’, ‘_’)`<br />`=> ‘hello’`</td>
+      <td>`TRIM( [LEADING | TRAILING | BOTH] { [trim_chars FROM] | [FROM] } string)`<br /><br />`TRIM([LEADING | TRAILING | BOTH] [FROM] string [, trim_chars])`</td>
+      <td>Remove the longest string containing only characters in `trim_chars` (space by default), from either the front or the back of the input string, or both (the default). See note 4.</td>
+      <td>`TRIM(LEADING ‘xyz’ FROM ‘zxxzhello’)`<br />`=> ‘hello’` <br />`TRIM(BOTH ‘xyz’ FROM ‘yxthis is mezy’)`<br />`=> ‘this is me’` <br />`TRIM(‘ hello ’)`<br />`=> ‘hello’` <br />`TRIM(‘__hello__’, ‘_’)`<br />`=> ‘hello’`</td>
     </tr>
     <tr>
       <td>`BTRIM(STRING [, trim_chars])`</td>
-      <td>Alias of TRIM with BOTH</td>
-      <td>`BTRIM('xthis_is_mez', 'xz')`<br />`=> 'this_is_me'`<br />`BTRIM(' hello ') = TRIM(' hello ')`<br />`⇒ true`</td>
+      <td>Alias of `TRIM()` with `BOTH`</td>
+      <td>`BTRIM('xthis_is_mez', 'xz')`<br />`=> 'this_is_me'`<br />`BTRIM(' hello ') = TRIM(' hello ')`<br />`=> true`</td>
     </tr>
     <tr>
       <td>`LTRIM(STRING [, trim_chars])`</td>
-      <td>Alias of TRIM with LEADING</td>
+      <td>Alias of `TRIM()` with `LEADING`</td>
       <td>`LTRIM('xthis_is_mez', 'xz')`<br />`=> 'this_is_mez'`</td>
     </tr>
     <tr>
       <td>`RTRIM(STRING [, trim_chars])`</td>
-      <td>Alias of TRIM with TRAILING</td>
+      <td>Alias of `TRIM()` with `TRAILING`</td>
       <td>`RTRIM('xthis_is_mez', 'xz')`<br />`=> 'xthis_is_me'`</td>
     </tr>
     <tr>
@@ -117,8 +117,8 @@ Notes:
     </tr>
     <tr>
       <td>`string [NOT] LIKE pattern [ESCAPE escape-char]`</td>
-      <td>Match a string expression by a pattern. The match is case sensitive. Returns BOOLEAN. See note 6.</td>
-      <td>`'Regatta' LIKE 'Rega%'`<br />`=> true` `'Regatta' LIKE '_e_a%a'`<br />`=> true` `‘20% discount’ LIKE ’20!%’ ESCAPE ‘!’`<br />`=> false` `‘20% discount’ LIKE ’20!%%’ ESCAPE ‘!’`<br />`=> true`</td>
+      <td>Match a string expression by a pattern. The match is case sensitive. Returns `BOOLEAN`. See note 6.</td>
+      <td>`'Regatta' LIKE 'Rega%'`<br />`=> true` <br />`'Regatta' LIKE '_e_a%a'`<br />`=> true` <br />`‘20% discount’ LIKE ’20!%’ ESCAPE ‘!’`<br />`=> false` <br />`‘20% discount’ LIKE ’20!%%’ ESCAPE ‘!’`<br />`=> true`</td>
     </tr>
   </tbody>
 </table>
@@ -130,8 +130,8 @@ Notes:
    - All values are implicitly converted to strings
    - `NULL` arguments are ignored. For example: `SELECT CONCAT('Hello', NULL, ' this is me');` Return: 'Hello this is me'
 3. `SUBSTRING(string, start [, count])` receives start position and optional count. If count is omitted, the extracted substring is until the end of the input string.<br />`SUBSTRING(string [FROM start] [FOR count])` – both FROM and FOR are optional but at least one of them should be included. If FROM is omitted, start from the beginning of the input string. If `FOR count` is omitted, extract until the end of the input string.<br />If the FROM argument is less than 1, the returned substring begins from position 1 but the difference is subtracted from the count. For example, `SELECT SUBSTRING(‘hello’, FROM -1 FOR 3)` returns `‘h’`.
-4. TRIM() – In the first form, ‘FROM’ is mandatory if `trim_chars` is included and optional otherwise. In the second form it’s optional.
-3. `LPAD()` (`RPAD()`): If the input string is longer than the requested `length_int` then it is truncated on the right (left).
+4. `TRIM()` – In the first form, `‘FROM’` is mandatory if `trim_chars` is included and optional otherwise. In the second form it’s optional.
+3. `LPAD()` (`RPAD()`): If the input string is longer than the requested `length` then it is truncated on the right (left).
 4. `LIKE` and `NOT LIKE`:
    1. String match is case sensitive
    2. Escape character should be a single character.
