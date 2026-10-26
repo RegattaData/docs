@@ -28,27 +28,27 @@ Notes:
     <tr>
       <td>`string || string`</td>
       <td>Concatenate of two strings. See also `CONCAT()`. See note 1.</td>
-      <td>`'This in an ' || 'example' `<br />` => This in an example`</td>
+      <td>`'This in an ' || 'example' `<br />` => 'This in an example'`</td>
     </tr>
     <tr>
       <td>`CONCAT(string, string [, ...])`</td>
       <td>Concatenate two or more strings. See note 2.</td>
-      <td>`CONCAT('Hello', ' it', ' is me')`<br /> => Hello it is me</td>
+      <td>`CONCAT('Hello', ' it', ' is me')`<br /> `=> 'Hello it is me'`</td>
     </tr>
     <tr>
       <td>`LOWER(string)`</td>
-      <td>Converts the string to all lowercase</td>
-      <td>`LOWER('Hello')`<br /> => hello</td>
+      <td>Convert a string to all lowercase</td>
+      <td>`LOWER('Hello')`<br /> `=> 'hello'`</td>
     </tr>
     <tr>
       <td>`UPPER(string)`</td>
-      <td>Converts the string to all uppercase</td>
-      <td>`UPPER('Hello')`<br /> => HELLO</td>
+      <td>Convert a string to all uppercase</td>
+      <td>`UPPER('Hello')`<br /> `=> 'HELLO'`</td>
     </tr>
     <tr>
       <td>`POSITION(sub_string IN string)`</td>
-      <td>Return the first starting index of the specified substring within the string, or zero if it's not present. Returns an INT</td>
-      <td>`POSITION('o' IN 'Hello')`<br /> => 5</td>
+      <td>Return the first starting index of the specified substring within the string, or zero if it's not present. The return type is  `INT`</td>
+      <td>`POSITION('o' IN 'Hello')`<br /> `=> 5`</td>
     </tr>
     <tr>
       <td>`SUBSTRING(string, start [, count] )`<br /><br />`SUBSTRING([FROM start] [FOR count])`</td>
