@@ -92,17 +92,17 @@ Notes:
     </tr>
     <tr>
       <td>`LPAD(string, length [, fill_string])`</td>
-      <td>Extend the string to a given length by prepending the `fill_string` (a space by default). See note 5.</td>
+      <td>Extend a string to a given length by prepending the `fill_string` (a space by default). See note 5.</td>
       <td>`LPAD('Hello', 10, '-')`<br />`=> '-----Hello'`<br />`LPAD('Hello', 10)`<br />`=> '     Hello'`</td>
     </tr>
     <tr>
       <td>`RPAD(STRING, length [, fill_string])`</td>
-      <td>Extend the string to a given length by appending the `fill_string` (a space by default). See note 5.</td>
-      <td>`RPAD('Hello', 10, '-')`<br />`=> 'Hello-----'`</td>
+      <td>Extend a string to a given length by appending the `fill_string` (a space by default). See note 5.</td>
+      <td>`RPAD('Hello', 10, '12')`<br />`=> 'Hello12121'`</td>
     </tr>
     <tr>
-      <td>`REPEAT(STRING, n_int)`</td>
-      <td>Repeats string the specified n_int times</td>
+      <td>`REPEAT(STRING, count)`</td>
+      <td>Repeats a string the specified number of times</td>
       <td>`REPEAT('Hello', 3)`<br />=> Hello_Hello_Hello</td>
     </tr>
     <tr>
