@@ -125,7 +125,7 @@ Notes:
 
 Notes:
 
-1. The string concatenation operator (`||`) accepts non-string input, so long as at least one input is of string type. Using the operator with `NULL` as one of the operator inputs, returns NULL. For example: `SELECT 'Hello' || NULL || ' this is me';` Return: `NULL`
+1. The string concatenation operator (`||`) accepts non-string input, so long as at least one input is of string type. Using the operator with `NULL` as one of the operator inputs, returns NULL. For example: `SELECT 'Hello' || NULL || ' this is me';` returns `NULL`
 2. `CONCAT():`
    - All values are implicitly converted to strings
    - `NULL` arguments are ignored. For example: `SELECT CONCAT('Hello', NULL, ' this is me');` Return: 'Hello this is me'
