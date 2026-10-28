@@ -12,7 +12,7 @@ All the following operators and functions return their values without a time zon
 | :-- | :-- | :-- |
 | `CURRENT_DATE` | Return the date on which the current transaction started. | `SELECT CURRENT_DATE;`<br />`=> 2012-03-26` |
 | `CURRENT_TIME` | Return the time in which the current transaction started. | `SELECT CURRENT_TIME;`<br />`=> 11:31:46.903633` |
-| `CURRENT_TIMESTAMP` | Returns current timestamp (start of current transaction)<br />Returns `TIMESTAMP`<br />See notes | `SELECT CURRENT_TIMESTAMP;`<br />`=> 2012-03-26 11:31:46.903633` |
+| `CURRENT_TIMESTAMP` | Returns current timestamp (start of current transaction)<br />See notes | `SELECT CURRENT_TIMESTAMP;`<br />`=> 2012-03-26 11:31:46.903633` |
 | `NOW()` | Returns current date and time (start of current transaction)<br />Returns `TIMESTAMP`<br />See notes | `SELECT NOW();`<br />`=> 2012-03-26 11:31:46.903633` |
 | `EXTRACT(unit FROM TIMESTAMP)` | Extracts the specified unit (date or time part) from a date, time, or timestamp<br />Returns `DECIMAL`<br />See notes | `SELECT EXTRACT(YEAR FROM TIMESTAMP '2012-03-26 11:31:46.903633');`<br />`=> 2012`<br /><br />`SELECT EXTRACT('day' FROM DATE '2012-03-26');`<br />`=> 26` |
 | `DATE_PART(unit, TIMESTAMP)` | Similar to `EXTRACT()`<br />Returns `DECIMAL`<br />See notes | `SELECT DATE_PART('day', TIMESTAMP '2012-03-26 11:31:46.903633');`<br />`=> 26`<br /><br />`SELECT DATE_PART('minute', TIME '11:31:46.903633');`<br />`=> 31` |
