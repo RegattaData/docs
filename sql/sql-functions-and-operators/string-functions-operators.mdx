@@ -103,7 +103,7 @@ Notes:
     <tr>
       <td>`REPEAT(string, count)`</td>
       <td>Repeats a string the specified number of times</td>
-      <td>`REPEAT('Hello', 3)`<br />`=> HelloHelloHello`</td>
+      <td>`REPEAT('Hello', 3)`<br />`=> 'HelloHelloHello'`</td>
     </tr>
     <tr>
       <td>`REPLACE(string, from, to)`</td>
@@ -113,7 +113,7 @@ Notes:
     <tr>
       <td>`REVERSE(string)`</td>
       <td>Reverse the order of the characters in a string</td>
-      <td>`REVERSE('Hello')`<br />`=> olleH`</td>
+      <td>`REVERSE('Hello')`<br />`=> 'olleH'`</td>
     </tr>
     <tr>
       <td>`string [NOT] LIKE pattern [ESCAPE escape-char]`</td>
@@ -125,7 +125,7 @@ Notes:
 
 Notes:
 
-1. The string concatenation operator (||) accepts non-string input, so long as at least one input is of string type. Using the operator with `NULL` as one of the operator inputs, returns NULL. For example: `SELECT 'Hello' || NULL || ' this is me';` Return: `NULL`
+1. The string concatenation operator (`||`) accepts non-string input, so long as at least one input is of string type. Using the operator with `NULL` as one of the operator inputs, returns NULL. For example: `SELECT 'Hello' || NULL || ' this is me';` Return: `NULL`
 2. `CONCAT():`
    - All values are implicitly converted to strings
    - `NULL` arguments are ignored. For example: `SELECT CONCAT('Hello', NULL, ' this is me');` Return: 'Hello this is me'
