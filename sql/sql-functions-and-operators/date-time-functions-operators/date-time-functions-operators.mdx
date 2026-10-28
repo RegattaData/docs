@@ -15,7 +15,7 @@ All the following operators and functions return their values without a time zon
 | `CURRENT_TIMESTAMP` | Return the timestamp in which the current transaction started. | `SELECT CURRENT_TIMESTAMP;`<br />`=> 2012-03-26 11:31:46.903633` |
 | `NOW()` | Return the timestamp in which the current transaction started.<br />Same as `CURRENT_TIMESTAMP`. | `SELECT NOW();`<br />`=> 2012-03-26 11:31:46.903633` |
 | `EXTRACT(unit FROM object)` | Extracts the specified unit (date or time part) from a date, time, or timestamp<br />Returns `DECIMAL`<br />See notes. | `SELECT EXTRACT(YEAR FROM '2012-03-26 11:31:46.903633'::TIMESTAMP );`<br />`=> 2012`<br /><br />`SELECT EXTRACT('day' FROM '2012-03-26'::DATE);`<br />`=> 26` |
-| `DATE_PART(unit, object)` | Similar to `EXTRACT()`<br />Returns `DECIMAL`<br />See notes. | `SELECT DATE_PART('day', TIMESTAMP '2012-03-26 11:31:46.903633');`<br />`=> 26`<br /><br />`SELECT DATE_PART('minute', TIME '11:31:46.903633');`<br />`=> 31` |
+| `DATE_PART(unit, object)` | Simil ar to `EXTRACT()`<br />Returns `DECIMAL`<br />See notes. | `SELECT DATE_PART('day', TIMESTAMP '2012-03-26 11:31:46.903633');`<br />`=> 26`<br /><br />`SELECT DATE_PART('minute', TIME '11:31:46.903633');`<br />`=> 31` |
 
 Notes:
 
