@@ -29,7 +29,7 @@ For `TIMESTAMP` objects, both the date and time units are supported.
 
 | Operator | Description and Comments | Example |
 | :-- | :-- | :-- |
-| `DATE + INT => DATE` | Add a given number of days to a given date | `SELECT '2008-12-15'::DATE + '30'`<br />`=> 2009-01-14` |
+| `DATE + INT => DATE` | Add a given number of days to a given date | `SELECT '2008-12-15'::DATE + '30';`<br />`=> 2009-01-14` |
 | `DATE + TIME => TIMESTAMP` | Add the time of the day to a given date | `date '2022-12-31' + time '01:00:00'`<br />`=> 2022-12-31 01:00:00 as TIMESTAMP` |
 | `DATE - DATE => INT` | Return the number of days between two dates | `date '2022-12-12' - date '2022-01-31'`<br />`=> 315 as INT` |
 | `DATE - INT => DATE` | Subtract days from a given date | `date '2022-12-12' - integer '4'`<br />`=> 2022-12-08 as DATE` |
