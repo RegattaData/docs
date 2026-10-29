@@ -54,7 +54,7 @@ For `TIMESTAMP` objects, both the date and time units are supported.
     <tr>
       <td>`DATE - DATE => INT`</td>
       <td>Return the number of days between two dates</td>
-      <td>`date '2022-12-12' - date '2022-01-31'`<br />`=> 315 as INT`</td>
+      <td>`SELECT '2009-01-14'::DATE - '2008-12-15'::DATE;`<br />`=> 30`<br />`SELECT '2008-12-15'::DATE - '2009-01-14'::DATE;`<br />`=> -335`</td>
     </tr>
     <tr>
       <td>`DATE - INT => DATE`</td>
