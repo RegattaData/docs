@@ -44,12 +44,12 @@ For `TIMESTAMP` objects, both the date and time units are supported.
     <tr>
       <td>`DATE + INT => DATE`</td>
       <td>Add a given number of days to a given date.</td>
-      <td>`SELECT '2008-12-15'::DATE + '30';`<br />`=> 2009-01-14`</td>
+      <td>`SELECT '2008-12-15'::DATE + 30;`<br />`=> 2009-01-14`</td>
     </tr>
     <tr>
       <td>`DATE - INT => DATE`</td>
       <td>Subtract a given number of days from a given date.</td>
-      <td>`SELECT '2008-12-15'::DATE - '30';`<br />`=> 2008-11-15`</td>
+      <td>`SELECT '2008-12-15'::DATE - 30;`<br />`=> 2008-11-15`</td>
     </tr>
     <tr>
       <td>`DATE + TIME => TIMESTAMP`</td>
