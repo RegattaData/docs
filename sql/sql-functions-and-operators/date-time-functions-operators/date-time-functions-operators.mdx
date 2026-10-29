@@ -48,8 +48,8 @@ For `TIMESTAMP` objects, both the date and time units are supported.
     </tr>
     <tr>
       <td>`DATE - INT => DATE`</td>
-      <td>Subtract a number of days from a given date.</td>
-      <td>`SELECT '2009-01-14'::DATE - '2008-12-15'::DATE;`<br />`=> 30`<br />`SELECT '2008-12-15'::DATE - '2009-01-14'::DATE;`<br />`=> -335`</td>
+      <td>Subtract a given number of days from a given date.</td>
+      <td>`SELECT '2008-12-15'::DATE - '30';`<br />`=> 2008-11-15`</td>
     </tr>
     <tr>
       <td>`DATE + TIME => TIMESTAMP`</td>
@@ -59,7 +59,7 @@ For `TIMESTAMP` objects, both the date and time units are supported.
     <tr>
       <td>`DATE - DATE => INT`</td>
       <td>Return difference in days between two dates.</td>
-      <td>`date '2022-12-12' - integer '4'`<br />`=> 2022-12-08 as DATE`</td>
+      <td>`SELECT '2009-01-14'::DATE - '2008-12-15'::DATE;`<br />`=> 30`<br />`SELECT '2008-12-15'::DATE - '2009-01-14'::DATE;`<br />`=> -335`</td>
     </tr>
   </tbody>
 </table>
