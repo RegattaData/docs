@@ -27,9 +27,39 @@ For `TIMESTAMP` objects, both the date and time units are supported.
 
 ### Date/Time Operators
 
-| Operator | Description and Comments | Example |
-| :-- | :-- | :-- |
-| `DATE + INT => DATE` | Add a given number of days to a given date. | `SELECT '2008-12-15'::DATE + '30';`<br />`=> 2009-01-14` |
-| `DATE + TIME => TIMESTAMP` | Add a given time to a given date, returning a timestamp object. | `'2022-12-31'::DATE + '01:00:00'::TIME`<br />`=> 2022-12-31 01:00:00` |
-| `DATE - DATE => INT` | Return the number of days between two dates | `date '2022-12-12' - date '2022-01-31'`<br />`=> 315 as INT` |
-| `DATE - INT => DATE` | Subtract days from a given date | `date '2022-12-12' - integer '4'`<br />`=> 2022-12-08 as DATE` |
+<table>
+  <colgroup>
+    <col width="205" />
+    <col width="276" />
+    <col width="384" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Operator</th>
+      <th>Description and Comments</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`DATE + INT => DATE`</td>
+      <td>Add a given number of days to a given date.</td>
+      <td>`SELECT '2008-12-15'::DATE + '30';`<br />`=> 2009-01-14`</td>
+    </tr>
+    <tr>
+      <td>`DATE + TIME => TIMESTAMP`</td>
+      <td>Add a given time to a given date, returning a timestamp object.</td>
+      <td>`SELECT '2008-12-15'::DATE + '01:00:00'::TIME`<br />`=> 2022-12-31 01:00:00`</td>
+    </tr>
+    <tr>
+      <td>`DATE - DATE => INT`</td>
+      <td>Return the number of days between two dates</td>
+      <td>`date '2022-12-12' - date '2022-01-31'`<br />`=> 315 as INT`</td>
+    </tr>
+    <tr>
+      <td>`DATE - INT => DATE`</td>
+      <td>Subtract days from a given date</td>
+      <td>`date '2022-12-12' - integer '4'`<br />`=> 2022-12-08 as DATE`</td>
+    </tr>
+  </tbody>
+</table>
