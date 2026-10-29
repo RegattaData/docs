@@ -2,7 +2,7 @@
 title: "Date/Time Functions and Operators"
 ---
 
-The following tables show the Date/Time operators that are available for the `DATE/TIME/TIMESTAMP` data types. See [Date/Time types](/sql/data-types/date-time-types).
+The following tables show the Date/Time operators that are available for the `DATE/TIME/TIMESTAMP` datatypes. See [Date/Time types](/sql/data-types/date-time-types).
 
 All the following operators and functions return their values without a time zone.
 
@@ -10,37 +10,56 @@ All the following operators and functions return their values without a time zon
 
 | Function | Description and Comments | Example |
 | :-- | :-- | :-- |
-| `CURRENT_DATE` | Return the date in which the current transaction started<br />Returns `DATE` | `SELECT CURRENT_DATE;`<br />=\> 2012-03-26 |
-| `CURRENT_TIME` | Return current time (start of current transaction)<br />Returns `TIME` | `SELECT CURRENT_TIME;`<br />=\> 11:31:46.903633 |
-| `CURRENT_TIMESTAMP` | Returns current timestamp (start of current transaction)<br />Returns `TIMESTAMP`<br />See notes | `SELECT CURRENT_TIMESTAMP;`<br />=\> 2012-03-26 11:31:46.903633 |
-| `NOW()` | Returns current date and time (start of current transaction)<br />Returns `TIMESTAMP`<br />See notes | `SELECT NOW();`<br />=\> 2012-03-26 11:31:46.903633 |
-| `EXTRACT(unit FROM TIMESTAMP)` | Extracts the specified unit (date or time part) from a date, time, or timestamp<br />Returns `DECIMAL`<br />See notes | `SELECT EXTRACT(YEAR FROM TIMESTAMP '2012-03-26 11:31:46.903633');`<br />=\> 2012<br /><br />`SELECT EXTRACT('day' FROM DATE '2012-03-26');`<br />=\> 26 |
-| `DATE_PART(unit, TIMESTAMP)` | Similar to `EXTRACT()`<br />Returns `DECIMAL`<br />See notes | `SELECT DATE_PART('day', TIMESTAMP '2012-03-26 11:31:46.903633');`<br />=\> 26<br /><br />`SELECT DATE_PART('minute', TIME '11:31:46.903633');`<br />=\> 31 |
+| `CURRENT_DATE` | Return the date on which the current transaction started. | `SELECT CURRENT_DATE;`<br />`=> 2012-03-26` |
+| `CURRENT_TIME` | Return the time in which the current transaction started. | `SELECT CURRENT_TIME;`<br />`=> 11:31:46.903633` |
+| `CURRENT_TIMESTAMP` | Return the timestamp in which the current transaction started. | `SELECT CURRENT_TIMESTAMP;`<br />`=> 2012-03-26 11:31:46.903633` |
+| `NOW()` | Return the timestamp in which the current transaction started.<br />Same as `CURRENT_TIMESTAMP`. | `SELECT NOW();`<br />`=> 2012-03-26 11:31:46.903633` |
+| `EXTRACT(unit FROM object)` | Extracts the specified unit (date or time part) from a date, time, or timestamp<br />Returns `DECIMAL`<br />See notes below. | `SELECT EXTRACT(YEAR FROM '2012-03-26 11:31:46.903633'::TIMESTAMP );`<br />`=> 2012`<br /><br />`SELECT EXTRACT('day' FROM '2012-03-26'::DATE);`<br />`=> 26` |
+| `DATE_PART(unit, object)` | Similar to `EXTRACT()`<br />Returns `DECIMAL`<br />See notes below. | `SELECT DATE_PART('day', TIMESTAMP '2012-03-26 11:31:46.903633');`<br />`=> 26`<br /><br />`SELECT DATE_PART('minute', TIME '11:31:46.903633');`<br />`=> 31` |
 
-Notes:
+Note: `DATE_PART()` and `EXTRACT()` provide similar functionality and accept the same set of units. However, `DATE_PART()` requires the unit argument to be passed as a string (e.g. 'YEAR', 'day'), while `EXTRACT()` also accepts these units as keywords.
 
-1. `NOW()` and `CURRENT_TIMESTAMP`: When using those functions as part of an `INSERT/UPDATE` command, the returned value is converted into the column data type it is writing to. When writing into `TIME` data type, only the time is written, when writing into `DATE` data type, only the date is written, and when writing to `TIMESTAMP` data type, the whole timestamp is written.
-   Note that `NOW()` and `CURRENT_TIMESTAMP` refer to the time the transaction starts, and not to each statement time inside the transaction
-2. `DATE_PART()` and `EXTRACT()` provide similar functionality and accept the same set of units. However, `DATE_PART` requires the unit argument to be passed as a string (e.g. ‘YEAR”, ‘day’), while `EXTRACT()` also accepts these units as keywords. The following units are supported:
+The following units are supported for `TIME` objects:  hour, minute, second, milliseconds, microseconds.
 
-| Time Units | Date Units |
-| :-- | :-- |
-| `MICROSECONDS` | `DAY` |
-| `MILLISECONDS` | `WEEK` |
-| `SECOND` | `MONTH` |
-| `MINUTE` | `QUARTER` |
-| `HOUR` | `YEAR` |
-|  | `DECADE` |
-|  | `CENTURY` |
-|  | `MILLENNIUM` |
+The following units are supported for `DATE` objects: millennium, century, decade, year, quarter, month, week (indicates the week number in the year), day (indicates the day number in the month).
 
-For a `TIMESTAMP` object, both the Date and Time units are supported.
+For `TIMESTAMP` objects, both the date and time units are supported.
 
 ### Date/Time Operators
 
-| Operator | Description and Comments | Example |
-| :-- | :-- | :-- |
-| `DATE + INT => DATE` | Add a number of days to the given date | `date '2022-12-31' + integer '365'`<br />=\> 2023-12-31 as DATE |
-| `DATE + TIME => TIMESTAMP` | Add the time of the day to a given date | `date '2022-12-31' + time '01:00:00'`<br />=\> 2022-12-31 01:00:00 as TIMESTAMP |
-| `DATE - DATE => INT` | Return the number of days between two dates | `date '2022-12-12' - date '2022-01-31'`<br />=\> 315 as INT |
-| `DATE - INT => DATE` | Subtract days from a given date | `date '2022-12-12' - integer '4'`<br />=\> 2022-12-08 as DATE |
+<table>
+  <colgroup>
+    <col width="205" />
+    <col width="276" />
+    <col width="384" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Operator</th>
+      <th>Description and Comments</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`DATE + INT => DATE`</td>
+      <td>Add a given number of days to a given date.</td>
+      <td>`SELECT '2008-12-15'::DATE + 30;`<br />`=> 2009-01-14`</td>
+    </tr>
+    <tr>
+      <td>`DATE - INT => DATE`</td>
+      <td>Subtract a given number of days from a given date.</td>
+      <td>`SELECT '2008-12-15'::DATE - 30;`<br />`=> 2008-11-15`</td>
+    </tr>
+    <tr>
+      <td>`DATE + TIME ⇒ TIMESTAMP`<br />`TIME + DATE ⇒ TIMESTAMP`</td>
+      <td>Combine a date and a time, returning a timestamp object.</td>
+      <td>`SELECT '2008-12-15'::DATE + '01:00:00'::TIME`<br />`=> 2008-12-15 01:00:00`</td>
+    </tr>
+    <tr>
+      <td>`DATE - DATE => INT`</td>
+      <td>Return difference in days between two dates.</td>
+      <td>`SELECT '2009-01-14'::DATE - '2008-12-15'::DATE;`<br />`=> 30`<br />`SELECT '2009-01-14'::DATE - '2009-12-15'::DATE;`<br />`=> -335`</td>
+    </tr>
+  </tbody>
+</table>
