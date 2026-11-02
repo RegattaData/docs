@@ -20,7 +20,7 @@ SHOW VECTOR INDEXES [LIKE 'pattern' ] [ IN TABLE table_name ]
 
 The pattern is case-sensitive with optional leading and/or trailing ‘%’ signs. The ‘%’ sign stands for a sequence of zero or more characters of any kind. For example, ‘foo%’ will match all the index names beginning with “foo” and ‘%foo%’ will match all the indexes that have “foo” anywhere in their name.
 
-`IN TABLE table_name `<br />Show only the indexes in the given table. 
+`IN TABLE table_name` <br />Show only the indexes in the given table. 
 
 ### Output
 
@@ -33,8 +33,8 @@ The output is ordered by `TABLE_NAME`, `INDEX_NAME`
 | `TABLE_NAME` | `VARCHAR(127)` | The name of the table |
 | `INDEX_NAME` | `VARCHAR(127)` | The name of the vector index |
 | `COLUMN_NAME` | `VARCHAR(127)` | The name of the indexed column |
-| `INDEX_TYPE` | `VARCHAR(16)` | The vector index type – either ‘`HNSW`’ or ‘`IVFFLAT`’ |
-| `DISTANCE_METRIC` | `VARCHAR(16)` | The distance metric – one of ‘`COSINE`’, ‘`L2`’, ‘`IP`’ |
+| `INDEX_TYPE` | `VARCHAR(16)` | The vector index type – either `HNSW` or `IVFFLAT` |
+| `DISTANCE_METRIC` | `VARCHAR(16)` | The distance metric – one of `COSINE`, `L2`, `IP` |
 | `PARAMETERS` | `VARCHAR(127)` | Parameters of the index. |
 | `MODULES` | `VARCHAR(1000)` | Comma-separated list of module names. If it doesn’t fit in 1000 characters, includes a partial trimmed list. |
 | `STATE` | `VARCHAR(16)` | One of the following: _FAILED_ – The index build had failed on at least one module. _BUILDING_ – Index build in progress on any of the modules. _COMPLETE_ – The index build is complete on all the modules. |
