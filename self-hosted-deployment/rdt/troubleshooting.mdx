@@ -86,3 +86,62 @@ rdt start-cluster --name <config>
 
 See [RegattaDB Lifecycle](./system-setup/lifecycle.mdx#resetting-regattadb) for the full
 sequence.
+
+## A module network list fails validation
+
+Check the reported config field and the
+[endpoint schema](./configuration/overview.mdx#module-network-endpoints).
+An explicit list needs at least one internal endpoint, no more than four
+endpoints per scope, valid IPv4 addresses, integer ports from 1 through 65535,
+and no duplicate `(scope, ip, port)` entries.
+
+All internal ports must match `module.port`. Use the exact endpoint field
+names `scope`, `ip`, and `port`. An empty list is not a way to restore
+defaults: remove `network` or use `null`.
+
+For explicit SM/SNA networks, manual `core_listen_addr` overrides must match
+the first internal IP. Manual `core_system_manager_port` (SM) or
+`core_system_node_agent_port` (SNA) overrides must match `module.port`.
+RDT normally generates these settings; manual overrides are not required.
+
+If an interactive edit fails validation, decline the save-anyway prompt to
+preserve the previous config.
+
+## A configured endpoint is unreachable
+
+Successful schema validation means the endpoint is well-formed, not reachable.
+Check the hosting node's addresses, routing and firewalls. Internal endpoints
+must be reachable from the cluster; external endpoints must be reachable from
+the intended application network.
+
+For external port mappings, confirm that the advertised port forwards to the
+module's actual listening port. RDT does not configure that forwarding.
+Explicit module network endpoints currently support IPv4 only.
+
+Inspect operational-module endpoints with `MANAGE MODULE SHOW DETAILED`,
+SNA/node endpoints with `MANAGE NODE SHOW DETAILED`, and SM endpoints with
+`MANAGE SYSMGR SHOW`, using an SM connection. A saved config alone does not
+prove that its endpoints are registered in the running cluster. See
+[Module commands](/sql/system-management/modules),
+[Node commands](/sql/system-management/nodes), and
+[System Manager commands](/sql/system-management/system-manager) for the
+available inventory and network-modification commands and their state
+restrictions.
+
+## Two modules on the same node conflict on a port
+
+Distinct advertised IP addresses do not create isolated listeners. The current
+runtime binds all IPv4 interfaces on each module's listening port. Give modules
+on one node distinct listening ports and avoid conflicts with SM, SNA, other
+services, and service/debug ports. Every internal endpoint for a module must
+use its chosen listening port.
+
+## New endpoints do not appear after editing a config
+
+`rdt config edit` and `rdt config load` update saved configuration only.
+They do not modify a running cluster's registered network addresses. This
+feature covers initial registration, not live reconciliation.
+
+Do not reset or recreate an existing cluster as a troubleshooting shortcut.
+For an existing cluster, plan a controlled change using the SM module, node,
+and system-manager network commands and their state restrictions.

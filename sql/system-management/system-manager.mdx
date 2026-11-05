@@ -39,12 +39,12 @@ This command modifies attributes of the System Manager.
 **Synopsis**
 
 ```text wrap
-MANAGE SYSMGR MODIFY 
-	[ NETWORK { ADD | REMOVE | SET } net_address [, ...] ] 
-	[ DESCRIPTION free_text ] 
+MANAGE SYSMGR MODIFY
+	[ NETWORK { ADD | REMOVE | SET } ( net_address [, ...] ) ]
+	[ DESCRIPTION free_text ]
 
-where net_address is: 
-	( EXTERNAL IP ip_addr PORT port_num )
+where net_address is:
+	( { INTERNAL | EXTERNAL } IP ip_addr PORT port_num )
 ```
 
 This command is allowed only when the system state is `SETUP`.
@@ -62,3 +62,14 @@ The NETWORK clause includes one or more network addresses. It can come with eith
 `DESCRIPTION`
 
 Optional parameter. Free text that is added to the module.
+
+The network list supports internal and external addresses. For example, while
+the system is in SETUP:
+
+```sql
+MANAGE SYSMGR MODIFY NETWORK SET (
+  (INTERNAL IP '10.142.1.2' PORT 8840),
+  (INTERNAL IP '10.142.2.2' PORT 8840),
+  (EXTERNAL IP '198.51.100.2' PORT 18840)
+);
+```
