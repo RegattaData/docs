@@ -40,7 +40,7 @@ With that in mind, here's the JSON schema itself: the fields that make up the `C
 |-------------|-----------------|------------------------------------------------------------------------|
 | `id` | `int` | Unique identifier within the deployment. Defaults to `1` |
 | `name` | `string` | Node name. Defaults to `"regatta-node"` |
-| `ip` | IP address | Address RDT uses to connect to the node |
+| `ip` | IP address | Single deployment/management address used for SSH and RDT's SM connection. Supplies defaults when a module's `network` is omitted; explicit SNA networks are independent. |
 | `num_threads` | `int `(optional) | Concurrency level for the node.<br />Leave unset to let the SM automatically set the value |
 | `ram_MB` | `int `(optional) | RAM budget for the node, in megabytes. Leave unset to let the SM automatically set the value |
 | `devices` | list of Device | Storage devices available on this node. Defaults to empty |
@@ -74,8 +74,9 @@ defaults for `id`, `port`, and `service_port`.
 | `type` | `string` | One of `sm`, `sna`, `sequencer`, `gdd`, `dcm`, `rdb` |
 | `id` | `int` | Defaults to the type's standard id (see table below) |
 | `name` | `string` | Auto-generated as `<type>_<id>` if not set |
-| `port` | `int` | Communications port. Defaults to the type's standard port |
+| `port` | `int` | Module listening port. All explicit internal network endpoints must use this port. Defaults to the type's standard port |
 | `service_port` | `int` | Service port. Defaults to the type's standard service port |
+| `network` | list of NetworkEndpoint (optional) | Ordered advertised endpoints for any module type. Explicit lists replace the advertised default. Omitted or `null` retains defaults: external `node.ip:port` registration for SM and internal `node.ip:port` for SNA and operational modules. |
 | `num_threads` | `int `(optional) | Concurrency level for the module.<br />Leave unset to let the SM automatically set the value |
 | `ram_MB` | `int `(optional) | RAM budget for the module, in megabytes. <br />Leave unset to let the SM automatically set the value |
 | `devices` | list of strings | Names of devices (from the node) used by this module |
@@ -91,6 +92,100 @@ defaults for `id`, `port`, and `service_port`.
 | GDD       | 4         | 8843 | 5003          |
 | DCM       | 5         | 8844 | 5004          |
 | RDB       | 10        | 8850 | 6001          |
+
+### Module network endpoints
+
+Configure multiple addresses inside the individual module, not as a list of
+node management IPs. Modules on the same node may advertise different address
+lists. Each module has its own network list. The SNA module's list controls
+node registration; another module's list does not. None of these lists
+changes the address RDT uses for SSH or its SM connection.
+
+Each `NetworkEndpoint` has three required fields:
+
+| Field   | Type          | Description                                                        |
+|---------|---------------|------------------------------------------------------------------------|
+| `scope` | `string` | Exactly `internal` for cluster communication or `external` for externally advertised access to the relevant service |
+| `ip` | IPv4 address | Advertised IPv4 address; explicit IPv6 endpoints are not supported |
+| `port` | `int` | Reachable TCP port, from 1 through 65535 |
+
+For example, this RDB module advertises two internal addresses and one external
+address. This is a module fragment, not a complete cluster configuration; its
+hosting node must define the referenced storage device.
+
+```json
+{
+  "type": "rdb",
+  "id": 11,
+  "port": 8850,
+  "service_port": 6001,
+  "devices": ["disk1"],
+  "network": [
+    { "scope": "internal", "ip": "10.0.0.10", "port": 8850 },
+    { "scope": "internal", "ip": "10.1.0.10", "port": 8850 },
+    { "scope": "external", "ip": "198.51.100.10", "port": 18850 }
+  ]
+}
+```
+
+The explicit list is passed to the System Manager's module specification.
+RDT does not append `node.ip`, merge with defaults, or reorder endpoints.
+
+For SNA, endpoints are included in the node specification during `NODE ADD`.
+For SM, the complete list is sent in one typed `SYSMGR MODIFY NETWORK SET`
+command after entering SETUP and before adding nodes. Explicit lists preserve
+order and do not automatically add `node.ip`.
+
+**Validation rules:**
+
+- An explicit list must contain at least one internal endpoint. External-only
+  configurations are not supported by RDT's module startup path.
+- Up to four internal and four external endpoints are allowed: eight total.
+  An empty list is invalid.
+- Every internal endpoint's port must equal `module.port`. The first internal
+  endpoint is used for module startup.
+- External ports can differ from `module.port` when the deployment provides
+  forwarding to that listening port.
+- Duplicate `(scope, ip, port)` entries are rejected. The same IP and port may
+  appear once in each scope.
+- All three endpoint fields are required. Ports must be integers, not strings,
+  fractional numbers, or booleans. Unknown endpoint fields are rejected.
+- For explicit SM/SNA networks, `config.core_listen_addr`, if supplied,
+  must match the first internal IP. `config.core_system_manager_port`
+  (SM) or `config.core_system_node_agent_port` (SNA), if supplied, must
+  match `module.port`. Matching overrides are allowed. Configs without
+  explicit networks retain their existing override behavior.
+
+**Defaults and persistence:**
+
+- Omit `network`, or set it to `null`, to retain defaults: SM setup sets
+  an external `node.ip:SM.port` endpoint; SNA and operational modules
+  register an internal `node.ip:module.port` endpoint. SM also has a
+  bootstrap internal identity; its external default does not describe the
+  complete recovered SM inventory. Saving omits `null` network fields.
+- Node registration uses the SNA module's resolved network, not an
+  operational module's or SM's network.
+- Explicit endpoints retain their order, scope, IP, and port through config
+  load, edit, save, and print operations.
+- Changing `node.ip` does not rewrite an explicit module network. Without an
+  explicit network, the module's default uses the current `node.ip`.
+
+<Note>
+  These are advertised endpoints for one existing listener, not instructions
+  to create additional listeners, attach IPs, configure routes, or set up NAT.
+  The runtime currently listens on all IPv4 interfaces on the module's port.
+  Modules sharing a node therefore need distinct listening ports even when
+  their advertised IPs differ. Address-list order does not promise automatic
+  failover or load balancing.
+</Note>
+
+For deployment examples, see
+[Config Recipes](../examples/config-recipes.mdx#multiple-addresses-for-an-rdb-module)
+and [Multiple addresses for SM and SNA](../examples/config-recipes.mdx#multiple-addresses-for-sm-and-sna).
+For the SM command contracts, see
+[Modules](/sql/system-management/modules),
+[Nodes](/sql/system-management/nodes), and
+[System Manager](/sql/system-management/system-manager).
 
 ### Core binding
 

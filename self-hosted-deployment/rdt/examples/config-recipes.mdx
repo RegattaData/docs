@@ -50,6 +50,175 @@ Useful for reviewing or version-controlling a config before importing it. A conf
 created this way with `--output` isn't saved to `~/.rdt/configs/`, so it won't appear in
 `rdt config list` until you load it.
 
+## Multiple addresses for an RDB module
+
+Create a config for a new deployment, using one management IP per node:
+
+```bash
+rdt config create --name multi-ip --from xsmall --ip-list 10.0.0.10
+rdt config edit --name multi-ip
+```
+
+Keep the node's `ip` for SSH, SNA registration, and SM access. Add a `network`
+list to its RDB module:
+
+```json
+{
+  "type": "rdb",
+  "id": 11,
+  "port": 8850,
+  "service_port": 6001,
+  "devices": ["disk1"],
+  "network": [
+    { "scope": "internal", "ip": "10.0.0.10", "port": 8850 },
+    { "scope": "internal", "ip": "10.1.0.10", "port": 8850 }
+  ]
+}
+```
+
+This is a module fragment. Define `disk1` under the node's `devices` using the
+actual storage path, as in the
+[single-node quickstart](./quickstart-single-node.mdx#3-create-a-config).
+Ensure both internal IPs reach the hosting node and that cluster peers can
+reach the module at port 8850 on those addresses.
+
+The explicit list replaces the implicit address. Include the management IP in
+the list only if you also want to advertise it for that module.
+
+## An external endpoint with a forwarded port
+
+To the preceding RDB module's network list, append:
+
+```json
+{ "scope": "external", "ip": "198.51.100.10", "port": 18850 }
+```
+
+Keep at least one internal endpoint. In this example, external clients reach
+`198.51.100.10:18850`; the deployment must forward that endpoint to the RDB
+listener at port 8850. The address is an example: replace it with your actual
+application-facing address.
+
+RDT records the endpoint but does not configure NAT, firewall rules, routes,
+or IP addresses. Confirm reachability from the intended client network.
+If no port translation is needed, the external endpoint can use the same
+port as the module listener.
+
+## Independent networks for two RDB modules on one node
+
+This full config illustrates separate endpoint lists, listening ports,
+service ports, storage devices, and RAM budgets. Replace the addresses and
+device paths with those of your node before deployment; the node must have
+enough CPU and RAM for this layout.
+
+```json
+{
+  "version": "26.0",
+  "id": "multi-ip-example",
+  "nodes": [
+    {
+      "id": 1,
+      "name": "node_1",
+      "ip": "10.0.0.10",
+      "ram_MB": 16384,
+      "devices": [
+        { "name": "disk1", "path": "/dev/nvme0n1" },
+        { "name": "disk2", "path": "/dev/nvme1n1" }
+      ],
+      "modules": [
+        { "type": "sm", "id": 1, "port": 8840, "service_port": 5000, "ram_MB": 512 },
+        { "type": "sna", "id": 2, "port": 8841, "service_port": 5001, "ram_MB": 512 },
+        { "type": "sequencer", "id": 3, "port": 8842, "service_port": 5002, "ram_MB": 512 },
+        { "type": "gdd", "id": 4, "port": 8843, "service_port": 5003, "ram_MB": 512 },
+        { "type": "dcm", "id": 5, "port": 8844, "service_port": 5004, "ram_MB": 1024 },
+        {
+          "type": "rdb",
+          "id": 11,
+          "port": 8850,
+          "service_port": 6001,
+          "ram_MB": 4096,
+          "devices": ["disk1"],
+          "network": [
+            { "scope": "internal", "ip": "10.1.0.10", "port": 8850 },
+            { "scope": "internal", "ip": "10.2.0.10", "port": 8850 },
+            { "scope": "external", "ip": "198.51.100.10", "port": 18850 }
+          ]
+        },
+        {
+          "type": "rdb",
+          "id": 12,
+          "port": 8851,
+          "service_port": 6002,
+          "ram_MB": 4096,
+          "devices": ["disk2"],
+          "network": [
+            { "scope": "internal", "ip": "10.3.0.10", "port": 8851 },
+            { "scope": "external", "ip": "198.51.100.10", "port": 18851 }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+Both RDB modules still listen on all IPv4 interfaces, so distinct advertised
+IPs do not let them share the same local listening port. The external ports
+in this example require forwarding to 8850 and 8851 respectively.
+
+The SM, SNA, and other operational modules retain their default addresses.
+The first RDB module does not inherit the second module's endpoints, and
+neither list changes `node.ip`.
+
+Save the full config to a file, import it with `rdt config load`, and follow
+[System Setup Overview](../system-setup/overview.mdx) for initial deployment.
+Editing this file later is not a live network-update operation.
+
+## Multiple addresses for SM and SNA
+
+On a new deployment, edit the existing SM and SNA modules to include their
+own endpoint lists. These are module fragments, not a complete cluster.
+Keep the node's `ip` as the management address; the SM must remain reachable
+there on port 8840 for RDT management commands.
+
+```json
+[
+  {
+    "type": "sm",
+    "id": 1,
+    "port": 8840,
+    "service_port": 5000,
+    "network": [
+      { "scope": "internal", "ip": "10.142.1.2", "port": 8840 },
+      { "scope": "internal", "ip": "10.142.2.2", "port": 8840 },
+      { "scope": "internal", "ip": "10.142.3.2", "port": 8840 },
+      { "scope": "external", "ip": "198.51.100.2", "port": 18840 }
+    ]
+  },
+  {
+    "type": "sna",
+    "id": 2,
+    "port": 8841,
+    "service_port": 5001,
+    "network": [
+      { "scope": "internal", "ip": "10.142.1.2", "port": 8841 },
+      { "scope": "internal", "ip": "10.142.2.2", "port": 8841 },
+      { "scope": "internal", "ip": "10.142.3.2", "port": 8841 },
+      { "scope": "external", "ip": "198.51.100.2", "port": 18841 }
+    ]
+  }
+]
+```
+
+RDT does not automatically add the management IP to these lists. The
+external endpoints in this example require deployment-managed forwarding
+from ports 18840 and 18841 to listeners on ports 8840 and 8841 respectively.
+Do not add manual core address/port settings unless they match the first
+internal endpoint and module port; RDT generates those settings for you.
+
+After setup, inspect SM with `MANAGE SYSMGR SHOW` and SNAs with
+`MANAGE NODE SHOW DETAILED`. Verify connectivity and restart/recovery in the
+target environment.
+
 ## Import an existing config file
 
 ```bash
@@ -64,3 +233,9 @@ If you omit `--name`, the config is named after the file (its filename without t
 ```bash
 rdt config print --name my-regattadb > my-regattadb.json
 ```
+
+<Warning>
+  A valid config is required for a clean JSON export. If the config fails
+  validation, diagnostic text is printed before the JSON; see
+  [Print a config](../configuration/creating-and-managing-configs.mdx#print-a-config).
+</Warning>
