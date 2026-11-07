@@ -6,7 +6,7 @@ title: "System States and Commands"
 
 **The Regatta system has a state, which could be one of the following:**
 
-**DOWN**: The system is not operational – the RDB modules don’t accept client connections and system configuration commands are not available. The system can be queried (using the `MANAGE `… `SHOW `commands) but the only two operations accepted in this state are to activate the system or to enter the SETUP state.
+**DOWN**: The system is not operational – the RDB modules don’t accept client connections and system configuration commands are not available. The system can be queried (using the `MANAGE` … `SHOW` commands) but the only two operations accepted in this state are to activate the system or to enter the SETUP state.
 
 **SETUP**: The system is not operational – the RDB modules don’t accept client connections. System configuration commands are allowed.
 
@@ -61,7 +61,7 @@ The command is accepted only if the current system state is `DOWN`. The result o
 MANAGE SYSTEM SHUTDOWN [ WAIT seconds ]
 ```
 
-The command is accepted only if the current system state is either `ACTIVE `or `STARTING`.
+The command is accepted only if the current system state is either `ACTIVE` or `STARTING`.
 
 The shutdown process is performed asynchronously. The command returns when the system state has changed to `SHUTTING DOWN` .
 
@@ -109,9 +109,9 @@ MANAGE SYSTEM MODIFY
 
 `RDB_FAILURE_THRESHOLD`
 
-Optional parameter. Specify up to 4 failure thresholds for each RDB module. Each threshold is specified by a number of failures and time window (in seconds). A module is restarted automatically when it fails, as long as it hasn’t reached the threshold. Once a threshold is reached, the module is not restarted, and it remains in state `DOWN `until it is started with the `MODULE START` command.
+Optional parameter. Specify up to 4 failure thresholds for each RDB module. Each threshold is specified by a number of failures and time window (in seconds). A module is restarted automatically when it fails, as long as it hasn’t reached the threshold. Once a threshold is reached, the module is not restarted, and it remains in state `DOWN` until it is started with the `MODULE START` command.
 
-For example, when specifying `RDB_FAILURE_THRESHOLD (FAILURES 3 DURATION 60), (FAILURES 5 DURATION 3600)`, an RDB module will move to state `DOWN `if it fails 3 times within 60 seconds, or if it fails 5 times within an hour.
+For example, when specifying `RDB_FAILURE_THRESHOLD (FAILURES 3 DURATION 60), (FAILURES 5 DURATION 3600)`, an RDB module will move to state `DOWN` if it fails 3 times within 60 seconds, or if it fails 5 times within an hour.
 
 <Icon icon="circle-exclamation" />  The specified failure thresholds replace the existing set of thresholds.
 
@@ -139,6 +139,6 @@ The output of the command is tabular, containing a single row. The following tab
 | NUM\_NODES | Number |  | The number of nodes. |
 | NUM\_RDB\_MODULES | Number |  | The number of RDB modules. |
 | NUM\_UNAVAILABLE\_NODES | Number |  | The number of nodes in state `NOT AVAILABLE` |
-| NUM\_INACTIVE\_MODULES | Number |  | The number of modules that are not in `ACTIVE `state |
+| NUM\_INACTIVE\_MODULES | Number |  | The number of modules that are not in `ACTIVE` state |
 
 <Icon icon="circle-exclamation" />  See description of the failure thresholds in the [SYSTEM MODIFY](#system-modify) command.

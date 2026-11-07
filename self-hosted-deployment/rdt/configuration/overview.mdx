@@ -41,8 +41,8 @@ With that in mind, here's the JSON schema itself: the fields that make up the `C
 | `id` | `int` | Unique identifier within the deployment. Defaults to `1` |
 | `name` | `string` | Node name. Defaults to `"regatta-node"` |
 | `ip` | IP address | Single deployment/management address used for SSH and RDT's SM connection. Supplies defaults when a module's `network` is omitted; explicit SNA networks are independent. |
-| `num_threads` | `int `(optional) | Concurrency level for the node.<br />Leave unset to let the SM automatically set the value |
-| `ram_MB` | `int `(optional) | RAM budget for the node, in megabytes. Leave unset to let the SM automatically set the value |
+| `num_threads` | `int` (optional) | Concurrency level for the node.<br />Leave unset to let the SM automatically set the value |
+| `ram_MB` | `int` (optional) | RAM budget for the node, in megabytes. Leave unset to let the SM automatically set the value |
 | `devices` | list of Device | Storage devices available on this node. Defaults to empty |
 | `modules` | list of Module | Modules to run on this node. Defaults to empty |
 | `config` | `object` | Arbitrary node config (e.g. probed hardware data). Defaults to empty |
@@ -60,9 +60,9 @@ With that in mind, here's the JSON schema itself: the fields that make up the `C
 |-------------|--------------------|--------------------------------------------------------------|
 | `name` | `string` | Referenced by modules by this name |
 | `path` | path | Path to the raw block device |
-| `capacity` | `int `(optional) | Capacity in bytes |
+| `capacity` | `int` (optional) | Capacity in bytes |
 | `config` | `object` | Arbitrary device config. Defaults to empty |
-| `description` | `string `(optional) | Free-form description |
+| `description` | `string` (optional) | Free-form description |
 
 ## Module
 
@@ -77,8 +77,8 @@ defaults for `id`, `port`, and `service_port`.
 | `port` | `int` | Module listening port. All explicit internal network endpoints must use this port. Defaults to the type's standard port |
 | `service_port` | `int` | Service port. Defaults to the type's standard service port |
 | `network` | list of NetworkEndpoint (optional) | Ordered advertised endpoints for any module type. Explicit lists replace the advertised default. Omitted or `null` retains defaults: external `node.ip:port` registration for SM and internal `node.ip:port` for SNA and operational modules. |
-| `num_threads` | `int `(optional) | Concurrency level for the module.<br />Leave unset to let the SM automatically set the value |
-| `ram_MB` | `int `(optional) | RAM budget for the module, in megabytes. <br />Leave unset to let the SM automatically set the value |
+| `num_threads` | `int` (optional) | Concurrency level for the module.<br />Leave unset to let the SM automatically set the value |
+| `ram_MB` | `int` (optional) | RAM budget for the module, in megabytes. <br />Leave unset to let the SM automatically set the value |
 | `devices` | list of strings | Names of devices (from the node) used by this module |
 | `config` | `object` | Arbitrary module config, e.g. core binding (see below) |
 

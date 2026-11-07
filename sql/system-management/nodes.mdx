@@ -4,7 +4,7 @@ title: "Nodes"
 
 A node is a computer server, either physical or virtual, that can host one or more Regatta modules.
 
-A node can be in either of two states: `AVAILABLE `and `NOT AVAILABLE`.
+A node can be in either of two states: `AVAILABLE` and `NOT AVAILABLE`.
 
 ### Node Commands
 
@@ -14,7 +14,7 @@ All the node commands begin with the prefix `MANAGE NODE`.
 
 This command adds one or more nodes to the system.
 
-This command is accepted only if the system is in `ACTIVE `or `SETUP `state.
+This command is accepted only if the system is in `ACTIVE` or `SETUP` state.
 
 **Synopsis**
 
@@ -92,7 +92,7 @@ MANAGE NODE ADD (
 
 This command removes a node from the system.
 
-This command is accepted only when the system is in `ACTIVE `or `SETUP `state. A node can be removed only when it contains no modules and no storage devices.
+This command is accepted only when the system is in `ACTIVE` or `SETUP` state. A node can be removed only when it contains no modules and no storage devices.
 
 **Synopsis**
 
@@ -128,7 +128,7 @@ Show a more detailed list of attributes for each module. See more details in the
 
 **Output**
 
-For the first variant, the output of the command is a tabular, with each row representing a node. The following table lists the columns of the output. If the `DETAILED `option is specified, then in addition to those columns, all the attributes listed below in the output of `NODE SHOW ATTR` command are also included for each node. In this variant, only their current values are shown and not their set values.
+For the first variant, the output of the command is a tabular, with each row representing a node. The following table lists the columns of the output. If the `DETAILED` option is specified, then in addition to those columns, all the attributes listed below in the output of `NODE SHOW ATTR` command are also included for each node. In this variant, only their current values are shown and not their set values.
 
 | Name | Type | Description |
 | --- | --- | --- |
@@ -185,11 +185,11 @@ The command is accepted only if the system state is `SETUP`.
 
 `NETWORK`
 
-The `NETWORK `clause includes one or more network addresses. It can come with either of the following directives:
+The `NETWORK` clause includes one or more network addresses. It can come with either of the following directives:
 
-- `ADD `– Adds the given network addresses to the list of existing addresses.
-- `REMOVE `– Remove each given network address from the list of existing addresses. Each removed network address must be an exact match to an existing one.
-- `SET `– Remove all the existing network addresses and replace them with the given network addresses.
+- `ADD` – Adds the given network addresses to the list of existing addresses.
+- `REMOVE` – Remove each given network address from the list of existing addresses. Each removed network address must be an exact match to an existing one.
+- `SET` – Remove all the existing network addresses and replace them with the given network addresses.
 
 `RAM_SIZE`
 

@@ -87,7 +87,7 @@ Required parameter. The role of the module. See description of the module roles 
 
 `NETWORK`
 
-Required parameter. Contains a list of up to 4 external addresses and 4 internal addresses. Must contain at least one address (either internal or external). For each address, there are 2 required parameters – `IP `and `PORT`.
+Required parameter. Contains a list of up to 4 external addresses and 4 internal addresses. Must contain at least one address (either internal or external). For each address, there are 2 required parameters – `IP` and `PORT`.
 
 `NUM_CPUS`
 
@@ -99,7 +99,7 @@ If this parameter is not specified, the number of threads will be based on the i
 
 Optional parameter. The amount of RAM (in MB) that the module may use. If not specified – Regatta may use all the available RAM.
 
-<Icon icon="circle-exclamation" />  If the intention is to add more modules in the same node, this parameter must be specified and set to a value that leaves out RAM for the additional modules, because the `RAM_SIZE `parameter cannot be decreased after the module is added. Adding a module without specifying this parameter implies that no other modules can be added in this node later.
+<Icon icon="circle-exclamation" />  If the intention is to add more modules in the same node, this parameter must be specified and set to a value that leaves out RAM for the additional modules, because the `RAM_SIZE` parameter cannot be decreased after the module is added. Adding a module without specifying this parameter implies that no other modules can be added in this node later.
 
 `STORAGE_DEVICE`
 
@@ -164,7 +164,7 @@ This command restarts a module.
 MANAGE MODULE RESTART module_name
 ```
 
-This command is allowed only when the system state is `ACTIVE `and the module state is `ACTIVE `or `STARTING`.
+This command is allowed only when the system state is `ACTIVE` and the module state is `ACTIVE` or `STARTING`.
 
 The command returns after the module state has transitioned to `STARTING`.
 
@@ -194,11 +194,11 @@ This command is only allowed when the system is in SETUP state, with the followi
 
 `NETWORK`
 
-The `NETWORK `clause includes one or more network addresses. It can come with either of the following directives:
+The `NETWORK` clause includes one or more network addresses. It can come with either of the following directives:
 
-- `ADD `– Adds the given network addresses to the list of existing addresses.
-- `REMOVE `– Remove each given network address from the list of existing addresses. Each removed network address must be an exact match to an existing one.
-- `SET `– Remove all the existing network addresses and replace them with the given network addresses.
+- `ADD` – Adds the given network addresses to the list of existing addresses.
+- `REMOVE` – Remove each given network address from the list of existing addresses. Each removed network address must be an exact match to an existing one.
+- `SET` – Remove all the existing network addresses and replace them with the given network addresses.
 
 `NUM_CPUS`
 
@@ -246,7 +246,7 @@ Required parameter. The name of the target node to which the module is moved.
 
 `NETWORK`
 
-Optional parameter. Contains a list of up to 4 external addresses and 4 internal addresses. Must contain at least one address (either internal or external). For each address, there are 2 required parameters – `IP `and `PORT`.
+Optional parameter. Contains a list of up to 4 external addresses and 4 internal addresses. Must contain at least one address (either internal or external). For each address, there are 2 required parameters – `IP` and `PORT`.
 
 #### MODULE SHOW
 
@@ -278,7 +278,7 @@ Show a more detailed list of attributes for each module. See more details in the
 
 **Output**
 
-For the first variant, the output of the command is a tabular, with each row representing a module. The following table lists the columns of the output. If the `DETAILED `option is specified, then in addition to those columns, all the attributes listed below in the output of `MODULE SHOW ATTR` command are also included for each module. In this variant, only their current values are shown and not their set values.
+For the first variant, the output of the command is a tabular, with each row representing a module. The following table lists the columns of the output. If the `DETAILED` option is specified, then in addition to those columns, all the attributes listed below in the output of `MODULE SHOW ATTR` command are also included for each module. In this variant, only their current values are shown and not their set values.
 
 | Name | Type | Description |
 | --- | --- | --- |
@@ -313,7 +313,7 @@ The following table lists the rows included in the output:
 | INTERNAL\_NET | A comma-separated list of internal network addresses in the form of `<ip_addr>:<port>` |  |
 | EXTERNAL\_NET | A comma-separated list of external network addresses in the form of `<ip_addr>:<port>` |  |
 | DESCRIPTION | A description of the module (if exists). |  |
-| STATE\_REASON | If the module is in `DOWN `state, this column will contain the reason for it. |  |
+| STATE\_REASON | If the module is in `DOWN` state, this column will contain the reason for it. |  |
 | RAM\_SIZE | The RAM size (in MB) that the module may use |  |
 | NUMA\_NODE | The NUMA node number that the module’s process is bound to |  |
 | CPU | The list of CPUs that the module’s process is bound to |  |

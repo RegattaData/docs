@@ -4,7 +4,7 @@ title: "Storage Devices"
 
 Storage Devices are attached to nodes and are used by modules running on the nodes to store database data and metadata. Once a storage device is added to a node, it can be assigned to a module. A device can only be attached to one module and cannot be transferred to another module. A module may have multiple storage devices.
 
-A storage device has a state that can be either `OK `or `ERROR`.
+A storage device has a state that can be either `OK` or `ERROR`.
 
 ### Commands
 
@@ -16,7 +16,7 @@ The storage device commands have the general form:
 
 This command adds one or more storage devices to the system. A storage device is added to a specific node. It is assigned to a module when the module is added in that node (see [MODULE ADD](/modules) above) and cannot be assigned to an existing module.
 
-This command is accepted only if the system is the `SETUP `state.
+This command is accepted only if the system is the `SETUP` state.
 
 **Synopsis**
 
@@ -111,7 +111,7 @@ Show a more detailed list of attributes for each module. See more details in the
 
 **Output**
 
-For the first variant, the output of the command is tabular, with each row representing a storage device. The following table lists the columns of the output. If the `DETAILED `option is specified, then in addition to those columns, all the attributes listed below in the output of `STORAGE DEVICE SHOW ATTR` command are also included for each storage device. In this variant, only their current values are shown and not their set values.
+For the first variant, the output of the command is tabular, with each row representing a storage device. The following table lists the columns of the output. If the `DETAILED` option is specified, then in addition to those columns, all the attributes listed below in the output of `STORAGE DEVICE SHOW ATTR` command are also included for each storage device. In this variant, only their current values are shown and not their set values.
 
 | Name | Type | Description |
 | --- | --- | --- |
