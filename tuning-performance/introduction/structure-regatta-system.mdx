@@ -1,16 +1,16 @@
 ---
-title: "Structure of a RegattaDB cluster"
+title: "Structure of a RegattaDB system"
 ---
 
-A RegattaDB cluster runs on one or more nodes.  A node may be a bare-metal server or a virtual machine.
+A RegattaDB system runs on one or more nodes.  A node may be a bare-metal server or a virtual machine.
 
-Within the nodes, a cluster of software modules runs the database operations. One or more modules may be placed in each node. RegattaDB has several different module types performing different functionalities. The _RDB_ module holds tables and indexes and runs transactions. For best performance, we recommend using symmetric nodes for RDB modules, ensuring they match in CPU, RAM, disk capacity, and network specifications. There are several other modules dedicated to other cluster-wide tasks but for the sake of this document we only care about the RDB modules. Each RDB module runs on a separate RegattaDB node.
+Within the nodes, a system of software modules runs the database operations. One or more modules may be placed in each node. RegattaDB has several different module types performing different functionalities. The _RDB_ module holds tables and indexes and runs transactions. For best performance, we recommend using symmetric nodes for RDB modules, ensuring they match in CPU, RAM, disk capacity, and network specifications. There are several other modules dedicated to other system-wide tasks but for the sake of this document we only care about the RDB modules. Each RDB module runs on a separate RegattaDB node.
 
-The storage devices on the nodes running the RDB modules are used for storing table data (rows) and indexes.  In the example cluster below, devices are named by their module number and then the device number within that module.  For example, m3d2 is a device attached to a RegattaDB node running module number 3.
+The storage devices on the nodes running the RDB modules are used for storing table data (rows) and indexes.  In the example system below, devices are named by their module number and then the device number within that module.  For example, m3d2 is a device attached to a RegattaDB node running module number 3.
 
 ### Finding information on nodes, modules and devices
 
-The example output below shows a cluster with 3 RDB modules on 3 nodes.  The RDB modules have IDs 3, 4 and 5, running on nodes 0, 1 and 2 respectively.
+The example output below shows a system with 3 RDB modules on 3 nodes.  The RDB modules have IDs 3, 4 and 5, running on nodes 0, 1 and 2 respectively.
 
 ```sql
 rdb> show modules;
@@ -26,7 +26,7 @@ statement executed successfully
 rdb>
 ```
 
-In this cluster, each RDB module has 3 devices, each 64TB, as can be seen in the following query:
+In this system, each RDB module has 3 devices, each 64TB, as can be seen in the following query:
 
 ```sql
 rdb> show devices;
