@@ -2,16 +2,16 @@
 title: "Default Device Mapping"
 ---
 
-The simple option is creating the cluster without specifying any device. If that method is chosen, then Regatta will map all tables and indexes for you.
+The simple option is creating the cluster without specifying any device. If that method is chosen, then RegattaDB will map all tables and indexes for you.
 
 To create the described table, enter the following SQL command:
 
 ```SQL
- CREATE TABLE employees (
- employee_key INT PRIMARY KEY INDEX,
- employee_name VARCHAR(40) NOT NULL,
- employee_salary INT,
- employee_department VARCHAR(50) NOT NULL)
+    CREATE TABLE employees (
+    employee_key INT PRIMARY KEY INDEX,
+    employee_name VARCHAR(40) NOT NULL,
+    employee_salary INT,
+    employee_department VARCHAR(50) NOT NULL)
 ```
 
 Enter SQL command SHOW TABLES:
