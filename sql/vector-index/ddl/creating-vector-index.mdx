@@ -54,9 +54,9 @@ Specifies the column to be indexed. The column must be of type vector. 
 
 This parameter can be one of the following: 
 
-`COSINE `– Cosine similarity between vectors. 
+`COSINE` – Cosine similarity between vectors. 
 
-`L2 `– Euclidean distance. 
+`L2` – Euclidean distance. 
 
 `IP` – Inner product (also known as dot product) 
 
@@ -92,7 +92,7 @@ When modules are specified, an optional parallelism parameter can be used for ea
 
 ### Options for the IVFFLAT Index Type
 
-There is currently one option that applies only to `IVFFLAT `Index type. 
+There is currently one option that applies only to `IVFFLAT` Index type. 
 
 `lists | num_clusters `
 
@@ -115,13 +115,13 @@ This parameter is optional. The default is `FUNCTION MIN_DIV_SQRT(1000) `
 Example:
 
 ```sql
--- Create an IVEFLAT vector index with default parameters and system- generated name on all the modules the table resides in
-CREATE VECTOR INDEX ON mytable USING IVEFLAT (mycol IP);
+-- Create an IVFFLAT vector index with default parameters and system- generated name on all the modules the table resides in
+CREATE VECTOR INDEX ON mytable USING IVFFLAT (mycol IP);
 
 -- Create an HNSW vector index with your own name and parameter values on a selected set of modules, parallelism control and other options
 CREATE VECTOR INDEX mytable_mycol_hnsw_ip ON mytable USING HNSW (mycol L2)
-	WITH (parallelisn = HIGH,
-		  modules = ((module_a), (module_b, MEDIUM),
+	WITH (parallelism = HIGH,
+		  modules = ((module_a), (module_b, MEDIUM)),
 		  ef_construction = 32,
 		  m = 10
 	);
