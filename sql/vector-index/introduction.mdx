@@ -12,7 +12,7 @@ In order to support vector indexing and searches, we introduce the `VECTOR` type
 
 - A vector column’s dimension can be any integer between 1 and 2048 (inclusive). 
 
-- The data type of the vector elements is `REAL (FLOAT4)` 
+- The data type of the vector elements is `REAL (FLOAT4)`. 
 
 - Elements of the vector cannot be `NULL` and cannot have any of the values Infinity, -Infinity or NaN. 
 
@@ -37,11 +37,11 @@ INSERT INTO my_table VALUES (1, '[1,2,3,4]'), (2, '[1.4, 1.8, 2, 2.66]');
 
 The following are binary operators that return the distance between two vectors. The vectors must be of the same dimension. 
 
-<Icon icon="hyphen" /> L2 distance
+- `<->` - L2 distance
 
-<Icon icon="hashtag" /> (negative) Inner product
+- `<#>` - (negative) Inner product
 
-<Icon icon="equals" /> Cosine distance
+- `<=>` - Cosine distance
 
 <Info>
   - No other operators or functions are supported for the vector type (e.g., no vector arithmetic such as adding vectors or multiplying a vector by a scalar). 

@@ -21,7 +21,7 @@ SELECT * FROM table ORDER BY vec <=> '[1,2,3]';
 SELECT vec <#> '[1,2,3]' FROM table;
 ```
 
-When combined with `ORDER_BY` and `LIMIT` ,  the following rules apply:
+When combined with `ORDER BY` and `LIMIT`,  the following rules apply:
 
 - If there is **no** vector index for that distance metric, exact match is applied. That implies full table (or index) scan.
 - If there is **one** vector index for that distance metric, approximate match is applied.
@@ -40,7 +40,7 @@ SELECT * FROM table ORDER BY vec <-> '[1,2,3]' LIMIT 5;
 
 The following are query parameters specific to vector index searches.
 
-`search_type = { EXACT | IVEFLAT }` <br />Specifies whether the approximate or exact search should be done. Note that this can be used to override the rules defined above. In particular, it can be used to force an exact search where otherwise an approximate search would be performed. 
+`search_type = { EXACT | IVFFLAT }` <br />Specifies whether the approximate or exact search should be done. Note that this can be used to override the rules defined above. In particular, it can be used to force an exact search where otherwise an approximate search would be performed. 
 
 `Index_type = { HNSW | IVFFLAT }` <br />Specifies which index type to use. This is required when there are two vector indexes for the same column and the same distance metric. 
 
@@ -99,7 +99,7 @@ SELECT * FROM table
 	PARAMS (search_type = APPROX);
 
 SELECT * FROM table
-	ORDER BY color, vec1 <-> '[1,2,3]', LIMIT 50
+	ORDER BY color, vec1 <-> '[1,2,3]' LIMIT 50
 	PARAMS (search_type = APPROX);
 ```
 
@@ -114,11 +114,11 @@ Approximate search is not allowed on intermediate results such as join queries, 
 ```sql
 -- this will result in an error
 SELECT * FROM table1 JOIN table2 ON table1.color = table2.color
-	ORDER BY table1.vec1 <-> '[1,2,3]' LIMIT 10
+	ORDER BY table1.vec1 <-> '[1,2,3]' LIMIT 10;
 
 -- this will work
 SELECT * FROM
 	(SELECT * from table1 ORDER BY table1.vec1 <-> '[1,2,3]' LIMIT 10
-		PARAMS (search_type = APPROX) as t1
+		PARAMS (search_type = APPROX)) as t1
 	JOIN table2 ON t1.color = table2.color;
 ```
