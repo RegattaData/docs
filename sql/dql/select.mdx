@@ -195,7 +195,7 @@ e.g: `SELECT o_name, COUNT(*) FROM orders GROUP BY 1`;
 
 **`HAVING`**
 
-The `HAVING` clause is used as a filter on top of the `GROUP BY `results. It eliminates grouped rows that do not satisfy its condition.
+The `HAVING` clause is used as a filter on top of the `GROUP BY` results. It eliminates grouped rows that do not satisfy its condition.
 
 **`UNION [ ALL | DISTINCT ]`**
 
@@ -356,7 +356,7 @@ GROUP BY 2
 ORDER BY 1 DESC , 2 DESC;
 ```
 
-Left outer join the table `customers` with `orders` so that for every `c_name `it returns the count of
+Left outer join the table `customers` with `orders` so that for every `c_name` it returns the count of
 `o_order_id` (or NULL if no rows match on the `orders` table).
 
 Rows on the table `orders` are being filtered as `not like` '`%%special%%requests%%`'.
