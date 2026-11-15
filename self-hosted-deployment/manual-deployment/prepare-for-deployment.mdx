@@ -227,6 +227,10 @@ regatta-client-<version>.el8.x86_64.rpm
 regatta-connect-<version>.el8.x86_64.rpm
 ```
 
+<Note>
+  **Note:** RegattaDB clients automatically use the external IP address when one is configured for a node. Otherwise, they fall back to the node's internal IP address.
+</Note>
+
 ### Storage Devices
 
 RegattaDB is designed to work directly with **raw block storage devices** to minimize filesystem overhead and achieve the highest possible storage performance. Direct access to raw devices allows RegattaDB to optimize data layout and I/O patterns specifically for database workloads.
