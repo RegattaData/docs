@@ -6,23 +6,26 @@ Define a new table.
 
 ## Synopsis
 
-```
-CREATE TABLE [ SET { READY | NOT READY } ]
-  table_name ([
-    { column_name data_type [ column_constraint [ ... ] ] [ INDEX [ index_parameters] ]}
-    [, ... ]
-  ])
-[ WITH ( storage_parameter [= value] [, ... ] ] )
+```text
+CREATE TABLE [ SET { READY | NOT READY } ] table_name (
+  { column_clause | constraint_clause | index_clause }
+  [, ... ]
+)
+[ WITH ( storage_parameter = value [, ... ] ) ]
 
-where column_constraint is:
+Where column_clause is:
+
+  column_name data_type [ column_constraint [ ... ] ] [ index_def ]
+
+and column_constraint is:
+
+[ CONSTRAINT constraint_name ] 
 { NULL |
-NOT NULL |
-DEFAULT default_expr |
-UNIQUE |
-PRIMARY KEY |
-REFERENCES reftable [ (refcolumn) ] }
-and index_parameters is:
-WITH ( storage_parameter [= value] [, ... ] )
+  NOT NULL |
+  DEFAULT default_expr |
+  UNIQUE |
+  PRIMARY KEY |
+  REFERENCES reftable [ (refcolumn) ] }
 ```
 
 ## Description
