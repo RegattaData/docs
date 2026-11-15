@@ -117,7 +117,7 @@ Unique constraints implicitly create an index on that column, hence the index cl
 The `PRIMARY KEY` constraint specifies this column can contain only unique, non-NULL values. Only one primary key can be specified for a table. Since `PRIMARY KEY` implies `UNIQUE` and `NOT NULL` – if any of the latter two is specified for the same column, it is ignored (as it is already implied by the `PRIMARY KEY` constraint).
 
 <Note>
-  _`Note: PostgreSQL allows specifying the combination of PRIMARY KEY with NULL constraint, but it ignores the latter and requires only non-NULL values. In Regatta, specifying this contradictory combination of constraints results in an error.`_
+  `Note: PostgreSQL allows specifying the combination of PRIMARY KEY with NULL constraint, but it ignores the latter and requires only non-NULL values. In Regatta, specifying this contradictory combination of constraints results in an error.`
 </Note>
 
 A primary key constraint implicitly creates an index on the column, hence the index clause is required.
