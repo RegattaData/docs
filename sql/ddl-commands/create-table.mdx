@@ -87,7 +87,7 @@ The data type of the column. For more information on the supported data types, r
 
 ### `CONSTRAINT constraint_name`
 
-Spe
+Specify a name for a column 
 
 ### `NULL`
 
@@ -105,12 +105,11 @@ The column is not allowed to contain `NULL` values.
 
 An optional default value to set in the column level. If no default is specified then the default value is `NULL`. (Note that when the default value is `NULL` and `NOT NULL` constraint is specified, you cannot insert rows with the `DEFAULT` keyword.)
 
-A possible default values are either a literal (e.g, `DEFAULT 'my default'` or `DEFAULT 1`) or a variable-free expression that returns a single value
-(suitable to store in a single table cell) that is being evaluated at the time the row is created (e.g., `DEFAULT NOW()` for current date/timestamp (depends on the column data type)). Note that expressions which include other columns in the current table are not allowed.
+A possible default values are either a literal (e.g, `DEFAULT 'my default'` or `DEFAULT 1`) or a variable-free expression that returns a single value (suitable to store in a single table cell) that is being evaluated at the time the row is created (e.g., `DEFAULT NOW()` for current date/timestamp (depends on the column data type)). Note that expressions which include other columns in the current table are not allowed.
 
 ### `UNIQUE`
 
-The `UNIQUE` constraint specifies that the column can contain only unique values. The constraint therefore enforces that any two rows in the same table must differ in this column (note that Regatta is case-sensitive) (e.g., ‘**Regatta**’ \<\> ’**REGATTA**’ \<\> ‘**regatta**’).
+The `UNIQUE` constraint specifies that the column can contain only unique values. The constraint therefore enforces that any two rows in the same table must differ in this column (note that Regatta is case-sensitive) (e.g., ‘**Regatta**’ \<> ’**REGATTA**’ \<> ‘**regatta**’).
 
 Note: If the `UNIQUE` constraint is specified, the `NOT NULL` constraint is required.
 
@@ -128,15 +127,11 @@ A primary key constraint implicitly creates an index on the column, hence the in
 
 ### `REFERENCES reftable [ refcolumn ] [ ON DELETE referential_action ] [ ON UPDATE referential_action ]`
 
-This clause specifies a foreign key constraint and links data in that table column with another table
-primary key. The referenced column must be the `PRIMARY KEY` constraint in the referenced table, in
-the same database. With this constraint, a value inserted into the referencing column must match a row
-in the referenced table. If **refcolumn** is omitted, the primary key column of the **reftable** is used.
+This clause specifies a foreign key constraint and links data in that table column with another table primary key. The referenced column must be the `PRIMARY KEY` constraint in the referenced table, in the same database. With this constraint, a value inserted into the referencing column must match a row in the referenced table. If **refcolumn** is omitted, the primary key column of the **reftable** is used.
 
 Reference constraints implicitly create an index on that column, hence the index clause is required.
 
-A foreign key column is allowed to be `NULL`. If it is `NULL`, the row is not required to have a match in the
-referenced table.
+A foreign key column is allowed to be `NULL`. If it is `NULL`, the row is not required to have a match in the referenced table.
 
 Foreign key restrictions:
 
@@ -179,7 +174,7 @@ If the number of devices (specified in the `devices` parameter) is 1, this param
 
 For example:
 
-```
+```text
 WITH (devices = (m1d2, m2d5, m3d3), range_separators = ('j', 'p'))
 ```
 
@@ -208,11 +203,9 @@ CREATE TABLE customers (
 ) WITH (devices = (m1d2, m2d5, m3d3));
 ```
 
-Create the table `customers` and set it ready for DML. Set the column `c_custkey` as the primary key,
-defined with an index, and the `c_name` column with the `NOT NULL` constraint.
+Create the table `customers` and set it ready for DML. Set the column `c_custkey` as the primary key, defined with an index, and the `c_name` column with the `NOT NULL` constraint.
 
-The primary key index is using the device (m1d2) - note that it has only 1 device therefore the
-`RANGE_SEPARATORS` clause is not needed.
+The primary key index is using the device (m1d2) - note that it has only 1 device therefore the `RANGE_SEPARATORS` clause is not needed.
 
 The column `c_name` has an index on it with the following devices:
 
