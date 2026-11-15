@@ -152,7 +152,7 @@ ON `UPDATE` this clause specifies the action to perform when a referenced column
 
 Updating a referenced column is not allowed, and the explicit `RESTRICT` option is supported for compatibility reasons (but that's also the default behavior).
 
-### `INDEX index_parameter`
+#### `INDEX index_parameter`
 
 This clause specifies that an index shall be created for the pertinent column.
 
@@ -160,15 +160,15 @@ The index column size should not exceed the index maximum column size. See [Data
 
 This clause is required if `REFERENCES`, `UNIQUE` or `PRIMARY KEY` constraints are specified, and is optional otherwise.
 
-### Storage parameters
+#### Storage parameters
 
 Storage parameters, specified after the keyword `WITH`, are optional for both tables and indexes. Possible storage parameters:
 
-### `devices`
+#### `devices`
 
 A list of one or more device names, separated by commas, surrounded by parentheses. Device names shall be specified as they appear in the output of the [SHOW DEVICES](/sql/system-monitoring/system-catalog/show-devices). This parameter is required for both tables and indexes.
 
-### **`range_separators`**
+#### **`range_separators`**
 
 Specify key range separators for index segments.
 
