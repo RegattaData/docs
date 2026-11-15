@@ -26,6 +26,27 @@ and column_constraint is:
     UNIQUE |
     PRIMARY KEY |
     REFERENCES reftable [ (refcolumn) ] }
+
+and index_def is:
+
+  INDEX [ index_name ] [ index_parameters ]
+
+and constraint_clause is:
+
+  [ CONSTRAINT constraint_name ]
+  { NOT NULL column_name |
+    UNIQUE ( column_name [, ...] ) |
+    PRIMARY KEY ( column_name [, ...] ) |
+   FOREIGN KEY ( column_name [, ...] ) REFERENCES reftable [ ( refcolumn [, ...] ) ] }
+
+and index_clause is:
+  INDEX [ index_name ] ON ( column_name [, ...] ) [ index_parameters ]
+
+and index_parameters is:
+  WITH ( storage_parameter = value [, ... ] )
+
+and storage_parameter is:
+  { devices | range_separators }
 ```
 
 ## Description
