@@ -25,7 +25,7 @@ Define a new table.
 >     DEFAULT default_expr |
 >     UNIQUE |
 >     PRIMARY KEY |
->     REFERENCES reftable [ (refcolumn) ] } [ ON DELETE referential_action ] [ ON UPDATE referential_action ]
+>     REFERENCES reftable [ (refcolumn) ] [ ON DELETE referential_action ] [ ON UPDATE referential_action ] }
 >
 > and index_def is:
 >
@@ -37,7 +37,7 @@ Define a new table.
 >   { NOT NULL column_name |
 >     UNIQUE ( column_name [, ...] ) |
 >     PRIMARY KEY ( column_name [, ...] ) |
->    FOREIGN KEY ( column_name [, ...] ) REFERENCES reftable [ ( refcolumn [, ...] ) ] }
+>     FOREIGN KEY ( column_name [, ...] ) REFERENCES reftable [ ( refcolumn [, ...] ) ] [ ON DELETE referential_action ] [ ON UPDATE referential_action ] }
 >
 > and index_clause is:
 >   INDEX [ index_name ] ON ( column_name [, ...] ) [ index_parameters ]
