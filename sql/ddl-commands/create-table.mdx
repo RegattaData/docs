@@ -66,6 +66,9 @@ Notes:
 5. If **_index_parameters_** are not specified for an index, or if **_index_def_** or **_index_clause_** is not specified for a constraint that requires an index, RegattaDB chooses a random storage device for the index.
 6. Only one index can be created on a specific _ordered_ set of columns. However, a column (or an ordered set of columns) may appear in the ordered set of multiple indexes. For example, for a table with columns a, b, c, one can create indexes for (a), (a, b), (b, a), (a, b, c), (c, a, b).
 7. Two index clauses on the same column or ordered set of columns are not allowed.
+8. The maximum number of columns specified in a composite index is 32.
+
+Index creation rules:
 
 ## Parameters
 
