@@ -71,6 +71,8 @@ Notes:
 Index creation rules:
 
 1. An index may be created on a column or an ordered set of columns if there is a constraint that requires an index or if there is an **_index_clause_** on that ordered set of columns, or if there is an **_index_def_** in the **_column_clause_**. In any case, RegattaDB creates only one index per column or ordered set of columns.
+2. Index parameters may be specified only once for an index. It may be specified only in the **_index_clause_** if one exists, otherwise it may be specified in the **_index_def_** that is specified in a **_column_clause_**.
+3. When index parameters are not specified, RegattaDB selects a single random storage device for the index.
 
 ## Parameters
 
