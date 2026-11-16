@@ -33,10 +33,12 @@ Any index not listed in the **_index_list_** must not be used.
 Included indexes _shall_ be used where applicable. Excluded indexes _shall not_ be used. Other indexes _may_ be used. For example, in the following query:
 
 ```sql
-SELECT /*++ INCLUDE INDEX(t, (COLUMN a)) */ SELECT a, b FROM t WHERE b = 8;
+SELECT /*++ INCLUDE INDEX(t, (COLUMN a)) */ a, b FROM t WHERE b = 8;
 ```
 
-### Example
+an index on column `a` will not be used because it’s not applicable for the statement, and an index on column `b` may be used. (You can use `EXPLAIN` to check what indexes would be used.)
+
+### Examples
 
 ```sql
 SELECT /*++ INDEX(o, COLUMN deptno), INDEX(s, ALL) */
