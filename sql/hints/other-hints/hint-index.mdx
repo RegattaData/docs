@@ -30,6 +30,12 @@ All the indexes of the table should be used if applicable for the statement.
 
 Any index not listed in the **_index_list_** must not be used.
 
+Included indexes _shall_ be used where applicable. Excluded indexes _shall not_ be used. Other indexes _may_ be used. For example, in the following query:
+
+```sql
+SELECT /*++ INCLUDE INDEX(t, (COLUMN a)) */ SELECT a, b FROM t WHERE b = 8;
+```
+
 ### Example
 
 ```sql
