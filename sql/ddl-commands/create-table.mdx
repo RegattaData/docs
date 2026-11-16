@@ -170,9 +170,13 @@ The same as the corresponding column constraint.
 
 The same as the corresponding column constraint, but you may also specify multiple columns whose combination of values in the same row must be uniqe.
 
-#### PRIMARY KEY ( column_name [, ...] )
+#### `PRIMARY KEY ( column_name [, ...] )`
 
 The same as the  corresponding column constraint, but you may also specify multiple columns.
+
+#### `FOREIGN KEY ( column_name [, ...] ) REFERENCES reftable [ ( refcolumn [, ...] ) ] [ ON DELETE referential_action ] [ ON UPDATE referential_action ]`
+
+The same as the column constraint, but you may also specify multiple columns 
 
 #### Storage parameters
 
