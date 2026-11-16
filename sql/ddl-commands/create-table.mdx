@@ -215,6 +215,8 @@ Specify key range separators for index segments.
 
 If the number of devices (specified in the `devices` parameter) is 1, this parameter shall not be specified or shall be set to an empty list. If the number of devices is more than 1, this parameter is required and the number of values must be one less than the number of devices.
 
+Each separator is a value of the indexed column, or a list of values in case the index is on multiple columns. When there are multiple indexed columns, each separator may contain all or part of the participating columns’ values. If the number of values is smaller than the number of columns, the values correspond to the indexed columns in the order they appear in the index clause.
+
 For example:
 
 ```text
