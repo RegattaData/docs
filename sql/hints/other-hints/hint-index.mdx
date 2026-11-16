@@ -4,7 +4,16 @@ title: Hint - INDEX
 
 ### Synopsis
 
-`INDEX (table_name, { COLUMN column_name | ALL | NONE } )`
+```text
+[ INCLUDE ] INDEX (table_name, { index_list [, EXCLUSIVE ] | ALL } )
+EXCLUDE INDEX (table_name, { index_list | ALL } )
+
+where index_list is:
+  ( index_entry [, ...] )
+
+and index_entry is:
+ { index_name | COLUMN column_name }
+```
 
 This hint affects the use of indexes to evaluate a query. A hint comment can contain one or more INDEX hints per table with column name, or a single INDEX hint for a table with either ALL or NONE.
 
