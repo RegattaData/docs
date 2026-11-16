@@ -187,6 +187,8 @@ The same as the corresponding column constraint.
 
 The same as the corresponding column constraint, but you may also specify multiple columns whose combination of values in the same row must be uniqe.
 
+Note: If the `UNIQUE` constraint is specified for a set of columns, the `NOT NULL` constraint is required for each of the columns.
+
 #### `PRIMARY KEY ( column_name [, ...] )`
 
 The same as the  corresponding column constraint, but you may also specify multiple columns.
