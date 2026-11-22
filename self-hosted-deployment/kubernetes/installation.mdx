@@ -3,7 +3,11 @@ title: "Installation"
 description: "Extract the release package, import images into your registry, and install the Regatta operator on your cluster."
 ---
 
-Make sure you've read [Prerequisites](./prerequisites.mdx) first. This page covers extracting the release package, importing its images into your own registry, and installing the Regatta operator.
+Make sure you've read [Prerequisites](./prerequisites.mdx) first. This page covers extracting the release package, importing its images into your own registry, and installing the Regatta operator using manifests or Helm.
+
+<Warning>
+   Upgrading an existing 26.4.x deployment? See [Upgrading from 26.4.x](./operations.mdx#upgrading-from-264x) before applying a new CRD or installing the operator.
+</Warning>
 
 ## The release package
 
@@ -21,6 +25,8 @@ It contains everything you need to import RegattaDB and the operator into your o
 - The operator's Kubernetes identity and permissions.
 - The operator Deployment.
 - RegattaDB deployment examples you can edit.
+- Helm charts for installing the operator and creating a `RegattaCluster` resource.
+- StorageClass manifests for the `gcp-performance` profile.
 - `README.md`.
 - Licensing and third-party attribution files.
 - Release metadata and integrity checksums.
@@ -38,20 +44,30 @@ regatta-k8s-<version>-<architecture>/
 ├── images/
 │   ├── regatta-db-<version>-<architecture>.tar
 │   └── regatta-operator-<version>-<architecture>.tar
-└── config/
-    ├── crd/
-    │   └── regattacluster-crd.yaml
-    ├── rbac/
-    │   ├── serviceaccount.yaml
-    │   ├── role.yaml
-    │   ├── rolebinding.yaml
-    │   └── clusterrole-readonly.yaml
-    ├── operator/
-    │   └── deployment.yaml
-    └── examples/
-        ├── regatta-minimal.yaml
-        ├── regatta-full.yaml
-        └── regatta-static-storage.yaml
+├── config/
+│   ├── crd/
+│   │   └── regattacluster-crd.yaml
+│   ├── rbac/
+│   │   ├── serviceaccount.yaml
+│   │   ├── role.yaml
+│   │   ├── rolebinding.yaml
+│   │   └── clusterrole-readonly.yaml
+│   ├── operator/
+│   │   └── deployment.yaml
+│   ├── examples/
+│   │   ├── regatta-minimal.yaml
+│   │   ├── regatta-full.yaml
+│   │   ├── regatta-all-in-one.yaml
+│   │   ├── regatta-all-in-one-full.yaml
+│   │   ├── regatta-distributed.yaml
+│   │   ├── regatta-distributed-full.yaml
+│   │   └── regatta-static-storage.yaml
+│   └── gcp/
+│       ├── storageclass-performance.yaml
+│       └── storageclass-standard.yaml
+└── charts/
+   ├── regatta-operator/
+   └── regattacluster/
 ```
 
 The rest of this page covers extracting the package and installing the operator using the `config/crd`, `config/rbac`, and `config/operator` files above. See [Configuration Overview](/self-hosted-deployment/kubernetes/configuration/overview) and [Storage](/self-hosted-deployment/kubernetes/configuration/storage) for how the `config/examples/` files are used when you create a `RegattaCluster` resource.
@@ -98,6 +114,8 @@ sha256sum --check SHA256SUMS
    ```
 
 ## 3. Point the manifests at your registry
+
+If you are using Helm, skip to [Install with Helm](#install-with-helm) after importing your images. Do not install the operator twice using both methods.
 
 1. In `config/operator/deployment.yaml`, set the operator container image to your uploaded operator image and digest.
 2. In the example you plan to use under `config/examples/`, set `spec.image` to your uploaded RegattaDB image and digest.
@@ -151,6 +169,43 @@ sha256sum --check SHA256SUMS
   The operator is running at this point, but RegattaDB itself does not exist yet: nothing runs RegattaDB until you apply a `RegattaCluster` resource.
 </Note>
 
+## Install with Helm
+
+The release archive includes two charts. `regatta-operator` installs the CRD, permissions, and controller. `regattacluster` creates one `RegattaCluster` resource; the operator, not Helm, creates the StatefulSets, Services, and storage claims.
+
+```sh
+namespace=regatta
+version='<version>'
+helm install regatta-operator ./charts/regatta-operator \
+   --namespace "$namespace" --create-namespace \
+   --set image.repository=registry.example.com/regatta-operator \
+   --set-string "image.tag=$version" --wait
+```
+
+Choose a profile in `cluster-values.yaml`. This example uses `all-in-one`; change the image to the one you imported:
+
+```yaml
+profile: all-in-one
+spec:
+   image:
+      repository: registry.example.com/regatta-db
+      tag: "<version>"
+```
+
+Add your storage and sizing settings under `spec`. The baseline defaults are for a minimal deployment; check that your selected StorageClasses support the required volume modes. To pin an image by digest, use `image.digest` for the operator chart and `spec.image.digest` for the cluster chart. For a private registry, set `image.pullSecrets` and `spec.image.pullSecrets`, respectively, to lists of existing Secret names in the namespace.
+
+```sh
+helm install my-regattadb ./charts/regattacluster \
+   --namespace "$namespace" -f cluster-values.yaml
+kubectl -n "$namespace" get rgc my-regattadb
+```
+
+Without a profile, the chart uses `Legacy`. Use `all-in-one` for `AllInOne` or `distributed` for `Distributed`. The `gcp-performance` profile uses `Legacy` with GKE-specific sizing and storage; apply both `config/gcp/storageclass-*.yaml` manifests before using it. See `charts/regattacluster/profiles/README.md` in the archive for the profile's prerequisites. Explicit `spec` values take precedence over profile values, which take precedence over the chart baseline and then the CRD defaults. List values are replaced, not merged.
+
+<Note>
+   Helm installs the CRD but does not update it on `helm upgrade`. For a supported upgrade that changes the schema, apply the new CRD separately before upgrading the operator chart. This does not make an in-place upgrade from 26.4.x supported.
+</Note>
+
 ## Next steps
 
-Continue to [Configuration Overview](/self-hosted-deployment/kubernetes/configuration/overview), or jump straight to the [Quickstart: Single-Node RegattaCluster](/self-hosted-deployment/kubernetes/examples/quickstart-single-node) to create your first `RegattaCluster` resource.
+If you installed only the operator, continue to [Configuration Overview](/self-hosted-deployment/kubernetes/configuration/overview) or create your first cluster with the [Quickstart: Single-Node RegattaCluster](/self-hosted-deployment/kubernetes/examples/quickstart-single-node). If you already created a cluster with Helm, see [Reading RegattaCluster Status](./operations.mdx#reading-regattacluster-status) to check when it is ready.

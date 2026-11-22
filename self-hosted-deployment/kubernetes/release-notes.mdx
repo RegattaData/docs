@@ -3,6 +3,14 @@ title: "Release Notes"
 description: "Changes, fixes, and known limitations for each Regatta operator release."
 ---
 
+## Unreleased
+
+- Choose one of three [Pod layouts](./introduction.mdx#deployment-architecture): `Legacy` (default), `Distributed`, or `AllInOne`. The layout and RDB replica count cannot change after creation. RDB defaults to one replica; `AllInOne` requires exactly one.
+- Size and schedule each Pod group using `spec.resources.<group>`. Requests and limits can be overridden individually. See [Resources & Scheduling](./configuration/resources-and-scheduling.mdx).
+- The release package includes example manifests and Helm profiles for `AllInOne` and `Distributed`.
+- The operator creates one StatefulSet and headless Service per Pod group, and a dedicated Service for each Pod. The stable SM and aggregate RDB Service names are unchanged. `status.endpoints.pods` lists all Pod endpoints, and `status.endpoints.rdbs` lists the RDB subset, identified by group and ordinal.
+- **Breaking:** Generated Kubernetes identities and RegattaDB registrations have changed, even for `Legacy`. Existing 26.4.x clusters must be recreated; see [Upgrading from 26.4.x](./operations.mdx#upgrading-from-264x).
+
 ## [26.1.0] - 2026-09-16
 
 - Module-to-Pod placement is fixed: SM, SNA, GDD, DCM, and Sequencer always run together in one SM Pod, and SNA and RDB always run together in each RDB Pod. There is no supported way to configure a different placement.

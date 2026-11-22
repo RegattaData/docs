@@ -3,11 +3,14 @@ title: "Networking"
 description: "How the operator exposes SM and RDB Pods inside and outside your Kubernetes cluster."
 ---
 
-The operator gives every module a stable Kubernetes Service, so its address does not change even if Kubernetes reschedules its Pod to a different node:
+The operator gives each Pod a stable Kubernetes Service, so its address does not change even if Kubernetes reschedules it to a different node:
 
-- The SM Pod gets one Service, always `ClusterIP`, reachable only from inside your Kubernetes cluster.
-- Every RDB Pod gets its own Service, also always `ClusterIP`. The operator and SM use these directly for topology-aware routing to a specific RDB replica.
-- All RDB Pods together also get one aggregate Service, `ClusterIP` by default or `LoadBalancer` if you set `spec.rdb.service.type`. This is a simple entry point for clients that do not need to target a specific RDB replica.
+- `<cluster>-sm` is the stable `ClusterIP` Service for SM, wherever SM runs in the selected layout.
+- `<cluster>-<group>-<ordinal>` is the `ClusterIP` Service for one Pod. It exposes the ports for all modules hosted by that Pod. The operator and SM use these Services to address individual Pods, including specific RDB replicas.
+- `<cluster>-<group>-pods` is the governing headless Service for that group's StatefulSet.
+- `<cluster>-rdb` is the aggregate client Service for all Pods hosting RDB. It is `ClusterIP` by default or `LoadBalancer` if you set `spec.rdb.service.type`.
+
+For example, with `AllInOne`, `my-regattadb-sm` and `my-regattadb-rdb` both point at `my-regattadb-all-0`, but expose different ports. The per-Pod Service is also named `my-regattadb-all-0`.
 
 Setting `spec.rdb.service.type: LoadBalancer` requests an externally reachable address for the aggregate Service. Kubernetes does not fulfill this by itself: it depends on a load-balancer integration already being available in your cluster - built in on managed offerings such as GKE, EKS, and AKS, or provided by an on-prem controller such as MetalLB. If your cluster has no such integration, the Service simply stays `<pending>` with no external IP. When the address is provisioned, traffic sent to it is forwarded to the Service, which then load-balances it across every RDB Pod, the same way any Kubernetes Service load-balances across its backing Pods, and is shared across every client that connects to it rather than reserved for one. It does not target one specific RDB Pod: a client connecting through the aggregate Service may reach any RDB replica.
 

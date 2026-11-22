@@ -1,20 +1,19 @@
 ---
 title: "Resources & Scheduling"
-description: "Size CPU and RAM for the SM and RDB Pods, and control where they are scheduled."
+description: "Size CPU and RAM for each RegattaDB Pod group, and control where its Pods are scheduled."
 ---
 
 ## Configure CPU and RAM
 
-`spec.resources.sm` and `spec.resources.rdb` set the total CPU and RAM for the SM Pod and every RDB Pod.
+Use `spec.resources.<group>` to size each Pod in a group. The available keys depend on your [layout](../introduction.mdx#deployment-architecture):
 
-| Field | Required | Description |
-| --- | --- | --- |
-| `spec.resources.sm.requests.cpu` / `.memory` | Required if `spec.resources.sm` is set | Requested CPU and RAM for the SM Pod |
-| `spec.resources.sm.limits.cpu` / `.memory` | Required if `spec.resources.sm` is set | CPU and RAM limits for the SM Pod |
-| `spec.resources.rdb.requests.cpu` / `.memory` | Required if `spec.resources.rdb` is set | Requested CPU and RAM for every RDB Pod |
-| `spec.resources.rdb.limits.cpu` / `.memory` | Required if `spec.resources.rdb` is set | CPU and RAM limits for every RDB Pod |
+| Layout | Keys |
+| --- | --- |
+| `Legacy` | `sm`, `rdb` |
+| `Distributed` | `sm`, `dcm`, `gdd`, `sequencer`, `rdb` |
+| `AllInOne` | `all` |
 
-If you omit `spec.resources.sm`/`spec.resources.rdb`, the operator applies fixed minimums for both requests and limits: `6` CPU / `1200M` memory for the SM Pod, `4` CPU / `8000M` memory for every RDB Pod. Values below these minimums are rejected.
+Each group accepts `requests.cpu`, `requests.memory`, `limits.cpu`, and `limits.memory`. You can override individual values; omitted values keep their defaults. For both requests and limits, the defaults and minimums are 4 CPU and 16Gi memory for `rdb` and `all`, and 4 CPU and 2Gi memory for all other groups. Requests cannot exceed limits.
 
 CPU and memory values use standard Kubernetes quantity notation:
 
@@ -23,13 +22,13 @@ CPU and memory values use standard Kubernetes quantity notation:
 
 This quantity notation applies to `spec.resources.*.requests/limits.memory` and `.cpu` only. The module-level `ram_MB` field (for example `spec.rdb.ram_MB`) is different: it is a plain integer number of megabytes, for example `16000`, not a Kubernetes quantity string.
 
-If you set `num_threads` or `ram_MB` on a module, `spec.resources` for that module's Pod must cover the combined totals: `spec.resources.sm` for modules in the SM Pod, `spec.resources.rdb` for modules in the RDB Pod. SNA counts toward both, since it runs in every Pod type.
+The hosting group's resources must cover the sum of its modules' configured `ram_MB` values and the largest configured `num_threads` value, not the sum of thread counts. Include SNA in the calculation wherever it runs. If RDB's `num_threads` is omitted or `0`, the operator uses the hosting group's CPU request rounded up to a whole CPU. The group's memory request also sets RegattaDB node RAM in decimal megabytes.
 
-There is no separate field to size RegattaDB's memory-backed `/dev/shm` volume: the operator sets its `sizeLimit` equal to the same component's effective `requests.memory` (`spec.resources.sm.requests.memory` for the SM Pod, `spec.resources.rdb.requests.memory` for every RDB Pod).
+There is no separate field to size RegattaDB's memory-backed `/dev/shm` volume: the operator sets its `sizeLimit` to the hosting group's effective memory request.
 
 ### Schedule Pods
 
-Use `spec.resources.sm.scheduling` and `spec.resources.rdb.scheduling` to influence where the operator's SM and RDB Pods run. These are standard Kubernetes Pod scheduling settings; omit any setting you do not need:
+Use `spec.resources.<group>.scheduling` to influence where that group's Pods run. These are standard Kubernetes Pod scheduling settings; omit any setting you do not need:
 
 | Field | Effect |
 | --- | --- |
@@ -58,10 +57,10 @@ spec:
             whenUnsatisfiable: DoNotSchedule
             labelSelector:
               matchLabels:
-                app.kubernetes.io/component: rdb
+                regatta.dev/module-rdb: "true"
 ```
 
-The same fields and structure can be placed under `spec.resources.sm.scheduling` to apply to the combined SM Pod. Affinity, tolerations, and topology spread constraints use Kubernetes PodSpec syntax; refer to your Kubernetes documentation for available operators and details.
+This example uses the `rdb` group, which is present in `Legacy` and `Distributed`. For `AllInOne`, use `spec.resources.all.scheduling`. The `regatta.dev/module-rdb: "true"` label matches Pods hosting RDB in any layout. Affinity, tolerations, and topology spread constraints use Kubernetes PodSpec syntax; refer to your Kubernetes documentation for available operators and details.
 
 ## CPU and RAM: scheduling behavior
 
@@ -71,6 +70,6 @@ Kubernetes uses `requests` to decide where a Pod can run, and `limits` to cap wh
 - A CPU limit is enforced by throttling: a container that tries to use more CPU than its limit is slowed down, not killed.
 - A memory limit is a hard ceiling: if a container tries to use more memory than its limit, Kubernetes kills it (OOM-killed) and restarts it. This is generic Kubernetes behavior that applies to any container, not something specific to RegattaDB.
 
-`num_threads` and `ram_MB` are RegattaDB application-level settings: they tell RegattaDB how much CPU and RAM to plan for internally, per module. Both are optional - if you leave them unset, RegattaDB's System Manager assigns them automatically.
+`num_threads` and `ram_MB` are optional RegattaDB application-level settings: they tell RegattaDB how much CPU and RAM to plan for internally, per module.
 
-`spec.resources` is a separate, Kubernetes Pod-level setting: it is the boundary Kubernetes enforces around the whole container. Unlike `num_threads`/`ram_MB`, nothing auto-detects this for you, because the operator has no way to discover your Kubernetes node hardware. If you omit `spec.resources.sm`/`spec.resources.rdb`, the operator applies the fixed minimums from Configure CPU And RAM above, so RegattaDB Pods always get a real Kubernetes QoS guarantee - never `BestEffort`. Size them explicitly when your workload needs more than those minimums, even though you are not required to size every individual module's `num_threads`/`ram_MB` to do so. If you do set `num_threads`/`ram_MB`, `spec.resources.sm`/`spec.resources.rdb` must at least cover their combined totals; RegattaDB's own processes account for the headroom they need within that allocation.
+`spec.resources` is separate: it sets the Kubernetes budget for the entire RegattaDB container in each Pod. The defaults are minimums, not hardware detection or production sizing guidance. Size each group explicitly when its workload needs more, even if you leave individual module settings unset.

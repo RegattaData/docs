@@ -1,5 +1,9 @@
 # Regatta Kubernetes Operator Guide
 
+> This is a snapshot for the older fixed-layout operator. For current deployment
+> instructions, including `Legacy`, `Distributed`, `AllInOne`, Helm profiles,
+> and upgrade guidance, see the [Kubernetes deployment docs](https://docs.regatta.dev/self-hosted-deployment/kubernetes/introduction).
+
 > **Note:** This guide assumes you are already familiar with the
 > [RegattaDB software modules](https://docs.regatta.dev/self-hosted-deployment/manual-deployment/regattadb-software-modules)
 > (SM, SNA, GDD, DCM, Sequencer, RDB) and how they work together in a

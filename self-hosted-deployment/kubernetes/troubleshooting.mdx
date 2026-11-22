@@ -31,13 +31,13 @@ kubectl -n <namespace> describe pvc <pvc-name>
 
 ## `KubernetesReady` is `False`
 
-One or both StatefulSets haven't finished rolling out, or their Pods aren't Running and Ready yet.
+One or more StatefulSets for your layout haven't finished rolling out, or their Pods aren't Running and Ready yet.
 
 **Solution:** check StatefulSet rollout and Pod scheduling, image pulls, init containers, and readiness:
 
 ```sh
-kubectl -n <namespace> rollout status statefulset/my-regattadb-sm
-kubectl -n <namespace> rollout status statefulset/my-regattadb-rdb
+kubectl -n <namespace> get statefulsets -l app.kubernetes.io/instance=my-regattadb
+kubectl -n <namespace> rollout status statefulset/my-regattadb-<group>
 kubectl -n <namespace> get pods -l app.kubernetes.io/instance=my-regattadb
 kubectl -n <namespace> describe pod <pod-name>
 ```

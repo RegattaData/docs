@@ -3,7 +3,7 @@ title: "Example: Two Local NVMe Devices, One RDB Replica"
 description: "Bind pre-existing local NVMe devices to RDB using static RDB storage provisioning."
 ---
 
-This walks through binding two pre-existing local NVMe devices to a single RDB replica end to end (`spec.rdb.replicas: 1`, `spec.rdb.devices: 2`). See [Choosing dynamic or static RDB storage](../configuration/storage.mdx#choosing-dynamic-or-static-rdb-storage) for when to use static provisioning.
+This walks through binding two pre-existing local NVMe devices to a single RDB replica end to end (`spec.rdb.replicas: 1`, `spec.rdb.devices: 2`). The example uses `Legacy`, the default layout. You can also use these storage settings with `Distributed` or `AllInOne`; check the [generated PVC names](../configuration/storage.mdx#multiple-rdb-devices-naming-and-readiness) if you pre-bind volumes. See [Choosing dynamic or static RDB storage](../configuration/storage.mdx#choosing-dynamic-or-static-rdb-storage) for when to use static provisioning.
 
 ## 1. Identify the devices
 
