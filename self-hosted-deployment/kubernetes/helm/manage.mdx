@@ -1,0 +1,100 @@
+---
+title: "Upgrade, Change, and Remove"
+description: "Upgrade the operator, change or delete a RegattaCluster, and remove the operator when you deploy with Helm."
+---
+
+Run the commands on this page from the root of the extracted release package.
+
+## Upgrade the operator
+
+Helm installs the CRD only once, with the first `helm install`. `helm upgrade` and `helm uninstall` never update or delete it, so that an upgrade cannot invalidate or delete your `RegattaCluster` resources. When a new release changes the CRD, apply the new CRD yourself before you upgrade the operator.
+
+Run these commands from the new release package, after you set the new operator image in `operator-values.yaml`:
+
+```sh
+# 1. CRD upgrade first.
+kubectl apply -f charts/regatta-operator/crds/regattacluster-crd.yaml
+
+# 2. Operator upgrade second.
+helm upgrade regatta-operator ./charts/regatta-operator \
+  --namespace <namespace> -f operator-values.yaml
+
+# 3. Confirm that the new operator is running.
+kubectl -n <namespace> rollout status deployment/regatta-operator
+```
+
+| Command | Expected result |
+| --- | --- |
+| `kubectl apply` | Reports the CRD as `configured`, or `unchanged` if the release did not change it |
+| `helm upgrade` | Replaces the operator Deployment and prints `STATUS: deployed`. Pass your values file on every upgrade, so the release always matches it |
+| `rollout status` | Prints `successfully rolled out` once the new operator is running |
+
+Existing `RegattaCluster` resources keep running. See [Upgrading the operator](/self-hosted-deployment/kubernetes/operations#upgrading-the-operator) for what an upgrade does and does not change.
+
+## Change a RegattaCluster
+
+Change the resource by editing your values file and upgrading the release, not by editing the resource with `kubectl`:
+
+```sh
+helm upgrade my-regattadb ./charts/regattacluster \
+  --namespace <namespace> -f regattadb-values.yaml
+```
+
+Helm updates the `RegattaCluster` resource and prints `STATUS: deployed`; the operator then applies the change. Only the fields listed in [Making supported changes](/self-hosted-deployment/kubernetes/operations#making-supported-changes) can change: Helm cannot change an immutable field any more than `kubectl` can. Changing `profile`, or upgrading to a chart version with a different baseline or profile, can change immutable fields, so preview the result with `helm template` first. `helm rollback` re-applies an earlier revision of the manifest under the same rules; it does not restore data.
+
+To see what a release currently holds:
+
+```sh
+helm get values my-regattadb --namespace <namespace>
+helm get manifest my-regattadb --namespace <namespace>
+```
+
+`helm get values` prints the values you supplied. `helm get manifest` prints the `RegattaCluster` manifest Helm generated from them.
+
+## Delete a RegattaCluster
+
+```sh
+helm uninstall my-regattadb --namespace <namespace>
+```
+
+Helm deletes the `RegattaCluster` resource. The operator then stops RegattaDB, removes the resources it generated, and keeps every `PersistentVolumeClaim`. [Deleting a RegattaCluster](/self-hosted-deployment/kubernetes/operations#deleting-a-regattacluster) describes these steps, how to confirm the result, and how to delete the retained PVCs.
+
+## Remove the operator
+
+<Warning>
+  Do not remove the operator while a `RegattaCluster` resource still exists. Without the operator, nothing manages or reports on the running RegattaDB system, and the resource cannot be deleted until the operator is installed again. Delete every `RegattaCluster` resource in the namespace first.
+</Warning>
+
+1. Confirm that no `RegattaCluster` resource is left in the namespace. The command should print `No resources found`:
+
+   ```sh
+   kubectl -n <namespace> get rgc
+   ```
+
+2. Uninstall the chart:
+
+   ```sh
+   helm uninstall regatta-operator --namespace <namespace>
+   ```
+
+   This removes the operator Deployment and its RBAC. It does not remove the CRD, the namespace, retained PVCs, or infrastructure you created for a deployment profile.
+
+3. Optionally, remove the CRD. The CRD is cluster-wide: deleting it deletes every `RegattaCluster` resource in every namespace. Remove it only when the first command below prints `No resources found`:
+
+   ```sh
+   kubectl get rgc --all-namespaces
+   kubectl delete -f config/crd/regattacluster-crd.yaml
+   ```
+
+## Helm errors
+
+Helm reports these errors before the operator is involved:
+
+| Error | Cause and solution |
+| --- | --- |
+| `values don't meet the specifications of the schema` | A value in your values file has the wrong type. Fix the field named in the error. Module `config` values must be strings |
+| `unknown profile` | `profile` does not match a file in `charts/regattacluster/profiles/` |
+| `no matches for kind "RegattaCluster"` | The CRD is not installed. Install the operator first |
+| `exists and cannot be imported into the current release` | A resource with the same name was created without Helm. Use a different release name, or keep managing that resource with `kubectl` |
+
+If Helm prints `STATUS: deployed` but the resource does not become `Ready`, Helm has done its part: continue with [Troubleshooting](/self-hosted-deployment/kubernetes/troubleshooting). With a deployment profile, also confirm that the `StorageClasses` and node pools the profile expects exist; a missing one leaves PVCs or Pods `Pending`.

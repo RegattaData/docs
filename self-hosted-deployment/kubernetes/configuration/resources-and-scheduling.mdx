@@ -14,7 +14,7 @@ description: "Size CPU and RAM for the SM and RDB Pods, and control where they a
 | `spec.resources.rdb.requests.cpu` / `.memory` | Required if `spec.resources.rdb` is set | Requested CPU and RAM for every RDB Pod |
 | `spec.resources.rdb.limits.cpu` / `.memory` | Required if `spec.resources.rdb` is set | CPU and RAM limits for every RDB Pod |
 
-If you omit `spec.resources.sm`/`spec.resources.rdb`, the operator applies fixed minimums for both requests and limits: `6` CPU / `1200M` memory for the SM Pod, `4` CPU / `8000M` memory for every RDB Pod. Values below these minimums are rejected.
+If you omit `spec.resources.sm`/`spec.resources.rdb`, the operator applies fixed minimums for both requests and limits: `4` CPU / `2Gi` memory for the SM Pod, `4` CPU / `16Gi` memory for every RDB Pod. Values below these minimums are rejected.
 
 CPU and memory values use standard Kubernetes quantity notation:
 
@@ -23,7 +23,7 @@ CPU and memory values use standard Kubernetes quantity notation:
 
 This quantity notation applies to `spec.resources.*.requests/limits.memory` and `.cpu` only. The module-level `ram_MB` field (for example `spec.rdb.ram_MB`) is different: it is a plain integer number of megabytes, for example `16000`, not a Kubernetes quantity string.
 
-If you set `num_threads` or `ram_MB` on a module, `spec.resources` for that module's Pod must cover the combined totals: `spec.resources.sm` for modules in the SM Pod, `spec.resources.rdb` for modules in the RDB Pod. SNA counts toward both, since it runs in every Pod type.
+If you set `num_threads` or `ram_MB` on a module, `spec.resources` for that module's Pod must cover its demand: `spec.resources.sm` for modules in the SM Pod, `spec.resources.rdb` for modules in the RDB Pod. SNA counts toward both, since it runs in every Pod type. `ram_MB` demand sums across every module in the Pod, since each needs its own dedicated RAM budget; `cpu` only needs to cover the single largest module's `num_threads`, since modules share the Pod's CPU budget rather than each needing a dedicated share of it - for example SNA asking for 1 thread and RDB asking for 8 both fit an 8-CPU budget, even though their sum (9) does not.
 
 There is no separate field to size RegattaDB's memory-backed `/dev/shm` volume: the operator sets its `sizeLimit` equal to the same component's effective `requests.memory` (`spec.resources.sm.requests.memory` for the SM Pod, `spec.resources.rdb.requests.memory` for every RDB Pod).
 
@@ -73,4 +73,4 @@ Kubernetes uses `requests` to decide where a Pod can run, and `limits` to cap wh
 
 `num_threads` and `ram_MB` are RegattaDB application-level settings: they tell RegattaDB how much CPU and RAM to plan for internally, per module. Both are optional - if you leave them unset, RegattaDB's System Manager assigns them automatically.
 
-`spec.resources` is a separate, Kubernetes Pod-level setting: it is the boundary Kubernetes enforces around the whole container. Unlike `num_threads`/`ram_MB`, nothing auto-detects this for you, because the operator has no way to discover your Kubernetes node hardware. If you omit `spec.resources.sm`/`spec.resources.rdb`, the operator applies the fixed minimums from Configure CPU And RAM above, so RegattaDB Pods always get a real Kubernetes QoS guarantee - never `BestEffort`. Size them explicitly when your workload needs more than those minimums, even though you are not required to size every individual module's `num_threads`/`ram_MB` to do so. If you do set `num_threads`/`ram_MB`, `spec.resources.sm`/`spec.resources.rdb` must at least cover their combined totals; RegattaDB's own processes account for the headroom they need within that allocation.
+`spec.resources` is a separate, Kubernetes Pod-level setting: it is the boundary Kubernetes enforces around the whole container. Unlike `num_threads`/`ram_MB`, nothing auto-detects this for you, because the operator has no way to discover your Kubernetes node hardware. If you omit `spec.resources.sm`/`spec.resources.rdb`, the operator applies the fixed minimums from Configure CPU And RAM above, so RegattaDB Pods always get a real Kubernetes QoS guarantee - never `BestEffort`. Size them explicitly when your workload needs more than those minimums, even though you are not required to size every individual module's `num_threads`/`ram_MB` to do so. If you do set `num_threads`/`ram_MB`, `spec.resources.sm`/`spec.resources.rdb` must at least cover that demand - see [Configure CPU and RAM](#configure-cpu-and-ram) for how `cpu` (largest single module) and `memory` (summed across modules) demand are computed differently; RegattaDB's own processes account for the headroom they need within that allocation.

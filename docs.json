@@ -395,6 +395,16 @@
               "self-hosted-deployment/kubernetes/prerequisites",
               "self-hosted-deployment/kubernetes/installation",
               {
+                "group": "Deploy with Helm",
+                "pages": [
+                  "self-hosted-deployment/kubernetes/helm/overview",
+                  "self-hosted-deployment/kubernetes/helm/install-operator",
+                  "self-hosted-deployment/kubernetes/helm/create-regattacluster",
+                  "self-hosted-deployment/kubernetes/helm/values-and-profiles",
+                  "self-hosted-deployment/kubernetes/helm/manage"
+                ]
+              },
+              {
                 "group": "Configuration",
                 "pages": [
                   "self-hosted-deployment/kubernetes/configuration/overview",

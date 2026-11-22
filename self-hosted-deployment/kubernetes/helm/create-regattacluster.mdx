@@ -1,0 +1,83 @@
+---
+title: "Create a RegattaCluster with Helm"
+description: "Create a RegattaCluster resource from a values file with the regattacluster Helm chart."
+---
+
+The `regattacluster` chart creates one `RegattaCluster` resource per Helm release, from a values file instead of a hand-edited manifest. The chart creates only that resource. The operator then creates everything else, exactly as it does for a raw manifest.
+
+The operator must already be running; see [Install the operator with Helm](/self-hosted-deployment/kubernetes/helm/install-operator). Run the commands below from the root of the extracted release package.
+
+## 1. Create the values file
+
+Create `regattadb-values.yaml` in the package root:
+
+```yaml
+spec:
+  image:
+    repository: registry.example.com/regatta-db
+    tag: "<version>"
+```
+
+This is the smallest usable values file: every other field comes from the chart baseline and the CRD defaults. Add what you need:
+
+- Any `RegattaCluster` field, under `spec`. See [Configuration](/self-hosted-deployment/kubernetes/configuration/overview) for every field.
+- `profile: <profile-name>`, to start from a [deployment profile](/self-hosted-deployment/kubernetes/helm/values-and-profiles#deployment-profiles).
+- A digest and an image-pull Secret, for a pinned image or a private registry:
+
+  ```yaml
+  spec:
+    image:
+      repository: registry.example.com/regatta-db
+      digest: "sha256:<regatta-db-digest>"
+      pullSecrets:
+        - my-registry-credentials
+  ```
+
+See [Values and deployment profiles](/self-hosted-deployment/kubernetes/helm/values-and-profiles) for the chart baseline and for how these sources combine.
+
+## 2. Preview the resource
+
+```sh
+helm template my-regattadb ./charts/regattacluster \
+  --namespace <namespace> -f regattadb-values.yaml
+```
+
+This prints the `RegattaCluster` manifest with your values, the profile, and the chart baseline merged. It creates nothing. Check the manifest before you continue. CRD defaults are not shown, because Kubernetes applies them when the resource is created. A value of the wrong type, or an unknown profile name, fails here with an error that names it.
+
+## 3. Install the chart
+
+The release name, `my-regattadb` here, becomes the name of the `RegattaCluster` resource:
+
+```sh
+helm install my-regattadb ./charts/regattacluster \
+  --namespace <namespace> -f regattadb-values.yaml
+```
+
+Helm prints `STATUS: deployed` once the `RegattaCluster` resource is created. RegattaDB is not running yet: the operator now provisions storage, starts the Pods, and configures and starts RegattaDB.
+
+## 4. Verify
+
+```sh
+kubectl -n <namespace> get rgc
+kubectl -n <namespace> get rgc my-regattadb -o yaml
+kubectl -n <namespace> get statefulsets,services,configmaps,secrets,pods,pvc \
+  -l app.kubernetes.io/instance=my-regattadb
+kubectl -n <namespace> wait --for=condition=Ready \
+  regattacluster/my-regattadb --timeout=15m
+```
+
+| Command | What it shows |
+| --- | --- |
+| `get rgc` | The `RegattaCluster` resources in the namespace; `my-regattadb` should be listed |
+| `get rgc my-regattadb -o yaml` | The full resource: your `spec` with defaults applied, and the `status` the operator reports |
+| `get statefulsets,...,pvc` | Every resource the operator generated for `my-regattadb`. Expect the SM Pod and one RDB Pod per replica to become `Running`, and every PVC to become `Bound` |
+| `wait --for=condition=Ready` | Waits until the `Ready` condition is `True`, then prints `condition met`. If it times out, see [Troubleshooting](/self-hosted-deployment/kubernetes/troubleshooting) |
+
+<Note>
+  A new `RegattaCluster` resource does not become `Ready` immediately: Kubernetes must provision storage and start Pods before the operator can configure and start RegattaDB through the System Manager. See [Reading RegattaCluster status](/self-hosted-deployment/kubernetes/operations#reading-regattacluster-status) for what each condition means.
+</Note>
+
+## Next steps
+
+- [Values and deployment profiles](/self-hosted-deployment/kubernetes/helm/values-and-profiles) for everything a values file can set.
+- [Upgrade, change, and remove](/self-hosted-deployment/kubernetes/helm/manage) to change or delete the resource with Helm.

@@ -12,6 +12,8 @@ kubectl -n <namespace> get events --sort-by=.lastTimestamp
 
 The issues below are ordered by how the operator brings a `RegattaCluster` resource up: work through them in order, since later ones only make sense once the earlier conditions pass.
 
+If a `helm` command itself fails, see [Helm errors](/self-hosted-deployment/kubernetes/helm/manage#helm-errors) first.
+
 ## The resource is rejected on `apply`
 
 The CRD schema or an immutability rule rejected your change before the operator ever saw it.

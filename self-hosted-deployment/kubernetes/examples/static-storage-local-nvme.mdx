@@ -88,6 +88,8 @@ rdb:
         regatta.dev/cluster: my-regattadb
 ```
 
+With Helm, put the same `rdb` block under `spec` in your values file; see [Create a RegattaCluster with Helm](/self-hosted-deployment/kubernetes/helm/create-regattacluster).
+
 ## 4. Apply and verify
 
 Apply the `PersistentVolumes`, then apply your `RegattaCluster` resource. With `replicas: 1` and `devices: 2`, the operator expects `1 * 2 = 2` matching `PersistentVolumes`, exactly the two you created. Kubernetes binds one PVC to each `PersistentVolume`; which one binds to which device index is not something a shared selector lets you control directly, but for two identically sized devices on the same `StorageClass` this makes no difference to RegattaDB, since every device is used the same way. Both end up mounted in the single RDB Pod, as `/dev/rdb0` and `/dev/rdb1`.
