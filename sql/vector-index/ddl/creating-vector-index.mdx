@@ -42,7 +42,7 @@ The name of the index. If not specified, RegattaDB generates a name. 
 
 Specifies the table containing the vector column to be indexed. 
 
-`USING { HNSW | IVFFLAT } `
+`USING { HNSW | IVFFLAT }` 
 
 This parameter indicates that the index is a vector index that supports approximate search. 
 
@@ -66,7 +66,7 @@ Specifies various options for the index creation. The options are listed below. 
 
 ## General Options
 
-`parallelism = {FULL, HIGH, MEDIUM, LOW} `
+`parallelism = {FULL, HIGH, MEDIUM, LOW}` 
 
 This is a hint for determining the number of CPU cores that participate in the construction of the index in each module. The default value is FULL, which is the highest level of parallelism. The actual number of cores participating in the index construction is determined by an internal RegattaDB algorithm and depends on the actual number of cores. 
 
@@ -94,23 +94,23 @@ When modules are specified, an optional parallelism parameter can be used for ea
 
 There is currently one option that applies only to `IVFFLAT` Index type. 
 
-`lists | num_clusters `
+`lists | num_clusters` 
 
 This option is applied in each module according to the number of rows residing in the module. The following values can be specified: 
 
-`FUNCTION SQRT [ (c) ] `
+`FUNCTION SQRT [ (c) ]` 
 
 The number of clusters is the square root of the number of the rows, multiplied by a constant c. The argument c is optional, the default for c is 1. 
 
-`FUNCTION DIV(n) `
+`FUNCTION DIV(n)` 
 
 The number of clusters is the number of rows divided by n. 
 
-`FUNCTION MIN_DIV_SQRT(n [, c]) `
+`FUNCTION MIN_DIV_SQRT(n [, c])` 
 
-The number of clusters is the minimum between `DIV(n)` and `SQRT(c) `
+The number of clusters is the minimum between `DIV(n)` and `SQRT(c)` 
 
-This parameter is optional. The default is `FUNCTION MIN_DIV_SQRT(1000) `
+This parameter is optional. The default is `FUNCTION MIN_DIV_SQRT(1000)` 
 
 Example:
 

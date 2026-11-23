@@ -3,6 +3,22 @@ title: "Release Notes"
 description: "Changes, fixes, and known limitations for each RDT release."
 ---
 
+## [26.2.3] - 2026-11-04
+
+### Added
+
+- Per-module `network` configuration for RDB, DCM, GDD, Sequencer, SM, and
+  SNA: up to four internal and four external IPv4 endpoints per module, with
+  explicit scope and port.
+
+### Fixed
+
+- RDT now supports Python 3.12.
+
+See [Configuration Overview](./configuration/overview.mdx)
+for endpoint configuration and bootstrap requirements, and
+[Config Recipes](./examples/config-recipes.mdx) for examples.
+
 ## [26.1.4] - 2026-07-28
 
 - Deployment always uses the `regatta`/`regatta` user and group on managed nodes; there's no support for a custom user/group for RDT-managed files.

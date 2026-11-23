@@ -6,24 +6,14 @@ Modify existing table definitions.
 
 ## Synopsis
 
-```
+```text
 ALTER TABLE table_name
   action [, ... ]
 
-where action is one of:
-  SET READY
-  ADD [ COLUMN ] column_name data_type [ column_constraint [ ... ] ] [ INDEX [ index_parameters ] ]
-
-where column_constraint is:
-{ NULL |
-  NOT NULL |
-  DEFAULT default_expr |
-  UNIQUE |
-  PRIMARY KEY |
-  REFERENCES reftable [ (refcolumn) ] }
-
-and index_parameters is:
-WITH ( storage_parameter [= value] [, ... ] )
+where action is:
+  { SET READY | ADD column_clause | ADD constraint_clause | ADD index_clause }
+ 
+column_clause, constraint_clause and index_clause are defined in the CREATE TABLE section.
 ```
 
 ## Description

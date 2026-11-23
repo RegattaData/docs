@@ -4,26 +4,70 @@ title: Hint - INDEX
 
 ### Synopsis
 
-`INDEX (table_name, { COLUMN column_name | ALL | NONE } )`
+```text
+[ INCLUDE ] INDEX (table_name, { index_list [, EXCLUSIVE ] | ALL } )
 
-This hint affects the use of indexes to evaluate a query. A hint comment can contain one or more INDEX hints per table with column name, or a single INDEX hint for a table with either ALL or NONE.
+EXCLUDE INDEX (table_name, { index_list | ALL } )
 
-If `INDEX` hint(s) with **column_name** exist, those columns’ indexes are used where applicable, and no other indexes of the pertinent table are used.
+where index_list is:
+  ( index_entry [, ...] )
 
-If an `INDEX` hint with ALL exists for a table, all the indexes of the table are used where applicable.
+and index_entry is:
+ { index_name | COLUMN column_name }
+```
 
-If an `INDEX` hint with `NONE` exists for a table, none of the table’s indexes is used to evaluate the query.
+The index hints affect the use of indexes to evaluate a query. A hint comment may contain at most one `INCLUDE INDEX` and at most one `EXCLUDE INDEX` hint per table. The hints instruct the query optimizer which indexes to use or not to use for the query.
 
-A combination of **column_name** and `ALL` for the same table is redundant but valid, a combination of `NONE` and any other `INDEX` hint for the same table is contradictory and results in ignoring the hints.
+A single-column index can be referenced either by its name or by the column’s name. A multi-column index must be referenced by its name.
 
-<Note>*Note: ‘ALL’ is in fact redundant because the current implementation always uses all the indexes it can (given there is no hint telling otherwise). But it’s added here for completeness, and in case the behavior may change at some point to be more dynamically-optimized.*</Note>
+### Parameters
 
-### Example
+#### `ALL`
+
+All the indexes of the table should be used if applicable for the statement.
+
+#### `EXCLUSIVE` 
+
+Any index not listed in the **_index_list_** must not be used.
+
+Included indexes _shall_ be used where applicable. Excluded indexes _shall not_ be used. Other indexes _may_ be used. For example, in the following query:
 
 ```sql
-SELECT /*++ INDEX(o, COLUMN deptno), INDEX(s, ALL) */
-s.name, o.id
-FROM staff s JOIN org o
-ON s.deptno = o.deptno
-WHERE o.division = 'EASTERN';
+SELECT /*++ INCLUDE INDEX(t, (COLUMN a)) */ a, b FROM t WHERE b = 8;
+```
+
+an index on column `a` will not be used because it’s not applicable for the statement, and an index on column `b` may be used. (You can use `EXPLAIN` to check what indexes would be used.)
+
+### Examples
+
+```sql
+-- Use indexes i1 and i2 if they're applicable, you may use any other index
+/*++ INDEX(t, (i1, i2)) */
+
+-- Use indexes i1 and i2 if they're applicable, don't use any other index
+/*++ INDEX(t, (i1, i2), EXCLUSIVE) */
+
+-- Use indexes i1 and i2 if they're applicable,
+-- you may use any other index except for i3 and i4
+/*++ INCLUDE INDEX(t, (i1, i2)), EXCLUDE INDEX(t, (i3, i4)) */
+
+-- Use all the indexes that are applicable
+/*++ INDEX(t, ALL) */
+
+-- Avoid using the given list of indexes
+/*++ EXCLUDE INDEX(t, (i1, COLUMN c2)) */
+
+-- Avoid using any index
+/*++ EXCLUDE INDEX(t, ALL) */
+
+-- This is a syntax error, the hint will be ignored
+/*++ INCLUDE INDEX(t, ALL, EXCLUSIVE) */
+
+-- The following hints have redundancy but it is allowed
+/*++ INCLUDE INDEX(t, (i1), EXCLUSIVE), EXCLUDE INDEX(t, (i2)) */
+
+-- The following are contradictory hints – they will be ignored
+/*++ INCLUDE INDEX(t, ALL), EXCLUDE INDEX(t, (i1)) */
+/*++ EXCLUDE INDEX(t, ALL), INCLUDE INDEX(t, (i1)) */
+/*++ INDEX(t, (i1, i2)), EXCLUDE INDEX(t, (i1)) */
 ```

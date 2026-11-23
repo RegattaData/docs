@@ -51,6 +51,15 @@ line, comma-separated, or a mix of both all work:
 rdt config create --name my-regattadb --from small --ip-list 10.0.0.1,10.0.0.2,10.0.0.3
 ```
 
+Accepting an IPv6 node address in a config does not establish end-to-end IPv6
+support. Explicit module `network` endpoints currently accept IPv4 only.
+
+These options still assign one management IP per node. They do not assign
+multiple endpoints to a module. To configure those, edit the module's
+`network` list after creation; see
+[Module network endpoints](./overview.mdx#module-network-endpoints).
+The packaged templates retain their existing single-address defaults.
+
 ### Examples
 
 ```bash
@@ -64,11 +73,25 @@ rdt config create --name my-regattadb --ip-file ./ips.txt --nodes 4 --probe-node
 ## Print a config
 
 ```bash
-rdt config print --name <name> [--validate/--no-validate]
+rdt config print --name <name>
 ```
 
-Prints the config as JSON. `--validate` (on by default) also prints a warning if the
-config fails schema validation.
+Prints the config as JSON and validates it by default. For a valid config,
+module endpoint order, scope, IP, and port are retained, so the output can be
+exported and reimported:
+
+```bash
+rdt config print --name my-regattadb > exported.json
+rdt config load --file exported.json --name imported-regattadb
+```
+
+<Warning>
+  If the config is invalid, diagnostic text is printed before the original
+  JSON. The command does not modify the saved file and currently can return
+  success despite validation errors. Inspect and correct those errors before
+  treating redirected output as a JSON export; do not rely only on the exit
+  status.
+</Warning>
 
 ## Edit a config
 
@@ -78,6 +101,23 @@ rdt config edit --name <name>
 
 Opens the config in your `$EDITOR`. On save, it's re-validated; if it's invalid, you're
 prompted to save anyway or discard the changes.
+
+To configure multiple module addresses, add or replace that module's `network`
+list. An explicit list replaces the default; it does not append to it.
+Removing `network` or setting it to `null` restores defaults: external
+`node.ip:SM.port` registration for SM, and internal
+`node.ip:module.port` for SNA and operational modules. Saving omits null
+network fields.
+
+Editing the node's management IP does not update explicit module endpoints.
+Review those separately when changing node addresses.
+
+<Warning>
+  Decline the save-anyway prompt if network validation fails and you want to
+  keep the previous file unchanged. Saving invalid JSON does not make it
+  deployable. Editing a config also does not update a running cluster's
+  registered network addresses.
+</Warning>
 
 ## List configs and templates
 
@@ -95,6 +135,11 @@ rdt config load --file <path> [--name <name>]
 
 Imports an existing JSON file into `~/.rdt/configs/`. If `--name` is omitted, the config
 is named after the file (its filename without the `.json` extension).
+
+Import validates endpoint lists before saving. Invalid endpoints are rejected
+without creating the named config or changing the active-config selection.
+Valid lists retain their order, scope, IP, and port; RDT does not append the
+node's management IP.
 
 ## Delete a config
 
