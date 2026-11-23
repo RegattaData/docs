@@ -14,7 +14,7 @@ description: "Size CPU and RAM for the SM and RDB Pods, and control where they a
 | `spec.resources.rdb.requests.cpu` / `.memory` | Required if `spec.resources.rdb` is set | Requested CPU and RAM for every RDB Pod |
 | `spec.resources.rdb.limits.cpu` / `.memory` | Required if `spec.resources.rdb` is set | CPU and RAM limits for every RDB Pod |
 
-If you omit `spec.resources.sm`/`spec.resources.rdb`, the operator applies fixed minimums for both requests and limits: `4` CPU / `2Gi` memory for the SM Pod, `4` CPU / `16Gi` memory for every RDB Pod. Values below these minimums are rejected.
+If you omit `spec.resources.sm`/`spec.resources.rdb`, the operator applies default minimums for both requests and limits: `4` CPU / `2Gi` memory for the SM Pod, `4` CPU / `16Gi` memory for every RDB Pod. Values below these minimums are rejected.
 
 CPU and memory values use standard Kubernetes quantity notation:
 
