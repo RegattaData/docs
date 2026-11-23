@@ -7,25 +7,20 @@ This page walks you through creating your first `RegattaCluster` resource. Make 
 
 ## 1. Create a RegattaCluster resource
 
-A minimal `RegattaCluster` resource looks like this:
+Use the `Legacy` layout with one RDB replica. It runs SM, SNA, DCM, GDD, and Sequencer in one Pod, and RDB and its own SNA in another. Both Pods can run on the same Kubernetes node.
 
 ```yaml
-apiVersion: regatta.dev/<crd-api-version>
+apiVersion: regatta.dev/v1alpha1
 kind: RegattaCluster
 metadata:
   name: my-regattadb
   namespace: <namespace>
 spec:
-  version: "<version>"
+  layout: Legacy
   image:
     repository: registry.example.com/regatta
     tag: "<version>"
-  security:
-    runAsUser: 1000
-    runAsGroup: 1001
-    fsGroup: 1001
   rdb:
-    replicas: 3
     blockStorage:
       size: 60Gi
   repoStorage:
@@ -34,7 +29,7 @@ spec:
     size: 5Gi
 ```
 
-Save it to a file under `config/examples/`, for example `config/examples/regatta-minimal.yaml`. See [Configuration Overview](../configuration/overview.mdx) for what every field means.
+Use `config/examples/regatta-minimal.yaml` as a starting point and update the name, namespace, and image for your deployment. `Legacy` and one RDB replica are the defaults. If your default `StorageClass` does not support raw block volumes, choose a block-capable class for `spec.rdb.blockStorage.storageClassName`. The SM Pod requests 4 CPUs and 2Gi of memory by default, and the RDB Pod requests 4 CPUs and 16Gi. Make sure your node has enough allocatable capacity for both Pods. See [Configuration Overview](../configuration/overview.mdx) and [Storage](../configuration/storage.mdx) for the full settings.
 
 ## 2. Apply and verify
 
@@ -44,7 +39,7 @@ kubectl -n <namespace> get rgc
 kubectl -n <namespace> get rgc my-regattadb -o yaml
 ```
 
-You can also list every resource the operator generated in one command:
+You can also list every resource the operator generated in one command. With `Legacy` and one RDB replica, you should see two StatefulSets (`my-regattadb-sm` and `my-regattadb-rdb`) and two Pods (`my-regattadb-sm-0` and `my-regattadb-rdb-0`):
 
 ```sh
 kubectl -n <namespace> get statefulsets,services,configmaps,secrets,pods,pvc \
