@@ -177,7 +177,7 @@ FROM city JOIN resident ON city.name = resident.lives_in GROUP BY
 city.name ORDER BY city.province, city.name;
 ```
 
-Although `city.province` is functionally dependent on `city.name`, Regatta doesn’t support this query, and `city.province` must be added to the grouped-by columns set, as follows:
+Although `city.province` is functionally dependent on `city.name`, RegattaDB doesn’t support this query, and `city.province` must be added to the grouped-by columns set, as follows:
 
 ```sql
 SELECT city.province, city.name, COUNT(resident.lives_in) as population

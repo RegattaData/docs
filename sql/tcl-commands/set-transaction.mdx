@@ -46,7 +46,7 @@ In contrast to `READ COMMITTED` level, in this level all the statements within a
 
 **`SERIALIZABLE`**
 
-Each statement within the transaction reads the last committed version of any row. Regatta provides that any concurrent execution of a set of serializable transactions is guaranteed to produce the same effect as running them one at a time in some order. In addition, in Regatta this mode provides _external consistency_: The order of execution of transactions as it appears to any other transaction is the commitment order.
+Each statement within the transaction reads the last committed version of any row. RegattaDB provides that any concurrent execution of a set of serializable transactions is guaranteed to produce the same effect as running them one at a time in some order. In addition, in RegattaDB this mode provides _external consistency_: The order of execution of transactions as it appears to any other transaction is the commitment order.
 
 **`READ WRITE`**
 

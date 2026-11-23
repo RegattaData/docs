@@ -8,18 +8,18 @@ Type conversion can happen in the following cases:
 2. When passing to functions and operators, operands of different types than their input operand types.
 3. When assigning values of different types to table row cells.
 
-In these cases, either Regatta implicitly converts them into a data type that allows the operation to continue, or they can be explicitly converted into the desired data type using the general [Convert Function](/sql/sql-functions-and-operators/convert-function) or the type-specific conversion functions listed in the table below.
+In these cases, either RegattaDB implicitly converts them into a data type that allows the operation to continue, or they can be explicitly converted into the desired data type using the general [Convert Function](/sql/sql-functions-and-operators/convert-function) or the type-specific conversion functions listed in the table below.
 
 The following rules apply to type conversions:
 
-1. When combining queries (`UNION` [`ALL`]), Regatta converts the data types of both queries to the “larger” data type of them.
+1. When combining queries (`UNION` [`ALL`]), RegattaDB converts the data types of both queries to the “larger” data type of them.
 
-   E.g: During `UNION` on two queries, if the first returns `DATE` and the other returns `TIMESTAMP`, Regatta converts the `DATE` into `TIMESTAMP`.
+   E.g: During `UNION` on two queries, if the first returns `DATE` and the other returns `TIMESTAMP`, RegattaDB converts the `DATE` into `TIMESTAMP`.
 2. When converting strings to other data types, the conversion fails if the string is not a valid representation of the value of the target type.
 
    For example, conversion of '3' to Integer would succeed but conversion of 'ttt' or '3.1' to integer would fail.
 3. When converting from `FLOAT4/8` or `DECIMAL` to integers, the value is rounded to the closest integer.
-4. During `INSERT` and `UPDATE` operations, Regatta converts the value to the datatype of the affected column. If the value is too large for the target data type, the operation fails.
+4. During `INSERT` and `UPDATE` operations, RegattaDB converts the value to the datatype of the affected column. If the value is too large for the target data type, the operation fails.
 5. Conversion from `TIMESTAMP` to `DATE` or `TIME` extracts the relevant part of the `TIMESTAMP` into the target element.
 
    E.g: `SELECT '2023-12-12 23:00:05'::time` returns `23:00:05`.
