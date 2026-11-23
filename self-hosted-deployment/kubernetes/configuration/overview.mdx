@@ -79,9 +79,9 @@ Default ports:
 
 - `regatta-minimal.yaml`: the smallest example, shown above.
 - `regatta-full.yaml`: a comprehensive example that sets every configurable field, across every module, storage setting, and resource profile. Use it as a field-by-field reference, not as sizing guidance.
-- `regatta-static-storage.yaml`: uses pre-created `PersistentVolumes` for RDB block storage instead of a `StorageClass`, with more than one raw block device per RDB Pod. See [Example: Two Local NVMe Devices, One RDB Replica](../examples/static-storage-local-nvme.mdx) for a full walkthrough.
+- `regatta-static-storage.yaml`: uses pre-created `PersistentVolumes` for RDB block storage instead of a `StorageClass`, with more than a single raw block device per RDB Pod. See [Example: Two Local NVMe Devices, One RDB Replica](../examples/static-storage-local-nvme.mdx) for a full walkthrough.
 
-With Helm, the chart baseline takes the place of `regatta-minimal.yaml`, and the commented example in `charts/regattacluster/values.yaml` shows the commonly set fields; see [Values and deployment profiles](/self-hosted-deployment/kubernetes/helm/values-and-profiles).
+With Helm, the chart baseline takes the place of`regatta-minimal.yaml,` and the commented example in `charts/regattacluster/values.yaml` shows the commonly set fields; see [Values and deployment profiles](/self-hosted-deployment/kubernetes/helm/values-and-profiles).
 
 ## Next steps
 
