@@ -7,10 +7,10 @@ description: "Deploy and operate RegattaDB on Kubernetes with the Regatta operat
   This section assumes you're already familiar with the [RegattaDB software modules](/self-hosted-deployment/manual-deployment/regattadb-software-modules) (SM, SNA, GDD, DCM, Sequencer, RDB) and how they work together in a RegattaDB deployment.
 </Note>
 
-The **Regatta operator** is a Kubernetes controller that automates deploying and operating RegattaDB on Kubernetes. Instead of manually creating the Kubernetes resources RegattaDB needs, provisioning its storage, and issuing System Manager (SM) commands yourself, you describe the RegattaDB deployment you want in a single `RegattaCluster` resource and let the operator drive Kubernetes and RegattaDB into that state.
+The **Regatta operator** is a Kubernetes controller that automates deploying and operating RegattaDB on Kubernetes. Instead of manually creating the Kubernetes resources RegattaDB needs, provisioning its storage, and issuing System Manager (SM) commands, you describe the RegattaDB deployment you want in a single `RegattaCluster` resource and let the operator drive Kubernetes and RegattaDB into that state.
 
 <Card title="Deploy with Helm" icon="ship" horizontal href="/self-hosted-deployment/kubernetes/helm/overview">
-  The release package includes Helm charts for installing the operator and creating a RegattaCluster from a values file.
+  The release package includes Helm charts for installing the operator and deploying a RegattaDB system from a values file.
 </Card>
 
 ## Kubernetes Concepts You Will Use
