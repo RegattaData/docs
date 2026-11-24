@@ -137,7 +137,7 @@ Point the operator and RegattaDB at the images you uploaded. Set either the tag 
 
 If your registry requires authentication, create a Kubernetes Secret of type `kubernetes.io/dockerconfigjson` in `<namespace>` (create the namespace first if it does not exist yet), then reference the Secret by name as shown below. Otherwise, omit the image-pull Secret lines.
 
-The examples use a digest and a Secret named `my-registry-credentials`. In the packaged manifests, the image-pull Secret lines are already present, commented out.
+The examples use a digest and a Secret named `my-registry-credentials`. In the packaged manifests, the image-pull Secret lines are already present and commented out.
 
 **Operator image** (`config/operator/deployment.yaml`)
 
