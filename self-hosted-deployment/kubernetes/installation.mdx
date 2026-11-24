@@ -167,7 +167,7 @@ spec:
   With Helm, you set the same image and Secret in your values files instead; see [Install the operator with Helm](/self-hosted-deployment/kubernetes/helm/install-operator) and [Create a RegattaCluster with Helm](/self-hosted-deployment/kubernetes/helm/create-regattacluster).
 </Note>
 
-## 4. Install the operator
+## 4. Install the Regatta Operator
 
 1. Create the namespace, if you have not created it already:
 
@@ -175,7 +175,7 @@ spec:
    kubectl create namespace <namespace>
    ```
 
-2. Install the CustomResourceDefinition:
+2. Install the `CustomResourceDefinition`:
 
    ```sh
    kubectl apply -f config/crd/regattacluster-crd.yaml
