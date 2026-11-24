@@ -189,7 +189,7 @@ spec:
    kubectl -n <namespace> apply -f config/rbac/rolebinding.yaml
    ```
 
-4. Install the cluster-scoped read-only permission the operator requires. This is required so the operator can discover its configured namespace and the `RegattaCluster` resource type, and recover existing resources after a restart. The same permissions also let it validate static RDB `PersistentVolumes` and `StorageClasses` before applying resources:
+4. Install the cluster-scoped read-only permission the operator requires. This is done so the operator can discover its configured namespace and the `RegattaCluster` resource type, and recover existing resources after a restart. The same permissions also let it validate static RDB `PersistentVolumes` and `StorageClasses` before applying resources:
 
    ```sh
    kubectl apply -f config/rbac/clusterrole-readonly.yaml
