@@ -104,7 +104,7 @@ sha256sum --check SHA256SUMS
 
 ## 2. Import images into your registry
 
-1. Import and push each image archive to your registry. The recommended tool is `skopeo`, because it copies an image archive directly into a registry without needing a local container runtime, and preserves the exact image digest instead of rebuilding the image. `docker load` and `podman load` followed by `docker push`/`podman push` also work with these archives if you prefer a tool you already have installed:
+1. Import and push each image archive to your registry. The recommended tool is `skopeo`, because it copies an image archive directly into a registry without requiring a local container runtime, and it preserves the exact image digest instead of rebuilding the image. `docker load` and `podman load` followed by `docker push`/`podman push` also work with these archives if you prefer a tool you already have installed:
 
    ```sh
    skopeo copy \
