@@ -64,7 +64,7 @@ In a manual or RDT-driven RegattaDB deployment, you decide which node runs which
   />
 </Frame>
 
-Unlike a manual deployment, you do not choose per-Pod module placement here. The operator uses this default layout; the only placement decision you make today is how many RDB replicas to configure.
+Unlike a manual deployment, you do not choose per-Pod module placement here. The operator uses this default layout; the only placement decision you make is how many RDB replicas to configure.
 
 Each Pod also gets one or more stable Kubernetes Services, giving it a fixed network address, similar to assigning a fixed internal IP address to each node in a manual deployment. The SM Pod has one Service, and every RDB Pod has its own dedicated Service, so its address does not change even if Kubernetes moves the Pod to a different Kubernetes node.
 
