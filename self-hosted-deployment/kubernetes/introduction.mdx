@@ -27,9 +27,9 @@ The **Regatta operator** is a Kubernetes controller that automates deploying and
 | [`spec`](https://kubernetes.io/docs/concepts/overview/working-with-objects/#object-spec-and-status) | The part of your `RegattaCluster` resource where you write the state you want; only you (and the operator's defaults) ever set it |
 | [`status`](https://kubernetes.io/docs/concepts/overview/working-with-objects/#object-spec-and-status) | The part of your `RegattaCluster` resource where the operator reports the state it observed; never edit it yourself |
 | [Operator](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/) | The program that continuously watches your `RegattaCluster` resource and keeps Kubernetes and RegattaDB matching it |
-| [Helm](https://helm.sh/docs/) | An optional package manager for Kubernetes, containing a chart is a package of resources, a release is one installation of a chart, and a values file is the YAML file that holds your settings for a release |
+| [Helm](https://helm.sh/docs/) | An optional package manager for Kubernetes, containing charts and value files that holds your settings for a release |
 
-## What the operator does for you
+## What the Regatta Operator does for you
 
 - **Describes your deployment as a single Kubernetes resource**: the `RegattaCluster` resource captures the RegattaDB image, module settings, storage, and resource sizing you want.
 - **Creates and maintains the Kubernetes resources RegattaDB needs**: StatefulSets, Services, ConfigMaps, and storage claims, generated and kept in sync automatically.
