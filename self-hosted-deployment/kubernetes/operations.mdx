@@ -46,7 +46,7 @@ Useful fields:
 
 ## Making supported changes
 
-Once your `RegattaCluster` resource exists, a small set of fields remain mutable, though some have side effects worth planning for:
+Once your `RegattaCluster` resource exists, only a few fields remain mutable, though some have side effects worth planning for:
 
 - `spec.image` (`tag`, `digest`, `pullPolicy`, `pullSecrets`), which triggers a StatefulSet rolling update - see [Configure the image](/self-hosted-deployment/kubernetes/configuration/overview#configure-the-image) for details.
 - `config` on any module. Note that changing it restarts the Pod or Pods that host the affected module.
