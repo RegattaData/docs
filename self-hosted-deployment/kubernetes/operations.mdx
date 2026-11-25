@@ -70,7 +70,7 @@ If you created the resource with Helm, run `helm uninstall` instead; see [Delete
 Deletion:
 
 1. Makes a bounded attempt, up to 30 seconds, to stop RegattaDB through the System Manager if it is running.
-2. Continues even if that stop attempt fails, recording a warning Event instead of blocking.
+2. Continues even if that stop attempt fails, recording a warning event instead of blocking.
 3. Deletes the generated StatefulSets, Services, ConfigMaps, and the credentials Secret.
 4. Leaves every `PersistentVolumeClaim` in place, so your data is not deleted along with the `RegattaCluster` resource.
 
