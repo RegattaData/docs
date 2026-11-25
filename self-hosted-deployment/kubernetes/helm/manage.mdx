@@ -65,7 +65,7 @@ Helm deletes the `RegattaCluster` resource. The operator then stops RegattaDB, r
   Do not remove the operator while a `RegattaCluster` resource still exists. Without the operator, nothing manages or reports on the running RegattaDB system, and the resource cannot be deleted until the operator is installed again. Delete every `RegattaCluster` resource in the namespace first.
 </Warning>
 
-1. Confirm that no `RegattaCluster` resource is left in the namespace. The command should print `No resources found`:
+1. Confirm that no `RegattaCluster` resource is left in the namespace. The command below should print `No resources found`:
 
    ```sh
    kubectl -n <namespace> get rgc
