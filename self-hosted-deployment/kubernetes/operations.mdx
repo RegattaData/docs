@@ -3,9 +3,9 @@ title: "Operations"
 description: "How the operator keeps Kubernetes and RegattaDB in sync, reading status, making supported changes, and upgrading or removing the operator."
 ---
 
-## How the operator keeps things in sync
+## How the Regatta Operator keeps things in sync
 
-After you apply a `RegattaCluster` resource, the operator continuously works to bring Kubernetes and RegattaDB into the state you described:
+After you apply a `RegattaCluster` resource, the Regatta Operator continuously works to bring Kubernetes and RegattaDB into the state you described:
 
 1. It creates or updates the StatefulSets, Services, ConfigMaps, and Secret your `RegattaCluster` resource requires.
 2. It waits until the storage your Pods requested is bound, and every Pod is running and ready.
@@ -14,9 +14,11 @@ After you apply a `RegattaCluster` resource, the operator continuously works to 
 
 Kubernetes objects being healthy is necessary but not sufficient: your `RegattaCluster` resource only reports readiness once RegattaDB itself confirms, through the System Manager, that it is active and healthy.
 
-## Reading RegattaCluster status
+## Reading `RegattaCluster` status
 
-`status` is owned by the operator; never edit it yourself. Useful fields:
+`status` is owned by the operator; never edit it yourself. 
+
+Useful fields:
 
 - `status.observedGeneration`: the most recent `spec` generation the operator has reconciled. If this lags behind `metadata.generation`, the operator has not caught up yet.
 - `status.endpoints.sm` and `status.endpoints.rdbs[]`: the Service names, DNS names, ClusterIPs, and ports the operator advertised to RegattaDB. RegattaDB clients and management tools should use these addresses from `status`; `spec` never contains live connection addresses, only your desired configuration.
