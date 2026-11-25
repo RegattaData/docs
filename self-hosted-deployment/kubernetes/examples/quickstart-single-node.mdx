@@ -6,10 +6,10 @@ description: "Install the operator and stand up a single-node RegattaDB deployme
 This page walks you through creating your first `RegattaCluster` resource. Make sure you've completed [Installation](../installation.mdx) first: the operator must already be running in your cluster.
 
 <Note>
-  Deploying with Helm? Follow [Create a RegattaCluster with Helm](/self-hosted-deployment/kubernetes/helm/create-regattacluster) instead of this page.
+  Deploying with Helm? Follow [Create a `RegattaCluster` with Helm](/self-hosted-deployment/kubernetes/helm/create-regattacluster) instead of this page.
 </Note>
 
-## 1. Create a RegattaCluster resource
+## 1. Create a `RegattaCluster` resource
 
 A minimal `RegattaCluster` resource looks like this:
 
@@ -62,7 +62,7 @@ kubectl -n <namespace> wait --for=condition=Ready \
 | `wait --for=condition=Ready` | Waits until the `Ready` condition is `True`, then prints `condition met`. If it times out, see [Troubleshooting](/self-hosted-deployment/kubernetes/troubleshooting) |
 
 <Note>
-  A new `RegattaCluster` resource does not become `Ready` immediately: Kubernetes must provision storage and start Pods before the operator can configure and start RegattaDB through the System Manager. Track `status.conditions` (see [Reading RegattaCluster Status](../operations.mdx#reading-regattacluster-status)) until you see `Ready` reported as `True`, rather than expecting readiness right away.
+  A new `RegattaCluster` resource does not become `Ready` immediately: Kubernetes must provision storage and start Pods before the operator can configure and start RegattaDB through the System Manager. Track `status.conditions` (see [Reading `RegattaCluster` Status](../operations.mdx#reading-regattacluster-status)) until you see `Ready` reported as `True`, rather than expecting readiness right away.
 </Note>
 
 ## Next steps

@@ -1,6 +1,6 @@
 ---
 title: "Create a RegattaCluster with Helm"
-description: "Create a RegattaCluster resource from a values file with the regattacluster Helm chart."
+description: "Create a `RegattaCluster` resource from a values file with the regattacluster Helm chart."
 ---
 
 The `regattacluster` chart creates one `RegattaCluster` resource per Helm release, from a values file instead of a hand-edited manifest. The chart creates only that resource. The operator then creates everything else, exactly as it does for a raw manifest.
@@ -74,7 +74,7 @@ kubectl -n <namespace> wait --for=condition=Ready \
 | `wait --for=condition=Ready` | Waits until the `Ready` condition is `True`, then prints `condition met`. If it times out, see [Troubleshooting](/self-hosted-deployment/kubernetes/troubleshooting) |
 
 <Note>
-  A new `RegattaCluster` resource does not become `Ready` immediately: Kubernetes must provision storage and start Pods before the operator can configure and start RegattaDB through the System Manager. See [Reading RegattaCluster status](/self-hosted-deployment/kubernetes/operations#reading-regattacluster-status) for what each condition means.
+  A new `RegattaCluster` resource does not become `Ready` immediately: Kubernetes must provision storage and start Pods before the operator can configure and start RegattaDB through the System Manager. See [Reading `RegattaCluster` status](/self-hosted-deployment/kubernetes/operations#reading-regattacluster-status) for what each condition means.
 </Note>
 
 ## Next steps

@@ -1,11 +1,11 @@
 ---
 title: "Configuration Overview"
-description: "The RegattaCluster resource: object header, image, and module settings."
+description: "The `RegattaCluster` resource: object header, image, and module settings."
 ---
 
-Everything you configure resides in a single `RegattaCluster` resource. This page covers the fields set for every deployment: the object header, RegattaDB image, and per-module settings. See [Storage](./storage.mdx), [Networking](./networking.mdx), [Security & Lifecycle](./security-and-lifecycle.mdx), and [Resources & Scheduling](./resources-and-scheduling.mdx) for the rest of the spec.
+Everything you configure resides in a single `RegattaCluster` resource. This page covers the fields set for every deployment: the object header, RegattaDB image, and per-module settings. See [Storage](./storage.mdx), [Networking](./networking.mdx), [Security & Lifecycle](./security-and-lifecycle.mdx), and [Resources & Scheduling](./resources-and-scheduling.mdx) for the rest of the `spec`.
 
-## A minimal RegattaCluster resource
+## A minimal `RegattaCluster` resource
 
 ```yaml
 apiVersion: regatta.dev/<crd-api-version>
@@ -27,7 +27,7 @@ spec:
     size: 10Gi
 ```
 
-`spec.image`, `spec.rdb`, `spec.repoStorage`, and `spec.logs` are required. The rest of this page, and the pages that follow, walk through every field. See [Quickstart: Single-Node RegattaCluster](../examples/quickstart-single-node.mdx) to apply this example end to end. To create the same resource from a Helm values file instead, see [Create a RegattaCluster with Helm](/self-hosted-deployment/kubernetes/helm/create-regattacluster).
+`spec.image`, `spec.rdb`, `spec.repoStorage`, and `spec.logs` are required. The rest of this page, and the pages that follow, walk through every field. See [Quickstart: Single-Node `RegattaCluster`](../examples/quickstart-single-node.mdx) to apply this example end to end. To create the same resource from a Helm values file instead, see [Create a `RegattaCluster` with Helm](/self-hosted-deployment/kubernetes/helm/create-regattacluster).
 
 ## Configure the object header
 
@@ -48,7 +48,7 @@ spec:
 | `spec.image.pullPolicy` | `IfNotPresent` | `Always`, `IfNotPresent`, or `Never` |
 | `spec.image.pullSecrets` | Optional | Names of image-pull Secrets in your namespace, for a private image repository |
 
-Changing `spec.image` updates the affected StatefulSet and triggers a native Kubernetes rolling update: Pods are replaced one at a time, waiting for each replacement Pod to become Ready before moving to the next. For the SM Pod (a single replica) this means one restart; for RDB, replicas are replaced one at a time so the others keep serving. You cannot control the pace or order of this rollout. The image must provide `/opt/regatta/current` as a symlink to its release directory.
+Changing `spec.image` updates the affected `StatefulSet` and triggers a native Kubernetes rolling update: Pods are replaced one at a time, waiting for each replacement Pod to become `Ready` before moving to the next. For the SM Pod (a single replica) this means one restart; for RDB, replicas are replaced one at a time so the others keep serving. You cannot control the pace or order of this rollout. The image must provide `/opt/regatta/current` as a symlink to its release directory.
 
 ## Configure module settings
 
@@ -73,7 +73,7 @@ Default ports:
 | DCM | 8844 | 5004 |
 | RDB | 8850 | 6001 |
 
-## RegattaCluster examples
+## `RegattaCluster` examples
 
 `config/examples/` in the release package includes:
 

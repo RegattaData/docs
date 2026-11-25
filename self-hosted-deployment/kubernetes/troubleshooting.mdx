@@ -1,6 +1,6 @@
 ---
 title: "Troubleshooting"
-description: "Diagnose a RegattaCluster resource that isn't reaching Ready."
+description: "Diagnose a `RegattaCluster` resource that isn't reaching `Ready`."
 ---
 
 Start with the resource's own status and events:
@@ -33,9 +33,9 @@ kubectl -n <namespace> describe pvc <pvc-name>
 
 ## `KubernetesReady` is `False`
 
-One or both StatefulSets haven't finished rolling out, or their Pods aren't Running and Ready yet.
+One or both `StatefulSets` haven't finished rolling out, or their Pods aren't `Running` and `Ready` yet.
 
-**Solution:** check StatefulSet rollout and Pod scheduling, image pulls, init containers, and readiness:
+**Solution:** check `StatefulSet` rollout and Pod scheduling, image pulls, init containers, and readiness:
 
 ```sh
 kubectl -n <namespace> rollout status statefulset/my-regattadb-sm
@@ -58,4 +58,4 @@ kubectl -n <namespace> logs deployment/regatta-operator
   Never print the contents of the credentials Secret while troubleshooting; nothing in it is needed to diagnose any of these conditions.
 </Danger>
 
-See [Reading RegattaCluster Status](./operations.mdx#reading-regattacluster-status) for what each condition and status field means.
+See [Reading `RegattaCluster` Status](./operations.mdx#reading-regattacluster-status) for what each condition and status field means.

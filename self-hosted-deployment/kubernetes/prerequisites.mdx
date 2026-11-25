@@ -7,7 +7,7 @@ Before you start, make sure you have:
 
 - `kubectl`, and the Helm CLI if you deploy with Helm.
 - The release package. After you extract it in [Installation](/self-hosted-deployment/kubernetes/installation), run the commands in this section from its root directory, where `config/` and `charts/` are located.
-- Access to a Kubernetes cluster, with a `kubeconfig` that can create namespaces and install a CustomResourceDefinition, RBAC, and a Deployment.
+- Access to a Kubernetes cluster, with a `kubeconfig` that can create namespaces and install a `CustomResourceDefinition`, RBAC, and a Deployment.
 - A namespace to install into. This section uses `<namespace>` as a placeholder for the Kubernetes namespace where you want the operator and RegattaDB to run.
 - A registry reachable from every Kubernetes node that will run RegattaDB or the operator, and any credentials it requires for image pulls.
 - Enough CPU and RAM on your Kubernetes nodes for the SM Pod and every RDB Pod you plan to run (see [Deployment Architecture](/self-hosted-deployment/kubernetes/introduction#deployment-architecture)).

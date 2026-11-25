@@ -1,6 +1,6 @@
 ---
 title: "Upgrade, Change, and Remove"
-description: "Upgrade the operator, change or delete a RegattaCluster, and remove the operator when you deploy with Helm."
+description: "Upgrade the operator, change or delete a `RegattaCluster`, and remove the operator when you deploy with Helm."
 ---
 
 Run the commands on this page from the root of the extracted release package.
@@ -31,7 +31,7 @@ kubectl -n <namespace> rollout status deployment/regatta-operator
 
 Existing `RegattaCluster` resources keep running. See [Upgrading the operator](/self-hosted-deployment/kubernetes/operations#upgrading-the-operator) for what an upgrade does and does not change.
 
-## Change a RegattaCluster
+## Change a `RegattaCluster`
 
 Change the resource by editing your values file and upgrading the release, not by editing the resource with `kubectl`:
 
@@ -51,13 +51,13 @@ helm get manifest my-regattadb --namespace <namespace>
 
 `helm get values` prints the values you supplied. `helm get manifest` prints the `RegattaCluster` manifest Helm generated from them.
 
-## Delete a RegattaCluster
+## Delete a `RegattaCluster`
 
 ```sh
 helm uninstall my-regattadb --namespace <namespace>
 ```
 
-Helm deletes the `RegattaCluster` resource. The operator then stops RegattaDB, removes the resources it generated, and keeps every `PersistentVolumeClaim`. [Deleting a RegattaCluster](/self-hosted-deployment/kubernetes/operations#deleting-a-regattacluster) describes these steps, how to confirm the result, and how to delete the retained PVCs.
+Helm deletes the `RegattaCluster` resource. The operator then stops RegattaDB, removes the resources it generated, and keeps every `PersistentVolumeClaim`. [Deleting a `RegattaCluster`](/self-hosted-deployment/kubernetes/operations#deleting-a-regattacluster) describes these steps, how to confirm the result, and how to delete the retained PVCs.
 
 ## Remove the operator
 

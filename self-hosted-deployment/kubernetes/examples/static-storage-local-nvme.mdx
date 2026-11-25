@@ -73,7 +73,7 @@ A Kubernetes `local` volume needs no CSI driver or provisioner for static bindin
 
 If you have raw devices on more than one Kubernetes node, repeat this pattern once per node: one pair of `PersistentVolumes` (pinned through `nodeAffinity`) for every node that has its own local devices.
 
-## 3. Point your RegattaCluster resource at these `PersistentVolumes`
+## 3. Point your `RegattaCluster` resource at these `PersistentVolumes`
 
 ```yaml
 rdb:
@@ -88,7 +88,7 @@ rdb:
         regatta.dev/cluster: my-regattadb
 ```
 
-With Helm, put the same `rdb` block under `spec` in your values file; see [Create a RegattaCluster with Helm](/self-hosted-deployment/kubernetes/helm/create-regattacluster).
+With Helm, put the same `rdb` block under `spec` in your values file; see [Create a `RegattaCluster` with Helm](/self-hosted-deployment/kubernetes/helm/create-regattacluster).
 
 ## 4. Apply and verify
 
