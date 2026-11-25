@@ -144,7 +144,7 @@ An upgrade affects what already exists as follows:
    kubectl -n <namespace> delete -f config/rbac/serviceaccount.yaml
    ```
 
-   This does not remove the CRD, the namespace, or retained PVCs.
+   This does not remove the CRD, the namespace, or the retained PVCs.
 
 3. Optionally, remove the CRD. The CRD is cluster-wide: deleting it deletes every `RegattaCluster` resource in every namespace. Remove it only when the first command below prints `No resources found`:
 
