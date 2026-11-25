@@ -49,7 +49,7 @@ Useful fields:
 Once your `RegattaCluster` resource exists, only a few fields remain mutable, though some have side effects worth planning for:
 
 - `spec.image` (`tag`, `digest`, `pullPolicy`, `pullSecrets`), which triggers a StatefulSet rolling update - see [Configure the image](/self-hosted-deployment/kubernetes/configuration/overview#configure-the-image) for details.
-- `config` on any module. Note that changing it restarts the Pod or Pods that host the affected module.
+- `config` on any module. Note that changing it restarts the Pods that host the affected module.
 - `spec.rdb.service.type` and `spec.rdb.service.port` (the aggregate RDB Service's own type and exposed port) only affect that Service object. RDB's actual container port stays fixed, and Kubernetes forwards the externally exposed port to it correctly, so both are always safe to change.
 - `spec.lifecycle.start`: set to `false` to stop RegattaDB while keeping Kubernetes Pods running, and back to `true` to start it again.
 
