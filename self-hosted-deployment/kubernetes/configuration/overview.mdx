@@ -1,11 +1,11 @@
 ---
 title: "Configuration Overview"
-description: "The RegattaCluster resource: object header, version and image, and module settings."
+description: "The `RegattaCluster` resource: object header, image, and module settings."
 ---
 
-Everything you configure lives in a single `RegattaCluster` resource. This page covers the fields you set for every deployment: the object header, RegattaDB version and image, and per-module settings. See [Storage](./storage.mdx), [Networking](./networking.mdx), [Security & Lifecycle](./security-and-lifecycle.mdx), and [Resources & Scheduling](./resources-and-scheduling.mdx) for the rest of the spec.
+Everything you configure resides in a single `RegattaCluster` resource. This page covers the fields set for every deployment: the object header, RegattaDB image, and per-module settings. See [Storage](./storage.mdx), [Networking](./networking.mdx), [Security & Lifecycle](./security-and-lifecycle.mdx), and [Resources & Scheduling](./resources-and-scheduling.mdx) for the rest of the `spec`.
 
-## A minimal RegattaCluster resource
+## A minimal `RegattaCluster` resource
 
 ```yaml
 apiVersion: regatta.dev/<crd-api-version>
@@ -14,25 +14,20 @@ metadata:
   name: my-regattadb
   namespace: <namespace>
 spec:
-  version: "<version>"
   image:
-    repository: registry.example.com/regatta
+    repository: registry.example.com/regatta-db
     tag: "<version>"
-  security:
-    runAsUser: 1000
-    runAsGroup: 1001
-    fsGroup: 1001
   rdb:
-    replicas: 3
+    replicas: 1
     blockStorage:
-      size: 60Gi
+      size: 350Gi
   repoStorage:
-    size: 5Gi
+    size: 10Gi
   logs:
-    size: 5Gi
+    size: 10Gi
 ```
 
-`spec.version`, `spec.image`, `spec.rdb`, `spec.repoStorage`, and `spec.logs` are required. The rest of this page, and the pages that follow it, walk through every field. See [Quickstart: Single-Node RegattaCluster](../examples/quickstart-single-node.mdx) to apply this example end to end.
+`spec.image`, `spec.rdb`, `spec.repoStorage`, and `spec.logs` are required. The rest of this page, and the pages that follow, walk through every field. See [Quickstart: Single-Node `RegattaCluster`](../examples/quickstart-single-node.mdx) to apply this example end to end. To create the same resource from a Helm values file instead, see [Create a `RegattaCluster` with Helm](/self-hosted-deployment/kubernetes/helm/create-regattacluster).
 
 ## Configure the object header
 
@@ -43,18 +38,17 @@ spec:
 | `metadata.name` | A unique, DNS-compatible name. It is used to name every generated resource, so keep the total generated names under 63 characters |
 | `metadata.namespace` | The namespace where you installed the operator |
 
-## Configure version and image
+## Configure the image
 
 | Field | Required/default | Description |
 | --- | --- | --- |
-| `spec.version` | Required; immutable after creation | The RegattaDB release version. It must match the release built into your image |
 | `spec.image.repository` | Required | The RegattaDB image repository in your registry |
 | `spec.image.tag` | Required unless `digest` is set | An image tag |
 | `spec.image.digest` | Required unless `tag` is set | An immutable image digest, for example `sha256:...`; prefer this for production |
 | `spec.image.pullPolicy` | `IfNotPresent` | `Always`, `IfNotPresent`, or `Never` |
 | `spec.image.pullSecrets` | Optional | Names of image-pull Secrets in your namespace, for a private image repository |
 
-You can change `spec.image` after creation as long as `spec.version` stays the same. The operator applies the change as a same-version rolling update of the affected StatefulSet: standard Kubernetes StatefulSet behavior that replaces Pods one at a time, waiting for each replacement Pod to become Ready before moving to the next, rather than restarting every Pod at once. For the SM Pod (a single replica) this means one restart; for RDB, replicas are replaced one at a time so the others keep serving. You cannot control the pace or order of this rollout.
+Changing `spec.image` updates the affected `StatefulSet` and triggers a native Kubernetes rolling update: Pods are replaced one at a time, waiting for each replacement Pod to become `Ready` before moving to the next. For the SM Pod (a single replica) this means one restart; for RDB, replicas are replaced one at a time so the others keep serving. You cannot control the pace or order of this rollout. The image must provide `/opt/regatta/current` as a symlink to its release directory.
 
 ## Configure module settings
 
@@ -66,7 +60,7 @@ RegattaDB has six modules: SM, SNA, Sequencer, GDD, DCM, and RDB. Each has its o
 | `service_port` | Module default (see table below) | Yes | RegattaDB's own internal service port for the module, used for internal service operations |
 | `num_threads` | Optional | Yes | The module's thread allocation. If set, `spec.resources` must cover it (see [Resources & Scheduling](./resources-and-scheduling.mdx)) |
 | `ram_MB` | Optional | Yes | The module's memory allocation in megabytes. If set, `spec.resources` must cover it |
-| `config` | `{}` | No | RegattaDB module settings as string key/value pairs. Every value must be a string, even for numbers or booleans, for example `"1"` rather than `1` |
+| `config` | `{}` | No | RegattaDB module settings as string key/value pairs. Every value must be a string, even for numbers or Booleans, for example `"1"` rather than `1` |
 
 Default ports:
 
@@ -79,13 +73,15 @@ Default ports:
 | DCM | 8844 | 5004 |
 | RDB | 8850 | 6001 |
 
-## RegattaCluster examples
+## `RegattaCluster` examples
 
 `config/examples/` in the release package includes:
 
 - `regatta-minimal.yaml`: the smallest example, shown above.
 - `regatta-full.yaml`: a comprehensive example that sets every configurable field, across every module, storage setting, and resource profile. Use it as a field-by-field reference, not as sizing guidance.
-- `regatta-static-storage.yaml`: uses pre-created `PersistentVolumes` for RDB block storage instead of a `StorageClass`, with more than one raw block device per RDB Pod. See [Example: Two Local NVMe Devices, One RDB Replica](../examples/static-storage-local-nvme.mdx) for a full walkthrough.
+- `regatta-static-storage.yaml`: uses pre-created `PersistentVolumes` for RDB block storage instead of a `StorageClass`, with more than a single raw block device per RDB Pod. See [Example: Two Local NVMe Devices, One RDB Replica](../examples/static-storage-local-nvme.mdx) for a full walkthrough.
+
+With Helm, the chart baseline takes the place of`regatta-minimal.yaml,` and the commented example in `charts/regattacluster/values.yaml` shows the commonly set fields; see [Values and deployment profiles](/self-hosted-deployment/kubernetes/helm/values-and-profiles).
 
 ## Next steps
 

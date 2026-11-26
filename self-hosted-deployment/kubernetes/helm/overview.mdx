@@ -1,0 +1,40 @@
+---
+title: "Overview"
+description: "Install the Regatta operator and create a `RegattaCluster` resource with the Helm charts in the release package."
+---
+
+The release package includes two Helm charts. They are an alternative to the raw manifests under `config/`: the Regatta Operator and the `RegattaCluster` resource you end up with are the same.
+
+| Chart | What it installs |
+| --- | --- |
+| `charts/regatta-operator` | The CRD, the operator's `ServiceAccount` and RBAC, and the operator Deployment |
+| `charts/regattacluster` | One `RegattaCluster` resource per Helm release |
+
+With Helm, your settings reside in a values file instead of hand-edited manifests, and you can start from a Regatta-maintained [deployment profile](/self-hosted-deployment/kubernetes/helm/values-and-profiles#deployment-profiles) for your environment.
+
+<Note>
+  For each resource, use either Helm or the raw manifests, not both.
+</Note>
+
+## Deployment flow
+
+<Steps>
+  <Step title="Prepare the package and images">
+    Meet the [Prerequisites](/self-hosted-deployment/kubernetes/prerequisites), then complete steps 1 through 3 of [Installation](/self-hosted-deployment/kubernetes/installation): extract the package, import the images, and configure registry access. Skip step 4; Helm replaces it.
+  </Step>
+  <Step title="Install the operator">
+    [Install the operator with Helm](/self-hosted-deployment/kubernetes/helm/install-operator).
+  </Step>
+  <Step title="Create a `RegattaCluster`">
+    [Create a `RegattaCluster` with Helm](/self-hosted-deployment/kubernetes/helm/create-regattacluster) from a values file.
+  </Step>
+  <Step title="Operate">
+    [Upgrade, change, and remove](/self-hosted-deployment/kubernetes/helm/manage) your deployment with Helm.
+  </Step>
+</Steps>
+
+## What stays the same
+
+- **The `RegattaCluster` `spec`.** Every field in [Configuration](/self-hosted-deployment/kubernetes/configuration/overview) applies unchanged. With Helm, you set it under `spec` in your values file.
+- **The operator.** Helm only creates the `RegattaCluster` resource. The operator creates the Pods, storage claims, and Services, and reports readiness in `status`; see [Operations](/self-hosted-deployment/kubernetes/operations).
+- **Your infrastructure.** Helm creates no storage and no nodes. The requirements in [Prerequisites](/self-hosted-deployment/kubernetes/prerequisites) apply unchanged.

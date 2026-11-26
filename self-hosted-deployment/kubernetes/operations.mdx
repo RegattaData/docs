@@ -1,25 +1,27 @@
 ---
 title: "Operations"
-description: "How the operator keeps Kubernetes and RegattaDB in sync, reading status, and making supported changes."
+description: "How the operator keeps Kubernetes and RegattaDB in sync, reading status, making supported changes, and upgrading or removing the operator."
 ---
 
-## How the operator keeps things in sync
+## How the Regatta Operator keeps things in sync
 
-After you apply a `RegattaCluster` resource, the operator continuously works to bring Kubernetes and RegattaDB into the state you described:
+After you apply a `RegattaCluster` resource, the Regatta Operator continuously works to bring Kubernetes and RegattaDB into the state you described:
 
-1. It creates or updates the StatefulSets, Services, ConfigMaps, and Secret your `RegattaCluster` resource requires.
+1. It creates or updates the `StatefulSets`, Services, `ConfigMaps`, and Secret your `RegattaCluster` resource requires.
 2. It waits until the storage your Pods requested is bound, and every Pod is running and ready.
 3. Once Kubernetes is ready, it configures and starts, or stops, RegattaDB through the System Manager (SM), using the Service addresses Kubernetes created.
-4. It writes what it observed, including readiness, endpoints, and RegattaDB health, back into your `RegattaCluster` resource's status, and repeats this cycle so any drift is corrected automatically, at least every five minutes even without any change.
+4. It writes what it observed, including readiness, endpoints, and RegattaDB health, back into your `RegattaCluster` resource's `status`, and repeats this cycle so any drift is corrected automatically, at least every five minutes even without any change.
 
 Kubernetes objects being healthy is necessary but not sufficient: your `RegattaCluster` resource only reports readiness once RegattaDB itself confirms, through the System Manager, that it is active and healthy.
 
-## Reading RegattaCluster status
+## Reading `RegattaCluster` status
 
-`status` is owned by the operator; never edit it yourself. Useful fields:
+`status` is owned by the operator; never edit it yourself. 
+
+Useful fields:
 
 - `status.observedGeneration`: the most recent `spec` generation the operator has reconciled. If this lags behind `metadata.generation`, the operator has not caught up yet.
-- `status.endpoints.sm` and `status.endpoints.rdbs[]`: the Service names, DNS names, ClusterIPs, and ports the operator advertised to RegattaDB. RegattaDB clients and management tools should use these addresses from `status`; `spec` never contains live connection addresses, only your desired configuration.
+- `status.endpoints.sm` and `status.endpoints.rdbs[]`: the Service names, DNS names, `ClusterIPs`, and ports the operator advertised to RegattaDB. RegattaDB clients and management tools should use these addresses from `status`; `spec` never contains live connection addresses, only your desired configuration.
 - `status.rdb`: `desiredReplicas`, `readyPods`, `configuredReplicas`, and `activeReplicas` - how many RDB Pods exist, are ready, are configured in RegattaDB, and are active.
 - `status.modules`: per-module role summaries (`total`/`active`/`down`), as RegattaDB itself reports them.
 - `status.devices`: raw block device health, with a `status`, a `healthy` flag, a `failed` list of device names that are not healthy, and an `items[]` list. Each item includes the device's `name`, `path`, `node`, and `module`.
@@ -33,9 +35,9 @@ Kubernetes objects being healthy is necessary but not sufficient: your `RegattaC
 | --- | --- | --- |
 | `Progressing` | Waiting for infrastructure to become ready, or a RegattaDB action was just issued and a follow-up check is scheduled | Steady state with nothing pending (`KubernetesResourcesApplied`), or a permanent error blocked reconciliation - check `Degraded` and this condition's `message` |
 | `StorageReady` | Every expected `PersistentVolumeClaim` exists and is bound (`StorageHealthy`) | No `PersistentVolumeClaims` observed yet (`WaitingForStorage`), or some are missing, unbound, or otherwise unhealthy (`PVCsNotBound`) |
-| `KubernetesReady` | Both StatefulSets are fully rolled out and every expected Pod is Running and Ready (`WorkloadsReady`) | Pods are not ready (`PodsNotReady`), or a StatefulSet has not rolled out (`WorkloadsNotReady`) |
+| `KubernetesReady` | Both `StatefulSets` are fully rolled out and every expected Pod is `Running` and `Ready` (`WorkloadsReady`) | Pods are not ready (`PodsNotReady`), or a `StatefulSet` has not rolled out (`WorkloadsNotReady`) |
 | `Ready` | RegattaDB itself, through the System Manager, confirms it is active and healthy, in addition to Kubernetes being ready | Kubernetes is not ready yet (`InfrastructureNotReady`), or Kubernetes is ready but SM has not confirmed active and healthy yet (`RegattaStatusPending`) |
-| `Degraded` | A permanent error blocked reconciliation - for example, reason `ValidationFailed` for spec values only caught at reconcile time; check the condition's `message` for the cause | Normal operation, including a `RegattaCluster` resource you deliberately stopped (`spec.lifecycle.start: false`), which is not treated as degraded |
+| `Degraded` | A permanent error blocked reconciliation - for example, reason `ValidationFailed` for `spec` values only caught at reconcile time; check the condition's `message` for the cause | Normal operation, including a `RegattaCluster` resource you deliberately stopped (`spec.lifecycle.start: false`), which is not treated as degraded |
 | `RegattaStopped` | Present only when `spec.lifecycle.start: false`. SM confirms RegattaDB is stopped | The stop is still in progress (`RegattaStopping`) |
 
 <Note>
@@ -44,33 +46,111 @@ Kubernetes objects being healthy is necessary but not sufficient: your `RegattaC
 
 ## Making supported changes
 
-Once your `RegattaCluster` resource exists, a small set of fields remain mutable, though some have side effects worth planning for:
+Once your `RegattaCluster` resource exists, only a few fields remain mutable, though some have side effects worth planning for:
 
-- `spec.image` (`tag`, `digest`, `pullPolicy`, `pullSecrets`), as long as `spec.version` stays the same. The operator applies this as a same-version rolling update - see [Configure Version And Image](./configuration/overview.mdx#configure-version-and-image) for what that means and what you can/cannot control.
-- `config` on any module. Note that changing it restarts the Pod or Pods that host the affected module.
+- `spec.image` (`tag`, `digest`, `pullPolicy`, `pullSecrets`), which triggers a `StatefulSet` rolling update - see [Configure the image](/self-hosted-deployment/kubernetes/configuration/overview#configure-the-image) for details.
+- `config` on any module. Note that changing it restarts the Pods that host the affected module.
 - `spec.rdb.service.type` and `spec.rdb.service.port` (the aggregate RDB Service's own type and exposed port) only affect that Service object. RDB's actual container port stays fixed, and Kubernetes forwards the externally exposed port to it correctly, so both are always safe to change.
 - `spec.lifecycle.start`: set to `false` to stop RegattaDB while keeping Kubernetes Pods running, and back to `true` to start it again.
 
-Every other field covered in [Configuration](./configuration/overview.mdx), including `spec.version`, `spec.rdb.replicas`, `spec.rdb.devices`, module `port`/`service_port`/`num_threads`/`ram_MB`, and every storage setting, is immutable once your `RegattaCluster` resource is created.
+Every other field covered in [Configuration](./configuration/overview.mdx), including `spec.rdb.replicas`, `spec.rdb.devices`, module `port`/`service_port`/`num_threads`/`ram_MB`, and every storage setting, is immutable once your `RegattaCluster` resource is created.
 
-## Deleting a RegattaCluster
+If you created the resource with Helm, apply changes with `helm upgrade` instead of editing the resource; see [Change a `RegattaCluster`](/self-hosted-deployment/kubernetes/helm/manage#change-a-regattacluster).
 
-Delete the resource like any other Kubernetes object:
+## Deleting a `RegattaCluster`
+
+Delete the `RegattaCluster` resource like any other Kubernetes object:
 
 ```sh
 kubectl -n <namespace> delete rgc my-regattadb
 ```
 
+If you created the resource with Helm, run `helm uninstall` instead; see [Delete a `RegattaCluster`](/self-hosted-deployment/kubernetes/helm/manage#delete-a-regattacluster). The operator does the same work in both cases.
+
 Deletion:
 
 1. Makes a bounded attempt, up to 30 seconds, to stop RegattaDB through the System Manager if it is running.
-2. Continues even if that stop attempt fails, recording a warning Event instead of blocking.
-3. Deletes the generated StatefulSets, Services, ConfigMaps, and the credentials Secret.
+2. Continues even if that stop attempt fails, recording a warning event instead of blocking.
+3. Deletes the generated `StatefulSets`, Services, `ConfigMaps`, and the credentials Secret.
 4. Leaves every `PersistentVolumeClaim` in place, so your data is not deleted along with the `RegattaCluster` resource.
 
-If you are certain the data is no longer needed, delete the retained PVCs explicitly:
+Confirm the result:
+
+```sh
+kubectl -n <namespace> get rgc
+kubectl -n <namespace> get pvc -l app.kubernetes.io/instance=my-regattadb
+```
+
+The first command no longer lists `my-regattadb`. The second lists the PVCs that were kept.
+
+If you are certain the data is no longer needed, delete the retained PVCs explicitly. Depending on each volume's reclaim policy, this also deletes the underlying storage:
 
 ```sh
 kubectl -n <namespace> delete pvc \
   -l app.kubernetes.io/name=regatta,app.kubernetes.io/instance=my-regattadb,app.kubernetes.io/managed-by=regatta-operator
 ```
+
+## Upgrading the operator
+
+When a new release changes the CRD, apply the new CRD before you upgrade the operator, so the operator never sees a `spec` that the API server does not accept yet. From the new release package:
+
+1. Apply the new CRD:
+
+   ```sh
+   kubectl apply -f config/crd/regattacluster-crd.yaml
+   ```
+
+   The command reports the CRD as `configured`, or `unchanged` if the release did not change it.
+
+2. Set the new operator image in `config/operator/deployment.yaml`, then apply the RBAC and Deployment manifests again, as in [Install the operator](/self-hosted-deployment/kubernetes/installation#4-install-the-operator).
+
+3. Confirm that the new operator is running. The command prints `successfully rolled out`:
+
+   ```sh
+   kubectl -n <namespace> rollout status deployment/regatta-operator
+   ```
+
+If you installed the operator with Helm, follow [Upgrade the operator](/self-hosted-deployment/kubernetes/helm/manage#upgrade-the-operator) instead.
+
+An upgrade affects what already exists as follows:
+
+- Applying an updated CRD only changes what the Kubernetes API server accepts from then on. It does not modify or restart any existing `RegattaCluster` resource.
+- Upgrading the operator replaces only the operator's own Deployment. The new operator then reconciles your existing resources, so check the release notes for changes that restart RegattaDB Pods.
+- The CRD's API version is independent of the RegattaDB and operator release versions. To see the version your cluster serves, run:
+
+  ```sh
+  kubectl get crd regattaclusters.regatta.dev -o jsonpath='{.spec.versions[*].name}'
+  ```
+
+## Removing the operator
+
+<Warning>
+  Do not remove the operator while a `RegattaCluster` resource still exists. Without the operator, nothing manages or reports on the running RegattaDB system, and the resource cannot be deleted until the operator is installed again. Delete every `RegattaCluster` resource in the namespace first.
+</Warning>
+
+1. Confirm that no `RegattaCluster` resource is left in the namespace. The command should print `No resources found`:
+
+   ```sh
+   kubectl -n <namespace> get rgc
+   ```
+
+2. Remove the operator Deployment and its RBAC:
+
+   ```sh
+   kubectl -n <namespace> delete -f config/operator/deployment.yaml
+   kubectl delete -f config/rbac/clusterrole-readonly.yaml
+   kubectl -n <namespace> delete -f config/rbac/rolebinding.yaml
+   kubectl -n <namespace> delete -f config/rbac/role.yaml
+   kubectl -n <namespace> delete -f config/rbac/serviceaccount.yaml
+   ```
+
+   This does not remove the CRD, the namespace, or the retained PVCs.
+
+3. Optionally, remove the CRD. The CRD is cluster-wide: deleting it deletes every `RegattaCluster` resource in every namespace. Remove it only when the first command below prints `No resources found`:
+
+   ```sh
+   kubectl get rgc --all-namespaces
+   kubectl delete -f config/crd/regattacluster-crd.yaml
+   ```
+
+If you installed the operator with Helm, follow [Remove the operator](/self-hosted-deployment/kubernetes/helm/manage#remove-the-operator) instead.

@@ -5,7 +5,11 @@ description: "Install the operator and stand up a single-node RegattaDB deployme
 
 This page walks you through creating your first `RegattaCluster` resource. Make sure you've completed [Installation](../installation.mdx) first: the operator must already be running in your cluster.
 
-## 1. Create a RegattaCluster resource
+<Note>
+  Deploying with Helm? Follow [Create a `RegattaCluster` with Helm](/self-hosted-deployment/kubernetes/helm/create-regattacluster) instead of this page.
+</Note>
+
+## 1. Create a `RegattaCluster` resource
 
 A minimal `RegattaCluster` resource looks like this:
 
@@ -16,43 +20,49 @@ metadata:
   name: my-regattadb
   namespace: <namespace>
 spec:
-  version: "<version>"
   image:
-    repository: registry.example.com/regatta
+    repository: registry.example.com/regatta-db
     tag: "<version>"
-  security:
-    runAsUser: 1000
-    runAsGroup: 1001
-    fsGroup: 1001
   rdb:
-    replicas: 3
+    replicas: 1
     blockStorage:
-      size: 60Gi
+      size: 350Gi
   repoStorage:
-    size: 5Gi
+    size: 10Gi
   logs:
-    size: 5Gi
+    size: 10Gi
 ```
 
 Save it to a file under `config/examples/`, for example `config/examples/regatta-minimal.yaml`. See [Configuration Overview](../configuration/overview.mdx) for what every field means.
 
 ## 2. Apply and verify
 
+Apply the manifest:
+
 ```sh
 kubectl -n <namespace> apply -f config/examples/regatta-minimal.yaml
-kubectl -n <namespace> get rgc
-kubectl -n <namespace> get rgc my-regattadb -o yaml
 ```
 
-You can also list every resource the operator generated in one command:
+Then watch the resource converge:
 
 ```sh
+kubectl -n <namespace> get rgc
+kubectl -n <namespace> get rgc my-regattadb -o yaml
 kubectl -n <namespace> get statefulsets,services,configmaps,secrets,pods,pvc \
   -l app.kubernetes.io/instance=my-regattadb
+kubectl -n <namespace> wait --for=condition=Ready \
+  regattacluster/my-regattadb --timeout=15m
 ```
 
+| Command | What it shows |
+| --- | --- |
+| `get rgc` | The `RegattaCluster` resources in the namespace; `my-regattadb` should be listed |
+| `get rgc my-regattadb -o yaml` | The full resource: your `spec` with defaults applied, and the `status` the operator reports |
+| `get statefulsets,...,pvc` | Every resource the operator generated for `my-regattadb`. Expect the SM Pod and one RDB Pod per replica to become `Running`, and every PVC to become `Bound` |
+| `wait --for=condition=Ready` | Waits until the `Ready` condition is `True`, then prints `condition met`. If it times out, see [Troubleshooting](/self-hosted-deployment/kubernetes/troubleshooting) |
+
 <Note>
-  A new `RegattaCluster` resource does not become `Ready` immediately: Kubernetes must provision storage and start Pods before the operator can configure and start RegattaDB through the System Manager. Track `status.conditions` (see [Reading RegattaCluster Status](../operations.mdx#reading-regattacluster-status)) until you see `Ready` reported as `True`, rather than expecting readiness right away.
+  A new `RegattaCluster` resource does not become `Ready` immediately: Kubernetes must provision storage and start Pods before the operator can configure and start RegattaDB through the System Manager. Track `status.conditions` (see [Reading `RegattaCluster` Status](../operations.mdx#reading-regattacluster-status)) until you see `Ready` reported as `True`, rather than expecting readiness right away.
 </Note>
 
 ## Next steps

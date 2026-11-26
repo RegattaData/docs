@@ -7,7 +7,11 @@ description: "Deploy and operate RegattaDB on Kubernetes with the Regatta operat
   This section assumes you're already familiar with the [RegattaDB software modules](/self-hosted-deployment/manual-deployment/regattadb-software-modules) (SM, SNA, GDD, DCM, Sequencer, RDB) and how they work together in a RegattaDB deployment.
 </Note>
 
-The **Regatta operator** is a Kubernetes controller that automates deploying and operating RegattaDB on Kubernetes. Instead of manually creating the Kubernetes resources RegattaDB needs, provisioning its storage, and issuing System Manager (SM) commands yourself, you describe the RegattaDB deployment you want in a single `RegattaCluster` resource and let the operator drive Kubernetes and RegattaDB into that state.
+The **Regatta operator** is a Kubernetes controller that automates deploying and operating RegattaDB on Kubernetes. Instead of manually creating the Kubernetes resources RegattaDB needs, provisioning its storage, and issuing System Manager (SM) commands, you describe the RegattaDB deployment you want in a single `RegattaCluster` resource and let the operator drive Kubernetes and RegattaDB into that state.
+
+<Card title="Deploy with Helm" icon="ship" horizontal href="/self-hosted-deployment/kubernetes/helm/overview">
+  The release package includes Helm charts for installing the operator and deploying a RegattaDB system from a values file.
+</Card>
 
 ## Kubernetes Concepts You Will Use
 
@@ -15,21 +19,22 @@ The **Regatta operator** is a Kubernetes controller that automates deploying and
 | --- | --- |
 | [Pod](https://kubernetes.io/docs/concepts/workloads/pods/) | Where one or more RegattaDB modules run together; see [Deployment Architecture](#deployment-architecture) below |
 | [Kubernetes node](https://kubernetes.io/docs/concepts/architecture/nodes/) | A physical or virtual machine that can run Pods. Kubernetes places Pods on nodes automatically |
-| [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) | Keeps a fixed, ordered set of Pods running with stable identities and their own storage. The operator creates one StatefulSet for the SM Pod and one for the RDB Pods |
+| [`StatefulSet`](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) | Keeps a fixed, ordered set of Pods running with stable identities and their storage. The operator creates one `StatefulSet` for the SM Pod and one for the RDB Pods |
 | [Service](https://kubernetes.io/docs/concepts/services-networking/service/) | A stable network name and address for one or more Pods, even as Pods restart or move between Kubernetes nodes |
 | [`PersistentVolumeClaim` (PVC)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) | A request for storage that Kubernetes binds to an actual storage volume or device |
 | [Raw block volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#raw-block-volume-support) | A storage device given to a Pod directly, the same way you would give RegattaDB a raw block device in a manual deployment, without a filesystem in between |
-| [CustomResourceDefinition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) | Registers `RegattaCluster` (full name `regattaclusters.regatta.dev`, short names `regatta`/`rgc`, usable in place of `regattacluster` in `kubectl`) as a Kubernetes resource type, so Kubernetes can store, validate, and let the operator watch it |
-| [`spec`](https://kubernetes.io/docs/concepts/overview/working-with-objects/#object-spec-and-status) | The part of your `RegattaCluster` resource where you write the state you want; only you (and the operator's own defaults) ever set it |
+| [`CustomResourceDefinition` (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) | Registers `RegattaCluster`as a Kubernetes resource type, so Kubernetes can store, validate, and let the operator watch it.<br />`RegattaCluster` full name `regattaclusters.regatta.dev`, short names `regatta`/`rgc`, usable in place of `regattacluster` in `kubectl` |
+| [`spec`](https://kubernetes.io/docs/concepts/overview/working-with-objects/#object-spec-and-status) | The part of your `RegattaCluster` resource where you write the state you want; only you (and the operator's defaults) ever set it |
 | [`status`](https://kubernetes.io/docs/concepts/overview/working-with-objects/#object-spec-and-status) | The part of your `RegattaCluster` resource where the operator reports the state it observed; never edit it yourself |
 | [Operator](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/) | The program that continuously watches your `RegattaCluster` resource and keeps Kubernetes and RegattaDB matching it |
+| [Helm](https://helm.sh/docs/) | An optional package manager for Kubernetes, containing charts and value files that holds your settings for a release |
 
-## What the operator does for you
+## What the Regatta Operator does for you
 
-- **Describes your deployment as a single Kubernetes resource**: the `RegattaCluster` resource captures the RegattaDB version, image, module settings, storage, and resource sizing you want.
-- **Creates and maintains the Kubernetes resources RegattaDB needs**: StatefulSets, Services, ConfigMaps, and storage claims, generated and kept in sync automatically.
+- **Describes your deployment as a single Kubernetes resource**: the `RegattaCluster` resource captures the RegattaDB image, module settings, storage, and resource sizing you want.
+- **Creates and maintains the Kubernetes resources RegattaDB needs**: `StatefulSets`, Services, `ConfigMaps`, and storage claims, generated and kept in sync automatically.
 - **Configures and starts RegattaDB for you**: once Kubernetes resources are ready, the operator configures RegattaDB modules and starts or stops RegattaDB through the System Manager (SM).
-- **Reports readiness continuously**: Kubernetes and RegattaDB health are reflected in the `RegattaCluster` status, so you always know the current state.
+- **Reports readiness continuously**: Kubernetes and RegattaDB health are reflected in the `RegattaCluster` `status`, so you always know the current state.
 
 ## Deployment Architecture
 
@@ -59,7 +64,7 @@ In a manual or RDT-driven RegattaDB deployment, you decide which node runs which
   />
 </Frame>
 
-Unlike a manual deployment, you do not choose per-Pod module placement here. The operator uses this default layout; the only placement decision you make today is how many RDB replicas to configure.
+Unlike a manual deployment, you do not choose per-Pod module placement here. The operator uses this default layout; the only placement decision you make is how many RDB replicas to configure.
 
 Each Pod also gets one or more stable Kubernetes Services, giving it a fixed network address, similar to assigning a fixed internal IP address to each node in a manual deployment. The SM Pod has one Service, and every RDB Pod has its own dedicated Service, so its address does not change even if Kubernetes moves the Pod to a different Kubernetes node.
 
@@ -68,7 +73,8 @@ A **Kubernetes node** is a physical or virtual machine in your Kubernetes cluste
 ## How this section is organized
 
 - **[Prerequisites](/self-hosted-deployment/kubernetes/prerequisites)** and **[Installation](/self-hosted-deployment/kubernetes/installation)**: what your cluster needs, and how to install the operator.
-- [**Configuration**](/self-hosted-deployment/kubernetes/configuration/overview): the `RegattaCluster` spec reference, covering the object header, version and image, module settings, storage, networking, security and lifecycle, and resources and scheduling.
+- [**Deploy with Helm**](/self-hosted-deployment/kubernetes/helm/overview): install the operator and create a `RegattaCluster` resource with the Helm charts, instead of the raw manifests.
+- [**Configuration**](/self-hosted-deployment/kubernetes/configuration/overview): the `RegattaCluster` `spec` reference, covering the object header, image, module settings, storage, networking, security and lifecycle, and resources and scheduling.
 - [**Examples**](/self-hosted-deployment/kubernetes/examples/quickstart-single-node): end-to-end walkthroughs, from a single-node quickstart to static RDB storage.
 - [**Operations**](/self-hosted-deployment/kubernetes/operations): how the operator keeps Kubernetes and RegattaDB in sync, reading status, and making supported changes.
 - [**Troubleshooting**](/self-hosted-deployment/kubernetes/troubleshooting) and [**Release Notes**](/self-hosted-deployment/kubernetes/release-notes).
@@ -77,5 +83,7 @@ A **Kubernetes node** is a physical or virtual machine in your Kubernetes cluste
 
 New to the Regatta operator? Start with [Prerequisites](/self-hosted-deployment/kubernetes/prerequisites) and
 [Installation](/self-hosted-deployment/kubernetes/installation), then follow the
-[Quickstart: Single-Node RegattaCluster](/self-hosted-deployment/kubernetes/examples/quickstart-single-node)
+[Quickstart: Single-Node `RegattaCluster`](/self-hosted-deployment/kubernetes/examples/quickstart-single-node)
 to deploy RegattaDB end to end.
+
+To deploy with Helm instead of the raw manifests, start with [Deploy with Helm](/self-hosted-deployment/kubernetes/helm/overview).

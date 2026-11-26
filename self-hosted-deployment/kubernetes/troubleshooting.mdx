@@ -1,9 +1,9 @@
 ---
 title: "Troubleshooting"
-description: "Diagnose a RegattaCluster resource that isn't reaching Ready."
+description: "Diagnose a `RegattaCluster` resource that isn't reaching `Ready`."
 ---
 
-Start with the resource's own status and Events:
+Start with the resource's own status and events:
 
 ```sh
 kubectl -n <namespace> describe rgc my-regattadb
@@ -11,6 +11,8 @@ kubectl -n <namespace> get events --sort-by=.lastTimestamp
 ```
 
 The issues below are ordered by how the operator brings a `RegattaCluster` resource up: work through them in order, since later ones only make sense once the earlier conditions pass.
+
+If a `helm` command itself fails, see [Helm errors](/self-hosted-deployment/kubernetes/helm/manage#helm-errors) first.
 
 ## The resource is rejected on `apply`
 
@@ -31,9 +33,9 @@ kubectl -n <namespace> describe pvc <pvc-name>
 
 ## `KubernetesReady` is `False`
 
-One or both StatefulSets haven't finished rolling out, or their Pods aren't Running and Ready yet.
+One or both `StatefulSets` haven't finished rolling out, or their Pods aren't `Running` and `Ready` yet.
 
-**Solution:** check StatefulSet rollout and Pod scheduling, image pulls, init containers, and readiness:
+**Solution:** check `StatefulSet` rollout and Pod scheduling, image pulls, init containers, and readiness:
 
 ```sh
 kubectl -n <namespace> rollout status statefulset/my-regattadb-sm
@@ -56,4 +58,4 @@ kubectl -n <namespace> logs deployment/regatta-operator
   Never print the contents of the credentials Secret while troubleshooting; nothing in it is needed to diagnose any of these conditions.
 </Danger>
 
-See [Reading RegattaCluster Status](./operations.mdx#reading-regattacluster-status) for what each condition and status field means.
+See [Reading `RegattaCluster` Status](./operations.mdx#reading-regattacluster-status) for what each condition and status field means.

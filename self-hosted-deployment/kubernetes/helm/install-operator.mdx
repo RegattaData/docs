@@ -1,0 +1,72 @@
+---
+title: "Install the Operator with Helm"
+description: "Install the Regatta operator, its RBAC, and the `RegattaCluster` CRD with the regatta-operator Helm chart."
+---
+
+This page replaces step 4 of [Installation](/self-hosted-deployment/kubernetes/installation). Complete steps 1 through 3 on that page first, and then run the commands below from the root of the extracted release package.
+
+## 1. Review the chart
+
+```sh
+helm show chart ./charts/regatta-operator
+helm show values ./charts/regatta-operator
+```
+
+`helm show chart` prints the chart's metadata; its `appVersion` should match your package version. `helm show values` prints every value you can override: `image`, `image.pullSecrets`, `serviceAccount`, and `podAnnotations`. Neither command changes your cluster.
+
+## 2. Create the values file
+
+Create `operator-values.yaml` in the package root:
+
+```yaml
+image:
+  repository: registry.example.com/regatta-operator
+  tag: "<version>"
+```
+
+To use a digest or a private registry, set these values instead. `image.digest` takes precedence over `image.tag`, and the Secret must already exist in `<namespace>`; see [Configure registry access](/self-hosted-deployment/kubernetes/installation#3-configure-registry-access).
+
+```yaml
+image:
+  repository: registry.example.com/regatta-operator
+  digest: "sha256:<operator-digest>"
+  pullSecrets:
+    - my-registry-credentials
+```
+
+## 3. Install the chart
+
+```sh
+helm install regatta-operator ./charts/regatta-operator \
+  --namespace <namespace> --create-namespace \
+  -f operator-values.yaml
+```
+
+Helm installs the CRD (unless it is already installed), the RBAC, and the Deployment, then prints `STATUS: deployed`. This confirms that the resources were created, not that the operator is running.
+
+## 4. Verify that the operator is running
+
+```sh
+kubectl -n <namespace> rollout status deployment/regatta-operator
+kubectl -n <namespace> get pods -l app.kubernetes.io/name=regatta-operator,app.kubernetes.io/component=operator
+kubectl get crd regattaclusters.regatta.dev
+kubectl -n <namespace> get deployment regatta-operator \
+  -o jsonpath='{.spec.template.spec.containers[0].image}{"\n"}'
+```
+
+| Command | Expected result |
+| --- | --- |
+| `rollout status` | Waits for the Deployment, then prints `successfully rolled out` |
+| `get pods` | One operator Pod, `Running` and `1/1` ready |
+| `get crd` | Lists the `regattaclusters.regatta.dev` CRD |
+| `get deployment` | Prints the image the operator runs, which should be the image you uploaded |
+
+To browse the fields of the installed CRD, run `kubectl explain regattacluster.spec`.
+
+<Note>
+  The operator is running at this point, but RegattaDB itself does not exist yet: nothing runs RegattaDB until you create a `RegattaCluster` resource.
+</Note>
+
+## Next steps
+
+Continue to [Create a `RegattaCluster` with Helm](/self-hosted-deployment/kubernetes/helm/create-regattacluster).

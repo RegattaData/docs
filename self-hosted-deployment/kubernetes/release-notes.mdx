@@ -3,6 +3,22 @@ title: "Release Notes"
 description: "Changes, fixes, and known limitations for each Regatta operator release."
 ---
 
+## [26.4.1] - 2026-10-05
+
+### Added
+
+- Helm charts, as an alternative to the raw manifests. The `regatta-operator` chart installs the CRD, the operator's RBAC, and its Deployment. The `regattacluster` chart creates one `RegattaCluster` resource per Helm release, from a values file. See [Deploy with Helm](/self-hosted-deployment/kubernetes/helm/overview).
+- Deployment profiles for the `regattacluster` chart: Regatta-maintained `spec` values for a specific environment, selected with `profile` in the values file. See [Deployment profiles](/self-hosted-deployment/kubernetes/helm/values-and-profiles#deployment-profiles).
+
+### Changed
+
+- The CPU and RAM applied when `spec.resources.sm`/`spec.resources.rdb` is omitted, which are also the enforced minimums, changed. See [Configure CPU and RAM](/self-hosted-deployment/kubernetes/configuration/resources-and-scheduling#configure-cpu-and-ram) for the current values.
+- If you set `num_threads`, the CPU in `spec.resources` only needs to cover the largest single module's `num_threads` in the Pod, not the sum across its modules.
+
+### Fixed
+
+- The operator keeps checking until RegattaDB reaches the requested started or stopped state, instead of stopping after a fixed number of retries.
+
 ## [26.1.0] - 2026-09-16
 
 - Module-to-Pod placement is fixed: SM, SNA, GDD, DCM, and Sequencer always run together in one SM Pod, and SNA and RDB always run together in each RDB Pod. There is no supported way to configure a different placement.

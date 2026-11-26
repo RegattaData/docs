@@ -1,0 +1,57 @@
+---
+title: "Values and Deployment Profiles"
+description: "What a regattacluster values file can set, where each value comes from, and how deployment profiles work."
+---
+
+## Values file
+
+| Key | Description |
+| --- | --- |
+| `spec` | The `RegattaCluster` `spec`. It accepts every field described in [Configuration](/self-hosted-deployment/kubernetes/configuration/overview), with the same names and nesting as a raw manifest |
+| `profile` | Optional. The name of a deployment profile to apply; see [Deployment profiles](#deployment-profiles) |
+| `nameOverride`, `fullnameOverride` | Optional. Change the name of the `RegattaCluster` resource, which defaults to the Helm release name |
+
+`helm show values ./charts/regattacluster` prints the chart's `values.yaml`, which includes a commented example of the commonly set `spec` fields.
+
+## Chart baseline
+
+The chart baseline (`charts/regattacluster/defaults/minimal.yaml`) supplies the required `spec` fields, so you only set the fields you want to change:
+
+| Field | Baseline value |
+| --- | --- |
+| `spec.image.repository`, `spec.image.tag` | Placeholders. Always set your own repository, and a tag or digest |
+| `spec.rdb.replicas` | `1` |
+| `spec.rdb.blockStorage.size` | `350Gi` |
+| `spec.repoStorage.size` | `10Gi` |
+| `spec.logs.size` | `10Gi` |
+
+The baseline does not set a `storageClassName`, so storage uses your cluster's default `StorageClass` unless you set one.
+
+## Configuration sources and precedence
+
+Each `spec` field of the generated `RegattaCluster` resource takes its value from the highest-precedence source that sets it:
+
+| Precedence | Source | What it is |
+| --- | --- | --- |
+| 1 (highest) | Your values | The `spec` fields in your values file |
+| 2 | Deployment profile | Optional. Regatta-maintained settings for a specific environment, applied when you set `profile` |
+| 3 | Chart baseline | The required fields listed in the table above |
+| 4 (lowest) | CRD defaults | The defaults Kubernetes applies to any field that is still unset, the same as for a raw manifest. They are documented with each field in [Configuration](/self-hosted-deployment/kubernetes/configuration/overview) |
+
+Sources are merged field by field: setting one field does not discard the other fields that a lower-precedence source sets. Lists, for example `tolerations`, are the exception: a list is always replaced as a whole.
+
+## Deployment profiles
+
+A deployment profile is a file of recommended `spec` values for a specific environment, for example a cloud provider's node and storage types. A profile typically sets `StorageClass` names, the RDB replica count, CPU and RAM, and Pod scheduling. Select a profile by name in your values file:
+
+```yaml
+profile: <profile-name>
+```
+
+The available profiles are in `charts/regattacluster/profiles/` in the release package, one `<profile-name>.yaml` file each. `charts/regattacluster/profiles/README.md` lists the requirements and setup steps of each profile.
+
+Before you install with a profile:
+
+- **Provide the infrastructure it expects.** A profile only sets `spec` values; it creates nothing in your cluster. The `StorageClasses` it names and the node pools it selects must already exist, with enough capacity and quota for every Pod and volume. Any manifests a profile needs for this are under `config/` in the release package.
+- **Adjust it to your workload.** A profile is a baseline recommendation, not sizing for your workload. Review its values, and override any of them under `spec` in your values file.
+- **Decide before you create the resource.** Fields such as the replica count and the storage settings cannot change afterward; see [Making supported changes](/self-hosted-deployment/kubernetes/operations#making-supported-changes).
